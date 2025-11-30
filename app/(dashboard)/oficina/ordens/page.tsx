@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
-import { ServiceOrder, Client, Vehicle, Workshop } from "@/types/database";
+import { ServiceOrder, Vehicle, Workshop } from "@/types/database";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -28,6 +28,11 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, Pencil, Trash2, Loader2, Search, FileText, AlertCircle, Crown } from "lucide-react";
 import { cn } from "@/lib/utils";
+
+interface ClientOption {
+  id: string;
+  name: string;
+}
 
 interface ServiceOrderWithRelations extends ServiceOrder {
   client?: {
@@ -54,7 +59,7 @@ export default function OrdensPage() {
   const { profile } = useAuth();
   const { toast } = useToast();
   const [orders, setOrders] = useState<ServiceOrderWithRelations[]>([]);
-  const [clients, setClients] = useState<Client[]>([]);
+  const [clients, setClients] = useState<ClientOption[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -67,6 +72,7 @@ export default function OrdensPage() {
     if (profile) {
       loadWorkshop();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile]);
 
   useEffect(() => {
@@ -74,6 +80,7 @@ export default function OrdensPage() {
       loadClients();
       loadOrders();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [workshop]);
 
   const loadWorkshop = async () => {
@@ -428,7 +435,7 @@ function ServiceOrderDialog({
   open: boolean;
   onClose: () => void;
   order: ServiceOrderWithRelations | null;
-  clients: Client[];
+  clients: ClientOption[];
   workshopId: string | null;
   onSuccess: () => void;
 }) {
@@ -473,6 +480,7 @@ function ServiceOrderDialog({
       });
       setVehicles([]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [order, open]);
 
   const loadVehicles = async (clientId: string) => {

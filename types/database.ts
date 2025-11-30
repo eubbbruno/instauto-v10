@@ -2,7 +2,7 @@ export type UserType = "oficina" | "motorista" | "admin";
 
 export type PlanType = "free" | "pro";
 
-export type ServiceOrderStatus = "pending" | "in_progress" | "completed" | "cancelled";
+export type ServiceOrderStatus = "pending" | "approved" | "in_progress" | "completed" | "cancelled";
 
 export interface Profile {
   id: string;
@@ -59,11 +59,16 @@ export interface ServiceOrder {
   workshop_id: string;
   client_id: string;
   vehicle_id: string;
+  order_number: string;
   status: ServiceOrderStatus;
   services: string;
+  labor_cost: number;
+  parts_cost: number;
   total: number;
   notes?: string;
-  created_at: string;
+  started_at?: string;
   completed_at?: string;
+  created_at: string;
+  updated_at?: string;
 }
 

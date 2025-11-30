@@ -43,12 +43,14 @@ export default function ClientesPage() {
     if (profile) {
       loadWorkshop();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile]);
 
   useEffect(() => {
     if (workshop) {
       loadClients();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [workshop]);
 
   const loadWorkshop = async () => {
@@ -335,6 +337,7 @@ function ClientDialog({
         notes: "",
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [client, open]);
 
   const handleSubmit = async (e: React.FormEvent) => {

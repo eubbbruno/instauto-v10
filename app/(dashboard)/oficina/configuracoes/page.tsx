@@ -71,6 +71,7 @@ export default function ConfiguracoesPage() {
     if (profile) {
       loadData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile]);
 
   const loadData = async () => {

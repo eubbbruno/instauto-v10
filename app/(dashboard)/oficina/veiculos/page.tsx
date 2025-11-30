@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
-import { Vehicle, Client, Workshop } from "@/types/database";
+import { Vehicle, Workshop } from "@/types/database";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -27,6 +27,11 @@ import {
 } from "@/components/ui/table";
 import { Plus, Pencil, Trash2, Loader2, Search, Car as CarIcon } from "lucide-react";
 
+interface ClientOption {
+  id: string;
+  name: string;
+}
+
 interface VehicleWithClient extends Vehicle {
   client?: {
     id: string;
@@ -38,7 +43,7 @@ export default function VeiculosPage() {
   const { profile } = useAuth();
   const { toast } = useToast();
   const [vehicles, setVehicles] = useState<VehicleWithClient[]>([]);
-  const [clients, setClients] = useState<Client[]>([]);
+  const [clients, setClients] = useState<ClientOption[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -50,6 +55,7 @@ export default function VeiculosPage() {
     if (profile) {
       loadWorkshop();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile]);
 
   useEffect(() => {
@@ -57,6 +63,7 @@ export default function VeiculosPage() {
       loadClients();
       loadVehicles();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [workshop]);
 
   const loadWorkshop = async () => {
@@ -307,7 +314,7 @@ function VehicleDialog({
   open: boolean;
   onClose: () => void;
   vehicle: VehicleWithClient | null;
-  clients: Client[];
+  clients: ClientOption[];
   workshopId: string | null;
   onSuccess: () => void;
 }) {
@@ -349,6 +356,7 @@ function VehicleDialog({
         notes: "",
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [vehicle, open]);
 
   const handleSubmit = async (e: React.FormEvent) => {
