@@ -14,6 +14,7 @@ export default function PlanosPage() {
   const { profile } = useAuth();
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
+  const [upgradeLoading, setUpgradeLoading] = useState(false);
   const [workshop, setWorkshop] = useState<Workshop | null>(null);
   const [stats, setStats] = useState({
     clients: 0,
@@ -72,11 +73,74 @@ export default function PlanosPage() {
     }
   };
 
-  const handleUpgrade = () => {
-    toast({
-      title: "Em breve!",
-      description: "A integração de pagamentos estará disponível em breve. Aguarde!",
-    });
+  const handleUpgrade = async () => {
+    // Validações detalhadas
+    if (!workshop?.id) {
+      toast({
+        variant: "destructive",
+        title: "Erro",
+        description: "Dados da oficina não carregados. Tente recarregar a página.",
+      });
+      console.error("Workshop ID não encontrado:", workshop);
+      return;
+    }
+
+    if (!profile?.email) {
+      toast({
+        variant: "destructive",
+        title: "Erro",
+        description: "Email do usuário não encontrado. Faça login novamente.",
+      });
+      console.error("Profile email não encontrado:", profile);
+      return;
+    }
+
+    setUpgradeLoading(true);
+    try {
+      console.log("Iniciando upgrade com dados:", {
+        workshopId: workshop.id,
+        userEmail: profile.email,
+        userName: workshop.name,
+      });
+
+      const response = await fetch("/api/payments/create-subscription", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          workshopId: workshop.id,
+          userEmail: profile.email,
+          userName: workshop.name,
+        }),
+      });
+
+      const data = await response.json();
+
+      console.log("Resposta da API:", data);
+
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      if (data.initPoint) {
+        // Redirecionar para o checkout do MercadoPago
+        toast({
+          title: "Redirecionando...",
+          description: "Você será redirecionado para o checkout do MercadoPago.",
+        });
+        window.location.href = data.initPoint;
+      } else {
+        throw new Error("Link de pagamento não recebido");
+      }
+    } catch (error: any) {
+      console.error("Erro ao iniciar pagamento:", error);
+      toast({
+        variant: "destructive",
+        title: "Erro ao iniciar pagamento",
+        description: error.message || "Não foi possível iniciar o pagamento. Tente novamente.",
+      });
+    } finally {
+      setUpgradeLoading(false);
+    }
   };
 
   const handleManageSubscription = () => {
@@ -86,10 +150,13 @@ export default function PlanosPage() {
     });
   };
 
-  if (loading) {
+  if (loading || !workshop) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin text-blue-600 mx-auto mb-4" />
+          <p className="text-gray-600">Carregando dados da oficina...</p>
+        </div>
       </div>
     );
   }
@@ -144,9 +211,23 @@ export default function PlanosPage() {
               </CardDescription>
             </div>
             {!isPro && (
-              <Button onClick={handleUpgrade} size="lg" className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700">
-                <Crown className="mr-2 h-5 w-5" />
-                Fazer Upgrade
+              <Button 
+                onClick={handleUpgrade} 
+                size="lg" 
+                disabled={upgradeLoading}
+                className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700"
+              >
+                {upgradeLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                    Processando...
+                  </>
+                ) : (
+                  <>
+                    <Crown className="mr-2 h-5 w-5" />
+                    Fazer Upgrade
+                  </>
+                )}
               </Button>
             )}
             {isPro && (
@@ -282,11 +363,21 @@ export default function PlanosPage() {
               {!isPro ? (
                 <Button
                   onClick={handleUpgrade}
+                  disabled={upgradeLoading}
                   className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700"
                   size="lg"
                 >
-                  <Crown className="mr-2 h-5 w-5" />
-                  Fazer Upgrade Agora
+                  {upgradeLoading ? (
+                    <>
+                      <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                      Processando...
+                    </>
+                  ) : (
+                    <>
+                      <Crown className="mr-2 h-5 w-5" />
+                      Fazer Upgrade Agora
+                    </>
+                  )}
                 </Button>
               ) : (
                 <Button

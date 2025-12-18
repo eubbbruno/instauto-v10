@@ -26,6 +26,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Plus, Pencil, Trash2, Loader2, Search, Car as CarIcon } from "lucide-react";
+import { PlanGuard } from "@/components/auth/PlanGuard";
 
 interface ClientOption {
   id: string;
@@ -40,6 +41,14 @@ interface VehicleWithClient extends Vehicle {
 }
 
 export default function VeiculosPage() {
+  return (
+    <PlanGuard feature="Gestão de Veículos">
+      <VeiculosContent />
+    </PlanGuard>
+  );
+}
+
+function VeiculosContent() {
   const { profile } = useAuth();
   const { toast } = useToast();
   const [vehicles, setVehicles] = useState<VehicleWithClient[]>([]);

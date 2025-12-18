@@ -27,8 +27,17 @@ import {
 } from "@/components/ui/table";
 import { Plus, Pencil, Trash2, Loader2, Search, AlertCircle, Crown } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { PlanGuard } from "@/components/auth/PlanGuard";
 
 export default function ClientesPage() {
+  return (
+    <PlanGuard feature="Gestão de Clientes">
+      <ClientesContent />
+    </PlanGuard>
+  );
+}
+
+function ClientesContent() {
   const { profile } = useAuth();
   const { toast } = useToast();
   const [clients, setClients] = useState<Client[]>([]);

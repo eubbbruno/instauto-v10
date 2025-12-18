@@ -28,6 +28,7 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, Pencil, Trash2, Loader2, Search, FileText, AlertCircle, Crown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { PlanGuard } from "@/components/auth/PlanGuard";
 
 interface ClientOption {
   id: string;
@@ -56,6 +57,14 @@ const statusConfig = {
 };
 
 export default function OrdensPage() {
+  return (
+    <PlanGuard feature="Ordens de Serviço">
+      <OrdensContent />
+    </PlanGuard>
+  );
+}
+
+function OrdensContent() {
   const { profile } = useAuth();
   const { toast } = useToast();
   const [orders, setOrders] = useState<ServiceOrderWithRelations[]>([]);
