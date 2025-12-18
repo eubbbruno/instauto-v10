@@ -11,7 +11,7 @@ import { Loader2, Check, Crown, Zap, Shield, TrendingUp, X } from "lucide-react"
 import { cn } from "@/lib/utils";
 
 export default function PlanosPage() {
-  const { profile } = useAuth();
+  const { profile, user } = useAuth();
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [upgradeLoading, setUpgradeLoading] = useState(false);
@@ -23,11 +23,11 @@ export default function PlanosPage() {
   const supabase = createClient();
 
   useEffect(() => {
-    if (profile) {
+    if (profile?.id) {
       loadData();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [profile]);
+  }, [profile?.id]);
 
   const loadData = async () => {
     try {
@@ -85,13 +85,14 @@ export default function PlanosPage() {
       return;
     }
 
-    if (!profile?.email) {
+    const userEmail = user?.email || profile?.email;
+    if (!userEmail) {
       toast({
         variant: "destructive",
         title: "Erro",
         description: "Email do usuário não encontrado. Faça login novamente.",
       });
-      console.error("Profile email não encontrado:", profile);
+      console.error("Email não encontrado. User:", user, "Profile:", profile);
       return;
     }
 
@@ -99,7 +100,7 @@ export default function PlanosPage() {
     try {
       console.log("Iniciando upgrade com dados:", {
         workshopId: workshop.id,
-        userEmail: profile.email,
+        userEmail: userEmail,
         userName: workshop.name,
       });
 
@@ -108,7 +109,7 @@ export default function PlanosPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           workshopId: workshop.id,
-          userEmail: profile.email,
+          userEmail: userEmail,
           userName: workshop.name,
         }),
       });

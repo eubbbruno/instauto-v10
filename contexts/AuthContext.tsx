@@ -5,7 +5,7 @@ import { User } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase";
 import { Profile } from "@/types/database";
 
-interface AuthContextType {
+export interface AuthContextType {
   user: User | null;
   profile: Profile | null;
   loading: boolean;
