@@ -22,26 +22,49 @@ export default function PlanosPage() {
   });
   const supabase = createClient();
 
+  // DEBUG: Log inicial
+  console.log("=== DEBUG PLANOS - RENDER ===");
+  console.log("profile:", profile);
+  console.log("user:", user);
+  console.log("workshop:", workshop);
+  console.log("loading:", loading);
+
   useEffect(() => {
+    console.log("=== useEffect DISPAROU ===");
+    console.log("profile?.id:", profile?.id);
+    
     if (profile?.id) {
+      console.log("✅ profile.id existe, chamando loadData()");
       loadData();
+    } else {
+      console.log("❌ profile.id NÃO existe ainda");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile?.id]);
 
   const loadData = async () => {
+    console.log("=== loadData INICIOU ===");
+    console.log("profile?.id na loadData:", profile?.id);
+    
     try {
       setLoading(true);
 
       // Carregar dados da oficina
+      console.log("🔍 Buscando workshop no Supabase...");
       const { data: workshopData, error: workshopError } = await supabase
         .from("workshops")
         .select("*")
         .eq("profile_id", profile?.id)
         .single();
 
+      console.log("📦 Resposta do Supabase:");
+      console.log("  workshopData:", workshopData);
+      console.log("  workshopError:", workshopError);
+
       if (workshopError) throw workshopError;
+      
       setWorkshop(workshopData);
+      console.log("✅ Workshop setado no state:", workshopData);
 
       // Carregar estatísticas de uso
       const { count: clientsCount } = await supabase
@@ -61,8 +84,10 @@ export default function PlanosPage() {
         clients: clientsCount || 0,
         ordersThisMonth: ordersCount || 0,
       });
+      
+      console.log("📊 Stats carregadas:", { clients: clientsCount, orders: ordersCount });
     } catch (error) {
-      console.error("Erro ao carregar dados:", error);
+      console.error("❌ ERRO ao carregar dados:", error);
       toast({
         variant: "destructive",
         title: "Erro",
@@ -70,53 +95,69 @@ export default function PlanosPage() {
       });
     } finally {
       setLoading(false);
+      console.log("=== loadData FINALIZADA ===");
     }
   };
 
   const handleUpgrade = async () => {
+    console.log("=== handleUpgrade CHAMADO ===");
+    console.log("workshop no handleUpgrade:", workshop);
+    console.log("workshop?.id:", workshop?.id);
+    console.log("user no handleUpgrade:", user);
+    console.log("profile no handleUpgrade:", profile);
+    
     // Validações detalhadas
     if (!workshop?.id) {
+      console.error("❌ ERRO: Workshop ID não encontrado!");
+      console.error("  workshop completo:", workshop);
       toast({
         variant: "destructive",
         title: "Erro",
         description: "Dados da oficina não carregados. Tente recarregar a página.",
       });
-      console.error("Workshop ID não encontrado:", workshop);
       return;
     }
 
     const userEmail = user?.email || profile?.email;
+    console.log("📧 Email detectado:", userEmail);
+    console.log("  user?.email:", user?.email);
+    console.log("  profile?.email:", profile?.email);
+    
     if (!userEmail) {
+      console.error("❌ ERRO: Email não encontrado!");
+      console.error("  user completo:", user);
+      console.error("  profile completo:", profile);
       toast({
         variant: "destructive",
         title: "Erro",
         description: "Email do usuário não encontrado. Faça login novamente.",
       });
-      console.error("Email não encontrado. User:", user, "Profile:", profile);
       return;
     }
 
     setUpgradeLoading(true);
     try {
-      console.log("Iniciando upgrade com dados:", {
+      const payload = {
         workshopId: workshop.id,
         userEmail: userEmail,
         userName: workshop.name,
-      });
+      };
+      
+      console.log("📤 Enviando para API:");
+      console.log("  URL: /api/payments/create-subscription");
+      console.log("  Payload:", payload);
 
       const response = await fetch("/api/payments/create-subscription", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          workshopId: workshop.id,
-          userEmail: userEmail,
-          userName: workshop.name,
-        }),
+        body: JSON.stringify(payload),
       });
 
+      console.log("📥 Resposta HTTP status:", response.status);
+      
       const data = await response.json();
 
-      console.log("Resposta da API:", data);
+      console.log("📥 Resposta da API:", data);
 
       if (data.error) {
         throw new Error(data.error);
