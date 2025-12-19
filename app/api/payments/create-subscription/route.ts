@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase";
+import { createClient } from "@supabase/supabase-js";
 import { createSubscription } from "@/lib/mercadopago";
 
 export async function POST(request: NextRequest) {
@@ -34,13 +34,23 @@ export async function POST(request: NextRequest) {
     
     console.log("✅ Validação OK, prosseguindo...");
 
-    // Buscar dados da oficina
-    const supabase = createClient();
-    console.log("🔍 Buscando workshop no Supabase:", workshopId);
+    // Criar cliente Supabase com Service Role (bypassa RLS)
+    const supabaseAdmin = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!,
+      {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false
+        }
+      }
+    );
     
-    const { data: workshop, error: workshopError } = await supabase
+    console.log("🔍 Buscando workshop no Supabase (usando Service Role):", workshopId);
+    
+    const { data: workshop, error: workshopError } = await supabaseAdmin
       .from("workshops")
-      .select("*, profiles!inner(name, email)")
+      .select("*")
       .eq("id", workshopId)
       .single();
 
@@ -83,7 +93,7 @@ export async function POST(request: NextRequest) {
 
     // Salvar ID da assinatura no banco
     console.log("💾 Salvando ID da assinatura no banco...");
-    const { error: updateError } = await supabase
+    const { error: updateError } = await supabaseAdmin
       .from("workshops")
       .update({
         mercadopago_subscription_id: subscription.id,
