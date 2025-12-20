@@ -17,7 +17,9 @@ import {
   LogOut, 
   Loader2,
   Menu,
-  X
+  X,
+  Stethoscope,
+  MessageSquare
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -39,6 +41,9 @@ const menuItems: MenuItem[] = [
   { name: "Agenda", href: "/oficina/agenda", icon: <Calendar className="h-5 w-5" />, pro: true },
   { name: "Estoque", href: "/oficina/estoque", icon: <Package className="h-5 w-5" />, pro: true },
   { name: "Financeiro", href: "/oficina/financeiro", icon: <DollarSign className="h-5 w-5" />, pro: true },
+  { name: "Diagnóstico IA", href: "/oficina/diagnostico", icon: <Stethoscope className="h-5 w-5" />, pro: true },
+  { name: "Relatórios", href: "/oficina/relatorios", icon: <FileText className="h-5 w-5" />, pro: true },
+  { name: "WhatsApp", href: "/oficina/whatsapp", icon: <MessageSquare className="h-5 w-5" />, pro: true },
   { name: "Configurações", href: "/oficina/configuracoes", icon: <Settings className="h-5 w-5" />, pro: false },
   { name: "Planos", href: "/oficina/planos", icon: <Crown className="h-5 w-5" />, pro: false },
 ];

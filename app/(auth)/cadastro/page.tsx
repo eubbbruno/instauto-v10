@@ -6,9 +6,9 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
-import { AlertCircle, CheckCircle, Loader2 } from "lucide-react";
+import { AlertCircle, CheckCircle, Loader2, Mail, Lock, Building2, Sparkles } from "lucide-react";
 
 export default function CadastroPage() {
   const router = useRouter();
@@ -64,95 +64,136 @@ export default function CadastroPage() {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Criar Conta</CardTitle>
-        <CardDescription>
-          Comece grátis - 30 dias de teste
+    <Card className="border-2 shadow-xl">
+      <CardHeader className="space-y-1 pb-6">
+        <CardTitle className="text-3xl font-heading font-bold">Criar sua conta</CardTitle>
+        <CardDescription className="text-base">
+          Comece grátis - teste por 14 dias sem compromisso
         </CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit}>
-        <CardContent className="space-y-4">
+        <CardContent className="space-y-5">
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-800 rounded-md p-3 flex items-start gap-2">
+            <div className="bg-red-50 border-2 border-red-200 text-red-800 rounded-lg p-4 flex items-start gap-3">
               <AlertCircle className="h-5 w-5 mt-0.5 flex-shrink-0" />
-              <span className="text-sm">{error}</span>
+              <span className="text-sm font-medium">{error}</span>
             </div>
           )}
 
           {success && (
-            <div className="bg-green-50 border border-green-200 text-green-800 rounded-md p-3 flex items-start gap-2">
+            <div className="bg-green-50 border-2 border-green-200 text-green-800 rounded-lg p-4 flex items-start gap-3">
               <CheckCircle className="h-5 w-5 mt-0.5 flex-shrink-0" />
-              <span className="text-sm">
+              <span className="text-sm font-medium">
                 Conta criada com sucesso! Redirecionando...
               </span>
             </div>
           )}
 
           <div className="space-y-2">
-            <Label htmlFor="name">Nome da Oficina</Label>
-            <Input
-              id="name"
-              type="text"
-              placeholder="Oficina do João"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              disabled={loading || success}
-            />
+            <Label htmlFor="name" className="text-sm font-bold text-gray-700">
+              Nome da Oficina
+            </Label>
+            <div className="relative">
+              <Building2 className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <Input
+                id="name"
+                type="text"
+                placeholder="Oficina do João"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                disabled={loading || success}
+                className="pl-10 h-12 border-2"
+              />
+            </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="seu@email.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              disabled={loading || success}
-            />
+            <Label htmlFor="email" className="text-sm font-bold text-gray-700">
+              Email
+            </Label>
+            <div className="relative">
+              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <Input
+                id="email"
+                type="email"
+                placeholder="seu@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                disabled={loading || success}
+                className="pl-10 h-12 border-2"
+              />
+            </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password">Senha</Label>
-            <Input
-              id="password"
-              type="password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              disabled={loading || success}
-            />
+            <Label htmlFor="password" className="text-sm font-bold text-gray-700">
+              Senha
+            </Label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <Input
+                id="password"
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                disabled={loading || success}
+                className="pl-10 h-12 border-2"
+              />
+            </div>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="confirmPassword">Confirmar Senha</Label>
-            <Input
-              id="confirmPassword"
-              type="password"
-              placeholder="••••••••"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-              disabled={loading || success}
-            />
+            <Label htmlFor="confirmPassword" className="text-sm font-bold text-gray-700">
+              Confirmar Senha
+            </Label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <Input
+                id="confirmPassword"
+                type="password"
+                placeholder="••••••••"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                disabled={loading || success}
+                className="pl-10 h-12 border-2"
+              />
+            </div>
           </div>
 
-          <div className="bg-blue-50 border border-blue-200 rounded-md p-3">
-            <ul className="text-sm text-blue-800 space-y-1">
-              <li>✓ Até 10 clientes grátis</li>
-              <li>✓ 30 OS por mês</li>
-              <li>✓ Sem cartão de crédito</li>
+          <div className="bg-gradient-to-r from-blue-50 to-yellow-50 border-2 border-blue-200 rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <Sparkles className="h-5 w-5 text-blue-600" />
+              <span className="font-bold text-gray-900">Plano FREE inclui:</span>
+            </div>
+            <ul className="text-sm text-gray-700 space-y-2">
+              <li className="flex items-center gap-2">
+                <div className="w-1.5 h-1.5 bg-blue-600 rounded-full"></div>
+                Até 10 clientes grátis
+              </li>
+              <li className="flex items-center gap-2">
+                <div className="w-1.5 h-1.5 bg-blue-600 rounded-full"></div>
+                30 OS por mês
+              </li>
+              <li className="flex items-center gap-2">
+                <div className="w-1.5 h-1.5 bg-blue-600 rounded-full"></div>
+                Sem cartão de crédito
+              </li>
             </ul>
           </div>
 
-          <Button type="submit" className="w-full" disabled={loading || success}>
+          <Button
+            type="submit"
+            className="w-full h-12 bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 font-bold shadow-lg shadow-yellow-500/30"
+            disabled={loading || success}
+          >
             {loading ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                 Criando conta...
               </>
             ) : (
@@ -162,10 +203,10 @@ export default function CadastroPage() {
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
+              <span className="w-full border-t-2" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-white px-2 text-muted-foreground">
+              <span className="bg-white px-3 text-gray-500 font-bold">
                 Ou continue com
               </span>
             </div>
@@ -174,11 +215,11 @@ export default function CadastroPage() {
           <Button
             type="button"
             variant="outline"
-            className="w-full"
+            className="w-full h-12 border-2 font-bold"
             onClick={handleGoogleSignup}
             disabled={loading || success}
           >
-            <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
+            <svg className="mr-2 h-5 w-5" viewBox="0 0 24 24">
               <path
                 d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                 fill="#4285F4"
@@ -198,17 +239,17 @@ export default function CadastroPage() {
             </svg>
             Google
           </Button>
+
+          <div className="text-center pt-4">
+            <p className="text-sm text-gray-600">
+              Já tem uma conta?{" "}
+              <Link href="/login" className="text-blue-600 hover:text-blue-700 font-bold hover:underline">
+                Entrar
+              </Link>
+            </p>
+          </div>
         </CardContent>
       </form>
-      <CardFooter className="flex flex-col space-y-2">
-        <div className="text-sm text-center text-muted-foreground">
-          Já tem uma conta?{" "}
-          <Link href="/login" className="text-primary hover:underline">
-            Entrar
-          </Link>
-        </div>
-      </CardFooter>
     </Card>
   );
 }
-
