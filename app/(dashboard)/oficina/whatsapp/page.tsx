@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { PlanGuard } from "@/components/auth/PlanGuard";
 import { MessageSquare, Smartphone, Zap, CheckCircle, AlertCircle, QrCode, Users, Send } from "lucide-react";
+import { PageHeader } from "@/components/dashboard/PageHeader";
 
 export default function WhatsAppPage() {
   const [connected, setConnected] = useState(false);
@@ -46,15 +47,10 @@ export default function WhatsAppPage() {
   return (
     <PlanGuard>
       <div className="space-y-8">
-        {/* Header */}
-        <div>
-          <h1 className="text-4xl font-heading font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
-            Integração WhatsApp
-          </h1>
-          <p className="text-gray-600 mt-2">
-            Conecte seu WhatsApp e automatize o atendimento
-          </p>
-        </div>
+        <PageHeader
+          title="Integração WhatsApp"
+          description="Conecte seu WhatsApp e automatize o atendimento"
+        />
 
         <div className="grid lg:grid-cols-2 gap-6">
           {/* Connection Card */}

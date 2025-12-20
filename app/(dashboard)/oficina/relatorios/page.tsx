@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { PlanGuard } from "@/components/auth/PlanGuard";
 import { FileText, Download, Calendar, DollarSign, TrendingUp, Package, Users, FileSpreadsheet } from "lucide-react";
+import { PageHeader } from "@/components/dashboard/PageHeader";
 
 export default function RelatoriosPage() {
   const [generating, setGenerating] = useState<string | null>(null);
@@ -72,15 +73,10 @@ export default function RelatoriosPage() {
   return (
     <PlanGuard>
       <div className="space-y-8">
-        {/* Header */}
-        <div>
-          <h1 className="text-4xl font-heading font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
-            Relatórios
-          </h1>
-          <p className="text-gray-600 mt-2">
-            Gere relatórios detalhados em PDF ou Excel
-          </p>
-        </div>
+        <PageHeader
+          title="Relatórios"
+          description="Gere relatórios detalhados em PDF ou Excel"
+        />
 
         {/* Quick Filters */}
         <Card className="border-2">

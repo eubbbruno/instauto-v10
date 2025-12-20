@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { LineChart, Line, PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { format, subMonths, startOfMonth, endOfMonth } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { PageHeader } from "@/components/dashboard/PageHeader";
 
 interface DashboardData {
   totalClients: number;
@@ -170,35 +171,34 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-        <div>
-          <h1 className="text-4xl font-heading font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
-            Dashboard
-          </h1>
-          <p className="text-gray-600 mt-2 flex items-center gap-2">
+      <PageHeader
+        title="Dashboard"
+        description={
+          <span className="flex items-center gap-2">
             <Sparkles className="h-4 w-4 text-yellow-500" />
             Bem-vindo de volta, <span className="font-bold">{profile?.name}</span>!
-          </p>
-        </div>
-        <div className="flex flex-wrap gap-3">
-          <Button 
-            onClick={() => router.push("/oficina/ordens")}
-            className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg shadow-blue-600/30 font-bold"
-          >
-            <Plus className="mr-2 h-4 w-4" />
-            Nova OS
-          </Button>
-          <Button 
-            variant="outline" 
-            onClick={() => router.push("/oficina/clientes")}
-            className="border-2 font-bold"
-          >
-            <Plus className="mr-2 h-4 w-4" />
-            Novo Cliente
-          </Button>
-        </div>
-      </div>
+          </span>
+        }
+        action={
+          <div className="flex flex-wrap gap-3">
+            <Button 
+              onClick={() => router.push("/oficina/ordens")}
+              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg shadow-blue-600/30 font-bold"
+            >
+              <Plus className="mr-2 h-4 w-4" />
+              Nova OS
+            </Button>
+            <Button 
+              variant="outline" 
+              onClick={() => router.push("/oficina/clientes")}
+              className="border-2 font-bold"
+            >
+              <Plus className="mr-2 h-4 w-4" />
+              Novo Cliente
+            </Button>
+          </div>
+        }
+      />
 
       {/* Cards de Métricas Principais */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

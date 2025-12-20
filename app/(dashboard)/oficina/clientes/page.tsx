@@ -28,6 +28,7 @@ import {
 import { Plus, Pencil, Trash2, Loader2, Search, AlertCircle, Crown } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { PlanGuard } from "@/components/auth/PlanGuard";
+import { PageHeader } from "@/components/dashboard/PageHeader";
 
 export default function ClientesPage() {
   return (
@@ -175,30 +176,25 @@ function ClientesContent() {
   const showLimitWarning = workshop?.plan_type === "free" && clients.length >= 8;
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Clientes</h1>
-          <p className="text-gray-600 mt-1">
-            Gerencie seus clientes cadastrados
-            {workshop?.plan_type === "free" && (
-              <span className="ml-2 text-sm">
-                ({clients.length}/10 clientes)
-              </span>
-            )}
-          </p>
-        </div>
-        <Button onClick={() => handleOpenDialog()}>
-          <Plus className="mr-2 h-4 w-4" />
-          Novo Cliente
-        </Button>
-      </div>
+    <div className="space-y-8">
+      <PageHeader
+        title="Clientes"
+        description={`Gerencie seus clientes cadastrados${
+          workshop?.plan_type === "free" ? ` (${clients.length}/10 clientes)` : ""
+        }`}
+        action={
+          <Button onClick={() => handleOpenDialog()} className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 font-bold shadow-lg shadow-blue-600/30">
+            <Plus className="mr-2 h-4 w-4" />
+            Novo Cliente
+          </Button>
+        }
+      />
 
       {/* Alerta de limite próximo */}
       {showLimitWarning && (
-        <Card className="border-yellow-200 bg-yellow-50">
+        <Card className="border-2 border-yellow-200 bg-yellow-50">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-yellow-800">
+            <CardTitle className="flex items-center gap-2 text-yellow-800 font-heading">
               <AlertCircle className="h-5 w-5" />
               Limite próximo
             </CardTitle>
@@ -208,7 +204,7 @@ function ClientesContent() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Button variant="default" className="bg-yellow-600 hover:bg-yellow-700">
+            <Button variant="default" className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 font-bold shadow-lg shadow-yellow-500/30">
               <Crown className="mr-2 h-4 w-4" />
               Fazer Upgrade para PRO
             </Button>
@@ -223,73 +219,77 @@ function ClientesContent() {
           placeholder="Buscar por nome, email, telefone ou CPF..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="pl-10"
+          className="pl-10 border-2"
         />
       </div>
 
       {/* Table */}
       {loading ? (
         <div className="flex items-center justify-center h-64">
-          <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+          <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
         </div>
       ) : filteredClients.length === 0 ? (
-        <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
-          <p className="text-gray-600">
-            {searchTerm
-              ? "Nenhum cliente encontrado"
-              : "Nenhum cliente cadastrado ainda"}
-          </p>
-          {!searchTerm && (
-            <Button
-              onClick={() => handleOpenDialog()}
-              variant="outline"
-              className="mt-4"
-            >
-              <Plus className="mr-2 h-4 w-4" />
-              Adicionar Primeiro Cliente
-            </Button>
-          )}
-        </div>
+        <Card className="border-2">
+          <CardContent className="text-center py-12">
+            <p className="text-gray-600 font-medium">
+              {searchTerm
+                ? "Nenhum cliente encontrado"
+                : "Nenhum cliente cadastrado ainda"}
+            </p>
+            {!searchTerm && (
+              <Button
+                onClick={() => handleOpenDialog()}
+                variant="outline"
+                className="mt-4 border-2 font-bold"
+              >
+                <Plus className="mr-2 h-4 w-4" />
+                Adicionar Primeiro Cliente
+              </Button>
+            )}
+          </CardContent>
+        </Card>
       ) : (
-        <div className="bg-white rounded-lg border border-gray-200">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Nome</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Telefone</TableHead>
-                <TableHead>CPF</TableHead>
-                <TableHead className="text-right">Ações</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredClients.map((client) => (
-                <TableRow key={client.id}>
-                  <TableCell className="font-medium">{client.name}</TableCell>
-                  <TableCell>{client.email || "-"}</TableCell>
-                  <TableCell>{client.phone || "-"}</TableCell>
-                  <TableCell>{client.cpf || "-"}</TableCell>
-                  <TableCell className="text-right">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleOpenDialog(client)}
-                    >
-                      <Pencil className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleDelete(client.id)}
-                    >
-                      <Trash2 className="h-4 w-4 text-red-600" />
-                    </Button>
-                  </TableCell>
+        <Card className="border-2">
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="font-bold">Nome</TableHead>
+                  <TableHead className="font-bold hidden md:table-cell">Email</TableHead>
+                  <TableHead className="font-bold">Telefone</TableHead>
+                  <TableHead className="font-bold hidden lg:table-cell">CPF</TableHead>
+                  <TableHead className="text-right font-bold">Ações</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+              </TableHeader>
+              <TableBody>
+                {filteredClients.map((client) => (
+                  <TableRow key={client.id}>
+                    <TableCell className="font-medium">{client.name}</TableCell>
+                    <TableCell className="hidden md:table-cell">{client.email || "-"}</TableCell>
+                    <TableCell>{client.phone || "-"}</TableCell>
+                    <TableCell className="hidden lg:table-cell">{client.cpf || "-"}</TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleOpenDialog(client)}
+                      >
+                        <Pencil className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleDelete(client.id)}
+                      >
+                        <Trash2 className="h-4 w-4 text-red-600" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </Card>
       )}
 
       {/* Dialog */}

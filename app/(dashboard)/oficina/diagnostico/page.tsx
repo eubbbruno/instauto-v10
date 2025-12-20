@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { PlanGuard } from "@/components/auth/PlanGuard";
 import { Stethoscope, Sparkles, AlertCircle, Loader2, Lightbulb, Wrench, DollarSign } from "lucide-react";
+import { PageHeader } from "@/components/dashboard/PageHeader";
 
 export default function DiagnosticoPage() {
   const [symptoms, setSymptoms] = useState("");
@@ -44,15 +45,10 @@ export default function DiagnosticoPage() {
   return (
     <PlanGuard>
       <div className="space-y-8">
-        {/* Header */}
-        <div>
-          <h1 className="text-4xl font-heading font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
-            Diagnóstico com IA
-          </h1>
-          <p className="text-gray-600 mt-2">
-            Descreva os sintomas e receba sugestões de diagnóstico
-          </p>
-        </div>
+        <PageHeader
+          title="Diagnóstico com IA"
+          description="Descreva os sintomas e receba sugestões de diagnóstico"
+        />
 
         {/* Info Banner */}
         <Card className="border-2 border-yellow-200 bg-gradient-to-r from-yellow-50 to-yellow-100">
