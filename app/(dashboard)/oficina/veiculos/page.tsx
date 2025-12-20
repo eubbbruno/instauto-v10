@@ -27,6 +27,8 @@ import {
 } from "@/components/ui/table";
 import { Plus, Pencil, Trash2, Loader2, Search, Car as CarIcon } from "lucide-react";
 import { PlanGuard } from "@/components/auth/PlanGuard";
+import { PageHeader } from "@/components/dashboard/PageHeader";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface ClientOption {
   id: string;
@@ -195,19 +197,17 @@ function VeiculosContent() {
   );
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Veículos</h1>
-          <p className="text-gray-600 mt-1">
-            Gerencie os veículos dos seus clientes
-          </p>
-        </div>
-        <Button onClick={() => handleOpenDialog()}>
-          <Plus className="mr-2 h-4 w-4" />
-          Novo Veículo
-        </Button>
-      </div>
+    <div className="space-y-8">
+      <PageHeader
+        title="Veículos"
+        description="Gerencie os veículos dos seus clientes"
+        action={
+          <Button onClick={() => handleOpenDialog()} className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 font-bold shadow-lg shadow-blue-600/30">
+            <Plus className="mr-2 h-4 w-4" />
+            Novo Veículo
+          </Button>
+        }
+      />
 
       {/* Search */}
       <div className="relative">
@@ -216,87 +216,91 @@ function VeiculosContent() {
           placeholder="Buscar por placa, marca, modelo ou cliente..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="pl-10"
+          className="pl-10 border-2"
         />
       </div>
 
       {/* Table */}
       {loading ? (
         <div className="flex items-center justify-center h-64">
-          <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+          <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
         </div>
       ) : filteredVehicles.length === 0 ? (
-        <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
-          <CarIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-          <p className="text-gray-600 mb-2">
-            {searchTerm
-              ? "Nenhum veículo encontrado"
-              : "Nenhum veículo cadastrado ainda"}
-          </p>
-          {!searchTerm && clients.length > 0 && (
-            <Button
-              onClick={() => handleOpenDialog()}
-              variant="outline"
-              className="mt-4"
-            >
-              <Plus className="mr-2 h-4 w-4" />
-              Adicionar Primeiro Veículo
-            </Button>
-          )}
-          {!searchTerm && clients.length === 0 && (
-            <p className="text-sm text-gray-500 mt-2">
-              Cadastre um cliente primeiro para adicionar veículos
+        <Card className="border-2">
+          <CardContent className="text-center py-12">
+            <CarIcon className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+            <p className="text-gray-600 font-medium mb-2">
+              {searchTerm
+                ? "Nenhum veículo encontrado"
+                : "Nenhum veículo cadastrado ainda"}
             </p>
-          )}
-        </div>
+            {!searchTerm && clients.length > 0 && (
+              <Button
+                onClick={() => handleOpenDialog()}
+                variant="outline"
+                className="mt-4 border-2 font-bold"
+              >
+                <Plus className="mr-2 h-4 w-4" />
+                Adicionar Primeiro Veículo
+              </Button>
+            )}
+            {!searchTerm && clients.length === 0 && (
+              <p className="text-sm text-gray-500 mt-2">
+                Cadastre um cliente primeiro para adicionar veículos
+              </p>
+            )}
+          </CardContent>
+        </Card>
       ) : (
-        <div className="bg-white rounded-lg border border-gray-200">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Placa</TableHead>
-                <TableHead>Veículo</TableHead>
-                <TableHead>Cliente</TableHead>
-                <TableHead>Ano</TableHead>
-                <TableHead>Cor</TableHead>
-                <TableHead>KM</TableHead>
-                <TableHead className="text-right">Ações</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredVehicles.map((vehicle) => (
-                <TableRow key={vehicle.id}>
-                  <TableCell className="font-medium">{vehicle.plate}</TableCell>
-                  <TableCell>
-                    {vehicle.brand} {vehicle.model}
-                  </TableCell>
-                  <TableCell>{vehicle.client?.name || "-"}</TableCell>
-                  <TableCell>{vehicle.year || "-"}</TableCell>
-                  <TableCell>{vehicle.color || "-"}</TableCell>
-                  <TableCell>
-                    {vehicle.km ? `${vehicle.km.toLocaleString()} km` : "-"}
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleOpenDialog(vehicle)}
-                    >
-                      <Pencil className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleDelete(vehicle.id)}
-                    >
-                      <Trash2 className="h-4 w-4 text-red-600" />
-                    </Button>
-                  </TableCell>
+        <Card className="border-2">
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="font-bold">Placa</TableHead>
+                  <TableHead className="font-bold">Veículo</TableHead>
+                  <TableHead className="font-bold hidden md:table-cell">Cliente</TableHead>
+                  <TableHead className="font-bold hidden lg:table-cell">Ano</TableHead>
+                  <TableHead className="font-bold hidden lg:table-cell">Cor</TableHead>
+                  <TableHead className="font-bold hidden xl:table-cell">KM</TableHead>
+                  <TableHead className="text-right font-bold">Ações</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+              </TableHeader>
+              <TableBody>
+                {filteredVehicles.map((vehicle) => (
+                  <TableRow key={vehicle.id}>
+                    <TableCell className="font-medium">{vehicle.plate}</TableCell>
+                    <TableCell>
+                      {vehicle.brand} {vehicle.model}
+                    </TableCell>
+                    <TableCell className="hidden md:table-cell">{vehicle.client?.name || "-"}</TableCell>
+                    <TableCell className="hidden lg:table-cell">{vehicle.year || "-"}</TableCell>
+                    <TableCell className="hidden lg:table-cell">{vehicle.color || "-"}</TableCell>
+                    <TableCell className="hidden xl:table-cell">
+                      {vehicle.km ? `${vehicle.km.toLocaleString()} km` : "-"}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleOpenDialog(vehicle)}
+                      >
+                        <Pencil className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleDelete(vehicle.id)}
+                      >
+                        <Trash2 className="h-4 w-4 text-red-600" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </Card>
       )}
 
       {/* Dialog */}
