@@ -72,3 +72,19 @@ export interface ServiceOrder {
   updated_at?: string;
 }
 
+export interface Inventory {
+  id: string;
+  workshop_id: string;
+  name: string;
+  code?: string;
+  brand?: string;
+  quantity: number;
+  min_quantity: number;
+  cost_price: number;
+  sell_price: number;
+  location?: string;
+  notes?: string;
+  created_at: string;
+  updated_at?: string;
+}
+

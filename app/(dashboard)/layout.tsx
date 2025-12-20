@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
-import { Car, Users, FileText, Settings, LogOut, Loader2 } from "lucide-react";
+import { Car, Users, FileText, Settings, LogOut, Loader2, Package, Crown } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
@@ -67,6 +67,12 @@ export default function DashboardLayout({
             </NavLink>
             <NavLink href="/oficina/ordens" icon={<FileText />}>
               Ordens de Serviço
+            </NavLink>
+            <NavLink href="/oficina/estoque" icon={<Package />}>
+              Estoque
+            </NavLink>
+            <NavLink href="/oficina/planos" icon={<Crown />}>
+              Planos
             </NavLink>
             <NavLink href="/oficina/configuracoes" icon={<Settings />}>
               Configurações
