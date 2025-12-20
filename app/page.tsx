@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Car,
   Users,
@@ -18,129 +18,103 @@ import {
   TrendingUp,
   ArrowRight,
   Star,
+  Sparkles,
+  ChevronRight,
+  Clock,
+  Target,
+  Gauge,
 } from "lucide-react";
 
 const features = [
   {
-    icon: <Users className="h-8 w-8 text-blue-600" />,
+    icon: <Users className="h-6 w-6" />,
     title: "Gestão de Clientes",
-    description: "Cadastre e gerencie seus clientes com facilidade. Histórico completo de serviços.",
+    description: "Cadastre e gerencie clientes com histórico completo de serviços e veículos.",
   },
   {
-    icon: <Car className="h-8 w-8 text-blue-600" />,
+    icon: <Car className="h-6 w-6" />,
     title: "Controle de Veículos",
-    description: "Registre todos os veículos dos seus clientes com informações detalhadas.",
+    description: "Registre todos os veículos com informações detalhadas e histórico de manutenção.",
   },
   {
-    icon: <ClipboardList className="h-8 w-8 text-blue-600" />,
+    icon: <ClipboardList className="h-6 w-6" />,
     title: "Ordens de Serviço",
-    description: "Crie e acompanhe OS com status em tempo real. Nunca perca o controle.",
+    description: "Crie e acompanhe OS com status em tempo real e controle total.",
   },
   {
-    icon: <Calendar className="h-8 w-8 text-blue-600" />,
+    icon: <Calendar className="h-6 w-6" />,
     title: "Agenda Inteligente",
     description: "Calendário completo para gerenciar agendamentos e compromissos.",
   },
   {
-    icon: <Package className="h-8 w-8 text-blue-600" />,
+    icon: <Package className="h-6 w-6" />,
     title: "Estoque de Peças",
     description: "Controle seu estoque com alertas de reposição automáticos.",
   },
   {
-    icon: <DollarSign className="h-8 w-8 text-blue-600" />,
+    icon: <DollarSign className="h-6 w-6" />,
     title: "Financeiro Completo",
     description: "Receitas, despesas e relatórios financeiros detalhados.",
   },
+];
+
+const benefits = [
   {
-    icon: <BarChart3 className="h-8 w-8 text-blue-600" />,
-    title: "Dashboard com Gráficos",
-    description: "Visualize métricas importantes com gráficos interativos.",
+    icon: <TrendingUp className="h-5 w-5" />,
+    title: "Aumente seu faturamento",
+    description: "Controle financeiro completo para maximizar seus lucros",
   },
   {
-    icon: <Shield className="h-8 w-8 text-blue-600" />,
-    title: "Seguro e Confiável",
-    description: "Seus dados protegidos com criptografia e backup automático.",
+    icon: <Clock className="h-5 w-5" />,
+    title: "Economize tempo",
+    description: "Automatize processos e foque no que realmente importa",
+  },
+  {
+    icon: <Target className="h-5 w-5" />,
+    title: "Tome decisões inteligentes",
+    description: "Relatórios e gráficos para insights estratégicos",
+  },
+  {
+    icon: <Shield className="h-5 w-5" />,
+    title: "Dados sempre seguros",
+    description: "Criptografia e backup automático dos seus dados",
   },
 ];
 
-const plans = [
-  {
-    name: "FREE",
-    price: "R$ 0",
-    period: "/mês",
-    description: "Perfeito para começar",
-    features: [
-      "Até 10 clientes",
-      "30 OS por mês",
-      "Gestão de veículos",
-      "Dashboard básico",
-      "Suporte por email",
-    ],
-    cta: "Começar Grátis",
-    href: "/cadastro",
-    highlighted: false,
-  },
-  {
-    name: "PRO",
-    price: "R$ 97",
-    period: "/mês",
-    description: "Para oficinas que querem crescer",
-    features: [
-      "Clientes ilimitados",
-      "OS ilimitadas",
-      "Agenda completa",
-      "Estoque de peças",
-      "Financeiro completo",
-      "Relatórios avançados",
-      "Suporte prioritário",
-      "Backup automático",
-    ],
-    cta: "Começar Teste Grátis",
-    href: "/cadastro",
-    highlighted: true,
-  },
+const stats = [
+  { value: "500+", label: "Oficinas ativas" },
+  { value: "50k+", label: "OS gerenciadas" },
+  { value: "98%", label: "Satisfação" },
+  { value: "24/7", label: "Suporte" },
 ];
 
-const testimonials = [
-  {
-    name: "Carlos Silva",
-    role: "Dono - Auto Center Silva",
-    content: "O Instauto revolucionou minha oficina! Agora tenho controle total de tudo, desde agendamentos até o financeiro. Recomendo!",
-    rating: 5,
-  },
-  {
-    name: "Maria Santos",
-    role: "Gerente - Oficina Santos",
-    content: "Sistema muito completo e fácil de usar. O suporte é excelente e sempre que preciso eles me ajudam rapidamente.",
-    rating: 5,
-  },
-  {
-    name: "João Oliveira",
-    role: "Proprietário - Mecânica JO",
-    content: "Melhor investimento que fiz! O controle de estoque e as OS digitais economizaram muito tempo e dinheiro.",
-    rating: 5,
-  },
-];
-
-export default function LandingPage() {
+export default function HomePage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="p-2 bg-blue-600 rounded-lg">
-              <Car className="h-6 w-6 text-white" />
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200">
+        <div className="container mx-auto px-4 h-20 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-3">
+            <div className="relative">
+              <div className="absolute inset-0 bg-blue-600 rounded-xl blur-sm opacity-50"></div>
+              <div className="relative p-2.5 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl">
+                <Car className="h-6 w-6 text-white" />
+              </div>
             </div>
-            <span className="text-2xl font-bold text-gray-900">Instauto</span>
+            <span className="text-2xl font-heading font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+              Instauto
+            </span>
           </Link>
           <div className="flex items-center gap-4">
             <Link href="/login">
-              <Button variant="ghost">Entrar</Button>
+              <Button variant="ghost" className="font-medium">
+                Entrar
+              </Button>
             </Link>
             <Link href="/cadastro">
-              <Button className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold">
+              <Button className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 font-bold shadow-lg shadow-yellow-500/30">
                 Começar Grátis
+                <ChevronRight className="ml-1 h-4 w-4" />
               </Button>
             </Link>
           </div>
@@ -148,61 +122,110 @@ export default function LandingPage() {
       </header>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 bg-gradient-to-b from-blue-50 to-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-100 text-blue-900 rounded-full text-sm font-semibold mb-6">
-              <Zap className="h-4 w-4" />
+      <section className="pt-32 pb-20 relative overflow-hidden">
+        {/* Background Effects */}
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-50 via-white to-white"></div>
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-yellow-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse delay-1000"></div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-5xl mx-auto text-center">
+            {/* Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-100 to-yellow-100 rounded-full text-sm font-bold text-blue-900 mb-8 border border-blue-200">
+              <Sparkles className="h-4 w-4 text-yellow-500" />
               Sistema completo para oficinas mecânicas
             </div>
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-              Gerencie sua oficina com{" "}
-              <span className="text-blue-600">eficiência total</span>
+
+            {/* Headline */}
+            <h1 className="text-6xl md:text-7xl font-heading font-bold text-gray-900 mb-6 leading-tight">
+              Transforme sua oficina em um
+              <span className="block mt-2 bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 bg-clip-text text-transparent">
+                negócio digital
+              </span>
             </h1>
-            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              Controle clientes, veículos, ordens de serviço, estoque e financeiro em um só lugar. 
-              Simples, rápido e profissional.
+
+            <p className="text-xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed">
+              Gerencie clientes, veículos, ordens de serviço, estoque e financeiro em uma única plataforma.
+              <strong className="text-gray-900"> Simples, rápido e profissional.</strong>
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <Link href="/cadastro">
-                <Button size="lg" className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold text-lg px-8 py-6">
+                <Button size="lg" className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 font-bold text-lg px-8 h-14 shadow-xl shadow-yellow-500/30 hover:shadow-2xl hover:shadow-yellow-500/40 transition-all">
                   Começar Grátis Agora
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
               <Link href="#recursos">
-                <Button size="lg" variant="outline" className="border-2 border-blue-600 text-blue-600 hover:bg-blue-50 text-lg px-8 py-6">
-                  Ver Recursos
+                <Button size="lg" variant="outline" className="border-2 border-blue-600 text-blue-600 hover:bg-blue-50 text-lg px-8 h-14 font-bold">
+                  Ver Como Funciona
+                  <ChevronRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
             </div>
-            <p className="text-sm text-gray-500 mt-4">
-              ✓ 14 dias de teste grátis • ✓ Sem cartão de crédito • ✓ Cancele quando quiser
-            </p>
+
+            {/* Social Proof */}
+            <div className="flex items-center justify-center gap-8 text-sm text-gray-600">
+              <div className="flex items-center gap-2">
+                <Check className="h-5 w-5 text-green-600" />
+                <span>Sem cartão de crédito</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Check className="h-5 w-5 text-green-600" />
+                <span>Teste grátis por 14 dias</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Check className="h-5 w-5 text-green-600" />
+                <span>Cancele quando quiser</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Stats */}
+          <div className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+            {stats.map((stat, index) => (
+              <div key={index} className="text-center">
+                <div className="text-4xl font-heading font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent mb-2">
+                  {stat.value}
+                </div>
+                <div className="text-sm text-gray-600 font-medium">{stat.label}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section id="recursos" className="py-20 bg-white">
+      <section id="recursos" className="py-24 bg-gradient-to-b from-white to-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Tudo que você precisa em um só lugar
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 rounded-full text-sm font-bold text-blue-900 mb-4">
+              <Zap className="h-4 w-4" />
+              Recursos Completos
+            </div>
+            <h2 className="text-4xl md:text-5xl font-heading font-bold text-gray-900 mb-4">
+              Tudo que sua oficina precisa
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Sistema completo com todas as ferramentas para gerenciar sua oficina com eficiência
+              Ferramentas profissionais para gerenciar cada aspecto do seu negócio
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {features.map((feature, index) => (
-              <Card key={index} className="border-2 hover:border-blue-300 hover:shadow-lg transition-all">
-                <CardHeader>
-                  <div className="mb-4">{feature.icon}</div>
-                  <CardTitle className="text-xl">{feature.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-base">{feature.description}</CardDescription>
+              <Card
+                key={index}
+                className="group border-2 border-gray-200 hover:border-blue-300 hover:shadow-xl transition-all duration-300 bg-white"
+              >
+                <CardContent className="p-8">
+                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center text-white mb-5 group-hover:scale-110 transition-transform shadow-lg shadow-blue-500/30">
+                    {feature.icon}
+                  </div>
+                  <h3 className="text-xl font-heading font-bold text-gray-900 mb-3">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed">{feature.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -211,246 +234,242 @@ export default function LandingPage() {
       </section>
 
       {/* Benefits Section */}
-      <section className="py-20 bg-gradient-to-b from-blue-50 to-white">
+      <section className="py-24 bg-white">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-4xl font-bold text-gray-900 mb-6">
-                Por que escolher o Instauto?
-              </h2>
-              <div className="space-y-6">
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0">
-                    <div className="p-3 bg-green-100 rounded-lg">
-                      <Check className="h-6 w-6 text-green-600" />
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">Fácil de usar</h3>
-                    <p className="text-gray-600">
-                      Interface intuitiva que qualquer pessoa consegue usar. Sem complicação.
-                    </p>
-                  </div>
+          <div className="max-w-6xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div>
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-100 rounded-full text-sm font-bold text-blue-900 mb-6">
+                  <Target className="h-4 w-4" />
+                  Por que escolher o Instauto?
                 </div>
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0">
-                    <div className="p-3 bg-yellow-100 rounded-lg">
-                      <TrendingUp className="h-6 w-6 text-yellow-600" />
+                <h2 className="text-4xl md:text-5xl font-heading font-bold text-gray-900 mb-6 leading-tight">
+                  Feito para oficinas que querem crescer
+                </h2>
+                <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+                  Não perca mais tempo com planilhas e papéis. Tenha controle total do seu negócio
+                  em uma plataforma moderna e fácil de usar.
+                </p>
+
+                <div className="space-y-6">
+                  {benefits.map((benefit, index) => (
+                    <div key={index} className="flex gap-4">
+                      <div className="flex-shrink-0">
+                        <div className="w-10 h-10 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-lg flex items-center justify-center text-gray-900 shadow-lg shadow-yellow-500/30">
+                          {benefit.icon}
+                        </div>
+                      </div>
+                      <div>
+                        <h4 className="text-lg font-bold text-gray-900 mb-1">{benefit.title}</h4>
+                        <p className="text-gray-600">{benefit.description}</p>
+                      </div>
                     </div>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">Aumente seus lucros</h3>
-                    <p className="text-gray-600">
-                      Controle financeiro completo para você saber exatamente quanto está ganhando.
-                    </p>
-                  </div>
+                  ))}
                 </div>
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0">
-                    <div className="p-3 bg-blue-100 rounded-lg">
-                      <Shield className="h-6 w-6 text-blue-600" />
+              </div>
+
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-blue-800 rounded-3xl blur-3xl opacity-20"></div>
+                <div className="relative bg-gradient-to-br from-blue-600 to-blue-800 rounded-3xl p-8 text-white shadow-2xl">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                      <Gauge className="h-6 w-6" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-medium opacity-90">Dashboard em tempo real</div>
+                      <div className="text-2xl font-heading font-bold">Métricas que importam</div>
                     </div>
                   </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">Seguro e confiável</h3>
-                    <p className="text-gray-600">
-                      Seus dados protegidos com a melhor tecnologia de segurança do mercado.
-                    </p>
+
+                  <div className="space-y-4 mb-6">
+                    <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm font-medium">Receita do mês</span>
+                        <span className="text-green-300 text-sm font-bold">+23%</span>
+                      </div>
+                      <div className="text-3xl font-heading font-bold">R$ 45.890</div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                        <div className="text-sm font-medium mb-1 opacity-90">OS Concluídas</div>
+                        <div className="text-2xl font-heading font-bold">127</div>
+                      </div>
+                      <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4">
+                        <div className="text-sm font-medium mb-1 opacity-90">Clientes Ativos</div>
+                        <div className="text-2xl font-heading font-bold">89</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 text-sm opacity-90">
+                    <Sparkles className="h-4 w-4" />
+                    <span>Atualizado em tempo real</span>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl p-8 text-white">
-              <h3 className="text-3xl font-bold mb-6">Comece hoje mesmo!</h3>
-              <ul className="space-y-4 mb-8">
-                <li className="flex items-center gap-3">
-                  <Check className="h-5 w-5 flex-shrink-0" />
-                  <span>Cadastro em menos de 2 minutos</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <Check className="h-5 w-5 flex-shrink-0" />
-                  <span>14 dias de teste grátis</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <Check className="h-5 w-5 flex-shrink-0" />
-                  <span>Suporte dedicado</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <Check className="h-5 w-5 flex-shrink-0" />
-                  <span>Sem fidelidade ou multa</span>
-                </li>
-              </ul>
-              <Link href="/cadastro">
-                <Button size="lg" className="w-full bg-yellow-500 text-gray-900 hover:bg-yellow-600 font-bold">
-                  Criar Conta Grátis
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
             </div>
           </div>
         </div>
       </section>
 
       {/* Pricing Section */}
-      <section id="precos" className="py-20 bg-white">
+      <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Planos simples e transparentes
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 rounded-full text-sm font-bold text-blue-900 mb-4">
+              <Crown className="h-4 w-4" />
+              Planos e Preços
+            </div>
+            <h2 className="text-4xl md:text-5xl font-heading font-bold text-gray-900 mb-4">
+              Escolha o plano ideal
             </h2>
-            <p className="text-xl text-gray-600">
-              Escolha o plano ideal para sua oficina
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Comece grátis e faça upgrade quando precisar de mais recursos
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {plans.map((plan, index) => (
-              <Card
-                key={index}
-                className={`relative ${
-                  plan.highlighted
-                    ? "border-4 border-blue-600 shadow-2xl scale-105"
-                    : "border-2"
-                }`}
-              >
-                {plan.highlighted && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-yellow-500 text-gray-900 px-4 py-1 rounded-full text-sm font-bold">
-                      MAIS POPULAR
-                    </span>
-                  </div>
-                )}
-                <CardHeader className="text-center pb-8 pt-8">
-                  <CardTitle className="text-2xl mb-2">{plan.name}</CardTitle>
-                  <div className="mb-2">
-                    <span className="text-5xl font-bold">{plan.price}</span>
-                    <span className="text-gray-600">{plan.period}</span>
-                  </div>
-                  <CardDescription className="text-base">{plan.description}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-3 mb-8">
-                    {plan.features.map((feature, i) => (
-                      <li key={i} className="flex items-center gap-3">
-                        <Check className="h-5 w-5 text-green-600 flex-shrink-0" />
-                        <span className="text-gray-700">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <Link href={plan.href}>
-                    <Button
-                      size="lg"
-                      className={`w-full ${
-                        plan.highlighted
-                          ? "bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold"
-                          : "bg-blue-600 hover:bg-blue-700 text-white"
-                      }`}
-                    >
-                      {plan.cta}
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Testimonials Section */}
-      <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              O que nossos clientes dizem
-            </h2>
-            <p className="text-xl text-gray-600">
-              Oficinas que já transformaram sua gestão com o Instauto
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <Card key={index} className="border-2">
-                <CardHeader>
-                  <div className="flex gap-1 mb-4">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-                    ))}
+          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {/* Free Plan */}
+            <Card className="border-2 border-gray-200 hover:border-gray-300 transition-all">
+              <CardContent className="p-8">
+                <div className="mb-6">
+                  <h3 className="text-2xl font-heading font-bold text-gray-900 mb-2">FREE</h3>
+                  <div className="flex items-baseline gap-2 mb-4">
+                    <span className="text-5xl font-heading font-bold text-gray-900">R$ 0</span>
+                    <span className="text-gray-600">/mês</span>
                   </div>
-                  <CardDescription className="text-base text-gray-700">
-                    "{testimonial.content}"
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="font-semibold text-gray-900">{testimonial.name}</p>
-                  <p className="text-sm text-gray-600">{testimonial.role}</p>
-                </CardContent>
-              </Card>
-            ))}
+                  <p className="text-gray-600">Perfeito para começar</p>
+                </div>
+
+                <ul className="space-y-4 mb-8">
+                  {[
+                    "Até 10 clientes",
+                    "30 OS por mês",
+                    "Gestão de veículos",
+                    "Dashboard básico",
+                    "Suporte por email",
+                  ].map((feature, i) => (
+                    <li key={i} className="flex items-center gap-3">
+                      <Check className="h-5 w-5 text-green-600 flex-shrink-0" />
+                      <span className="text-gray-700">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <Link href="/cadastro">
+                  <Button className="w-full bg-gray-900 hover:bg-gray-800 text-white font-bold h-12">
+                    Começar Grátis
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+
+            {/* Pro Plan */}
+            <Card className="border-4 border-blue-600 relative shadow-2xl shadow-blue-600/20">
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                <span className="bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900 px-6 py-2 rounded-full text-sm font-bold shadow-lg">
+                  MAIS POPULAR
+                </span>
+              </div>
+
+              <CardContent className="p-8">
+                <div className="mb-6">
+                  <h3 className="text-2xl font-heading font-bold text-gray-900 mb-2">PRO</h3>
+                  <div className="flex items-baseline gap-2 mb-4">
+                    <span className="text-5xl font-heading font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+                      R$ 97
+                    </span>
+                    <span className="text-gray-600">/mês</span>
+                  </div>
+                  <p className="text-gray-600">Para oficinas que querem crescer</p>
+                </div>
+
+                <ul className="space-y-4 mb-8">
+                  {[
+                    "Clientes ilimitados",
+                    "OS ilimitadas",
+                    "Agenda completa",
+                    "Estoque de peças",
+                    "Financeiro completo",
+                    "Relatórios avançados",
+                    "Suporte prioritário",
+                    "Backup automático",
+                  ].map((feature, i) => (
+                    <li key={i} className="flex items-center gap-3">
+                      <Check className="h-5 w-5 text-blue-600 flex-shrink-0" />
+                      <span className="text-gray-700 font-medium">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <Link href="/cadastro">
+                  <Button className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 font-bold h-12 shadow-lg shadow-yellow-500/30">
+                    Começar Teste Grátis
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Pronto para transformar sua oficina?
-          </h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
-            Junte-se a centenas de oficinas que já estão gerenciando seus negócios com o Instauto
-          </p>
-          <Link href="/cadastro">
-            <Button size="lg" className="bg-yellow-500 text-gray-900 hover:bg-yellow-600 font-bold text-lg px-8 py-6">
-              Começar Grátis Agora
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-          </Link>
-          <p className="text-sm mt-4 opacity-75">
-            Teste grátis por 14 dias • Sem cartão de crédito
-          </p>
+      <section className="py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900"></div>
+        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10"></div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-4xl mx-auto text-center text-white">
+            <h2 className="text-4xl md:text-5xl font-heading font-bold mb-6 leading-tight">
+              Pronto para transformar sua oficina?
+            </h2>
+            <p className="text-xl text-blue-100 mb-10 leading-relaxed">
+              Junte-se a centenas de oficinas que já estão crescendo com o Instauto.
+              Teste grátis por 14 dias, sem compromisso.
+            </p>
+
+            <Link href="/cadastro">
+              <Button size="lg" className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 font-bold text-lg px-10 h-14 shadow-2xl shadow-yellow-500/40">
+                Começar Grátis Agora
+                <ArrowRight className="ml-2 h-6 w-6" />
+              </Button>
+            </Link>
+
+            <p className="mt-6 text-sm text-blue-200">
+              Não precisa de cartão de crédito • Cancele quando quiser
+            </p>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-gray-300 py-12">
+      <footer className="bg-gray-900 text-white py-12">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                <div className="p-2 bg-blue-600 rounded-lg">
-                  <Car className="h-5 w-5 text-white" />
-                </div>
-                <span className="text-xl font-bold text-white">Instauto</span>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-blue-600 rounded-xl">
+                <Car className="h-5 w-5 text-white" />
               </div>
-              <p className="text-sm">
-                Sistema completo de gestão para oficinas mecânicas
-              </p>
+              <span className="text-xl font-heading font-bold">Instauto</span>
             </div>
-            <div>
-              <h3 className="font-semibold text-white mb-4">Produto</h3>
-              <ul className="space-y-2 text-sm">
-                <li><Link href="#recursos" className="hover:text-white">Recursos</Link></li>
-                <li><Link href="#precos" className="hover:text-white">Preços</Link></li>
-                <li><Link href="/login" className="hover:text-white">Login</Link></li>
-              </ul>
+
+            <div className="flex gap-8 text-sm text-gray-400">
+              <Link href="#" className="hover:text-white transition-colors">
+                Termos de Uso
+              </Link>
+              <Link href="#" className="hover:text-white transition-colors">
+                Privacidade
+              </Link>
+              <Link href="#" className="hover:text-white transition-colors">
+                Suporte
+              </Link>
             </div>
-            <div>
-              <h3 className="font-semibold text-white mb-4">Empresa</h3>
-              <ul className="space-y-2 text-sm">
-                <li><Link href="#" className="hover:text-white">Sobre</Link></li>
-                <li><Link href="#" className="hover:text-white">Contato</Link></li>
-                <li><Link href="#" className="hover:text-white">Blog</Link></li>
-              </ul>
+
+            <div className="text-sm text-gray-400">
+              © 2024 Instauto. Todos os direitos reservados.
             </div>
-            <div>
-              <h3 className="font-semibold text-white mb-4">Legal</h3>
-              <ul className="space-y-2 text-sm">
-                <li><Link href="#" className="hover:text-white">Privacidade</Link></li>
-                <li><Link href="#" className="hover:text-white">Termos</Link></li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 pt-8 text-center text-sm">
-            <p>&copy; 2024 Instauto. Todos os direitos reservados.</p>
           </div>
         </div>
       </footer>
