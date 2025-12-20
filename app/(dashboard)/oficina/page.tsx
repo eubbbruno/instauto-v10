@@ -293,8 +293,8 @@ export default function DashboardPage() {
                 <XAxis dataKey="month" />
                 <YAxis />
                 <Tooltip
-                  formatter={(value: number) =>
-                    value.toLocaleString("pt-BR", {
+                  formatter={(value) =>
+                    (value || 0).toLocaleString("pt-BR", {
                       style: "currency",
                       currency: "BRL",
                     })
