@@ -68,6 +68,9 @@ export default function DashboardLayout({
             <NavLink href="/oficina/ordens" icon={<FileText />}>
               Ordens de Serviço
             </NavLink>
+            <NavLink href="/oficina/agenda" icon={<Calendar />}>
+              Agenda
+            </NavLink>
             <NavLink href="/oficina/estoque" icon={<Package />}>
               Estoque
             </NavLink>
