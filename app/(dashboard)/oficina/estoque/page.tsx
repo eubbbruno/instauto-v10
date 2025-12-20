@@ -33,6 +33,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { PlanGuard } from "@/components/auth/PlanGuard";
+import { PageHeader } from "@/components/dashboard/PageHeader";
 import {
   Loader2,
   Plus,
@@ -325,20 +326,17 @@ export default function EstoquePage() {
 
   return (
     <PlanGuard>
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Estoque de Peças</h1>
-            <p className="text-gray-600 mt-1">
-              Gerencie o inventário da sua oficina
-            </p>
-          </div>
-          <Button onClick={openCreateDialog}>
-            <Plus className="mr-2 h-4 w-4" />
-            Nova Peça
-          </Button>
-        </div>
+      <div className="space-y-8">
+        <PageHeader
+          title="Estoque de Peças"
+          description="Gerencie o inventário da sua oficina"
+          action={
+            <Button onClick={openCreateDialog} className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 font-bold shadow-lg shadow-blue-600/30">
+              <Plus className="mr-2 h-4 w-4" />
+              Nova Peça
+            </Button>
+          }
+        />
 
         {/* Cards de Resumo */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

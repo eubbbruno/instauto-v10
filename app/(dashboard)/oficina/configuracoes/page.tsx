@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, User, Building2 } from "lucide-react";
+import { PageHeader } from "@/components/dashboard/PageHeader";
 
 const ESTADOS_BRASILEIROS = [
   { value: "AC", label: "Acre" },
@@ -201,13 +202,11 @@ export default function ConfiguracoesPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900">Configurações</h1>
-        <p className="text-gray-600 mt-1">
-          Gerencie seus dados pessoais e da oficina
-        </p>
-      </div>
+    <div className="space-y-8">
+      <PageHeader
+        title="Configurações"
+        description="Gerencie seus dados pessoais e da oficina"
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Meus Dados */}

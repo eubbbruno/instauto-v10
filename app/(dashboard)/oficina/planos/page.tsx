@@ -9,6 +9,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, Check, Crown, Zap, Shield, TrendingUp, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { PageHeader } from "@/components/dashboard/PageHeader";
 
 export default function PlanosPage() {
   const { profile, user } = useAuth();
@@ -213,13 +214,10 @@ export default function PlanosPage() {
 
   return (
     <div className="space-y-8">
-      {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900">Planos e Assinatura</h1>
-        <p className="text-gray-600 mt-1">
-          Escolha o melhor plano para sua oficina
-        </p>
-      </div>
+      <PageHeader
+        title="Planos e Assinatura"
+        description="Escolha o melhor plano para sua oficina"
+      />
 
       {/* Plano Atual */}
       <Card className={cn(

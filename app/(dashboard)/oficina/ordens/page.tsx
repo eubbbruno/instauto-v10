@@ -270,24 +270,19 @@ function OrdensContent() {
   const showLimitWarning = workshop?.plan_type === "free" && ordersThisMonth >= 25;
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Ordens de Serviço</h1>
-          <p className="text-gray-600 mt-1">
-            Gerencie as ordens de serviço da oficina
-            {workshop?.plan_type === "free" && (
-              <span className="ml-2 text-sm">
-                ({ordersThisMonth}/30 OS este mês)
-              </span>
-            )}
-          </p>
-        </div>
-        <Button onClick={() => handleOpenDialog()}>
-          <Plus className="mr-2 h-4 w-4" />
-          Nova OS
-        </Button>
-      </div>
+    <div className="space-y-8">
+      <PageHeader
+        title="Ordens de Serviço"
+        description={`Gerencie as ordens de serviço da oficina${
+          workshop?.plan_type === "free" ? ` (${ordersThisMonth}/30 OS este mês)` : ""
+        }`}
+        action={
+          <Button onClick={() => handleOpenDialog()} className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 font-bold shadow-lg shadow-blue-600/30">
+            <Plus className="mr-2 h-4 w-4" />
+            Nova OS
+          </Button>
+        }
+      />
 
       {/* Alerta de limite próximo */}
       {showLimitWarning && (
