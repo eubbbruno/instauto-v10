@@ -71,28 +71,21 @@ export default function RelatoriosPage() {
 
   return (
     <PlanGuard>
-      <div className="space-y-6">
+      <div className="space-y-8">
         {/* Header */}
         <div>
-          <div className="flex items-center gap-3 mb-2">
-            <div className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl text-white shadow-lg shadow-blue-500/30">
-              <FileText className="h-6 w-6" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-heading font-bold text-gray-900">
-                Relatórios
-              </h1>
-              <p className="text-gray-600">
-                Gere relatórios detalhados em PDF ou Excel
-              </p>
-            </div>
-          </div>
+          <h1 className="text-4xl font-heading font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+            Relatórios
+          </h1>
+          <p className="text-gray-600 mt-2">
+            Gere relatórios detalhados em PDF ou Excel
+          </p>
         </div>
 
         {/* Quick Filters */}
         <Card className="border-2">
           <CardHeader>
-            <CardTitle className="text-xl font-heading">Filtros Rápidos</CardTitle>
+            <CardTitle className="text-xl font-heading font-bold">Filtros Rápidos</CardTitle>
             <CardDescription>Selecione o período para os relatórios</CardDescription>
           </CardHeader>
           <CardContent>
@@ -101,7 +94,7 @@ export default function RelatoriosPage() {
                 <Button
                   key={period}
                   variant="outline"
-                  className="border-2"
+                  className="border-2 font-bold"
                 >
                   <Calendar className="mr-2 h-4 w-4" />
                   {period}
@@ -119,14 +112,14 @@ export default function RelatoriosPage() {
                 <div className={`w-12 h-12 bg-gradient-to-br ${report.color} rounded-xl flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform shadow-lg ${report.shadow}`}>
                   {report.icon}
                 </div>
-                <CardTitle className="text-xl font-heading">{report.title}</CardTitle>
+                <CardTitle className="text-xl font-heading font-bold">{report.title}</CardTitle>
                 <CardDescription>{report.description}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
                 <Button
                   onClick={() => handleGenerate(report.title)}
                   disabled={generating === report.title}
-                  className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 font-bold"
+                  className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 font-bold shadow-lg shadow-blue-600/30"
                 >
                   {generating === report.title ? (
                     <>Gerando...</>
@@ -141,7 +134,7 @@ export default function RelatoriosPage() {
                   variant="outline"
                   onClick={() => handleGenerate(report.title + " (Excel)")}
                   disabled={generating === report.title + " (Excel)"}
-                  className="w-full border-2"
+                  className="w-full border-2 font-bold"
                 >
                   {generating === report.title + " (Excel)" ? (
                     <>Gerando...</>
@@ -176,5 +169,3 @@ export default function RelatoriosPage() {
     </PlanGuard>
   );
 }
-
-

@@ -134,14 +134,14 @@ export default function DashboardLayout({
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div className="p-6 border-b border-blue-700">
-            <Link href="/oficina" className="flex items-center gap-3">
-              <div className="p-2 bg-blue-700 rounded-lg">
-                <Car className="h-6 w-6 text-white" />
+          <div className="p-4 border-b border-blue-700">
+            <Link href="/oficina" className="flex items-center gap-2">
+              <div className="p-1.5 bg-blue-700 rounded-lg">
+                <Car className="h-5 w-5 text-white" />
               </div>
               <div>
-                <span className="text-xl font-bold">Instauto</span>
-                <p className="text-xs text-blue-200 mt-0.5">
+                <span className="text-lg font-bold">Instauto</span>
+                <p className="text-[10px] text-blue-200 mt-0.5 truncate max-w-[150px]">
                   {workshop?.name || profile.name}
                 </p>
               </div>
@@ -149,7 +149,7 @@ export default function DashboardLayout({
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+          <nav className="flex-1 p-3 space-y-0.5 overflow-y-auto">
             {menuItems.map((item) => {
               const isActive = pathname === item.href;
               const needsPro = item.pro && !hasProAccess;
@@ -159,18 +159,18 @@ export default function DashboardLayout({
                   key={item.href}
                   href={item.href}
                   onClick={() => setSidebarOpen(false)}
-                  className={`flex items-center justify-between px-4 py-3 rounded-lg transition-all ${
+                  className={`flex items-center justify-between px-3 py-2 rounded-lg transition-all text-sm ${
                     isActive
                       ? "bg-blue-700 text-white shadow-lg"
                       : "text-blue-100 hover:bg-blue-700/50 hover:text-white"
                   }`}
                 >
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2">
                     {item.icon}
                     <span className="font-medium">{item.name}</span>
                   </div>
                   {needsPro && (
-                    <span className="px-2 py-0.5 text-[10px] font-bold bg-yellow-400 text-blue-900 rounded-full">
+                    <span className="px-1.5 py-0.5 text-[9px] font-bold bg-yellow-400 text-blue-900 rounded-full">
                       PRO
                     </span>
                   )}
@@ -180,65 +180,65 @@ export default function DashboardLayout({
           </nav>
 
           {/* Plan Badge */}
-          <div className="p-4 border-t border-blue-700">
+          <div className="p-3 border-t border-blue-700">
             {isPro ? (
-              <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-lg p-3 mb-3">
+              <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-lg p-2 mb-2">
                 <div className="flex items-center gap-2">
-                  <Crown className="h-5 w-5 text-blue-900" />
+                  <Crown className="h-4 w-4 text-blue-900" />
                   <div>
-                    <p className="text-sm font-bold text-blue-900">Plano PRO</p>
-                    <p className="text-xs text-blue-800">Assinatura ativa</p>
+                    <p className="text-xs font-bold text-blue-900">Plano PRO</p>
+                    <p className="text-[10px] text-blue-800">Assinatura ativa</p>
                   </div>
                 </div>
               </div>
             ) : isTrialActive ? (
-              <div className="bg-blue-500 rounded-lg p-3 mb-3">
+              <div className="bg-blue-500 rounded-lg p-2 mb-2">
                 <div className="flex items-center gap-2">
-                  <Crown className="h-5 w-5 text-white" />
+                  <Crown className="h-4 w-4 text-white" />
                   <div>
-                    <p className="text-sm font-bold text-white">Trial PRO</p>
-                    <p className="text-xs text-blue-100">
+                    <p className="text-xs font-bold text-white">Trial PRO</p>
+                    <p className="text-[10px] text-blue-100">
                       {Math.ceil(
                         (new Date(workshop?.trial_ends_at || "").getTime() - new Date().getTime()) /
                           (1000 * 60 * 60 * 24)
                       )}{" "}
-                      dias restantes
+                      dias
                     </p>
                   </div>
                 </div>
               </div>
             ) : (
-              <div className="bg-blue-700 rounded-lg p-3 mb-3">
+              <div className="bg-blue-700 rounded-lg p-2 mb-2">
                 <div className="flex items-center gap-2">
-                  <Crown className="h-5 w-5 text-blue-300" />
-                  <div>
-                    <p className="text-sm font-bold text-white">Plano FREE</p>
-                    <p className="text-xs text-blue-300">Recursos limitados</p>
+                  <Crown className="h-4 w-4 text-blue-300" />
+                  <div className="flex-1">
+                    <p className="text-xs font-bold text-white">Plano FREE</p>
+                    <p className="text-[10px] text-blue-300">Limitado</p>
                   </div>
                 </div>
                 <Button
                   onClick={() => router.push("/oficina/planos")}
-                  className="w-full mt-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-blue-900 hover:from-yellow-500 hover:to-yellow-600 font-bold"
+                  className="w-full mt-1.5 bg-gradient-to-r from-yellow-400 to-yellow-500 text-blue-900 hover:from-yellow-500 hover:to-yellow-600 font-bold text-xs h-7"
                   size="sm"
                 >
-                  Fazer Upgrade
+                  Upgrade
                 </Button>
               </div>
             )}
 
             {/* User Info */}
-            <div className="bg-blue-700/50 rounded-lg p-3 mb-3">
-              <p className="text-sm font-medium text-white truncate">{profile.name}</p>
-              <p className="text-xs text-blue-300 truncate">{profile.email}</p>
+            <div className="bg-blue-700/50 rounded-lg p-2 mb-2">
+              <p className="text-xs font-medium text-white truncate">{profile.name}</p>
+              <p className="text-[10px] text-blue-300 truncate">{profile.email}</p>
             </div>
 
             {/* Logout Button */}
             <Button
               variant="ghost"
-              className="w-full justify-start text-blue-100 hover:bg-blue-700 hover:text-white"
+              className="w-full justify-start text-blue-100 hover:bg-blue-700 hover:text-white text-xs h-8"
               onClick={handleSignOut}
             >
-              <LogOut className="mr-2 h-4 w-4" />
+              <LogOut className="mr-2 h-3 w-3" />
               Sair
             </Button>
           </div>

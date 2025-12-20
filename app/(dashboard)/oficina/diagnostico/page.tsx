@@ -43,22 +43,15 @@ export default function DiagnosticoPage() {
 
   return (
     <PlanGuard>
-      <div className="space-y-6">
+      <div className="space-y-8">
         {/* Header */}
         <div>
-          <div className="flex items-center gap-3 mb-2">
-            <div className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl text-white shadow-lg shadow-blue-500/30">
-              <Stethoscope className="h-6 w-6" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-heading font-bold text-gray-900">
-                Diagnóstico com IA
-              </h1>
-              <p className="text-gray-600">
-                Descreva os sintomas e receba sugestões de diagnóstico
-              </p>
-            </div>
-          </div>
+          <h1 className="text-4xl font-heading font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+            Diagnóstico com IA
+          </h1>
+          <p className="text-gray-600 mt-2">
+            Descreva os sintomas e receba sugestões de diagnóstico
+          </p>
         </div>
 
         {/* Info Banner */}
@@ -81,14 +74,14 @@ export default function DiagnosticoPage() {
           {/* Input Card */}
           <Card className="border-2">
             <CardHeader>
-              <CardTitle className="text-xl font-heading">Descrever Sintomas</CardTitle>
+              <CardTitle className="text-xl font-heading font-bold">Descrever Sintomas</CardTitle>
               <CardDescription>
                 Detalhe os problemas relatados pelo cliente
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="symptoms" className="text-sm font-bold">
+                <Label htmlFor="symptoms" className="text-sm font-bold text-gray-700">
                   O que o cliente relatou?
                 </Label>
                 <Textarea
@@ -128,7 +121,7 @@ export default function DiagnosticoPage() {
           {/* Result Card */}
           <Card className="border-2">
             <CardHeader>
-              <CardTitle className="text-xl font-heading">Resultado do Diagnóstico</CardTitle>
+              <CardTitle className="text-xl font-heading font-bold">Resultado do Diagnóstico</CardTitle>
               <CardDescription>
                 Sugestões baseadas em IA
               </CardDescription>
@@ -137,7 +130,7 @@ export default function DiagnosticoPage() {
               {!diagnosis ? (
                 <div className="text-center py-12 text-gray-400">
                   <Stethoscope className="h-16 w-16 mx-auto mb-4 opacity-50" />
-                  <p>Descreva os sintomas para receber um diagnóstico</p>
+                  <p className="font-medium">Descreva os sintomas para receber um diagnóstico</p>
                 </div>
               ) : (
                 <div className="space-y-6">
@@ -207,7 +200,7 @@ export default function DiagnosticoPage() {
 
                   <Button
                     variant="outline"
-                    className="w-full border-2"
+                    className="w-full border-2 font-bold"
                     onClick={() => setDiagnosis(null)}
                   >
                     Novo Diagnóstico
@@ -221,5 +214,3 @@ export default function DiagnosticoPage() {
     </PlanGuard>
   );
 }
-
-

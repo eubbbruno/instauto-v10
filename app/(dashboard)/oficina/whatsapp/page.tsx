@@ -45,29 +45,22 @@ export default function WhatsAppPage() {
 
   return (
     <PlanGuard>
-      <div className="space-y-6">
+      <div className="space-y-8">
         {/* Header */}
         <div>
-          <div className="flex items-center gap-3 mb-2">
-            <div className="p-3 bg-gradient-to-br from-green-500 to-green-600 rounded-xl text-white shadow-lg shadow-green-500/30">
-              <MessageSquare className="h-6 w-6" />
-            </div>
-            <div>
-              <h1 className="text-3xl font-heading font-bold text-gray-900">
-                Integração WhatsApp
-              </h1>
-              <p className="text-gray-600">
-                Conecte seu WhatsApp e automatize o atendimento
-              </p>
-            </div>
-          </div>
+          <h1 className="text-4xl font-heading font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+            Integração WhatsApp
+          </h1>
+          <p className="text-gray-600 mt-2">
+            Conecte seu WhatsApp e automatize o atendimento
+          </p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-6">
           {/* Connection Card */}
           <Card className="border-2">
             <CardHeader>
-              <CardTitle className="text-xl font-heading">Conectar WhatsApp</CardTitle>
+              <CardTitle className="text-xl font-heading font-bold">Conectar WhatsApp</CardTitle>
               <CardDescription>
                 {connected ? "Sua conta está conectada" : "Configure sua conta do WhatsApp Business"}
               </CardDescription>
@@ -76,7 +69,7 @@ export default function WhatsAppPage() {
               {!connected ? (
                 <>
                   <div className="space-y-2">
-                    <Label htmlFor="phone" className="text-sm font-bold">
+                    <Label htmlFor="phone" className="text-sm font-bold text-gray-700">
                       Número do WhatsApp Business
                     </Label>
                     <div className="relative">
@@ -133,11 +126,11 @@ export default function WhatsAppPage() {
                   </div>
 
                   <div className="space-y-3">
-                    <Button className="w-full" variant="outline">
+                    <Button className="w-full border-2 font-bold" variant="outline">
                       Testar Conexão
                     </Button>
                     <Button
-                      className="w-full"
+                      className="w-full border-2 font-bold"
                       variant="outline"
                       onClick={() => setConnected(false)}
                     >
@@ -152,7 +145,7 @@ export default function WhatsAppPage() {
           {/* Features Card */}
           <Card className="border-2">
             <CardHeader>
-              <CardTitle className="text-xl font-heading">Recursos Disponíveis</CardTitle>
+              <CardTitle className="text-xl font-heading font-bold">Recursos Disponíveis</CardTitle>
               <CardDescription>
                 O que você pode fazer com a integração
               </CardDescription>
@@ -179,7 +172,7 @@ export default function WhatsAppPage() {
         {connected && (
           <Card className="border-2">
             <CardHeader>
-              <CardTitle className="text-xl font-heading">Templates de Mensagens</CardTitle>
+              <CardTitle className="text-xl font-heading font-bold">Templates de Mensagens</CardTitle>
               <CardDescription>
                 Mensagens prontas para agilizar o atendimento
               </CardDescription>
@@ -207,7 +200,7 @@ export default function WhatsAppPage() {
                   <div key={i} className="p-4 bg-gray-50 rounded-lg border-2 border-gray-200">
                     <h4 className="font-bold text-gray-900 mb-2">{template.title}</h4>
                     <p className="text-sm text-gray-600 mb-3">{template.message}</p>
-                    <Button size="sm" variant="outline" className="w-full">
+                    <Button size="sm" variant="outline" className="w-full border-2 font-bold">
                       Usar Template
                     </Button>
                   </div>
@@ -236,5 +229,3 @@ export default function WhatsAppPage() {
     </PlanGuard>
   );
 }
-
-
