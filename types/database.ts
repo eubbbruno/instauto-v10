@@ -26,6 +26,8 @@ export interface Workshop {
   state?: string;
   plan_type: PlanType;
   trial_ends_at?: string;
+  mercadopago_subscription_id?: string;
+  subscription_status?: string;
   created_at: string;
   updated_at?: string;
 }
