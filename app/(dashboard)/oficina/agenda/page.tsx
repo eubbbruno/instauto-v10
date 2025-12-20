@@ -32,6 +32,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { PlanGuard } from "@/components/auth/PlanGuard";
+import { PageHeader } from "@/components/dashboard/PageHeader";
 import {
   Loader2,
   Plus,
@@ -381,36 +382,35 @@ export default function AgendaPage() {
 
   return (
     <PlanGuard>
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Agenda</h1>
-            <p className="text-gray-600 mt-1">
-              Gerencie os agendamentos da oficina
-            </p>
-          </div>
-          <div className="flex gap-2">
-            <Button
-              variant={viewMode === "calendar" ? "default" : "outline"}
-              onClick={() => setViewMode("calendar")}
-            >
-              <CalendarIcon className="mr-2 h-4 w-4" />
+      <div className="space-y-8">
+        <PageHeader
+          title="Agenda"
+          description="Gerencie os agendamentos da oficina"
+          action={
+            <div className="flex flex-wrap gap-2">
+              <Button
+                variant={viewMode === "calendar" ? "default" : "outline"}
+                onClick={() => setViewMode("calendar")}
+                className={viewMode === "calendar" ? "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 font-bold shadow-lg shadow-blue-600/30" : "border-2 font-bold"}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
               Calendário
             </Button>
             <Button
               variant={viewMode === "list" ? "default" : "outline"}
               onClick={() => setViewMode("list")}
+              className={viewMode === "list" ? "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 font-bold shadow-lg shadow-blue-600/30" : "border-2 font-bold"}
             >
               <Clock className="mr-2 h-4 w-4" />
               Lista
             </Button>
-            <Button onClick={() => openCreateDialog()}>
-              <Plus className="mr-2 h-4 w-4" />
-              Novo Agendamento
-            </Button>
-          </div>
-        </div>
+              <Button onClick={() => openCreateDialog()} className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 font-bold shadow-lg shadow-yellow-500/30">
+                <Plus className="mr-2 h-4 w-4" />
+                Novo Agendamento
+              </Button>
+            </div>
+          }
+        />
 
         {/* Cards de Resumo */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
