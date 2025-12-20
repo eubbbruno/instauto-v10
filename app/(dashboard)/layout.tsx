@@ -109,7 +109,7 @@ export default function DashboardLayout({
       {/* Mobile Header */}
       <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Car className="h-6 w-6 text-purple-600" />
+          <Car className="h-6 w-6 text-blue-600" />
           <span className="text-lg font-bold text-gray-900">Instauto</span>
         </div>
         <Button
@@ -123,20 +123,20 @@ export default function DashboardLayout({
 
       {/* Sidebar */}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 w-64 bg-gradient-to-b from-purple-900 to-purple-800 text-white transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-40 w-64 bg-gradient-to-b from-blue-900 to-blue-800 text-white transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div className="p-6 border-b border-purple-700">
+          <div className="p-6 border-b border-blue-700">
             <Link href="/oficina" className="flex items-center gap-3">
-              <div className="p-2 bg-purple-700 rounded-lg">
+              <div className="p-2 bg-blue-700 rounded-lg">
                 <Car className="h-6 w-6 text-white" />
               </div>
               <div>
                 <span className="text-xl font-bold">Instauto</span>
-                <p className="text-xs text-purple-200 mt-0.5">
+                <p className="text-xs text-blue-200 mt-0.5">
                   {workshop?.name || profile.name}
                 </p>
               </div>
@@ -156,8 +156,8 @@ export default function DashboardLayout({
                   onClick={() => setSidebarOpen(false)}
                   className={`flex items-center justify-between px-4 py-3 rounded-lg transition-all ${
                     isActive
-                      ? "bg-purple-700 text-white shadow-lg"
-                      : "text-purple-100 hover:bg-purple-700/50 hover:text-white"
+                      ? "bg-blue-700 text-white shadow-lg"
+                      : "text-blue-100 hover:bg-blue-700/50 hover:text-white"
                   }`}
                 >
                   <div className="flex items-center gap-3">
@@ -165,7 +165,7 @@ export default function DashboardLayout({
                     <span className="font-medium">{item.name}</span>
                   </div>
                   {needsPro && (
-                    <span className="px-2 py-0.5 text-[10px] font-bold bg-yellow-400 text-purple-900 rounded-full">
+                    <span className="px-2 py-0.5 text-[10px] font-bold bg-yellow-400 text-blue-900 rounded-full">
                       PRO
                     </span>
                   )}
@@ -175,14 +175,14 @@ export default function DashboardLayout({
           </nav>
 
           {/* Plan Badge */}
-          <div className="p-4 border-t border-purple-700">
+          <div className="p-4 border-t border-blue-700">
             {isPro ? (
               <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-lg p-3 mb-3">
                 <div className="flex items-center gap-2">
-                  <Crown className="h-5 w-5 text-purple-900" />
+                  <Crown className="h-5 w-5 text-blue-900" />
                   <div>
-                    <p className="text-sm font-bold text-purple-900">Plano PRO</p>
-                    <p className="text-xs text-purple-800">Assinatura ativa</p>
+                    <p className="text-sm font-bold text-blue-900">Plano PRO</p>
+                    <p className="text-xs text-blue-800">Assinatura ativa</p>
                   </div>
                 </div>
               </div>
@@ -203,17 +203,17 @@ export default function DashboardLayout({
                 </div>
               </div>
             ) : (
-              <div className="bg-purple-700 rounded-lg p-3 mb-3">
+              <div className="bg-blue-700 rounded-lg p-3 mb-3">
                 <div className="flex items-center gap-2">
-                  <Crown className="h-5 w-5 text-purple-300" />
+                  <Crown className="h-5 w-5 text-blue-300" />
                   <div>
                     <p className="text-sm font-bold text-white">Plano FREE</p>
-                    <p className="text-xs text-purple-300">Recursos limitados</p>
+                    <p className="text-xs text-blue-300">Recursos limitados</p>
                   </div>
                 </div>
                 <Button
                   onClick={() => router.push("/oficina/planos")}
-                  className="w-full mt-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-purple-900 hover:from-yellow-500 hover:to-yellow-600 font-bold"
+                  className="w-full mt-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-blue-900 hover:from-yellow-500 hover:to-yellow-600 font-bold"
                   size="sm"
                 >
                   Fazer Upgrade
@@ -222,15 +222,15 @@ export default function DashboardLayout({
             )}
 
             {/* User Info */}
-            <div className="bg-purple-700/50 rounded-lg p-3 mb-3">
+            <div className="bg-blue-700/50 rounded-lg p-3 mb-3">
               <p className="text-sm font-medium text-white truncate">{profile.name}</p>
-              <p className="text-xs text-purple-300 truncate">{profile.email}</p>
+              <p className="text-xs text-blue-300 truncate">{profile.email}</p>
             </div>
 
             {/* Logout Button */}
             <Button
               variant="ghost"
-              className="w-full justify-start text-purple-100 hover:bg-purple-700 hover:text-white"
+              className="w-full justify-start text-blue-100 hover:bg-blue-700 hover:text-white"
               onClick={handleSignOut}
             >
               <LogOut className="mr-2 h-4 w-4" />

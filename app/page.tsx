@@ -22,42 +22,42 @@ import {
 
 const features = [
   {
-    icon: <Users className="h-8 w-8 text-purple-600" />,
+    icon: <Users className="h-8 w-8 text-blue-600" />,
     title: "Gestão de Clientes",
     description: "Cadastre e gerencie seus clientes com facilidade. Histórico completo de serviços.",
   },
   {
-    icon: <Car className="h-8 w-8 text-purple-600" />,
+    icon: <Car className="h-8 w-8 text-blue-600" />,
     title: "Controle de Veículos",
     description: "Registre todos os veículos dos seus clientes com informações detalhadas.",
   },
   {
-    icon: <ClipboardList className="h-8 w-8 text-purple-600" />,
+    icon: <ClipboardList className="h-8 w-8 text-blue-600" />,
     title: "Ordens de Serviço",
     description: "Crie e acompanhe OS com status em tempo real. Nunca perca o controle.",
   },
   {
-    icon: <Calendar className="h-8 w-8 text-purple-600" />,
+    icon: <Calendar className="h-8 w-8 text-blue-600" />,
     title: "Agenda Inteligente",
     description: "Calendário completo para gerenciar agendamentos e compromissos.",
   },
   {
-    icon: <Package className="h-8 w-8 text-purple-600" />,
+    icon: <Package className="h-8 w-8 text-blue-600" />,
     title: "Estoque de Peças",
     description: "Controle seu estoque com alertas de reposição automáticos.",
   },
   {
-    icon: <DollarSign className="h-8 w-8 text-purple-600" />,
+    icon: <DollarSign className="h-8 w-8 text-blue-600" />,
     title: "Financeiro Completo",
     description: "Receitas, despesas e relatórios financeiros detalhados.",
   },
   {
-    icon: <BarChart3 className="h-8 w-8 text-purple-600" />,
+    icon: <BarChart3 className="h-8 w-8 text-blue-600" />,
     title: "Dashboard com Gráficos",
     description: "Visualize métricas importantes com gráficos interativos.",
   },
   {
-    icon: <Shield className="h-8 w-8 text-purple-600" />,
+    icon: <Shield className="h-8 w-8 text-blue-600" />,
     title: "Seguro e Confiável",
     description: "Seus dados protegidos com criptografia e backup automático.",
   },
@@ -129,7 +129,7 @@ export default function LandingPage() {
       <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <div className="p-2 bg-purple-600 rounded-lg">
+            <div className="p-2 bg-blue-600 rounded-lg">
               <Car className="h-6 w-6 text-white" />
             </div>
             <span className="text-2xl font-bold text-gray-900">Instauto</span>
@@ -139,7 +139,7 @@ export default function LandingPage() {
               <Button variant="ghost">Entrar</Button>
             </Link>
             <Link href="/cadastro">
-              <Button className="bg-purple-600 hover:bg-purple-700">
+              <Button className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold">
                 Começar Grátis
               </Button>
             </Link>
@@ -148,16 +148,16 @@ export default function LandingPage() {
       </header>
 
       {/* Hero Section */}
-      <section className="pt-32 pb-20 bg-gradient-to-b from-purple-50 to-white">
+      <section className="pt-32 pb-20 bg-gradient-to-b from-blue-50 to-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-purple-100 text-purple-700 rounded-full text-sm font-semibold mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-100 text-blue-900 rounded-full text-sm font-semibold mb-6">
               <Zap className="h-4 w-4" />
               Sistema completo para oficinas mecânicas
             </div>
             <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
               Gerencie sua oficina com{" "}
-              <span className="text-purple-600">eficiência total</span>
+              <span className="text-blue-600">eficiência total</span>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
               Controle clientes, veículos, ordens de serviço, estoque e financeiro em um só lugar. 
@@ -165,13 +165,13 @@ export default function LandingPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/cadastro">
-                <Button size="lg" className="bg-purple-600 hover:bg-purple-700 text-lg px-8 py-6">
+                <Button size="lg" className="bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold text-lg px-8 py-6">
                   Começar Grátis Agora
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
               <Link href="#recursos">
-                <Button size="lg" variant="outline" className="text-lg px-8 py-6">
+                <Button size="lg" variant="outline" className="border-2 border-blue-600 text-blue-600 hover:bg-blue-50 text-lg px-8 py-6">
                   Ver Recursos
                 </Button>
               </Link>
@@ -196,7 +196,7 @@ export default function LandingPage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
-              <Card key={index} className="border-2 hover:border-purple-300 hover:shadow-lg transition-all">
+              <Card key={index} className="border-2 hover:border-blue-300 hover:shadow-lg transition-all">
                 <CardHeader>
                   <div className="mb-4">{feature.icon}</div>
                   <CardTitle className="text-xl">{feature.title}</CardTitle>
@@ -211,7 +211,7 @@ export default function LandingPage() {
       </section>
 
       {/* Benefits Section */}
-      <section className="py-20 bg-gradient-to-b from-purple-50 to-white">
+      <section className="py-20 bg-gradient-to-b from-blue-50 to-white">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
@@ -234,8 +234,8 @@ export default function LandingPage() {
                 </div>
                 <div className="flex gap-4">
                   <div className="flex-shrink-0">
-                    <div className="p-3 bg-blue-100 rounded-lg">
-                      <TrendingUp className="h-6 w-6 text-blue-600" />
+                    <div className="p-3 bg-yellow-100 rounded-lg">
+                      <TrendingUp className="h-6 w-6 text-yellow-600" />
                     </div>
                   </div>
                   <div>
@@ -247,8 +247,8 @@ export default function LandingPage() {
                 </div>
                 <div className="flex gap-4">
                   <div className="flex-shrink-0">
-                    <div className="p-3 bg-purple-100 rounded-lg">
-                      <Shield className="h-6 w-6 text-purple-600" />
+                    <div className="p-3 bg-blue-100 rounded-lg">
+                      <Shield className="h-6 w-6 text-blue-600" />
                     </div>
                   </div>
                   <div>
@@ -260,7 +260,7 @@ export default function LandingPage() {
                 </div>
               </div>
             </div>
-            <div className="bg-gradient-to-br from-purple-600 to-purple-800 rounded-2xl p-8 text-white">
+            <div className="bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl p-8 text-white">
               <h3 className="text-3xl font-bold mb-6">Comece hoje mesmo!</h3>
               <ul className="space-y-4 mb-8">
                 <li className="flex items-center gap-3">
@@ -281,7 +281,7 @@ export default function LandingPage() {
                 </li>
               </ul>
               <Link href="/cadastro">
-                <Button size="lg" className="w-full bg-white text-purple-600 hover:bg-gray-100">
+                <Button size="lg" className="w-full bg-yellow-500 text-gray-900 hover:bg-yellow-600 font-bold">
                   Criar Conta Grátis
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
@@ -308,13 +308,13 @@ export default function LandingPage() {
                 key={index}
                 className={`relative ${
                   plan.highlighted
-                    ? "border-4 border-purple-600 shadow-2xl scale-105"
+                    ? "border-4 border-blue-600 shadow-2xl scale-105"
                     : "border-2"
                 }`}
               >
                 {plan.highlighted && (
                   <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-purple-600 text-white px-4 py-1 rounded-full text-sm font-bold">
+                    <span className="bg-yellow-500 text-gray-900 px-4 py-1 rounded-full text-sm font-bold">
                       MAIS POPULAR
                     </span>
                   </div>
@@ -341,8 +341,8 @@ export default function LandingPage() {
                       size="lg"
                       className={`w-full ${
                         plan.highlighted
-                          ? "bg-purple-600 hover:bg-purple-700"
-                          : "bg-gray-900 hover:bg-gray-800"
+                          ? "bg-yellow-500 hover:bg-yellow-600 text-gray-900 font-bold"
+                          : "bg-blue-600 hover:bg-blue-700 text-white"
                       }`}
                     >
                       {plan.cta}
@@ -390,7 +390,7 @@ export default function LandingPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-purple-600 to-purple-800 text-white">
+      <section className="py-20 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-6">
             Pronto para transformar sua oficina?
@@ -399,7 +399,7 @@ export default function LandingPage() {
             Junte-se a centenas de oficinas que já estão gerenciando seus negócios com o Instauto
           </p>
           <Link href="/cadastro">
-            <Button size="lg" className="bg-white text-purple-600 hover:bg-gray-100 text-lg px-8 py-6">
+            <Button size="lg" className="bg-yellow-500 text-gray-900 hover:bg-yellow-600 font-bold text-lg px-8 py-6">
               Começar Grátis Agora
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
@@ -416,7 +416,7 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <div className="p-2 bg-purple-600 rounded-lg">
+                <div className="p-2 bg-blue-600 rounded-lg">
                   <Car className="h-5 w-5 text-white" />
                 </div>
                 <span className="text-xl font-bold text-white">Instauto</span>
