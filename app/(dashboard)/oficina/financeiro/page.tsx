@@ -40,6 +40,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { PlanGuard } from "@/components/auth/PlanGuard";
+import { PageHeader } from "@/components/dashboard/PageHeader";
 import {
   Loader2,
   Plus,
@@ -395,32 +396,29 @@ export default function FinanceiroPage() {
 
   return (
     <PlanGuard>
-      <div className="space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Financeiro</h1>
-            <p className="text-gray-600 mt-1">
-              Gerencie receitas e despesas da oficina
-            </p>
-          </div>
-          <div className="flex gap-2">
-            <Button onClick={() => openCreateDialog("income")} className="bg-green-600 hover:bg-green-700">
-              <ArrowUpCircle className="mr-2 h-4 w-4" />
-              Nova Receita
-            </Button>
-            <Button onClick={() => openCreateDialog("expense")} variant="destructive">
-              <ArrowDownCircle className="mr-2 h-4 w-4" />
-              Nova Despesa
-            </Button>
-          </div>
-        </div>
+      <div className="space-y-8">
+        <PageHeader
+          title="Financeiro"
+          description="Gerencie receitas e despesas da oficina"
+          action={
+            <div className="flex flex-wrap gap-3">
+              <Button onClick={() => openCreateDialog("income")} className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 font-bold shadow-lg shadow-green-600/30">
+                <ArrowUpCircle className="mr-2 h-4 w-4" />
+                Nova Receita
+              </Button>
+              <Button onClick={() => openCreateDialog("expense")} className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 font-bold shadow-lg shadow-red-600/30">
+                <ArrowDownCircle className="mr-2 h-4 w-4" />
+                Nova Despesa
+              </Button>
+            </div>
+          }
+        />
 
         {/* Cards de Resumo */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card>
+          <Card className="border-2">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">
+              <CardTitle className="text-sm font-bold text-gray-600">
                 Receitas
               </CardTitle>
               <TrendingUp className="h-4 w-4 text-green-600" />
@@ -438,9 +436,9 @@ export default function FinanceiroPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-2">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">
+              <CardTitle className="text-sm font-bold text-gray-600">
                 Despesas
               </CardTitle>
               <TrendingDown className="h-4 w-4 text-red-600" />
@@ -458,9 +456,9 @@ export default function FinanceiroPage() {
             </CardContent>
           </Card>
 
-          <Card>
+          <Card className="border-2">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">
+              <CardTitle className="text-sm font-bold text-gray-600">
                 Saldo do Período
               </CardTitle>
               <DollarSign className="h-4 w-4 text-blue-600" />
@@ -480,9 +478,9 @@ export default function FinanceiroPage() {
         </div>
 
         {/* Gráfico */}
-        <Card>
+        <Card className="border-2">
           <CardHeader>
-            <CardTitle>Receitas vs Despesas (Últimos 6 Meses)</CardTitle>
+            <CardTitle className="text-xl font-heading font-bold">Receitas vs Despesas (Últimos 6 Meses)</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
@@ -507,9 +505,9 @@ export default function FinanceiroPage() {
         </Card>
 
         {/* Filtros */}
-        <Card>
+        <Card className="border-2">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <CardTitle className="text-xl font-heading font-bold flex items-center gap-2">
               <Filter className="h-5 w-5" />
               Filtros
             </CardTitle>
@@ -588,9 +586,9 @@ export default function FinanceiroPage() {
         </Card>
 
         {/* Tabela de Transações */}
-        <Card>
+        <Card className="border-2">
           <CardHeader>
-            <CardTitle>Transações</CardTitle>
+            <CardTitle className="text-xl font-heading font-bold">Transações</CardTitle>
             <CardDescription>
               {filteredTransactions.length} {filteredTransactions.length === 1 ? "transação encontrada" : "transações encontradas"}
             </CardDescription>
