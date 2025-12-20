@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Users, Car, FileText, TrendingUp, Loader2, Package, Calendar, DollarSign, AlertTriangle, Plus } from "lucide-react";
+import { Users, Car, FileText, TrendingUp, Loader2, Package, Calendar, DollarSign, AlertTriangle, Plus, ArrowUpRight, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { LineChart, Line, PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { format, subMonths, startOfMonth, endOfMonth } from "date-fns";
@@ -25,7 +25,7 @@ interface DashboardData {
   revenueByMonth: { month: string; revenue: number }[];
 }
 
-const COLORS = ["#3B82F6", "#F59E0B", "#10B981", "#EF4444"];
+const COLORS = ["#2563EB", "#FBBF24", "#10B981", "#EF4444"];
 
 export default function DashboardPage() {
   const { profile } = useAuth();
@@ -160,120 +160,187 @@ export default function DashboardPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+        <div className="text-center">
+          <Loader2 className="h-12 w-12 animate-spin text-blue-600 mx-auto mb-4" />
+          <p className="text-gray-600 font-medium">Carregando dashboard...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-600 mt-1">
-            Bem-vindo de volta, {profile?.name}!
+          <h1 className="text-4xl font-heading font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+            Dashboard
+          </h1>
+          <p className="text-gray-600 mt-2 flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-yellow-500" />
+            Bem-vindo de volta, <span className="font-bold">{profile?.name}</span>!
           </p>
         </div>
-        <div className="flex gap-2">
-          <Button onClick={() => router.push("/oficina/ordens")}>
+        <div className="flex flex-wrap gap-3">
+          <Button 
+            onClick={() => router.push("/oficina/ordens")}
+            className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg shadow-blue-600/30 font-bold"
+          >
             <Plus className="mr-2 h-4 w-4" />
             Nova OS
           </Button>
-          <Button variant="outline" onClick={() => router.push("/oficina/clientes")}>
+          <Button 
+            variant="outline" 
+            onClick={() => router.push("/oficina/clientes")}
+            className="border-2 font-bold"
+          >
             <Plus className="mr-2 h-4 w-4" />
             Novo Cliente
           </Button>
         </div>
       </div>
 
-      {/* Cards de Métricas */}
+      {/* Cards de Métricas Principais */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => router.push("/oficina/clientes")}>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">
+        {/* Clientes */}
+        <Card 
+          className="border-2 cursor-pointer hover:shadow-xl hover:scale-105 transition-all group overflow-hidden relative"
+          onClick={() => router.push("/oficina/clientes")}
+        >
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/10 to-blue-600/10 rounded-full blur-2xl"></div>
+          <CardHeader className="flex flex-row items-center justify-between pb-2 relative z-10">
+            <CardTitle className="text-sm font-bold text-gray-600">
               Clientes
             </CardTitle>
-            <Users className="h-4 w-4 text-blue-600" />
+            <div className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl text-white shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform">
+              <Users className="h-5 w-5" />
+            </div>
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-gray-900">{data?.totalClients || 0}</div>
-            <p className="text-xs text-gray-600 mt-1">Total cadastrados</p>
+          <CardContent className="relative z-10">
+            <div className="text-4xl font-heading font-bold text-gray-900 mb-1">
+              {data?.totalClients || 0}
+            </div>
+            <p className="text-sm text-gray-600 flex items-center gap-1">
+              Total cadastrados
+              <ArrowUpRight className="h-4 w-4 text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+            </p>
           </CardContent>
         </Card>
 
-        <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => router.push("/oficina/veiculos")}>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">
+        {/* Veículos */}
+        <Card 
+          className="border-2 cursor-pointer hover:shadow-xl hover:scale-105 transition-all group overflow-hidden relative"
+          onClick={() => router.push("/oficina/veiculos")}
+        >
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-500/10 to-green-600/10 rounded-full blur-2xl"></div>
+          <CardHeader className="flex flex-row items-center justify-between pb-2 relative z-10">
+            <CardTitle className="text-sm font-bold text-gray-600">
               Veículos
             </CardTitle>
-            <Car className="h-4 w-4 text-green-600" />
+            <div className="p-3 bg-gradient-to-br from-green-500 to-green-600 rounded-xl text-white shadow-lg shadow-green-500/30 group-hover:scale-110 transition-transform">
+              <Car className="h-5 w-5" />
+            </div>
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-gray-900">{data?.totalVehicles || 0}</div>
-            <p className="text-xs text-gray-600 mt-1">Total cadastrados</p>
+          <CardContent className="relative z-10">
+            <div className="text-4xl font-heading font-bold text-gray-900 mb-1">
+              {data?.totalVehicles || 0}
+            </div>
+            <p className="text-sm text-gray-600 flex items-center gap-1">
+              Total cadastrados
+              <ArrowUpRight className="h-4 w-4 text-green-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+            </p>
           </CardContent>
         </Card>
 
-        <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => router.push("/oficina/ordens")}>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">
+        {/* OS do Mês */}
+        <Card 
+          className="border-2 cursor-pointer hover:shadow-xl hover:scale-105 transition-all group overflow-hidden relative"
+          onClick={() => router.push("/oficina/ordens")}
+        >
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-purple-500/10 to-purple-600/10 rounded-full blur-2xl"></div>
+          <CardHeader className="flex flex-row items-center justify-between pb-2 relative z-10">
+            <CardTitle className="text-sm font-bold text-gray-600">
               OS do Mês
             </CardTitle>
-            <FileText className="h-4 w-4 text-purple-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-gray-900">
-              {data?.completedOrdersThisMonth || 0}/{data?.ordersThisMonth || 0}
+            <div className="p-3 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl text-white shadow-lg shadow-purple-500/30 group-hover:scale-110 transition-transform">
+              <FileText className="h-5 w-5" />
             </div>
-            <p className="text-xs text-gray-600 mt-1">Concluídas / Total</p>
+          </CardHeader>
+          <CardContent className="relative z-10">
+            <div className="text-4xl font-heading font-bold text-gray-900 mb-1">
+              {data?.completedOrdersThisMonth || 0}<span className="text-2xl text-gray-400">/{data?.ordersThisMonth || 0}</span>
+            </div>
+            <p className="text-sm text-gray-600 flex items-center gap-1">
+              Concluídas / Total
+              <ArrowUpRight className="h-4 w-4 text-purple-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+            </p>
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">
+        {/* Faturamento */}
+        <Card className="border-2 overflow-hidden relative group hover:shadow-xl hover:scale-105 transition-all">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-yellow-400/10 to-yellow-500/10 rounded-full blur-2xl"></div>
+          <CardHeader className="flex flex-row items-center justify-between pb-2 relative z-10">
+            <CardTitle className="text-sm font-bold text-gray-600">
               Faturamento
             </CardTitle>
-            <DollarSign className="h-4 w-4 text-green-600" />
+            <div className="p-3 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-xl text-gray-900 shadow-lg shadow-yellow-500/30 group-hover:scale-110 transition-transform">
+              <DollarSign className="h-5 w-5" />
+            </div>
           </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-600">
+          <CardContent className="relative z-10">
+            <div className="text-3xl font-heading font-bold bg-gradient-to-r from-yellow-600 to-yellow-700 bg-clip-text text-transparent mb-1">
               {(data?.revenueThisMonth || 0).toLocaleString("pt-BR", {
                 style: "currency",
                 currency: "BRL",
               })}
             </div>
-            <p className="text-xs text-gray-600 mt-1">Este mês</p>
+            <p className="text-sm text-gray-600">Este mês</p>
           </CardContent>
         </Card>
       </div>
 
       {/* Cards Secundários */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => router.push("/oficina/agenda")}>
+        {/* Agendamentos Hoje */}
+        <Card 
+          className="border-2 cursor-pointer hover:shadow-xl transition-all group"
+          onClick={() => router.push("/oficina/agenda")}
+        >
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">
-              Agendamentos Hoje
-            </CardTitle>
-            <Calendar className="h-4 w-4 text-blue-600" />
+            <div>
+              <CardTitle className="text-lg font-heading font-bold">Agendamentos Hoje</CardTitle>
+              <CardDescription>Para hoje</CardDescription>
+            </div>
+            <div className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl text-white shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform">
+              <Calendar className="h-6 w-6" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-600">{data?.appointmentsToday || 0}</div>
-            <p className="text-xs text-gray-600 mt-1">Para hoje</p>
+            <div className="text-5xl font-heading font-bold text-blue-600">
+              {data?.appointmentsToday || 0}
+            </div>
           </CardContent>
         </Card>
 
-        <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => router.push("/oficina/estoque")}>
+        {/* Estoque Baixo */}
+        <Card 
+          className="border-2 cursor-pointer hover:shadow-xl transition-all group"
+          onClick={() => router.push("/oficina/estoque")}
+        >
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium text-gray-600">
-              Estoque Baixo
-            </CardTitle>
-            <AlertTriangle className="h-4 w-4 text-yellow-600" />
+            <div>
+              <CardTitle className="text-lg font-heading font-bold">Estoque Baixo</CardTitle>
+              <CardDescription>Itens precisam reposição</CardDescription>
+            </div>
+            <div className="p-3 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-xl text-gray-900 shadow-lg shadow-yellow-500/30 group-hover:scale-110 transition-transform">
+              <AlertTriangle className="h-6 w-6" />
+            </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-yellow-600">{data?.lowStockItems || 0}</div>
-            <p className="text-xs text-gray-600 mt-1">Itens precisam reposição</p>
+            <div className="text-5xl font-heading font-bold text-yellow-600">
+              {data?.lowStockItems || 0}
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -281,18 +348,37 @@ export default function DashboardPage() {
       {/* Gráficos */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Gráfico de Linha - Faturamento */}
-        <Card>
+        <Card className="border-2">
           <CardHeader>
-            <CardTitle>Faturamento (Últimos 6 Meses)</CardTitle>
-            <CardDescription>Receita de ordens concluídas</CardDescription>
+            <CardTitle className="text-xl font-heading font-bold">Faturamento</CardTitle>
+            <CardDescription>Receita dos últimos 6 meses</CardDescription>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={250}>
+            <ResponsiveContainer width="100%" height={300}>
               <LineChart data={data?.revenueByMonth || []}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="month" />
-                <YAxis />
+                <defs>
+                  <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#10B981" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#10B981" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                <XAxis 
+                  dataKey="month" 
+                  stroke="#6B7280"
+                  style={{ fontSize: '12px', fontWeight: 'bold' }}
+                />
+                <YAxis 
+                  stroke="#6B7280"
+                  style={{ fontSize: '12px', fontWeight: 'bold' }}
+                />
                 <Tooltip
+                  contentStyle={{
+                    backgroundColor: 'white',
+                    border: '2px solid #E5E7EB',
+                    borderRadius: '8px',
+                    fontWeight: 'bold'
+                  }}
                   formatter={(value) =>
                     (value || 0).toLocaleString("pt-BR", {
                       style: "currency",
@@ -300,38 +386,61 @@ export default function DashboardPage() {
                     })
                   }
                 />
-                <Line type="monotone" dataKey="revenue" stroke="#10B981" strokeWidth={2} name="Faturamento" />
+                <Line 
+                  type="monotone" 
+                  dataKey="revenue" 
+                  stroke="#10B981" 
+                  strokeWidth={3} 
+                  name="Faturamento"
+                  fill="url(#colorRevenue)"
+                  dot={{ fill: '#10B981', strokeWidth: 2, r: 5 }}
+                  activeDot={{ r: 8 }}
+                />
               </LineChart>
             </ResponsiveContainer>
           </CardContent>
         </Card>
 
         {/* Gráfico de Pizza - OS por Status */}
-        <Card>
+        <Card className="border-2">
           <CardHeader>
-            <CardTitle>Ordens de Serviço por Status</CardTitle>
-            <CardDescription>Distribuição atual</CardDescription>
+            <CardTitle className="text-xl font-heading font-bold">Ordens de Serviço</CardTitle>
+            <CardDescription>Distribuição por status</CardDescription>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={250}>
+            <ResponsiveContainer width="100%" height={300}>
               <PieChart>
                 <Pie
                   data={data?.ordersByStatus || []}
                   cx="50%"
                   cy="50%"
                   labelLine={false}
-                  label={(entry: any) => `${entry.status}: ${entry.count}`}
-                  outerRadius={80}
+                  label={(entry: any) => entry.count > 0 ? `${entry.status}: ${entry.count}` : ''}
+                  outerRadius={90}
                   fill="#8884d8"
                   dataKey="count"
                   nameKey="status"
                 >
                   {(data?.ordersByStatus || []).map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    <Cell 
+                      key={`cell-${index}`} 
+                      fill={COLORS[index % COLORS.length]}
+                      stroke="white"
+                      strokeWidth={2}
+                    />
                   ))}
                 </Pie>
-                <Tooltip />
-                <Legend />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: 'white',
+                    border: '2px solid #E5E7EB',
+                    borderRadius: '8px',
+                    fontWeight: 'bold'
+                  }}
+                />
+                <Legend 
+                  wrapperStyle={{ fontWeight: 'bold', fontSize: '14px' }}
+                />
               </PieChart>
             </ResponsiveContainer>
           </CardContent>
@@ -341,35 +450,40 @@ export default function DashboardPage() {
       {/* Atividades Recentes */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Últimas OS */}
-        <Card>
+        <Card className="border-2">
           <CardHeader>
-            <CardTitle>Últimas Ordens de Serviço</CardTitle>
+            <CardTitle className="text-xl font-heading font-bold">Últimas Ordens de Serviço</CardTitle>
             <CardDescription>5 mais recentes</CardDescription>
           </CardHeader>
           <CardContent>
             {(data?.recentOrders || []).length === 0 ? (
-              <p className="text-sm text-gray-500 text-center py-4">Nenhuma OS cadastrada</p>
+              <div className="text-center py-12">
+                <FileText className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+                <p className="text-sm text-gray-500 font-medium">Nenhuma OS cadastrada</p>
+              </div>
             ) : (
               <div className="space-y-3">
                 {(data?.recentOrders || []).map((order: any) => (
                   <div
                     key={order.id}
-                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer"
+                    className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-blue-100 cursor-pointer border-2 border-transparent hover:border-blue-200 transition-all group"
                     onClick={() => router.push("/oficina/ordens")}
                   >
                     <div>
-                      <p className="font-medium text-sm">OS #{order.order_number}</p>
-                      <p className="text-xs text-gray-600">
+                      <p className="font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+                        OS #{order.order_number}
+                      </p>
+                      <p className="text-sm text-gray-600">
                         {format(new Date(order.created_at), "dd/MM/yyyy", { locale: ptBR })}
                       </p>
                     </div>
                     <span
-                      className={`px-2 py-1 text-xs font-semibold rounded-full ${
+                      className={`px-3 py-1.5 text-xs font-bold rounded-full ${
                         order.status === "completed"
-                          ? "bg-green-100 text-green-800"
+                          ? "bg-green-100 text-green-800 border-2 border-green-200"
                           : order.status === "in_progress"
-                          ? "bg-yellow-100 text-yellow-800"
-                          : "bg-blue-100 text-blue-800"
+                          ? "bg-yellow-100 text-yellow-800 border-2 border-yellow-200"
+                          : "bg-blue-100 text-blue-800 border-2 border-blue-200"
                       }`}
                     >
                       {order.status === "completed"
@@ -386,31 +500,36 @@ export default function DashboardPage() {
         </Card>
 
         {/* Próximos Agendamentos */}
-        <Card>
+        <Card className="border-2">
           <CardHeader>
-            <CardTitle>Agendamentos de Hoje</CardTitle>
+            <CardTitle className="text-xl font-heading font-bold">Agendamentos de Hoje</CardTitle>
             <CardDescription>Próximos atendimentos</CardDescription>
           </CardHeader>
           <CardContent>
             {(data?.recentAppointments || []).length === 0 ? (
-              <p className="text-sm text-gray-500 text-center py-4">Nenhum agendamento hoje</p>
+              <div className="text-center py-12">
+                <Calendar className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+                <p className="text-sm text-gray-500 font-medium">Nenhum agendamento hoje</p>
+              </div>
             ) : (
               <div className="space-y-3">
                 {(data?.recentAppointments || []).map((appointment: any) => (
                   <div
                     key={appointment.id}
-                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer"
+                    className="flex items-center justify-between p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg hover:from-blue-50 hover:to-blue-100 cursor-pointer border-2 border-transparent hover:border-blue-200 transition-all group"
                     onClick={() => router.push("/oficina/agenda")}
                   >
                     <div>
-                      <p className="font-medium text-sm">{appointment.title}</p>
-                      <p className="text-xs text-gray-600">{appointment.start_time}</p>
+                      <p className="font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+                        {appointment.title}
+                      </p>
+                      <p className="text-sm text-gray-600">{appointment.start_time}</p>
                     </div>
                     <span
-                      className={`px-2 py-1 text-xs font-semibold rounded-full ${
+                      className={`px-3 py-1.5 text-xs font-bold rounded-full ${
                         appointment.status === "confirmed"
-                          ? "bg-blue-100 text-blue-800"
-                          : "bg-gray-100 text-gray-800"
+                          ? "bg-blue-100 text-blue-800 border-2 border-blue-200"
+                          : "bg-gray-100 text-gray-800 border-2 border-gray-200"
                       }`}
                     >
                       {appointment.status === "confirmed" ? "Confirmado" : "Agendado"}
