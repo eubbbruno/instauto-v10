@@ -63,11 +63,11 @@ Plataforma SaaS que conecta oficinas mecânicas e motoristas:
 - [x] Dashboard FREE (boas-vindas + CTA upgrade)
 - [x] Sidebar com itens PRO desabilitados para FREE
 
-### 🔄 FASE 2A - EM ANDAMENTO
+### 🔄 FASE 2A - EM ANDAMENTO (33%)
 - [x] Estrutura das páginas PRO (Diagnóstico IA, Relatórios, WhatsApp)
-- [ ] **Diagnóstico IA** - Integrar OpenAI/Claude API
-- [ ] **Relatórios PDF** - Implementar geração real com jsPDF
-- [ ] **WhatsApp** - Integrar WhatsApp Business API
+- [x] **Diagnóstico IA** - ✅ COMPLETO! (OpenAI GPT-4)
+- [ ] **Relatórios PDF** - 🔄 PRÓXIMO (jsPDF + templates)
+- [ ] **WhatsApp** - ⏳ DEPOIS (WhatsApp Business API)
 
 ### 📋 FASE 2B - LANDING PAGES
 - [ ] Refazer landing page principal (/) - mais profissional, animações, depoimentos
@@ -213,6 +213,40 @@ WHATSAPP_PHONE_NUMBER_ID=
 - `refactor:` - Refatoração
 - `test:` - Testes
 - `chore:` - Manutenção
+
+---
+
+---
+
+## 🎯 HORIZONTE DE DESENVOLVIMENTO
+
+### **Esta Semana (21-27/12/2024)**
+- [x] Diagnóstico IA com OpenAI GPT-4
+- [ ] Relatórios em PDF (faturamento, clientes, OS)
+- [ ] Integração WhatsApp Business API
+
+### **Próxima Semana (28/12-03/01/2025)**
+- [ ] Refazer landing page principal
+- [ ] Criar página /oficinas
+- [ ] Criar página /motoristas
+- [ ] SEO básico
+
+### **Janeiro 2025**
+- [ ] Iniciar Fase 3 - Marketplace
+- [ ] Cadastro de motoristas
+- [ ] Dashboard do motorista
+- [ ] Sistema de orçamentos básico
+
+### **Fevereiro 2025**
+- [ ] Busca de oficinas
+- [ ] Sistema de avaliações
+- [ ] Chat motorista ↔ oficina
+- [ ] Testes beta com usuários reais
+
+### **Março 2025**
+- [ ] Lançamento público
+- [ ] Marketing e aquisição
+- [ ] Melhorias baseadas em feedback
 
 ---
 
