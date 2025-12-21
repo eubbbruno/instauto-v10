@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Inicializar OpenAI apenas se a API key estiver configurada
+const openai = process.env.OPENAI_API_KEY 
+  ? new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    })
+  : null;
 
 export async function POST(request: NextRequest) {
   try {
@@ -17,10 +20,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Verificar se a API key está configurada
-    if (!process.env.OPENAI_API_KEY) {
+    if (!openai) {
       return NextResponse.json(
-        { error: "API key da OpenAI não configurada" },
-        { status: 500 }
+        { 
+          error: "Diagnóstico com IA não disponível",
+          message: "A chave da API OpenAI não está configurada. Adicione OPENAI_API_KEY no arquivo .env.local para habilitar esta funcionalidade."
+        },
+        { status: 503 }
       );
     }
 
