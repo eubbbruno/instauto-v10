@@ -190,10 +190,11 @@ export default function DashboardPage() {
 
   // DASHBOARD FREE
   if (!hasProAccess) {
-    const trialEnded = workshop?.trial_ends_at && new Date(workshop.trial_ends_at) < new Date();
-    const daysAgo = trialEnded ? Math.floor(
-      (new Date().getTime() - new Date(workshop.trial_ends_at).getTime()) / (1000 * 60 * 60 * 24)
-    ) : 0;
+    const trialEndDate = workshop?.trial_ends_at ? new Date(workshop.trial_ends_at) : null;
+    const trialEnded = trialEndDate && trialEndDate < new Date();
+    const daysAgo = trialEnded && trialEndDate
+      ? Math.floor((new Date().getTime() - trialEndDate.getTime()) / (1000 * 60 * 60 * 24))
+      : 0;
 
     return (
       <div className="space-y-8">
