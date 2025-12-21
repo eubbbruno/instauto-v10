@@ -84,7 +84,7 @@ Responda em português brasileiro de forma clara, profissional e objetiva.`;
     const severity = severityMatch ? severityMatch[1].toLowerCase() : null;
 
     const safeMatch = diagnosis?.match(/(?:é\s+)?(seguro|não\s+seguro)/i);
-    const safeToD drive = safeMatch ? !safeMatch[1].toLowerCase().includes("não") : null;
+    const safeToDrive = safeMatch ? !safeMatch[1].toLowerCase().includes("não") : null;
 
     const costMatch = diagnosis?.match(/R\$\s*[\d.,]+(?:\s*[-a-záàâãéèêíïóôõöúçñ\s]+R\$\s*[\d.,]+)?/i);
     const estimatedCost = costMatch ? costMatch[0] : null;
@@ -94,7 +94,7 @@ Responda em português brasileiro de forma clara, profissional e objetiva.`;
       diagnosis,
       metadata: {
         severity: severity === "baixa" ? "low" : severity === "média" ? "medium" : severity === "alta" ? "high" : null,
-        safeToD rive,
+        safeToDrive,
         estimatedCost,
         model: "gpt-4",
       }

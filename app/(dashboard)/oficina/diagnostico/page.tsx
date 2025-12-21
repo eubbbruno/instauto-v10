@@ -169,7 +169,7 @@ function DiagnosticoContent() {
           diagnosis: data.diagnosis,
           severity: data.metadata.severity,
           estimated_cost: data.metadata.estimatedCost,
-          safe_to_drive: data.metadata.safeToD rive,
+          safe_to_drive: data.metadata.safeToDrive,
           ai_model: data.metadata.model,
         });
 
