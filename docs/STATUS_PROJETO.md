@@ -76,10 +76,18 @@ Status: ✅ **FUNCIONANDO**
 ### 7. Landing Page ✅
 - [x] Hero section
 - [x] Features
-- [x] Pricing (FREE/PRO)
+- [x] Pricing (FREE: R$ 0 / PRO: R$ 97)
 - [x] CTA sections
 - [x] Footer
 - [x] Links para login/cadastro
+
+### 8. Sistema de Planos ✅
+- [x] Plano FREE (marketplace + configurações)
+- [x] Plano PRO (gestão completa)
+- [x] Dashboard FREE (boas-vindas + CTA upgrade)
+- [x] Dashboard PRO (métricas completas)
+- [x] PlanGuard em todas as rotas PRO
+- [x] Sidebar com itens PRO desabilitados para FREE
 
 ### 8. Documentação ✅
 - [x] README.md principal

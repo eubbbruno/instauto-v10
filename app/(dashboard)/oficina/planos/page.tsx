@@ -277,36 +277,6 @@ export default function PlanosPage() {
             )}
           </div>
         </CardHeader>
-        {!isPro && (
-          <CardContent>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-white rounded-lg p-4 border border-blue-200">
-                <p className="text-sm text-gray-600">Clientes</p>
-                <p className="text-2xl font-bold text-blue-600">
-                  {stats.clients}/10
-                </p>
-                <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-                  <div
-                    className="bg-blue-600 h-2 rounded-full transition-all"
-                    style={{ width: `${Math.min((stats.clients / 10) * 100, 100)}%` }}
-                  />
-                </div>
-              </div>
-              <div className="bg-white rounded-lg p-4 border border-blue-200">
-                <p className="text-sm text-gray-600">OS este mês</p>
-                <p className="text-2xl font-bold text-blue-600">
-                  {stats.ordersThisMonth}/30
-                </p>
-                <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
-                  <div
-                    className="bg-blue-600 h-2 rounded-full transition-all"
-                    style={{ width: `${Math.min((stats.ordersThisMonth / 30) * 100, 100)}%` }}
-                  />
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        )}
       </Card>
 
       {/* Comparativo de Planos */}
@@ -339,14 +309,14 @@ export default function PlanosPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <ul className="space-y-3">
-                <FeatureItem included>Até 10 clientes</FeatureItem>
-                <FeatureItem included>30 OS por mês</FeatureItem>
-                <FeatureItem included>Gestão de veículos</FeatureItem>
                 <FeatureItem included>Dashboard básico</FeatureItem>
+                <FeatureItem included>Configurações da oficina</FeatureItem>
+                <FeatureItem included>Marketplace de orçamentos</FeatureItem>
+                <FeatureItem included>Perfil público</FeatureItem>
                 <FeatureItem included>Suporte por email</FeatureItem>
-                <FeatureItem included={false}>Relatórios avançados</FeatureItem>
-                <FeatureItem included={false}>Suporte prioritário</FeatureItem>
-                <FeatureItem included={false}>Backup automático</FeatureItem>
+                <FeatureItem included={false}>Sistema de gestão</FeatureItem>
+                <FeatureItem included={false}>Clientes e veículos</FeatureItem>
+                <FeatureItem included={false}>Ordens de serviço</FeatureItem>
               </ul>
               {isPro && (
                 <Button variant="outline" className="w-full" disabled>

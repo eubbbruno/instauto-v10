@@ -166,28 +166,7 @@ function OrdensContent() {
     }
   };
 
-  const checkCanAddOrder = (): boolean => {
-    if (workshop?.plan_type === "pro") {
-      return true;
-    }
-
-    // Plano FREE: limite de 30 OS por mês
-    if (ordersThisMonth >= 30) {
-      toast({
-        variant: "destructive",
-        title: "Limite atingido",
-        description: "Você atingiu o limite de 30 OS por mês do plano FREE. Faça upgrade para o plano PRO!",
-      });
-      return false;
-    }
-
-    return true;
-  };
-
   const handleOpenDialog = (order?: ServiceOrderWithRelations) => {
-    if (!order && !checkCanAddOrder()) {
-      return;
-    }
 
     if (clients.length === 0 && !order) {
       toast({
@@ -274,9 +253,7 @@ function OrdensContent() {
     <div className="space-y-8">
       <PageHeader
         title="Ordens de Serviço"
-        description={`Gerencie as ordens de serviço da oficina${
-          workshop?.plan_type === "free" ? ` (${ordersThisMonth}/30 OS este mês)` : ""
-        }`}
+        description="Gerencie as ordens de serviço da oficina"
         action={
           <Button onClick={() => handleOpenDialog()} className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 font-bold shadow-lg shadow-blue-600/30">
             <Plus className="mr-2 h-4 w-4" />

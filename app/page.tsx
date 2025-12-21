@@ -344,10 +344,10 @@ export default function HomePage() {
 
                 <ul className="space-y-4 mb-8">
                   {[
-                    "Até 10 clientes",
-                    "30 OS por mês",
-                    "Gestão de veículos",
                     "Dashboard básico",
+                    "Configurações da oficina",
+                    "Marketplace de orçamentos",
+                    "Perfil público",
                     "Suporte por email",
                   ].map((feature, i) => (
                     <li key={i} className="flex items-center gap-3">

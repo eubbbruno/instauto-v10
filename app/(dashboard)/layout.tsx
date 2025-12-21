@@ -155,6 +155,28 @@ export default function DashboardLayout({
               const isActive = pathname === item.href;
               const needsPro = item.pro && !hasProAccess;
 
+              // Se precisa PRO e não tem acesso, redireciona para planos
+              if (needsPro) {
+                return (
+                  <button
+                    key={item.href}
+                    onClick={() => {
+                      setSidebarOpen(false);
+                      router.push("/oficina/planos");
+                    }}
+                    className="w-full flex items-center justify-between px-3 py-2 rounded-lg transition-all text-sm text-blue-200/50 hover:bg-blue-700/30 hover:text-blue-100 cursor-not-allowed opacity-60"
+                  >
+                    <div className="flex items-center gap-2">
+                      {item.icon}
+                      <span className="font-medium">{item.name}</span>
+                    </div>
+                    <span className="px-1.5 py-0.5 text-[9px] font-bold bg-yellow-400 text-blue-900 rounded-full">
+                      PRO
+                    </span>
+                  </button>
+                );
+              }
+
               return (
                 <Link
                   key={item.href}
@@ -170,11 +192,6 @@ export default function DashboardLayout({
                     {item.icon}
                     <span className="font-medium">{item.name}</span>
                   </div>
-                  {needsPro && (
-                    <span className="px-1.5 py-0.5 text-[9px] font-bold bg-yellow-400 text-blue-900 rounded-full">
-                      PRO
-                    </span>
-                  )}
                 </Link>
               );
             })}

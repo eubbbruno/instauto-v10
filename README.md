@@ -30,10 +30,10 @@ O **Instauto V10** é um SaaS completo para gestão de oficinas mecânicas, dese
 
 ### Por que usar o Instauto?
 
-✅ **Gratuito para começar** - Até 10 clientes e 30 OS/mês  
+✅ **Plano FREE disponível** - Acesso ao marketplace de orçamentos  
 ✅ **Fácil de usar** - Interface intuitiva e moderna  
 ✅ **Seguro** - Autenticação robusta e dados protegidos  
-✅ **Completo** - Tudo que sua oficina precisa em um só lugar  
+✅ **Completo** - Sistema de gestão completo no plano PRO  
 ✅ **Escalável** - Cresce junto com seu negócio  
 
 ---
@@ -99,13 +99,34 @@ O **Instauto V10** é um SaaS completo para gestão de oficinas mecânicas, dese
 - Calcular valores
 - Imprimir OS
 
-### 🔄 Próximas Funcionalidades (Fase 2)
+### 💰 Planos
 
-- 💳 Planos e pagamentos (Stripe)
-- 📈 Relatórios avançados
+#### **FREE (R$ 0/mês)**
+- Dashboard básico
+- Configurações da oficina
+- Marketplace de orçamentos (futuro)
+- Perfeito para oficinas que querem apenas receber orçamentos
+
+#### **PRO (R$ 97/mês)**
+- **14 dias grátis para testar**
+- Sistema de gestão COMPLETO:
+  - Clientes ilimitados
+  - Veículos ilimitados
+  - Ordens de Serviço ilimitadas
+  - Estoque de peças
+  - Financeiro (receitas/despesas)
+  - Agenda completa
+  - Relatórios avançados
+  - Diagnóstico IA
+  - Integração WhatsApp
+
+### 🔄 Próximas Funcionalidades
+
+- 🤖 Diagnóstico IA (implementação real)
+- 📊 Relatórios PDF/Excel
+- 💬 WhatsApp Business API
 - 🏪 Marketplace motorista ↔ oficina
 - ⭐ Sistema de avaliações
-- 📅 Agendamento online
 - 🔔 Notificações (email/push)
 - 📱 App mobile (React Native)
 

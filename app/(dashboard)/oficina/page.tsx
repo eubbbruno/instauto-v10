@@ -5,12 +5,13 @@ import { createClient } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Users, Car, FileText, TrendingUp, Loader2, Package, Calendar, DollarSign, AlertTriangle, Plus, ArrowUpRight, Sparkles } from "lucide-react";
+import { Users, Car, FileText, TrendingUp, Loader2, Package, Calendar, DollarSign, AlertTriangle, Plus, ArrowUpRight, Sparkles, Crown, Lock, Settings, Zap, Shield, BarChart3 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { LineChart, Line, PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { format, subMonths, startOfMonth, endOfMonth } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { PageHeader } from "@/components/dashboard/PageHeader";
+import { Workshop } from "@/types/database";
 
 interface DashboardData {
   totalClients: number;
@@ -33,6 +34,7 @@ export default function DashboardPage() {
   const router = useRouter();
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [workshop, setWorkshop] = useState<Workshop | null>(null);
   const supabase = createClient();
 
   useEffect(() => {
@@ -47,29 +49,41 @@ export default function DashboardPage() {
       setLoading(true);
 
       // Buscar workshop
-      const { data: workshop, error: workshopError } = await supabase
+      const { data: workshopData, error: workshopError } = await supabase
         .from("workshops")
-        .select("id")
+        .select("*")
         .eq("profile_id", profile?.id)
         .single();
 
       if (workshopError) throw workshopError;
+      setWorkshop(workshopData);
+
+      // Verificar se tem acesso PRO
+      const isPro = workshopData.plan_type === "pro" && workshopData.subscription_status === "active";
+      const isTrialActive = workshopData.trial_ends_at && new Date(workshopData.trial_ends_at) > new Date();
+      const hasProAccess = isPro || isTrialActive;
+
+      // Se não tem acesso PRO, não carrega dados de gestão
+      if (!hasProAccess) {
+        setLoading(false);
+        return;
+      }
 
       // Buscar estatísticas usando a view
       const { data: stats, error: statsError } = await supabase
         .from("dashboard_stats")
         .select("*")
-        .eq("workshop_id", workshop.id)
+        .eq("workshop_id", workshopData.id)
         .single();
 
       if (statsError) {
         // Se a view não existir, buscar manualmente
         const [clientsRes, vehiclesRes, ordersRes, appointmentsRes, inventoryRes] = await Promise.all([
-          supabase.from("clients").select("id", { count: "exact", head: true }).eq("workshop_id", workshop.id),
-          supabase.from("vehicles").select("id", { count: "exact", head: true }).eq("client_id", { in: await supabase.from("clients").select("id").eq("workshop_id", workshop.id).then(r => r.data?.map(c => c.id) || []) }),
-          supabase.from("service_orders").select("*").eq("workshop_id", workshop.id),
-          supabase.from("appointments").select("*").eq("workshop_id", workshop.id).eq("date", format(new Date(), "yyyy-MM-dd")),
-          supabase.from("inventory").select("*").eq("workshop_id", workshop.id),
+          supabase.from("clients").select("id", { count: "exact", head: true }).eq("workshop_id", workshopData.id),
+          supabase.from("vehicles").select("id", { count: "exact", head: true }).eq("client_id", { in: await supabase.from("clients").select("id").eq("workshop_id", workshopData.id).then(r => r.data?.map(c => c.id) || []) }),
+          supabase.from("service_orders").select("*").eq("workshop_id", workshopData.id),
+          supabase.from("appointments").select("*").eq("workshop_id", workshopData.id).eq("date", format(new Date(), "yyyy-MM-dd")),
+          supabase.from("inventory").select("*").eq("workshop_id", workshopData.id),
         ]);
 
         const orders = ordersRes.data || [];
@@ -87,16 +101,16 @@ export default function DashboardPage() {
           recentOrders: orders.slice(0, 5),
           recentAppointments: appointmentsRes.data?.slice(0, 5) || [],
           ordersByStatus: getOrdersByStatus(orders),
-          revenueByMonth: await getRevenueByMonth(workshop.id),
+          revenueByMonth: await getRevenueByMonth(workshopData.id),
         });
       } else {
         // Usar dados da view
         const [ordersRes, appointmentsRes] = await Promise.all([
-          supabase.from("service_orders").select("*").eq("workshop_id", workshop.id).order("created_at", { ascending: false }).limit(5),
-          supabase.from("appointments").select("*").eq("workshop_id", workshop.id).eq("date", format(new Date(), "yyyy-MM-dd")).limit(5),
+          supabase.from("service_orders").select("*").eq("workshop_id", workshopData.id).order("created_at", { ascending: false }).limit(5),
+          supabase.from("appointments").select("*").eq("workshop_id", workshopData.id).eq("date", format(new Date(), "yyyy-MM-dd")).limit(5),
         ]);
 
-        const allOrders = await supabase.from("service_orders").select("*").eq("workshop_id", workshop.id);
+        const allOrders = await supabase.from("service_orders").select("*").eq("workshop_id", workshopData.id);
 
         setData({
           totalClients: stats.total_clients,
@@ -109,7 +123,7 @@ export default function DashboardPage() {
           recentOrders: ordersRes.data || [],
           recentAppointments: appointmentsRes.data || [],
           ordersByStatus: getOrdersByStatus(allOrders.data || []),
-          revenueByMonth: await getRevenueByMonth(workshop.id),
+          revenueByMonth: await getRevenueByMonth(workshopData.id),
         });
       }
     } catch (error) {
@@ -169,6 +183,253 @@ export default function DashboardPage() {
     );
   }
 
+  // Verificar acesso PRO
+  const isPro = workshop?.plan_type === "pro" && workshop?.subscription_status === "active";
+  const isTrialActive = workshop?.trial_ends_at && new Date(workshop.trial_ends_at) > new Date();
+  const hasProAccess = isPro || isTrialActive;
+
+  // DASHBOARD FREE
+  if (!hasProAccess) {
+    const trialEnded = workshop?.trial_ends_at && new Date(workshop.trial_ends_at) < new Date();
+    const daysAgo = trialEnded ? Math.floor(
+      (new Date().getTime() - new Date(workshop.trial_ends_at).getTime()) / (1000 * 60 * 60 * 24)
+    ) : 0;
+
+    return (
+      <div className="space-y-8">
+        <PageHeader
+          title={`Bem-vindo, ${workshop?.name || profile?.name}! 👋`}
+          description="Configure sua oficina e faça upgrade para o plano PRO para acessar o sistema completo de gestão"
+        />
+
+        {/* Status do Plano */}
+        <Card className="border-4 border-blue-200 bg-gradient-to-br from-blue-50 to-cyan-50">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div>
+                <CardTitle className="text-2xl font-bold text-blue-900 flex items-center gap-2">
+                  <Zap className="h-7 w-7" />
+                  Plano FREE
+                </CardTitle>
+                <CardDescription className="text-base mt-2">
+                  {trialEnded ? (
+                    <span className="text-red-600 font-bold">
+                      ⚠️ Seu período de teste expirou há {daysAgo} {daysAgo === 1 ? "dia" : "dias"}
+                    </span>
+                  ) : (
+                    "Você está no plano gratuito com acesso limitado"
+                  )}
+                </CardDescription>
+              </div>
+              <Button
+                onClick={() => router.push("/oficina/planos")}
+                size="lg"
+                className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-blue-900 font-bold shadow-xl shadow-yellow-500/30 h-14 px-8"
+              >
+                <Crown className="mr-2 h-6 w-6" />
+                Fazer Upgrade
+              </Button>
+            </div>
+          </CardHeader>
+        </Card>
+
+        {/* CTA Principal */}
+        <Card className="border-4 border-purple-300 bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 overflow-hidden relative">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-purple-400/20 to-blue-400/20 rounded-full blur-3xl"></div>
+          <CardHeader className="relative z-10">
+            <CardTitle className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-4">
+              🚀 Desbloqueie o Sistema Completo de Gestão
+            </CardTitle>
+            <CardDescription className="text-lg text-gray-700 leading-relaxed">
+              Com o <span className="font-bold text-purple-600">Plano PRO</span>, você terá acesso a todas as ferramentas profissionais para gerenciar sua oficina:
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="relative z-10">
+            <div className="grid md:grid-cols-3 gap-4 mb-6">
+              <FeatureCard
+                icon={<Users className="h-6 w-6" />}
+                title="Clientes Ilimitados"
+                description="Cadastre e gerencie todos os seus clientes"
+              />
+              <FeatureCard
+                icon={<Car className="h-6 w-6" />}
+                title="Veículos Ilimitados"
+                description="Controle total do histórico de cada veículo"
+              />
+              <FeatureCard
+                icon={<FileText className="h-6 w-6" />}
+                title="OS Ilimitadas"
+                description="Crie ordens de serviço sem limites"
+              />
+              <FeatureCard
+                icon={<Package className="h-6 w-6" />}
+                title="Estoque Completo"
+                description="Gerencie peças e alertas de reposição"
+              />
+              <FeatureCard
+                icon={<DollarSign className="h-6 w-6" />}
+                title="Financeiro"
+                description="Receitas, despesas e relatórios"
+              />
+              <FeatureCard
+                icon={<Calendar className="h-6 w-6" />}
+                title="Agenda"
+                description="Calendário completo de agendamentos"
+              />
+              <FeatureCard
+                icon={<BarChart3 className="h-6 w-6" />}
+                title="Relatórios"
+                description="Análises e insights do seu negócio"
+              />
+              <FeatureCard
+                icon={<Sparkles className="h-6 w-6" />}
+                title="Diagnóstico IA"
+                description="Inteligência artificial para diagnósticos"
+              />
+              <FeatureCard
+                icon={<Shield className="h-6 w-6" />}
+                title="WhatsApp"
+                description="Integração e automação de mensagens"
+              />
+            </div>
+
+            <div className="bg-white rounded-xl p-6 border-2 border-purple-200 shadow-lg">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <p className="text-sm text-gray-600 mb-1">Apenas</p>
+                  <p className="text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+                    R$ 97
+                  </p>
+                  <p className="text-gray-600">/mês</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm text-gray-600 mb-2">✓ 14 dias grátis para testar</p>
+                  <p className="text-sm text-gray-600 mb-2">✓ Cancele quando quiser</p>
+                  <p className="text-sm text-gray-600">✓ Suporte prioritário</p>
+                </div>
+              </div>
+              <Button
+                onClick={() => router.push("/oficina/planos")}
+                size="lg"
+                className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold h-14 text-lg shadow-xl"
+              >
+                <Crown className="mr-2 h-6 w-6" />
+                Começar Teste Grátis de 14 Dias
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Prévia do Dashboard PRO (Blur) */}
+        <div className="relative">
+          <div className="absolute inset-0 bg-white/80 backdrop-blur-sm z-10 rounded-xl flex items-center justify-center">
+            <div className="text-center p-8">
+              <Lock className="h-16 w-16 text-purple-600 mx-auto mb-4" />
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">Dashboard Completo</h3>
+              <p className="text-gray-600 mb-4">Disponível no Plano PRO</p>
+              <Button
+                onClick={() => router.push("/oficina/planos")}
+                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 font-bold"
+              >
+                <Crown className="mr-2 h-5 w-5" />
+                Ver Planos
+              </Button>
+            </div>
+          </div>
+
+          {/* Preview Cards (Blur) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 opacity-30">
+            <Card className="border-2">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-bold text-gray-600">Clientes</CardTitle>
+                <Users className="h-5 w-5 text-blue-600" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-4xl font-bold text-gray-900">127</div>
+                <p className="text-sm text-gray-600">Total cadastrados</p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-2">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-bold text-gray-600">Veículos</CardTitle>
+                <Car className="h-5 w-5 text-green-600" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-4xl font-bold text-gray-900">89</div>
+                <p className="text-sm text-gray-600">Total cadastrados</p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-2">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-bold text-gray-600">OS do Mês</CardTitle>
+                <FileText className="h-5 w-5 text-purple-600" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-4xl font-bold text-gray-900">45</div>
+                <p className="text-sm text-gray-600">Concluídas / Total</p>
+              </CardContent>
+            </Card>
+
+            <Card className="border-2">
+              <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-bold text-gray-600">Faturamento</CardTitle>
+                <DollarSign className="h-5 w-5 text-yellow-600" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-gray-900">R$ 45.890</div>
+                <p className="text-sm text-gray-600">Este mês</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
+        {/* Acesso Rápido */}
+        <div className="grid md:grid-cols-2 gap-6">
+          <Card 
+            className="border-2 cursor-pointer hover:shadow-xl hover:scale-105 transition-all group"
+            onClick={() => router.push("/oficina/configuracoes")}
+          >
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-xl">
+                <Settings className="h-6 w-6 text-blue-600" />
+                Configurações da Oficina
+              </CardTitle>
+              <CardDescription>Configure os dados da sua oficina</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button variant="outline" className="w-full font-bold group-hover:bg-blue-50">
+                Acessar Configurações
+                <ArrowUpRight className="ml-2 h-4 w-4" />
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card 
+            className="border-2 cursor-pointer hover:shadow-xl hover:scale-105 transition-all group bg-gradient-to-br from-purple-50 to-blue-50"
+            onClick={() => router.push("/oficina/planos")}
+          >
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-xl">
+                <Crown className="h-6 w-6 text-purple-600" />
+                Ver Planos e Preços
+              </CardTitle>
+              <CardDescription>Compare os planos e faça upgrade</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 font-bold">
+                Ver Planos
+                <ArrowUpRight className="ml-2 h-4 w-4" />
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
+  // DASHBOARD PRO (mantém como estava)
   return (
     <div className="space-y-8">
       <PageHeader
@@ -540,6 +801,22 @@ export default function DashboardPage() {
             )}
           </CardContent>
         </Card>
+      </div>
+    </div>
+  );
+}
+
+function FeatureCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
+  return (
+    <div className="bg-white rounded-lg p-4 border-2 border-purple-100 hover:border-purple-300 transition-all group">
+      <div className="flex items-start gap-3">
+        <div className="p-2 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg text-white group-hover:scale-110 transition-transform">
+          {icon}
+        </div>
+        <div>
+          <h4 className="font-bold text-gray-900 mb-1">{title}</h4>
+          <p className="text-sm text-gray-600">{description}</p>
+        </div>
       </div>
     </div>
   );

@@ -106,28 +106,7 @@ function ClientesContent() {
     }
   };
 
-  const checkCanAddClient = (): boolean => {
-    if (workshop?.plan_type === "pro") {
-      return true;
-    }
-
-    // Plano FREE: limite de 10 clientes
-    if (clients.length >= 10) {
-      toast({
-        variant: "destructive",
-        title: "Limite atingido",
-        description: "Você atingiu o limite de 10 clientes do plano FREE. Faça upgrade para o plano PRO!",
-      });
-      return false;
-    }
-
-    return true;
-  };
-
   const handleOpenDialog = (client?: Client) => {
-    if (!client && !checkCanAddClient()) {
-      return;
-    }
     setEditingClient(client || null);
     setDialogOpen(true);
   };
