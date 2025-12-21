@@ -149,3 +149,21 @@ export interface DashboardStats {
   low_stock_items: number;
 }
 
+export type DiagnosticSeverity = "low" | "medium" | "high";
+
+export interface Diagnostic {
+  id: string;
+  workshop_id: string;
+  client_id?: string;
+  vehicle_id?: string;
+  symptoms: string;
+  diagnosis: string;
+  recommendations?: string;
+  severity?: DiagnosticSeverity;
+  estimated_cost?: string;
+  safe_to_drive?: boolean;
+  ai_model: string;
+  created_at: string;
+  updated_at?: string;
+}
+
