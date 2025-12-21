@@ -70,7 +70,7 @@ export default function DiagnosticoPage() {
           {/* Input Card */}
           <Card className="border-2">
             <CardHeader>
-              <CardTitle className="text-xl font-heading font-bold">Descrever Sintomas</CardTitle>
+              <CardTitle className="text-xl font-bold">Descrever Sintomas</CardTitle>
               <CardDescription>
                 Detalhe os problemas relatados pelo cliente
               </CardDescription>
@@ -117,7 +117,7 @@ export default function DiagnosticoPage() {
           {/* Result Card */}
           <Card className="border-2">
             <CardHeader>
-              <CardTitle className="text-xl font-heading font-bold">Resultado do Diagnóstico</CardTitle>
+              <CardTitle className="text-xl font-bold">Resultado do Diagnóstico</CardTitle>
               <CardDescription>
                 Sugestões baseadas em IA
               </CardDescription>
@@ -188,7 +188,7 @@ export default function DiagnosticoPage() {
                         <DollarSign className="h-5 w-5 text-blue-600" />
                         <span className="font-bold text-gray-900">Estimativa de Custo</span>
                       </div>
-                      <span className="text-xl font-heading font-bold text-blue-600">
+                      <span className="text-xl font-bold text-blue-600">
                         {diagnosis.estimatedCost}
                       </span>
                     </div>

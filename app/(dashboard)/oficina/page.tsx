@@ -217,7 +217,7 @@ export default function DashboardPage() {
             </div>
           </CardHeader>
           <CardContent className="relative z-10">
-            <div className="text-4xl font-heading font-bold text-gray-900 mb-1">
+            <div className="text-4xl font-bold text-gray-900 mb-1">
               {data?.totalClients || 0}
             </div>
             <p className="text-sm text-gray-600 flex items-center gap-1">
@@ -242,7 +242,7 @@ export default function DashboardPage() {
             </div>
           </CardHeader>
           <CardContent className="relative z-10">
-            <div className="text-4xl font-heading font-bold text-gray-900 mb-1">
+            <div className="text-4xl font-bold text-gray-900 mb-1">
               {data?.totalVehicles || 0}
             </div>
             <p className="text-sm text-gray-600 flex items-center gap-1">
@@ -267,7 +267,7 @@ export default function DashboardPage() {
             </div>
           </CardHeader>
           <CardContent className="relative z-10">
-            <div className="text-4xl font-heading font-bold text-gray-900 mb-1">
+            <div className="text-4xl font-bold text-gray-900 mb-1">
               {data?.completedOrdersThisMonth || 0}<span className="text-2xl text-gray-400">/{data?.ordersThisMonth || 0}</span>
             </div>
             <p className="text-sm text-gray-600 flex items-center gap-1">
@@ -289,7 +289,7 @@ export default function DashboardPage() {
             </div>
           </CardHeader>
           <CardContent className="relative z-10">
-            <div className="text-3xl font-heading font-bold bg-gradient-to-r from-yellow-600 to-yellow-700 bg-clip-text text-transparent mb-1">
+            <div className="text-3xl font-bold bg-gradient-to-r from-yellow-600 to-yellow-700 bg-clip-text text-transparent mb-1">
               {(data?.revenueThisMonth || 0).toLocaleString("pt-BR", {
                 style: "currency",
                 currency: "BRL",
@@ -309,7 +309,7 @@ export default function DashboardPage() {
         >
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <div>
-              <CardTitle className="text-lg font-heading font-bold">Agendamentos Hoje</CardTitle>
+              <CardTitle className="text-lg font-bold">Agendamentos Hoje</CardTitle>
               <CardDescription>Para hoje</CardDescription>
             </div>
             <div className="p-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl text-white shadow-lg shadow-blue-500/30 group-hover:scale-110 transition-transform">
@@ -317,7 +317,7 @@ export default function DashboardPage() {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-5xl font-heading font-bold text-blue-600">
+            <div className="text-5xl font-bold text-blue-600">
               {data?.appointmentsToday || 0}
             </div>
           </CardContent>
@@ -330,7 +330,7 @@ export default function DashboardPage() {
         >
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <div>
-              <CardTitle className="text-lg font-heading font-bold">Estoque Baixo</CardTitle>
+              <CardTitle className="text-lg font-bold">Estoque Baixo</CardTitle>
               <CardDescription>Itens precisam reposição</CardDescription>
             </div>
             <div className="p-3 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-xl text-gray-900 shadow-lg shadow-yellow-500/30 group-hover:scale-110 transition-transform">
@@ -338,7 +338,7 @@ export default function DashboardPage() {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-5xl font-heading font-bold text-yellow-600">
+            <div className="text-5xl font-bold text-yellow-600">
               {data?.lowStockItems || 0}
             </div>
           </CardContent>
@@ -350,7 +350,7 @@ export default function DashboardPage() {
         {/* Gráfico de Linha - Faturamento */}
         <Card className="border-2">
           <CardHeader>
-            <CardTitle className="text-xl font-heading font-bold">Faturamento</CardTitle>
+            <CardTitle className="text-xl font-bold">Faturamento</CardTitle>
             <CardDescription>Receita dos últimos 6 meses</CardDescription>
           </CardHeader>
           <CardContent>
@@ -404,7 +404,7 @@ export default function DashboardPage() {
         {/* Gráfico de Pizza - OS por Status */}
         <Card className="border-2">
           <CardHeader>
-            <CardTitle className="text-xl font-heading font-bold">Ordens de Serviço</CardTitle>
+            <CardTitle className="text-xl font-bold">Ordens de Serviço</CardTitle>
             <CardDescription>Distribuição por status</CardDescription>
           </CardHeader>
           <CardContent>
@@ -452,7 +452,7 @@ export default function DashboardPage() {
         {/* Últimas OS */}
         <Card className="border-2">
           <CardHeader>
-            <CardTitle className="text-xl font-heading font-bold">Últimas Ordens de Serviço</CardTitle>
+            <CardTitle className="text-xl font-bold">Últimas Ordens de Serviço</CardTitle>
             <CardDescription>5 mais recentes</CardDescription>
           </CardHeader>
           <CardContent>
@@ -502,7 +502,7 @@ export default function DashboardPage() {
         {/* Próximos Agendamentos */}
         <Card className="border-2">
           <CardHeader>
-            <CardTitle className="text-xl font-heading font-bold">Agendamentos de Hoje</CardTitle>
+            <CardTitle className="text-xl font-bold">Agendamentos de Hoje</CardTitle>
             <CardDescription>Próximos atendimentos</CardDescription>
           </CardHeader>
           <CardContent>

@@ -81,7 +81,7 @@ export default function RelatoriosPage() {
         {/* Quick Filters */}
         <Card className="border-2">
           <CardHeader>
-            <CardTitle className="text-xl font-heading font-bold">Filtros Rápidos</CardTitle>
+            <CardTitle className="text-xl font-bold">Filtros Rápidos</CardTitle>
             <CardDescription>Selecione o período para os relatórios</CardDescription>
           </CardHeader>
           <CardContent>
@@ -108,7 +108,7 @@ export default function RelatoriosPage() {
                 <div className={`w-12 h-12 bg-gradient-to-br ${report.color} rounded-xl flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform shadow-lg ${report.shadow}`}>
                   {report.icon}
                 </div>
-                <CardTitle className="text-xl font-heading font-bold">{report.title}</CardTitle>
+                <CardTitle className="text-xl font-bold">{report.title}</CardTitle>
                 <CardDescription>{report.description}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">

@@ -480,7 +480,7 @@ export default function FinanceiroPage() {
         {/* Gráfico */}
         <Card className="border-2">
           <CardHeader>
-            <CardTitle className="text-xl font-heading font-bold">Receitas vs Despesas (Últimos 6 Meses)</CardTitle>
+            <CardTitle className="text-xl font-bold">Receitas vs Despesas (Últimos 6 Meses)</CardTitle>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
@@ -507,7 +507,7 @@ export default function FinanceiroPage() {
         {/* Filtros */}
         <Card className="border-2">
           <CardHeader>
-            <CardTitle className="text-xl font-heading font-bold flex items-center gap-2">
+            <CardTitle className="text-xl font-bold flex items-center gap-2">
               <Filter className="h-5 w-5" />
               Filtros
             </CardTitle>
@@ -588,7 +588,7 @@ export default function FinanceiroPage() {
         {/* Tabela de Transações */}
         <Card className="border-2">
           <CardHeader>
-            <CardTitle className="text-xl font-heading font-bold">Transações</CardTitle>
+            <CardTitle className="text-xl font-bold">Transações</CardTitle>
             <CardDescription>
               {filteredTransactions.length} {filteredTransactions.length === 1 ? "transação encontrada" : "transações encontradas"}
             </CardDescription>

@@ -56,7 +56,7 @@ export default function WhatsAppPage() {
           {/* Connection Card */}
           <Card className="border-2">
             <CardHeader>
-              <CardTitle className="text-xl font-heading font-bold">Conectar WhatsApp</CardTitle>
+              <CardTitle className="text-xl font-bold">Conectar WhatsApp</CardTitle>
               <CardDescription>
                 {connected ? "Sua conta está conectada" : "Configure sua conta do WhatsApp Business"}
               </CardDescription>
@@ -141,7 +141,7 @@ export default function WhatsAppPage() {
           {/* Features Card */}
           <Card className="border-2">
             <CardHeader>
-              <CardTitle className="text-xl font-heading font-bold">Recursos Disponíveis</CardTitle>
+              <CardTitle className="text-xl font-bold">Recursos Disponíveis</CardTitle>
               <CardDescription>
                 O que você pode fazer com a integração
               </CardDescription>
@@ -168,7 +168,7 @@ export default function WhatsAppPage() {
         {connected && (
           <Card className="border-2">
             <CardHeader>
-              <CardTitle className="text-xl font-heading font-bold">Templates de Mensagens</CardTitle>
+              <CardTitle className="text-xl font-bold">Templates de Mensagens</CardTitle>
               <CardDescription>
                 Mensagens prontas para agilizar o atendimento
               </CardDescription>
