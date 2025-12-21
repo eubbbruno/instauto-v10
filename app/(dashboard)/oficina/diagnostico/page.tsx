@@ -368,13 +368,13 @@ Exemplo: 'O carro está fazendo um barulho de rangido ao frear, principalmente e
                   </div>
                 )}
 
-                {diagnosisResult.metadata.safeToD rive !== null && (
+                {diagnosisResult.metadata.safeToDrive !== null && (
                   <div className={`px-4 py-2 rounded-lg border-2 font-bold ${
-                    diagnosisResult.metadata.safeToD rive 
+                    diagnosisResult.metadata.safeToDrive 
                       ? "text-green-600 bg-green-100 border-green-200"
                       : "text-red-600 bg-red-100 border-red-200"
                   }`}>
-                    {diagnosisResult.metadata.safeToD rive ? (
+                    {diagnosisResult.metadata.safeToDrive ? (
                       <><CheckCircle2 className="h-4 w-4 inline mr-2" />Seguro dirigir</>
                     ) : (
                       <><XCircle className="h-4 w-4 inline mr-2" />Não seguro dirigir</>
