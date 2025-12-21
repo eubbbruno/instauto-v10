@@ -214,13 +214,14 @@ function RelatoriosContent() {
     if (transactions && transactions.filter(t => t.type === "expense").length > 0) {
       const finalY = (doc as any).lastAutoTable.finalY || 100;
       
+      let startY: number;
       if (finalY > 250) {
         doc.addPage();
         doc.text("DESPESAS", 14, 20);
-        var startY = 25;
+        startY = 25;
       } else {
         doc.text("DESPESAS", 14, finalY + 15);
-        var startY = finalY + 20;
+        startY = finalY + 20;
       }
 
       const expenseData = transactions
@@ -514,15 +515,16 @@ function RelatoriosContent() {
     // Lista Completa
     const finalY = (doc as any).lastAutoTable.finalY || 80;
     
+    let startY: number;
     if (finalY > 250) {
       doc.addPage();
       doc.setTextColor(0, 0, 0);
       doc.text("INVENTÁRIO COMPLETO", 14, 20);
-      var startY = 25;
+      startY = 25;
     } else {
       doc.setTextColor(0, 0, 0);
       doc.text("INVENTÁRIO COMPLETO", 14, finalY + 15);
-      var startY = finalY + 20;
+      startY = finalY + 20;
     }
 
     const inventoryData = inventory?.map(i => [
