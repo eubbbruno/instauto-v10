@@ -25,6 +25,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase";
 import { Workshop } from "@/types/database";
+import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 
 interface MenuItem {
   name: string;
@@ -254,7 +255,10 @@ export default function DashboardLayout({
       )}
 
       {/* Main Content */}
-      <main className="lg:ml-64 pt-16 lg:pt-0 p-4 md:p-8">{children}</main>
+      <main className="lg:ml-64 pt-16 lg:pt-0">
+        <DashboardHeader />
+        <div className="p-4 md:p-8">{children}</div>
+      </main>
     </div>
   );
 }
