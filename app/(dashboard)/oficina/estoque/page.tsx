@@ -65,14 +65,14 @@ export default function EstoquePage() {
   // Form states
   const [formData, setFormData] = useState({
     name: "",
+    description: "",
     code: "",
-    brand: "",
+    category: "",
     quantity: 0,
     min_quantity: 5,
-    cost_price: 0,
-    sell_price: 0,
+    unit_price: 0,
+    supplier: "",
     location: "",
-    notes: "",
   });
 
   const supabase = createClient();
@@ -135,7 +135,7 @@ export default function EstoquePage() {
       (item) =>
         item.name.toLowerCase().includes(term) ||
         item.code?.toLowerCase().includes(term) ||
-        item.brand?.toLowerCase().includes(term)
+        item.category?.toLowerCase().includes(term)
     );
     setFilteredItems(filtered);
   };
@@ -144,14 +144,14 @@ export default function EstoquePage() {
     setEditingItem(null);
     setFormData({
       name: "",
+      description: "",
       code: "",
-      brand: "",
+      category: "",
       quantity: 0,
       min_quantity: 5,
-      cost_price: 0,
-      sell_price: 0,
+      unit_price: 0,
+      supplier: "",
       location: "",
-      notes: "",
     });
     setIsDialogOpen(true);
   };
@@ -160,14 +160,14 @@ export default function EstoquePage() {
     setEditingItem(item);
     setFormData({
       name: item.name,
+      description: item.description || "",
       code: item.code || "",
-      brand: item.brand || "",
+      category: item.category || "",
       quantity: item.quantity,
       min_quantity: item.min_quantity,
-      cost_price: item.cost_price,
-      sell_price: item.sell_price,
+      unit_price: item.unit_price || 0,
+      supplier: item.supplier || "",
       location: item.location || "",
-      notes: item.notes || "",
     });
     setIsDialogOpen(true);
   };
@@ -199,14 +199,14 @@ export default function EstoquePage() {
           .from("inventory")
           .update({
             name: formData.name.trim(),
+            description: formData.description.trim() || null,
             code: formData.code.trim() || null,
-            brand: formData.brand.trim() || null,
+            category: formData.category.trim() || null,
             quantity: formData.quantity,
             min_quantity: formData.min_quantity,
-            cost_price: formData.cost_price,
-            sell_price: formData.sell_price,
+            unit_price: formData.unit_price,
+            supplier: formData.supplier.trim() || null,
             location: formData.location.trim() || null,
-            notes: formData.notes.trim() || null,
           })
           .eq("id", editingItem.id);
 
@@ -221,14 +221,14 @@ export default function EstoquePage() {
         const { error } = await supabase.from("inventory").insert({
           workshop_id: workshopId,
           name: formData.name.trim(),
+          description: formData.description.trim() || null,
           code: formData.code.trim() || null,
-          brand: formData.brand.trim() || null,
+          category: formData.category.trim() || null,
           quantity: formData.quantity,
           min_quantity: formData.min_quantity,
-          cost_price: formData.cost_price,
-          sell_price: formData.sell_price,
+          unit_price: formData.unit_price,
+          supplier: formData.supplier.trim() || null,
           location: formData.location.trim() || null,
-          notes: formData.notes.trim() || null,
         });
 
         if (error) throw error;
@@ -292,7 +292,7 @@ export default function EstoquePage() {
   // Calcular estatísticas
   const totalItems = items.length;
   const lowStockItems = items.filter((item) => item.quantity <= item.min_quantity).length;
-  const totalValue = items.reduce((sum, item) => sum + item.quantity * item.cost_price, 0);
+  const totalValue = items.reduce((sum, item) => sum + item.quantity * (item.unit_price || 0), 0);
 
   const getStockBadge = (item: Inventory) => {
     if (item.quantity === 0) {
@@ -439,11 +439,11 @@ export default function EstoquePage() {
                     <TableRow>
                       <TableHead>Nome</TableHead>
                       <TableHead>Código</TableHead>
-                      <TableHead>Marca</TableHead>
+                      <TableHead>Categoria</TableHead>
                       <TableHead>Estoque</TableHead>
                       <TableHead>Localização</TableHead>
-                      <TableHead className="text-right">Custo</TableHead>
-                      <TableHead className="text-right">Venda</TableHead>
+                      <TableHead className="text-right">Preço Unitário</TableHead>
+                      <TableHead>Fornecedor</TableHead>
                       <TableHead className="text-right">Ações</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -455,23 +455,20 @@ export default function EstoquePage() {
                           {item.code || "-"}
                         </TableCell>
                         <TableCell className="text-gray-600">
-                          {item.brand || "-"}
+                          {item.category || "-"}
                         </TableCell>
                         <TableCell>{getStockBadge(item)}</TableCell>
                         <TableCell className="text-gray-600">
                           {item.location || "-"}
                         </TableCell>
                         <TableCell className="text-right">
-                          {item.cost_price.toLocaleString("pt-BR", {
+                          {(item.unit_price || 0).toLocaleString("pt-BR", {
                             style: "currency",
                             currency: "BRL",
                           })}
                         </TableCell>
-                        <TableCell className="text-right">
-                          {item.sell_price.toLocaleString("pt-BR", {
-                            style: "currency",
-                            currency: "BRL",
-                          })}
+                        <TableCell className="text-gray-600">
+                          {item.supplier || "-"}
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-2">
@@ -541,14 +538,26 @@ export default function EstoquePage() {
               </div>
 
               <div>
-                <Label htmlFor="brand">Marca</Label>
+                <Label htmlFor="description">Descrição</Label>
                 <Input
-                  id="brand"
-                  value={formData.brand}
+                  id="description"
+                  value={formData.description}
                   onChange={(e) =>
-                    setFormData({ ...formData, brand: e.target.value })
+                    setFormData({ ...formData, description: e.target.value })
                   }
-                  placeholder="Ex: Bosch"
+                  placeholder="Ex: Filtro de óleo para motor diesel"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="category">Categoria</Label>
+                <Input
+                  id="category"
+                  value={formData.category}
+                  onChange={(e) =>
+                    setFormData({ ...formData, category: e.target.value })
+                  }
+                  placeholder="Ex: Motor, Freios, Suspensão"
                 />
               </div>
 
@@ -582,36 +591,31 @@ export default function EstoquePage() {
               </div>
 
               <div>
-                <Label htmlFor="cost_price">Preço de Custo (R$)</Label>
+                <Label htmlFor="unit_price">Preço Unitário (R$)</Label>
                 <Input
-                  id="cost_price"
+                  id="unit_price"
                   type="number"
                   min="0"
                   step="0.01"
-                  value={formData.cost_price}
+                  value={formData.unit_price}
                   onChange={(e) =>
                     setFormData({
                       ...formData,
-                      cost_price: parseFloat(e.target.value) || 0,
+                      unit_price: parseFloat(e.target.value) || 0,
                     })
                   }
                 />
               </div>
 
               <div>
-                <Label htmlFor="sell_price">Preço de Venda (R$)</Label>
+                <Label htmlFor="supplier">Fornecedor</Label>
                 <Input
-                  id="sell_price"
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  value={formData.sell_price}
+                  id="supplier"
+                  value={formData.supplier}
                   onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      sell_price: parseFloat(e.target.value) || 0,
-                    })
+                    setFormData({ ...formData, supplier: e.target.value })
                   }
+                  placeholder="Ex: Auto Peças Brasil"
                 />
               </div>
 
@@ -624,19 +628,6 @@ export default function EstoquePage() {
                     setFormData({ ...formData, location: e.target.value })
                   }
                   placeholder="Ex: Prateleira A3"
-                />
-              </div>
-
-              <div className="col-span-2">
-                <Label htmlFor="notes">Observações</Label>
-                <Textarea
-                  id="notes"
-                  value={formData.notes}
-                  onChange={(e) =>
-                    setFormData({ ...formData, notes: e.target.value })
-                  }
-                  placeholder="Informações adicionais sobre a peça..."
-                  rows={3}
                 />
               </div>
             </div>
