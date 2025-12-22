@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
   ArrowRight,
@@ -18,12 +19,13 @@ export default function PlanosPage() {
       <header className="sticky top-0 z-50 bg-white border-b border-gray-200 backdrop-blur-sm bg-white/90">
         <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
-              <Wrench className="h-6 w-6 text-white" />
-            </div>
-            <span className="text-2xl font-heading font-bold text-gray-900">
-              Instauto
-            </span>
+            <Image
+              src="/images/logo-of-dark.svg"
+              alt="Instauto"
+              width={150}
+              height={40}
+              className="h-10 w-auto"
+            />
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
@@ -542,13 +544,14 @@ export default function PlanosPage() {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                  <Wrench className="h-5 w-5 text-white" />
-                </div>
-                <span className="text-xl font-heading font-bold text-white">
-                  Instauto
-                </span>
+              <div className="mb-4">
+                <Image
+                  src="/images/logo.svg"
+                  alt="Instauto"
+                  width={150}
+                  height={40}
+                  className="h-10 w-auto"
+                />
               </div>
               <p className="text-sm font-sans">
                 Sistema completo de gestão para oficinas mecânicas.

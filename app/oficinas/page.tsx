@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
   ArrowRight,
@@ -29,12 +30,13 @@ export default function OficinasPage() {
       <header className="sticky top-0 z-50 bg-white border-b border-gray-200 backdrop-blur-sm bg-white/90">
         <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
-              <Wrench className="h-6 w-6 text-white" />
-            </div>
-            <span className="text-2xl font-heading font-bold text-gray-900">
-              Instauto
-            </span>
+            <Image
+              src="/images/logo-of-dark.svg"
+              alt="Instauto"
+              width={150}
+              height={40}
+              className="h-10 w-auto"
+            />
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
@@ -111,8 +113,7 @@ export default function OficinasPage() {
                 <a href="#funcionalidades">
                   <Button
                     size="lg"
-                    variant="outline"
-                    className="border-2 border-white text-white hover:bg-white hover:text-blue-600 font-sans font-bold text-lg px-8 py-6 rounded-xl transition-all w-full sm:w-auto"
+                    className="bg-white text-blue-600 hover:bg-gray-100 font-sans font-bold text-lg px-8 py-6 rounded-xl transition-all w-full sm:w-auto shadow-lg"
                   >
                     Ver Funcionalidades
                   </Button>
@@ -135,49 +136,16 @@ export default function OficinasPage() {
               </div>
             </div>
 
-            <div className="hidden md:block">
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
-                <div className="bg-white rounded-xl p-6 shadow-2xl">
-                  <div className="flex items-center gap-3 mb-6">
-                    <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
-                      <BarChart3 className="h-6 w-6 text-white" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-600 font-sans">
-                        Faturamento Mensal
-                      </p>
-                      <p className="text-2xl font-heading font-bold text-gray-900">
-                        R$ 45.280,00
-                      </p>
-                    </div>
-                  </div>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
-                      <span className="text-sm font-sans text-gray-700">
-                        OS Concluídas
-                      </span>
-                      <span className="font-sans font-bold text-green-600">
-                        28
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
-                      <span className="text-sm font-sans text-gray-700">
-                        Clientes Ativos
-                      </span>
-                      <span className="font-sans font-bold text-blue-600">
-                        156
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
-                      <span className="text-sm font-sans text-gray-700">
-                        Estoque Baixo
-                      </span>
-                      <span className="font-sans font-bold text-yellow-600">
-                        3 itens
-                      </span>
-                    </div>
-                  </div>
-                </div>
+            <div className="hidden md:flex justify-center items-center">
+              <div className="relative">
+                <Image
+                  src="/images/img-02.png"
+                  alt="Mecânico Instauto"
+                  width={500}
+                  height={500}
+                  className="object-contain drop-shadow-2xl"
+                  priority
+                />
               </div>
             </div>
           </div>
@@ -756,13 +724,14 @@ export default function OficinasPage() {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                  <Wrench className="h-5 w-5 text-white" />
-                </div>
-                <span className="text-xl font-heading font-bold text-white">
-                  Instauto
-                </span>
+              <div className="mb-4">
+                <Image
+                  src="/images/logo.svg"
+                  alt="Instauto"
+                  width={150}
+                  height={40}
+                  className="h-10 w-auto"
+                />
               </div>
               <p className="text-sm font-sans">
                 Sistema completo de gestão para oficinas mecânicas.

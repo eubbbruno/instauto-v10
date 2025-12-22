@@ -2,6 +2,7 @@
 
 import { Car, Sparkles } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function AuthLayout({
   children,
@@ -14,16 +15,14 @@ export default function AuthLayout({
       <div className="flex-1 flex items-center justify-center p-8">
         <div className="w-full max-w-md">
           {/* Logo */}
-          <Link href="/" className="inline-flex items-center gap-3 mb-8">
-            <div className="relative">
-              <div className="absolute inset-0 bg-blue-600 rounded-xl blur-sm opacity-50"></div>
-              <div className="relative p-2.5 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl">
-                <Car className="h-6 w-6 text-white" />
-              </div>
-            </div>
-            <span className="text-2xl font-heading font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
-              Instauto
-            </span>
+          <Link href="/" className="inline-block mb-8">
+            <Image
+              src="/images/logo-of-dark.svg"
+              alt="Instauto"
+              width={180}
+              height={45}
+              className="h-12 w-auto"
+            />
           </Link>
 
           {/* Form Card */}
@@ -41,6 +40,17 @@ export default function AuthLayout({
         <div className="absolute bottom-20 left-20 w-72 h-72 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse delay-1000"></div>
 
         <div className="relative z-10 max-w-lg text-white">
+          {/* Hero Image */}
+          <div className="mb-8 flex justify-center">
+            <Image
+              src="/images/oficina.png"
+              alt="Oficina Instauto"
+              width={400}
+              height={400}
+              className="object-contain drop-shadow-2xl"
+            />
+          </div>
+
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-bold mb-6">
             <Sparkles className="h-4 w-4 text-yellow-400" />
             Sistema completo para oficinas

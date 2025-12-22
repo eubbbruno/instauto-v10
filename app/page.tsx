@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import {
   ArrowRight,
@@ -20,12 +21,13 @@ export default function HomePage() {
       <header className="sticky top-0 z-50 bg-white border-b border-gray-200 backdrop-blur-sm bg-white/90">
         <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
-              <Wrench className="h-6 w-6 text-white" />
-            </div>
-            <span className="text-2xl font-heading font-bold text-gray-900">
-              Instauto
-            </span>
+            <Image
+              src="/images/logo-of-dark.svg"
+              alt="Instauto"
+              width={150}
+              height={40}
+              className="h-10 w-auto"
+            />
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
@@ -68,25 +70,26 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-blue-50 via-white to-yellow-50 py-20 md:py-32 overflow-hidden">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
+          <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+            <div className="text-center md:text-left">
             <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-sans font-semibold mb-8">
               <Zap className="h-4 w-4" />
               Sistema de Gestão + Marketplace de Oficinas
             </div>
 
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-heading font-bold text-gray-900 mb-6 leading-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-gray-900 mb-6 leading-tight">
               Transforme sua oficina em um{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">
                 negócio digital
               </span>
             </h1>
 
-            <p className="text-xl md:text-2xl text-gray-600 font-sans mb-10 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-lg md:text-xl text-gray-600 font-sans mb-10 leading-relaxed">
               Sistema completo de gestão para oficinas mecânicas. Controle
               clientes, ordens de serviço, estoque, financeiro e muito mais.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start items-center mb-12">
               <Link href="/auth/register">
                 <Button
                   size="lg"
@@ -107,7 +110,7 @@ export default function HomePage() {
               </Link>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-8 text-sm text-gray-600 font-sans">
+            <div className="flex flex-wrap justify-center md:justify-start gap-6 text-sm text-gray-600 font-sans">
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="h-5 w-5 text-green-600" />
                 <span>Sem cartão de crédito</span>
@@ -119,6 +122,21 @@ export default function HomePage() {
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="h-5 w-5 text-green-600" />
                 <span>Suporte em português</span>
+              </div>
+            </div>
+            </div>
+
+            {/* Hero Image */}
+            <div className="hidden md:flex justify-center items-center">
+              <div className="relative w-full max-w-lg">
+                <Image
+                  src="/images/img-01.png"
+                  alt="Mecânico Instauto"
+                  width={500}
+                  height={500}
+                  className="object-contain drop-shadow-2xl"
+                  priority
+                />
               </div>
             </div>
           </div>
@@ -213,6 +231,106 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Como Funciona */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-heading font-bold text-gray-900 mb-4">
+              Como funciona?
+            </h2>
+            <p className="text-xl text-gray-600 font-sans max-w-2xl mx-auto">
+              Comece a usar em 4 passos simples
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto">
+            <div className="text-center">
+              <div className="mb-6 flex justify-center">
+                <Image
+                  src="/images/passo-01.png"
+                  alt="Passo 1 - Cadastro"
+                  width={200}
+                  height={200}
+                  className="object-contain"
+                />
+              </div>
+              <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-heading font-bold text-xl">
+                1
+              </div>
+              <h3 className="text-lg font-heading font-bold text-gray-900 mb-2">
+                Cadastre-se
+              </h3>
+              <p className="text-gray-600 font-sans text-sm">
+                Crie sua conta grátis em menos de 2 minutos
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="mb-6 flex justify-center">
+                <Image
+                  src="/images/passo-02.png"
+                  alt="Passo 2 - Configure"
+                  width={200}
+                  height={200}
+                  className="object-contain"
+                />
+              </div>
+              <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-heading font-bold text-xl">
+                2
+              </div>
+              <h3 className="text-lg font-heading font-bold text-gray-900 mb-2">
+                Configure
+              </h3>
+              <p className="text-gray-600 font-sans text-sm">
+                Adicione as informações da sua oficina
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="mb-6 flex justify-center">
+                <Image
+                  src="/images/passo-03.png"
+                  alt="Passo 3 - Gerencie"
+                  width={200}
+                  height={200}
+                  className="object-contain"
+                />
+              </div>
+              <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-heading font-bold text-xl">
+                3
+              </div>
+              <h3 className="text-lg font-heading font-bold text-gray-900 mb-2">
+                Gerencie
+              </h3>
+              <p className="text-gray-600 font-sans text-sm">
+                Cadastre clientes, veículos e ordens de serviço
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="mb-6 flex justify-center">
+                <Image
+                  src="/images/passo-04.png"
+                  alt="Passo 4 - Cresça"
+                  width={200}
+                  height={200}
+                  className="object-contain"
+                />
+              </div>
+              <div className="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-900 font-heading font-bold text-xl">
+                4
+              </div>
+              <h3 className="text-lg font-heading font-bold text-gray-900 mb-2">
+                Cresça
+              </h3>
+              <p className="text-gray-600 font-sans text-sm">
+                Acompanhe relatórios e aumente seu faturamento
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Benefícios */}
       <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
@@ -268,6 +386,52 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Empresas que confiam */}
+      <section className="py-16 bg-white border-y border-gray-200">
+        <div className="container mx-auto px-4">
+          <p className="text-center text-sm text-gray-500 font-sans mb-8 uppercase tracking-wider">
+            Empresas que confiam em soluções automotivas
+          </p>
+          <div className="flex flex-wrap justify-center items-center gap-12 opacity-60 grayscale hover:grayscale-0 transition-all">
+            <Image
+              src="/images/uber-seeklogo.png"
+              alt="Uber"
+              width={100}
+              height={40}
+              className="object-contain h-10 w-auto"
+            />
+            <Image
+              src="/images/rappi-seeklogo.png"
+              alt="Rappi"
+              width={100}
+              height={40}
+              className="object-contain h-10 w-auto"
+            />
+            <Image
+              src="/images/mercado-livre-seeklogo.png"
+              alt="Mercado Livre"
+              width={100}
+              height={40}
+              className="object-contain h-10 w-auto"
+            />
+            <Image
+              src="/images/mercedes-benz-seeklogo.png"
+              alt="Mercedes-Benz"
+              width={100}
+              height={40}
+              className="object-contain h-10 w-auto"
+            />
+            <Image
+              src="/images/scania-seeklogo.png"
+              alt="Scania"
+              width={100}
+              height={40}
+              className="object-contain h-10 w-auto"
+            />
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-br from-blue-600 to-blue-700">
         <div className="container mx-auto px-4 text-center">
@@ -294,13 +458,14 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8 mb-8">
             <div>
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                  <Wrench className="h-5 w-5 text-white" />
-                </div>
-                <span className="text-xl font-heading font-bold text-white">
-                  Instauto
-                </span>
+              <div className="mb-4">
+                <Image
+                  src="/images/logo.svg"
+                  alt="Instauto"
+                  width={150}
+                  height={40}
+                  className="h-10 w-auto"
+                />
               </div>
               <p className="text-sm font-sans">
                 Sistema completo de gestão para oficinas mecânicas.
