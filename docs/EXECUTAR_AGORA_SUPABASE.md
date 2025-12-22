@@ -1,8 +1,11 @@
 # 🚨 EXECUTAR AGORA NO SUPABASE
 
-## ⚠️ IMPORTANTE: Tabela `diagnostics` não existe!
+## ⚠️ IMPORTANTE: Tabelas faltando!
 
-A funcionalidade de **Diagnóstico IA** precisa da tabela `diagnostics` no banco de dados.
+Você precisa criar 3 tabelas no banco de dados:
+1. ✅ **`diagnostics`** - Diagnóstico IA (já criada!)
+2. ⚠️ **`inventory`** - Estoque de peças
+3. ⚠️ **`transactions`** - Gestão financeira
 
 ---
 
@@ -16,59 +19,45 @@ A funcionalidade de **Diagnóstico IA** precisa da tabela `diagnostics` no banco
 - No menu lateral, clique em **SQL Editor**
 - Clique em **New Query**
 
-### 3️⃣ Cole o SQL abaixo:
+### 3️⃣ Cole os SQLs abaixo (um de cada vez):
+
+---
+
+## 📦 **SQL 1: INVENTORY (Estoque)**
 
 ```sql
 -- ============================================
--- INSTAUTO V10 - MIGRATION: DIAGNOSTICS
--- ============================================
--- Adiciona tabela de diagnósticos com IA
--- Data: 21/12/2024
+-- INSTAUTO V10 - MIGRATION: INVENTORY
 -- ============================================
 
--- Criar tabela de diagnósticos
-CREATE TABLE IF NOT EXISTS diagnostics (
+CREATE TABLE IF NOT EXISTS inventory (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   workshop_id UUID NOT NULL REFERENCES workshops(id) ON DELETE CASCADE,
-  client_id UUID REFERENCES clients(id) ON DELETE SET NULL,
-  vehicle_id UUID REFERENCES vehicles(id) ON DELETE SET NULL,
-  symptoms TEXT NOT NULL,
-  diagnosis TEXT NOT NULL,
-  recommendations TEXT,
-  severity TEXT CHECK (severity IN ('low', 'medium', 'high')),
-  estimated_cost TEXT,
-  safe_to_drive BOOLEAN,
-  ai_model TEXT DEFAULT 'gpt-4',
+  name VARCHAR(255) NOT NULL,
+  description TEXT,
+  code VARCHAR(100),
+  category VARCHAR(100),
+  quantity INTEGER NOT NULL DEFAULT 0,
+  min_quantity INTEGER DEFAULT 0,
+  unit_price DECIMAL(10,2),
+  supplier VARCHAR(255),
+  location VARCHAR(255),
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Índices para performance
-CREATE INDEX IF NOT EXISTS idx_diagnostics_workshop ON diagnostics(workshop_id);
-CREATE INDEX IF NOT EXISTS idx_diagnostics_client ON diagnostics(client_id);
-CREATE INDEX IF NOT EXISTS idx_diagnostics_vehicle ON diagnostics(vehicle_id);
-CREATE INDEX IF NOT EXISTS idx_diagnostics_created ON diagnostics(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_inventory_workshop ON inventory(workshop_id);
+CREATE INDEX IF NOT EXISTS idx_inventory_name ON inventory(name);
+CREATE INDEX IF NOT EXISTS idx_inventory_code ON inventory(code);
+CREATE INDEX IF NOT EXISTS idx_inventory_category ON inventory(category);
 
--- Comentários
-COMMENT ON TABLE diagnostics IS 'Diagnósticos de veículos realizados com IA';
-COMMENT ON COLUMN diagnostics.symptoms IS 'Sintomas descritos pelo usuário';
-COMMENT ON COLUMN diagnostics.diagnosis IS 'Diagnóstico gerado pela IA';
-COMMENT ON COLUMN diagnostics.recommendations IS 'Recomendações de reparo';
-COMMENT ON COLUMN diagnostics.severity IS 'Gravidade: low, medium, high';
-COMMENT ON COLUMN diagnostics.estimated_cost IS 'Estimativa de custo do reparo';
-COMMENT ON COLUMN diagnostics.safe_to_drive IS 'Se é seguro continuar dirigindo';
-COMMENT ON COLUMN diagnostics.ai_model IS 'Modelo de IA usado (gpt-4, claude-3, etc)';
+ALTER TABLE inventory ENABLE ROW LEVEL SECURITY;
 
--- Habilitar RLS
-ALTER TABLE diagnostics ENABLE ROW LEVEL SECURITY;
-
--- Policy: Workshop pode gerenciar seus diagnósticos
-CREATE POLICY "Workshop manage diagnostics" ON diagnostics FOR ALL TO authenticated
+CREATE POLICY "Workshop manage inventory" ON inventory FOR ALL TO authenticated
 USING (workshop_id IN (SELECT id FROM workshops WHERE profile_id = auth.uid()))
 WITH CHECK (workshop_id IN (SELECT id FROM workshops WHERE profile_id = auth.uid()));
 
--- Trigger para atualizar updated_at
-CREATE OR REPLACE FUNCTION update_diagnostics_updated_at()
+CREATE OR REPLACE FUNCTION update_inventory_updated_at()
 RETURNS TRIGGER AS $$
 BEGIN
   NEW.updated_at = NOW();
@@ -76,21 +65,64 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-CREATE TRIGGER trigger_update_diagnostics_updated_at
-BEFORE UPDATE ON diagnostics
+CREATE TRIGGER trigger_update_inventory_updated_at
+BEFORE UPDATE ON inventory
 FOR EACH ROW
-EXECUTE FUNCTION update_diagnostics_updated_at();
-
--- Mensagem de sucesso
-DO $$
-BEGIN
-  RAISE NOTICE '✅ Tabela diagnostics criada com sucesso!';
-  RAISE NOTICE '📊 RLS habilitado';
-  RAISE NOTICE '🔒 Policies configuradas';
-  RAISE NOTICE '⚡ Triggers configurados';
-  RAISE NOTICE '🎯 Pronto para uso!';
-END $$;
+EXECUTE FUNCTION update_inventory_updated_at();
 ```
+
+**Execute este SQL primeiro!** ✅
+
+---
+
+## 💰 **SQL 2: TRANSACTIONS (Financeiro)**
+
+```sql
+-- ============================================
+-- INSTAUTO V10 - MIGRATION: TRANSACTIONS
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS transactions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  workshop_id UUID NOT NULL REFERENCES workshops(id) ON DELETE CASCADE,
+  type VARCHAR(50) NOT NULL CHECK (type IN ('income', 'expense')),
+  category VARCHAR(100),
+  description TEXT NOT NULL,
+  amount DECIMAL(10,2) NOT NULL,
+  date DATE NOT NULL DEFAULT CURRENT_DATE,
+  payment_method VARCHAR(50),
+  reference VARCHAR(255),
+  notes TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_transactions_workshop ON transactions(workshop_id);
+CREATE INDEX IF NOT EXISTS idx_transactions_type ON transactions(type);
+CREATE INDEX IF NOT EXISTS idx_transactions_date ON transactions(date DESC);
+CREATE INDEX IF NOT EXISTS idx_transactions_category ON transactions(category);
+
+ALTER TABLE transactions ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Workshop manage transactions" ON transactions FOR ALL TO authenticated
+USING (workshop_id IN (SELECT id FROM workshops WHERE profile_id = auth.uid()))
+WITH CHECK (workshop_id IN (SELECT id FROM workshops WHERE profile_id = auth.uid()));
+
+CREATE OR REPLACE FUNCTION update_transactions_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_update_transactions_updated_at
+BEFORE UPDATE ON transactions
+FOR EACH ROW
+EXECUTE FUNCTION update_transactions_updated_at();
+```
+
+**Execute este SQL por último!** ✅
 
 ### 4️⃣ Execute:
 - Clique no botão **Run** (ou pressione `Ctrl+Enter`)
@@ -98,26 +130,32 @@ END $$;
 
 ### 5️⃣ Verifique:
 - No menu lateral, clique em **Table Editor**
-- Procure pela tabela `diagnostics`
-- Deve aparecer com todas as colunas
+- Procure pelas tabelas: `inventory` e `transactions`
+- Devem aparecer com todas as colunas
 
 ---
 
 ## ✅ PRONTO!
 
-Após executar, a funcionalidade de **Diagnóstico IA** estará 100% funcional! 🎉
+Após executar os 2 SQLs, as páginas de **Estoque** e **Financeiro** estarão 100% funcionais! 🎉
+
+**Tabelas criadas:**
+- ✅ `diagnostics` - Diagnóstico IA
+- ✅ `inventory` - Estoque de peças
+- ✅ `transactions` - Gestão financeira
 
 ---
 
 ## 🔄 Se der erro:
 
-Se aparecer erro dizendo que a tabela já existe, execute este comando para limpar:
+Se aparecer erro dizendo que a tabela já existe, execute estes comandos para limpar:
 
 ```sql
-DROP TABLE IF EXISTS diagnostics CASCADE;
+DROP TABLE IF EXISTS inventory CASCADE;
+DROP TABLE IF EXISTS transactions CASCADE;
 ```
 
-E depois execute o SQL completo novamente.
+E depois execute os SQLs completos novamente.
 
 ---
 

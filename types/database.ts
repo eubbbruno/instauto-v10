@@ -78,16 +78,14 @@ export interface Inventory {
   id: string;
   workshop_id: string;
   name: string;
+  description?: string;
   code?: string;
-  brand?: string;
   category?: string;
   quantity: number;
   min_quantity: number;
-  cost_price: number;
-  sell_price: number;
-  location?: string;
+  unit_price?: number;
   supplier?: string;
-  notes?: string;
+  location?: string;
   created_at: string;
   updated_at?: string;
 }
@@ -98,15 +96,15 @@ export interface Transaction {
   id: string;
   workshop_id: string;
   type: TransactionType;
-  category: string;
+  category?: string;
   description: string;
   amount: number;
-  payment_method?: string;
-  reference_id?: string;
-  reference_type?: string;
   date: string;
+  payment_method?: string;
+  reference?: string;
   notes?: string;
   created_at: string;
+  updated_at?: string;
 }
 
 export type AppointmentStatus = "scheduled" | "confirmed" | "in_progress" | "completed" | "cancelled";

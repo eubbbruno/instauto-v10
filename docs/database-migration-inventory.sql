@@ -1,31 +1,52 @@
--- =====================================================
--- MIGRATION: INVENTORY (ESTOQUE DE PEÇAS)
--- =====================================================
--- Este arquivo adiciona a tabela de estoque de peças
--- Execute no SQL Editor do Supabase
--- =====================================================
+-- ============================================
+-- INSTAUTO V10 - MIGRATION: INVENTORY
+-- ============================================
+-- Adiciona tabela de estoque de peças
+-- Data: 22/12/2024
+-- ============================================
 
--- Criar tabela inventory
+-- Criar tabela de estoque
 CREATE TABLE IF NOT EXISTS inventory (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   workshop_id UUID NOT NULL REFERENCES workshops(id) ON DELETE CASCADE,
-  name TEXT NOT NULL,
-  code TEXT,
-  brand TEXT,
+  name VARCHAR(255) NOT NULL,
+  description TEXT,
+  code VARCHAR(100),
+  category VARCHAR(100),
   quantity INTEGER NOT NULL DEFAULT 0,
-  min_quantity INTEGER DEFAULT 5,
-  cost_price DECIMAL(10,2) DEFAULT 0,
-  sell_price DECIMAL(10,2) DEFAULT 0,
-  location TEXT,
-  notes TEXT,
+  min_quantity INTEGER DEFAULT 0,
+  unit_price DECIMAL(10,2),
+  supplier VARCHAR(255),
+  location VARCHAR(255),
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- Índices para performance
-CREATE INDEX IF NOT EXISTS idx_inventory_workshop_id ON inventory(workshop_id);
+CREATE INDEX IF NOT EXISTS idx_inventory_workshop ON inventory(workshop_id);
 CREATE INDEX IF NOT EXISTS idx_inventory_name ON inventory(name);
 CREATE INDEX IF NOT EXISTS idx_inventory_code ON inventory(code);
+CREATE INDEX IF NOT EXISTS idx_inventory_category ON inventory(category);
+CREATE INDEX IF NOT EXISTS idx_inventory_quantity ON inventory(quantity);
+
+-- Comentários
+COMMENT ON TABLE inventory IS 'Estoque de peças e produtos das oficinas';
+COMMENT ON COLUMN inventory.name IS 'Nome da peça/produto';
+COMMENT ON COLUMN inventory.code IS 'Código/SKU da peça';
+COMMENT ON COLUMN inventory.category IS 'Categoria (Motor, Freios, Suspensão, etc)';
+COMMENT ON COLUMN inventory.quantity IS 'Quantidade atual em estoque';
+COMMENT ON COLUMN inventory.min_quantity IS 'Quantidade mínima (alerta de reposição)';
+COMMENT ON COLUMN inventory.unit_price IS 'Preço unitário';
+COMMENT ON COLUMN inventory.supplier IS 'Fornecedor';
+COMMENT ON COLUMN inventory.location IS 'Localização física no estoque';
+
+-- Habilitar RLS
+ALTER TABLE inventory ENABLE ROW LEVEL SECURITY;
+
+-- Policy: Workshop pode gerenciar seu estoque
+CREATE POLICY "Workshop manage inventory" ON inventory FOR ALL TO authenticated
+USING (workshop_id IN (SELECT id FROM workshops WHERE profile_id = auth.uid()))
+WITH CHECK (workshop_id IN (SELECT id FROM workshops WHERE profile_id = auth.uid()));
 
 -- Trigger para atualizar updated_at
 CREATE OR REPLACE FUNCTION update_inventory_updated_at()
@@ -37,30 +58,16 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER trigger_update_inventory_updated_at
-  BEFORE UPDATE ON inventory
-  FOR EACH ROW
-  EXECUTE FUNCTION update_inventory_updated_at();
+BEFORE UPDATE ON inventory
+FOR EACH ROW
+EXECUTE FUNCTION update_inventory_updated_at();
 
--- RLS (Row Level Security)
-ALTER TABLE inventory ENABLE ROW LEVEL SECURITY;
-
--- Política: Oficina pode gerenciar seu próprio estoque
-CREATE POLICY "Workshop can manage own inventory"
-ON inventory FOR ALL
-TO authenticated
-USING (workshop_id IN (SELECT id FROM workshops WHERE profile_id = auth.uid()))
-WITH CHECK (workshop_id IN (SELECT id FROM workshops WHERE profile_id = auth.uid()));
-
--- Comentários
-COMMENT ON TABLE inventory IS 'Estoque de peças das oficinas';
-COMMENT ON COLUMN inventory.workshop_id IS 'ID da oficina dona do item';
-COMMENT ON COLUMN inventory.name IS 'Nome da peça';
-COMMENT ON COLUMN inventory.code IS 'Código/SKU da peça';
-COMMENT ON COLUMN inventory.brand IS 'Marca da peça';
-COMMENT ON COLUMN inventory.quantity IS 'Quantidade em estoque';
-COMMENT ON COLUMN inventory.min_quantity IS 'Quantidade mínima (alerta de estoque baixo)';
-COMMENT ON COLUMN inventory.cost_price IS 'Preço de custo';
-COMMENT ON COLUMN inventory.sell_price IS 'Preço de venda';
-COMMENT ON COLUMN inventory.location IS 'Localização física no estoque';
-COMMENT ON COLUMN inventory.notes IS 'Observações gerais';
-
+-- Mensagem de sucesso
+DO $$
+BEGIN
+  RAISE NOTICE '✅ Tabela inventory criada com sucesso!';
+  RAISE NOTICE '📦 Gestão de estoque habilitada';
+  RAISE NOTICE '🔒 RLS e policies configuradas';
+  RAISE NOTICE '⚡ Triggers configurados';
+  RAISE NOTICE '🎯 Pronto para uso!';
+END $$;
