@@ -224,7 +224,7 @@ export default function FinanceiroPage() {
     setEditingTransaction(transaction);
     setFormData({
       type: transaction.type,
-      category: transaction.category,
+      category: transaction.category || "",
       description: transaction.description,
       amount: transaction.amount,
       payment_method: transaction.payment_method || "",
