@@ -268,10 +268,9 @@ function DiagnosticoContent() {
               <Label>Cliente (Opcional)</Label>
               <Select value={selectedClient} onValueChange={handleClientChange}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Selecione um cliente" />
+                  <SelectValue placeholder="Selecione um cliente (opcional)" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Nenhum</SelectItem>
                   {clients.map((client) => (
                     <SelectItem key={client.id} value={client.id}>
                       {client.name}
@@ -289,10 +288,9 @@ function DiagnosticoContent() {
                 disabled={!selectedClient}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Selecione um veículo" />
+                  <SelectValue placeholder="Selecione um veículo (opcional)" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">Nenhum</SelectItem>
                   {vehicles.map((vehicle) => (
                     <SelectItem key={vehicle.id} value={vehicle.id}>
                       {vehicle.brand} {vehicle.model} ({vehicle.year})
