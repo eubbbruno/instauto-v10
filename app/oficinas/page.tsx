@@ -30,58 +30,6 @@ export default function OficinasPage() {
     <div className="min-h-screen bg-white">
       {/* Header */}
       <Header />
-        <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <Image
-              src="/images/logo-of-dark.svg"
-              alt="Instauto"
-              width={150}
-              height={40}
-              className="h-10 w-auto"
-            />
-          </Link>
-
-          <div className="hidden md:flex items-center gap-8">
-            <a
-              href="#funcionalidades"
-              className="text-gray-700 hover:text-blue-600 font-sans font-medium transition-colors"
-            >
-              Funcionalidades
-            </a>
-            <a
-              href="#planos"
-              className="text-gray-700 hover:text-blue-600 font-sans font-medium transition-colors"
-            >
-              Planos
-            </a>
-            <a
-              href="#faq"
-              className="text-gray-700 hover:text-blue-600 font-sans font-medium transition-colors"
-            >
-              FAQ
-            </a>
-            <Link
-              href="/login"
-              className="text-gray-700 hover:text-blue-600 font-sans font-medium transition-colors"
-            >
-              Entrar
-            </Link>
-            <Link href="/cadastro">
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white font-sans font-semibold">
-                Teste Grátis (14 dias)
-              </Button>
-            </Link>
-          </div>
-
-          <div className="md:hidden">
-            <Link href="/cadastro">
-              <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
-                Começar
-              </Button>
-            </Link>
-          </div>
-        </nav>
-      </header>
 
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 py-20 md:py-32 overflow-hidden">
@@ -722,78 +670,7 @@ export default function OficinasPage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-gray-400 py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
-            <div>
-              <div className="mb-4">
-                <Image
-                  src="/images/logo.svg"
-                  alt="Instauto"
-                  width={150}
-                  height={40}
-                  className="h-10 w-auto"
-                />
-              </div>
-              <p className="text-sm font-sans">
-                Sistema completo de gestão para oficinas mecânicas.
-              </p>
-            </div>
-
-            <div>
-              <h4 className="text-white font-sans font-bold mb-4">Produto</h4>
-              <ul className="space-y-2 text-sm font-sans">
-                <li>
-                  <a href="#funcionalidades" className="hover:text-white transition-colors">
-                    Funcionalidades
-                  </a>
-                </li>
-                <li>
-                  <Link href="/planos" className="hover:text-white transition-colors">
-                    Planos e Preços
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-white font-sans font-bold mb-4">Empresa</h4>
-              <ul className="space-y-2 text-sm font-sans">
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Sobre
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Contato
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-white font-sans font-bold mb-4">Legal</h4>
-              <ul className="space-y-2 text-sm font-sans">
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Termos de Uso
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Privacidade
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t border-gray-800 pt-8 text-center text-sm font-sans">
-            <p>© 2024 Instauto. Todos os direitos reservados.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
