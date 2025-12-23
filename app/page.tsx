@@ -83,12 +83,12 @@ export default function HomePage() {
 
             {/* Hero Image */}
             <div className="hidden md:flex justify-center items-center">
-              <div className="relative w-full max-w-lg">
+              <div className="relative w-full max-w-md">
                 <Image
                   src="/images/img-01.png"
                   alt="Mecânico Instauto"
-                  width={500}
-                  height={500}
+                  width={400}
+                  height={400}
                   className="object-contain drop-shadow-2xl"
                   priority
                 />

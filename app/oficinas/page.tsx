@@ -42,7 +42,7 @@ export default function OficinasPage() {
               </div>
 
               <h1 className="text-4xl md:text-6xl font-heading font-bold mb-6 leading-tight">
-                Pare de perder tempo com planilhas
+                Gestão completa para sua oficina
               </h1>
 
               <p className="text-xl md:text-2xl text-blue-100 font-sans mb-8 leading-relaxed">
