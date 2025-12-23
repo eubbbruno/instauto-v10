@@ -392,42 +392,130 @@ export default function HomePage() {
           <p className="text-center text-sm text-gray-500 font-sans mb-8 uppercase tracking-wider">
             Empresas que confiam em soluções automotivas
           </p>
-          <div className="flex flex-wrap justify-center items-center gap-12 opacity-60 grayscale hover:grayscale-0 transition-all">
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 opacity-60 grayscale hover:grayscale-0 transition-all">
             <Image
               src="/images/uber-seeklogo.png"
               alt="Uber"
               width={100}
               height={40}
-              className="object-contain h-10 w-auto"
+              className="object-contain h-8 md:h-10 w-auto"
             />
             <Image
               src="/images/rappi-seeklogo.png"
               alt="Rappi"
               width={100}
               height={40}
-              className="object-contain h-10 w-auto"
+              className="object-contain h-8 md:h-10 w-auto"
             />
             <Image
               src="/images/mercado-livre-seeklogo.png"
               alt="Mercado Livre"
               width={100}
               height={40}
-              className="object-contain h-10 w-auto"
+              className="object-contain h-8 md:h-10 w-auto"
             />
             <Image
               src="/images/mercedes-benz-seeklogo.png"
               alt="Mercedes-Benz"
               width={100}
               height={40}
-              className="object-contain h-10 w-auto"
+              className="object-contain h-8 md:h-10 w-auto"
             />
             <Image
               src="/images/scania-seeklogo.png"
               alt="Scania"
               width={100}
               height={40}
-              className="object-contain h-10 w-auto"
+              className="object-contain h-8 md:h-10 w-auto"
             />
+            <Image
+              src="/images/volvo-seeklogo.png"
+              alt="Volvo"
+              width={100}
+              height={40}
+              className="object-contain h-8 md:h-10 w-auto"
+            />
+            <Image
+              src="/images/localiza-seeklogo.png"
+              alt="Localiza"
+              width={100}
+              height={40}
+              className="object-contain h-8 md:h-10 w-auto"
+            />
+            <Image
+              src="/images/unidas-rent-a-car-seeklogo.png"
+              alt="Unidas"
+              width={100}
+              height={40}
+              className="object-contain h-8 md:h-10 w-auto"
+            />
+            <Image
+              src="/images/correios-seeklogo.png"
+              alt="Correios"
+              width={100}
+              height={40}
+              className="object-contain h-8 md:h-10 w-auto"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Presente em todo Brasil */}
+      <section className="py-20 bg-gradient-to-br from-blue-50 to-white">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+            <div>
+              <h2 className="text-3xl md:text-5xl font-heading font-bold text-gray-900 mb-6">
+                Presente em todo o Brasil
+              </h2>
+              <p className="text-xl text-gray-600 font-sans mb-8 leading-relaxed">
+                Oficinas de norte a sul do país já confiam no Instauto para
+                gerenciar seus negócios e aumentar o faturamento.
+              </p>
+              <div className="grid grid-cols-2 gap-6">
+                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                  <div className="text-4xl font-heading font-bold text-blue-600 mb-2">
+                    500+
+                  </div>
+                  <p className="text-gray-600 font-sans text-sm">
+                    Oficinas ativas
+                  </p>
+                </div>
+                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                  <div className="text-4xl font-heading font-bold text-blue-600 mb-2">
+                    15
+                  </div>
+                  <p className="text-gray-600 font-sans text-sm">
+                    Estados brasileiros
+                  </p>
+                </div>
+                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                  <div className="text-4xl font-heading font-bold text-blue-600 mb-2">
+                    50k+
+                  </div>
+                  <p className="text-gray-600 font-sans text-sm">
+                    OS gerenciadas
+                  </p>
+                </div>
+                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                  <div className="text-4xl font-heading font-bold text-blue-600 mb-2">
+                    98%
+                  </div>
+                  <p className="text-gray-600 font-sans text-sm">
+                    Satisfação
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-center">
+              <Image
+                src="/images/brazil-map.png"
+                alt="Mapa do Brasil - Instauto"
+                width={500}
+                height={500}
+                className="object-contain drop-shadow-2xl"
+              />
+            </div>
           </div>
         </div>
       </section>

@@ -139,7 +139,7 @@ export default function OficinasPage() {
             <div className="hidden md:flex justify-center items-center">
               <div className="relative">
                 <Image
-                  src="/images/img-02.png"
+                  src="/images/img-03.png"
                   alt="Mecânico Instauto"
                   width={500}
                   height={500}

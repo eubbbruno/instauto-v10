@@ -168,16 +168,16 @@ export default function CadastroPage() {
           <div className="bg-gradient-to-r from-blue-50 to-yellow-50 border-2 border-blue-200 rounded-lg p-4">
             <div className="flex items-center gap-2 mb-3">
               <Sparkles className="h-5 w-5 text-blue-600" />
-              <span className="font-bold text-gray-900">Plano FREE inclui:</span>
+              <span className="font-bold text-gray-900">Teste PRO por 14 dias:</span>
             </div>
             <ul className="text-sm text-gray-700 space-y-2">
               <li className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 bg-blue-600 rounded-full"></div>
-                Até 10 clientes grátis
+                Sistema completo de gestão
               </li>
               <li className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 bg-blue-600 rounded-full"></div>
-                30 OS por mês
+                Clientes e OS ilimitados
               </li>
               <li className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 bg-blue-600 rounded-full"></div>
