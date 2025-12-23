@@ -1,10 +1,10 @@
 "use client";
 
-import { Car, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
-export default function AuthLayout({
+export default function CadastroLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -98,3 +98,4 @@ export default function AuthLayout({
     </div>
   );
 }
+
