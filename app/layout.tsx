@@ -17,8 +17,27 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Instauto - Sistema de Gestão para Oficinas",
-  description: "Sistema completo de gestão para oficinas mecânicas",
+  title: "Instauto - Sistema de Gestão para Oficinas Mecânicas",
+  description: "Sistema completo de gestão para oficinas mecânicas. Controle clientes, ordens de serviço, estoque, financeiro e muito mais. Teste grátis por 14 dias.",
+  keywords: ["oficina mecânica", "gestão de oficina", "sistema para oficina", "ordem de serviço", "controle de estoque"],
+  authors: [{ name: "Instauto" }],
+  openGraph: {
+    title: "Instauto - Sistema de Gestão para Oficinas Mecânicas",
+    description: "Sistema completo de gestão para oficinas mecânicas. Teste grátis por 14 dias.",
+    url: "https://www.instauto.com.br",
+    siteName: "Instauto",
+    locale: "pt_BR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Instauto - Sistema de Gestão para Oficinas",
+    description: "Sistema completo de gestão para oficinas mecânicas",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
