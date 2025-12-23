@@ -44,12 +44,12 @@ export default function HomePage() {
               Planos
             </Link>
             <Link
-              href="/auth/login"
+              href="/login"
               className="text-gray-700 hover:text-blue-600 font-sans font-medium transition-colors"
             >
               Entrar
             </Link>
-            <Link href="/auth/register">
+            <Link href="/cadastro">
               <Button className="bg-blue-600 hover:bg-blue-700 text-white font-sans font-semibold">
                 Começar Grátis
               </Button>
@@ -58,7 +58,7 @@ export default function HomePage() {
 
           {/* Mobile Menu Button */}
           <div className="md:hidden">
-            <Link href="/auth/register">
+            <Link href="/cadastro">
               <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
                 Começar
               </Button>
@@ -90,13 +90,13 @@ export default function HomePage() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start items-center mb-12">
-              <Link href="/auth/register">
+              <Link href="/cadastro">
                 <Button
                   size="lg"
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-sans font-bold text-lg px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all"
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-sans font-bold text-lg px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all group"
                 >
                   Começar Teste Grátis (14 dias)
-                  <ArrowRight className="ml-2 h-5 w-5" />
+                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
                 </Button>
               </Link>
               <Link href="/oficinas">
@@ -529,13 +529,13 @@ export default function HomePage() {
           <p className="text-xl text-blue-100 font-sans mb-10 max-w-2xl mx-auto">
             Comece seu teste grátis de 14 dias agora. Sem cartão de crédito.
           </p>
-          <Link href="/auth/register">
+          <Link href="/cadastro">
             <Button
               size="lg"
-              className="bg-white text-blue-600 hover:bg-gray-100 font-sans font-bold text-lg px-10 py-6 rounded-xl shadow-xl hover:shadow-2xl transition-all"
+              className="bg-white text-blue-600 hover:bg-gray-100 font-sans font-bold text-lg px-10 py-6 rounded-xl shadow-xl hover:shadow-2xl transition-all group"
             >
               Começar Teste Grátis
-              <ArrowRight className="ml-2 h-5 w-5" />
+              <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Button>
           </Link>
         </div>
