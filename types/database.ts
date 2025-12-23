@@ -24,10 +24,19 @@ export interface Workshop {
   address?: string;
   city?: string;
   state?: string;
+  zip_code?: string;
   plan_type: PlanType;
   trial_ends_at?: string;
   mercadopago_subscription_id?: string;
   subscription_status?: string;
+  is_public?: boolean;
+  description?: string;
+  services?: string[];
+  specialties?: string[];
+  working_hours?: Record<string, any>;
+  accepts_quotes?: boolean;
+  average_rating?: number;
+  total_reviews?: number;
   created_at: string;
   updated_at?: string;
 }
@@ -161,6 +170,49 @@ export interface Diagnostic {
   estimated_cost?: string;
   safe_to_drive?: boolean;
   ai_model: string;
+  created_at: string;
+  updated_at?: string;
+}
+
+export type QuoteStatus = "pending" | "quoted" | "accepted" | "rejected" | "expired";
+export type QuoteServiceType = "maintenance" | "repair" | "diagnostic" | "other";
+export type QuoteUrgency = "low" | "medium" | "high";
+
+export interface Quote {
+  id: string;
+  workshop_id: string;
+  motorist_name: string;
+  motorist_email: string;
+  motorist_phone: string;
+  vehicle_brand: string;
+  vehicle_model: string;
+  vehicle_year: number;
+  vehicle_plate?: string;
+  service_type: QuoteServiceType;
+  description: string;
+  urgency: QuoteUrgency;
+  status: QuoteStatus;
+  workshop_response?: string;
+  estimated_price?: number;
+  estimated_days?: number;
+  responded_at?: string;
+  expires_at?: string;
+  created_at: string;
+  updated_at?: string;
+}
+
+export interface Review {
+  id: string;
+  workshop_id: string;
+  motorist_name: string;
+  motorist_email: string;
+  rating: number;
+  comment?: string;
+  service_type?: string;
+  verified: boolean;
+  response?: string;
+  responded_at?: string;
+  is_visible: boolean;
   created_at: string;
   updated_at?: string;
 }

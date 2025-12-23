@@ -19,7 +19,8 @@ import {
   Menu,
   X,
   Stethoscope,
-  MessageSquare
+  MessageSquare,
+  Receipt
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -39,6 +40,7 @@ const menuItems: MenuItem[] = [
   { name: "Clientes", href: "/oficina/clientes", icon: <Users className="h-5 w-5" />, pro: true },
   { name: "Veículos", href: "/oficina/veiculos", icon: <Car className="h-5 w-5" />, pro: true },
   { name: "Ordens de Serviço", href: "/oficina/ordens", icon: <ClipboardList className="h-5 w-5" />, pro: true },
+  { name: "Orçamentos", href: "/oficina/orcamentos", icon: <Receipt className="h-5 w-5" />, pro: true },
   { name: "Agenda", href: "/oficina/agenda", icon: <Calendar className="h-5 w-5" />, pro: true },
   { name: "Estoque", href: "/oficina/estoque", icon: <Package className="h-5 w-5" />, pro: true },
   { name: "Financeiro", href: "/oficina/financeiro", icon: <DollarSign className="h-5 w-5" />, pro: true },
