@@ -21,7 +21,7 @@ export default function PlanosPage() {
       <Header />
 
       {/* Hero */}
-      <section className="bg-gradient-to-br from-blue-50 via-white to-yellow-50 py-20">
+      <section className="bg-gradient-to-br from-blue-50 via-white to-yellow-50 pt-32 pb-20">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-6xl font-heading font-bold text-gray-900 mb-6">
             Planos e Preços

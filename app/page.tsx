@@ -23,7 +23,7 @@ export default function HomePage() {
       <Header />
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-50 via-white to-yellow-50 py-20 md:py-32 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-blue-50 via-white to-yellow-50 pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
             <div className="text-center md:text-left">

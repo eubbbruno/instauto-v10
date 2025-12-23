@@ -40,17 +40,6 @@ export default function LoginLayout({
         <div className="absolute bottom-20 left-20 w-72 h-72 bg-blue-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse delay-1000"></div>
 
         <div className="relative z-10 max-w-lg text-white">
-          {/* Hero Image */}
-          <div className="mb-8 flex justify-center">
-            <Image
-              src="/images/oficina.png"
-              alt="Oficina Instauto"
-              width={400}
-              height={400}
-              className="object-contain drop-shadow-2xl"
-            />
-          </div>
-
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-bold mb-6">
             <Sparkles className="h-4 w-4 text-yellow-400" />
             Sistema completo para oficinas
