@@ -3,6 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 import {
   ArrowRight,
   CheckCircle2,
@@ -15,8 +17,8 @@ import {
 export default function PlanosPage() {
   return (
     <div className="min-h-screen bg-white">
-      {/* Header/Navbar */}
-      <header className="sticky top-0 z-50 bg-white border-b border-gray-200 backdrop-blur-sm bg-white/90">
+      {/* Header */}
+      <Header />
         <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <Image
