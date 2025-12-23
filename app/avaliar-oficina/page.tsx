@@ -78,7 +78,7 @@ function AvaliarOficinaContent() {
 
       setSuccess(true);
       setTimeout(() => {
-        router.push(`/oficina/${workshopId}`);
+        router.push(`/oficina-detalhes/${workshopId}`);
       }, 3000);
     } catch (error: any) {
       console.error("Erro ao enviar avaliação:", error);

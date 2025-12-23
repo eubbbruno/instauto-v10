@@ -280,7 +280,7 @@ export default function BuscarOficinasPage() {
                         Solicitar Orçamento
                       </Link>
                       <Link
-                        href={`/oficina/${workshop.id}`}
+                        href={`/oficina-detalhes/${workshop.id}`}
                         className="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-50 transition-colors text-center font-medium"
                       >
                         Ver Detalhes
