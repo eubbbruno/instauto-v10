@@ -28,7 +28,7 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, Pencil, Trash2, Loader2, Search, FileText, AlertCircle, Crown } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { PlanGuard } from "@/components/auth/PlanGuard";
+import PlanGuard from "@/components/auth/PlanGuard";
 import { PageHeader } from "@/components/dashboard/PageHeader";
 
 interface ClientOption {

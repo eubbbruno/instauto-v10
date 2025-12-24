@@ -27,7 +27,7 @@ import {
 } from "@/components/ui/table";
 import { Plus, Pencil, Trash2, Loader2, Search, AlertCircle, Crown } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { PlanGuard } from "@/components/auth/PlanGuard";
+import PlanGuard from "@/components/auth/PlanGuard";
 import { PageHeader } from "@/components/dashboard/PageHeader";
 
 export default function ClientesPage() {

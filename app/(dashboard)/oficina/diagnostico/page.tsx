@@ -8,7 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
-import { PlanGuard } from "@/components/auth/PlanGuard";
+import PlanGuard from "@/components/auth/PlanGuard";
 import { PageHeader } from "@/components/dashboard/PageHeader";
 import { Loader2, Sparkles, AlertTriangle, CheckCircle2, XCircle, DollarSign, Car, Calendar, Trash2, Eye } from "lucide-react";
 import { Workshop, Client, Vehicle, Diagnostic } from "@/types/database";

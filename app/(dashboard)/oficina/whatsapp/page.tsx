@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-import { PlanGuard } from "@/components/auth/PlanGuard";
+import PlanGuard from "@/components/auth/PlanGuard";
 import { PageHeader } from "@/components/dashboard/PageHeader";
 import { Loader2, MessageSquare, Send, Phone, CheckCircle2, Clock, AlertCircle, Copy, Zap, Settings } from "lucide-react";
 import { Workshop, Client } from "@/types/database";
