@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { createClient } from "@/lib/supabase-client";
+import { createClient } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
 import { Quote } from "@/types/database";
 import { 
@@ -16,7 +16,7 @@ import {
   Phone,
   Mail
 } from "lucide-react";
-import PlanGuard from "@/components/PlanGuard";
+import PlanGuard from "@/components/auth/PlanGuard";
 
 export default function OrcamentosPage() {
   const { workshop } = useAuth();
