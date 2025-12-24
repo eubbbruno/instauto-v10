@@ -52,14 +52,14 @@ export default function BuscarOficinasPage() {
       filtered = filtered.filter(
         (w) =>
           w.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          w.city.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          w.city?.toLowerCase().includes(searchTerm.toLowerCase()) ||
           w.description?.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
     if (cityFilter) {
       filtered = filtered.filter((w) =>
-        w.city.toLowerCase().includes(cityFilter.toLowerCase())
+        w.city?.toLowerCase().includes(cityFilter.toLowerCase())
       );
     }
 
@@ -76,8 +76,8 @@ export default function BuscarOficinasPage() {
     setFilteredWorkshops(filtered);
   };
 
-  const uniqueCities = Array.from(new Set(workshops.map((w) => w.city))).sort();
-  const uniqueStates = Array.from(new Set(workshops.map((w) => w.state))).sort();
+  const uniqueCities = Array.from(new Set(workshops.map((w) => w.city).filter(Boolean))).sort();
+  const uniqueStates = Array.from(new Set(workshops.map((w) => w.state).filter(Boolean))).sort();
 
   const serviceTypes = [
     "Manutenção Preventiva",
