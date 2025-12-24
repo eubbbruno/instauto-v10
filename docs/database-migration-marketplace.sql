@@ -180,23 +180,19 @@ CREATE OR REPLACE VIEW public_workshops AS
 SELECT 
   w.id,
   w.name,
-  w.cnpj,
   w.phone,
   w.email,
   w.address,
   w.city,
   w.state,
-  w.zip_code,
   w.description,
   w.services,
-  w.specialties,
-  w.working_hours,
-  w.accepts_quotes,
+  w.opening_hours,
   w.average_rating,
   w.total_reviews,
   w.created_at
 FROM workshops w
-WHERE w.is_public = true AND w.plan IN ('free', 'pro');
+WHERE w.is_public = true;
 
 -- View: Orçamentos pendentes por oficina
 CREATE OR REPLACE VIEW pending_quotes_by_workshop AS
@@ -205,7 +201,7 @@ SELECT
   COUNT(*) as pending_count,
   MAX(created_at) as last_quote_at
 FROM quotes
-WHERE status = 'pending' AND expires_at > NOW()
+WHERE status = 'pending'
 GROUP BY workshop_id;
 
 -- =====================================================
