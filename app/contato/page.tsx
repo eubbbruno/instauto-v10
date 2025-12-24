@@ -6,8 +6,8 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 import {
   Mail,
   Phone,
