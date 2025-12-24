@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
-import { Quote } from "@/types/database";
+import { Quote, Workshop } from "@/types/database";
 import { 
   MessageSquare, 
   Clock, 
@@ -19,7 +19,8 @@ import {
 import PlanGuard from "@/components/auth/PlanGuard";
 
 export default function OrcamentosPage() {
-  const { workshop } = useAuth();
+  const { profile } = useAuth();
+  const [workshop, setWorkshop] = useState<Workshop | null>(null);
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"all" | "pending" | "quoted" | "accepted">("all");
@@ -34,19 +35,40 @@ export default function OrcamentosPage() {
   const supabase = createClient();
 
   useEffect(() => {
-    if (workshop) {
-      loadQuotes();
+    if (profile) {
+      loadWorkshop();
     }
-  }, [workshop]);
+  }, [profile]);
 
-  const loadQuotes = async () => {
-    if (!workshop) return;
+  const loadWorkshop = async () => {
+    if (!profile) return;
+
+    try {
+      const { data, error } = await supabase
+        .from("workshops")
+        .select("*")
+        .eq("profile_id", profile.id)
+        .single();
+
+      if (error) throw error;
+      setWorkshop(data);
+      if (data) {
+        loadQuotes(data.id);
+      }
+    } catch (error) {
+      console.error("Erro ao carregar oficina:", error);
+    }
+  };
+
+  const loadQuotes = async (workshopId?: string) => {
+    const id = workshopId || workshop?.id;
+    if (!id) return;
 
     try {
       const { data, error } = await supabase
         .from("quotes")
         .select("*")
-        .eq("workshop_id", workshop.id)
+        .eq("workshop_id", id)
         .order("created_at", { ascending: false });
 
       if (error) throw error;
