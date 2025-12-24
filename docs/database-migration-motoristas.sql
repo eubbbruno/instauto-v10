@@ -3,6 +3,10 @@
 -- ============================================
 -- Adiciona suporte para motoristas (role separado de oficinas)
 -- Data: 2025-01-24
+--
+-- ⚠️ ATENÇÃO: Execute PRIMEIRO o database-migration-marketplace.sql
+-- Este script depende da tabela 'quotes' criada no marketplace
+-- ============================================
 
 -- =====================================================
 -- 1. TABELA: motorists (dados do motorista)

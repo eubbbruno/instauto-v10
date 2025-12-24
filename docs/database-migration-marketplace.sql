@@ -187,7 +187,7 @@ SELECT
   w.state,
   w.description,
   w.services,
-  w.opening_hours,
+  w.working_hours,
   w.average_rating,
   w.total_reviews,
   w.created_at
