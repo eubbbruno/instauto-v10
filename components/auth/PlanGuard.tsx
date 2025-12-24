@@ -14,7 +14,7 @@ interface PlanGuardProps {
   feature?: string;
 }
 
-export function PlanGuard({ children, feature = "Gestão Completa" }: PlanGuardProps) {
+export default function PlanGuard({ children, feature = "Gestão Completa" }: PlanGuardProps) {
   const { profile } = useAuth();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
