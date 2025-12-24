@@ -217,3 +217,49 @@ export interface Review {
   updated_at?: string;
 }
 
+export interface Motorist {
+  id: string;
+  profile_id: string;
+  cpf?: string;
+  phone?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  zip_code?: string;
+  created_at: string;
+  updated_at?: string;
+}
+
+export interface MotoristVehicle {
+  id: string;
+  motorist_id: string;
+  nickname?: string;
+  make: string;
+  model: string;
+  year: number;
+  plate?: string;
+  color?: string;
+  mileage?: number;
+  fuel_type?: string;
+  notes?: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at?: string;
+}
+
+export interface MaintenanceHistory {
+  id: string;
+  motorist_id: string;
+  vehicle_id: string;
+  workshop_id?: string;
+  service_type: string;
+  description?: string;
+  mileage?: number;
+  cost?: number;
+  service_date: string;
+  next_service_date?: string;
+  notes?: string;
+  created_at: string;
+  updated_at?: string;
+}
+
