@@ -77,6 +77,26 @@ export default function CompletarCadastroPage() {
     setSubmitting(true);
 
     try {
+      if (!profile?.id) {
+        throw new Error("Usuário não autenticado");
+      }
+
+      // 1. Primeiro, criar ou atualizar o profile com o tipo correto
+      const { data: user } = await supabase.auth.getUser();
+      
+      const { error: profileError } = await supabase
+        .from("profiles")
+        .upsert({
+          id: profile.id,
+          email: user.user?.email || profile.email,
+          name: user.user?.user_metadata?.name || profile.name || user.user?.email?.split("@")[0],
+          type: userType,
+          phone: phone || null,
+        });
+
+      if (profileError) throw profileError;
+
+      // 2. Depois, criar oficina ou motorista
       if (userType === "oficina") {
         // Criar oficina
         if (!workshopName.trim()) {
@@ -88,7 +108,7 @@ export default function CompletarCadastroPage() {
         const { error: workshopError } = await supabase
           .from("workshops")
           .insert({
-            profile_id: profile?.id,
+            profile_id: profile.id,
             name: workshopName,
             phone: phone || null,
             plan_type: "free",
@@ -106,7 +126,7 @@ export default function CompletarCadastroPage() {
         const { error: motoristError } = await supabase
           .from("motorists")
           .insert({
-            profile_id: profile?.id,
+            profile_id: profile.id,
             phone: phone || null,
           });
 
