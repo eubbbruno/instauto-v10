@@ -102,6 +102,13 @@ export default function HomePage() {
         <div className="absolute top-40 right-10 w-72 h-72 bg-yellow-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
       </section>
 
+      {/* Wave Divider */}
+      <div className="relative h-24 bg-gradient-to-br from-blue-50 via-white to-yellow-50">
+        <svg className="absolute bottom-0 w-full h-24" preserveAspectRatio="none" viewBox="0 0 1440 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 0L60 8.3C120 16.7 240 33.3 360 37.3C480 41.3 600 33.3 720 29.3C840 25.3 960 25.3 1080 29.3C1200 33.3 1320 41.3 1380 45.3L1440 49.3V74H1380C1320 74 1200 74 1080 74C960 74 840 74 720 74C600 74 480 74 360 74C240 74 120 74 60 74H0V0Z" fill="white"/>
+        </svg>
+      </div>
+
       {/* Para Quem é o Instauto */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
@@ -187,7 +194,7 @@ export default function HomePage() {
       </section>
 
       {/* Como Funciona */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-gradient-to-br from-blue-600/5 to-yellow-400/5">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-heading font-bold text-gray-900 mb-4">
@@ -285,6 +292,13 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Wave Divider */}
+      <div className="relative h-24 bg-gradient-to-br from-blue-600/5 to-yellow-400/5">
+        <svg className="absolute bottom-0 w-full h-24" preserveAspectRatio="none" viewBox="0 0 1440 74" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 49.3L60 45.3C120 41.3 240 33.3 360 29.3C480 25.3 600 25.3 720 29.3C840 33.3 960 41.3 1080 37.3C1200 33.3 1320 16.7 1380 8.3L1440 0V74H1380C1320 74 1200 74 1080 74C960 74 840 74 720 74C600 74 480 74 360 74C240 74 120 74 60 74H0V49.3Z" fill="#F9FAFB"/>
+        </svg>
+      </div>
 
       {/* Benefícios */}
       <section className="py-20 bg-gray-50">

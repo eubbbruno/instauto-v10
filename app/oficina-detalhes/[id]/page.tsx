@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase";
 import { Workshop, Review } from "@/types/database";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { MapPin, Phone, Mail, Clock, Star, CheckCircle2 } from "lucide-react";
+import { MapPin, Phone, Mail, Star, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 
 export default function OficinaDetalhesPage() {
@@ -269,24 +269,6 @@ export default function OficinaDetalhesPage() {
 
             {/* Sidebar */}
             <div className="space-y-6">
-              {/* Horário de Funcionamento */}
-              {workshop.working_hours && (
-                <div className="bg-white rounded-lg shadow-lg p-6">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                    <Clock className="text-blue-600" size={24} />
-                    Horário de Funcionamento
-                  </h3>
-                  <div className="space-y-2 text-sm">
-                    {Object.entries(workshop.working_hours).map(([day, hours]) => (
-                      <div key={day} className="flex justify-between">
-                        <span className="text-gray-600 capitalize">{day}:</span>
-                        <span className="text-gray-900 font-medium">{hours as string}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
               {/* CTA Adicional */}
               <div className="bg-blue-50 rounded-lg p-6 border-2 border-blue-200">
                 <h3 className="text-lg font-bold text-blue-900 mb-2">
