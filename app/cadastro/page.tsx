@@ -39,10 +39,10 @@ export default function CadastroPage() {
     setLoading(true);
 
     try {
-      await signUp(email, password, name, "oficina");
+      await signUp(email, password, name);
       setSuccess(true);
       setTimeout(() => {
-        router.push("/login");
+        router.push("/completar-cadastro");
       }, 2000);
     } catch (err: any) {
       setError(err.message || "Erro ao criar conta. Tente novamente.");

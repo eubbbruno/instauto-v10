@@ -25,8 +25,30 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      await signIn(email, password);
-      router.push("/oficina");
+      const { user } = await signIn(email, password);
+      
+      // Verificar se tem oficina ou motorista
+      const supabase = (await import("@/lib/supabase")).createClient();
+      
+      const { data: workshop } = await supabase
+        .from("workshops")
+        .select("id")
+        .eq("profile_id", user.id)
+        .single();
+
+      const { data: motorist } = await supabase
+        .from("motorists")
+        .select("id")
+        .eq("profile_id", user.id)
+        .single();
+
+      if (workshop) {
+        router.push("/oficina");
+      } else if (motorist) {
+        router.push("/motorista/garagem");
+      } else {
+        router.push("/completar-cadastro");
+      }
     } catch (err: any) {
       setError(err.message || "Erro ao fazer login. Verifique suas credenciais.");
     } finally {
