@@ -26,8 +26,30 @@ export default function LoginMotoristaPage() {
     setLoading(true);
 
     try {
-      await signIn(email, password);
-      router.push("/motorista/garagem");
+      const { user } = await signIn(email, password);
+      
+      // Verificar se tem motorista ou oficina
+      const supabase = (await import("@/lib/supabase")).createClient();
+      
+      const { data: motorist } = await supabase
+        .from("motorists")
+        .select("id")
+        .eq("profile_id", user.id)
+        .single();
+
+      const { data: workshop } = await supabase
+        .from("workshops")
+        .select("id")
+        .eq("profile_id", user.id)
+        .single();
+
+      if (motorist) {
+        router.push("/motorista/garagem");
+      } else if (workshop) {
+        router.push("/oficina");
+      } else {
+        router.push("/completar-cadastro");
+      }
     } catch (err: any) {
       setError(err.message || "Erro ao fazer login. Verifique suas credenciais.");
     } finally {
