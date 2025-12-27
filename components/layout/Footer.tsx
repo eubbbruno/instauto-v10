@@ -9,26 +9,6 @@ export default function Footer() {
 
   return (
     <footer className="bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 text-gray-300">
-      {/* CTA Section */}
-      <div className="border-b border-white/10">
-        <div className="container mx-auto px-4 py-12">
-          <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-8 md:p-12 text-center">
-            <h3 className="text-2xl md:text-4xl font-heading font-bold text-white mb-4">
-              Pronto para transformar sua oficina?
-            </h3>
-            <p className="text-blue-100 font-sans text-lg mb-8 max-w-2xl mx-auto">
-              Comece seu teste grátis de 14 dias agora. Sem cartão de crédito.
-            </p>
-            <Link href="/cadastro">
-              <button className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-sans font-bold px-8 py-4 rounded-xl shadow-xl hover:shadow-2xl transition-all hover:scale-105 inline-flex items-center gap-2 text-lg">
-                Começar Teste Grátis
-                <ArrowRight className="h-5 w-5" />
-              </button>
-            </Link>
-          </div>
-        </div>
-      </div>
-
       {/* Main Footer */}
       <div className="container mx-auto px-4 py-16">
         <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">

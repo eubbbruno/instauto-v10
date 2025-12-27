@@ -23,23 +23,23 @@ export default function HomePage() {
       <Header />
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-50 via-white to-yellow-50 pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-sans font-semibold mb-6">
+            <div className="text-white">
+              <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-sans font-semibold mb-6">
                 <Zap className="h-4 w-4" />
                 Sistema de Gestão + Marketplace de Oficinas
               </div>
 
-              <h1 className="text-4xl md:text-6xl font-heading font-bold text-gray-900 mb-6 leading-tight">
+              <h1 className="text-4xl md:text-6xl font-heading font-bold mb-6 leading-tight">
                 Transforme sua oficina em um{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">
+                <span className="text-yellow-400">
                   negócio digital
                 </span>
               </h1>
 
-              <p className="text-xl md:text-2xl text-gray-600 font-sans mb-8 leading-relaxed">
+              <p className="text-xl md:text-2xl text-blue-100 font-sans mb-8 leading-relaxed">
                 Sistema completo de gestão para oficinas mecânicas. Controle
                 clientes, ordens de serviço, estoque, financeiro e muito mais.
               </p>
@@ -48,34 +48,33 @@ export default function HomePage() {
                 <Link href="/cadastro">
                   <Button
                     size="lg"
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-sans font-bold text-lg px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all w-full sm:w-auto"
+                    className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-sans font-bold text-lg px-8 py-6 rounded-xl shadow-xl hover:shadow-2xl transition-all w-full sm:w-auto"
                   >
                     Começar Teste Grátis
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
-                <Link href="/oficinas">
+                <a href="#funcionalidades">
                   <Button
                     size="lg"
-                    variant="outline"
-                    className="border-2 border-gray-300 text-gray-700 hover:border-blue-600 hover:text-blue-600 font-sans font-bold text-lg px-8 py-6 rounded-xl transition-all w-full sm:w-auto"
+                    className="bg-white text-blue-600 hover:bg-gray-100 font-sans font-bold text-lg px-8 py-6 rounded-xl transition-all w-full sm:w-auto shadow-lg"
                   >
-                    Conhecer Funcionalidades
+                    Ver Funcionalidades
                   </Button>
-                </Link>
+                </a>
               </div>
 
-              <div className="flex flex-wrap gap-6 text-sm text-gray-600 font-sans">
+              <div className="flex flex-wrap gap-6 text-sm text-blue-100 font-sans">
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-5 w-5 text-green-600" />
+                  <CheckCircle2 className="h-5 w-5 text-yellow-400" />
                   <span>14 dias grátis</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-5 w-5 text-green-600" />
+                  <CheckCircle2 className="h-5 w-5 text-yellow-400" />
                   <span>Sem cartão de crédito</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-5 w-5 text-green-600" />
+                  <CheckCircle2 className="h-5 w-5 text-yellow-400" />
                   <span>Cancele quando quiser</span>
                 </div>
               </div>
@@ -96,17 +95,21 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Decorative elements */}
-        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
-        <div className="absolute top-40 right-10 w-72 h-72 bg-yellow-200 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
+        {/* Decorative wave */}
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg
+            viewBox="0 0 1440 120"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="w-full h-auto"
+          >
+            <path
+              d="M0 0L60 10C120 20 240 40 360 46.7C480 53 600 47 720 43.3C840 40 960 40 1080 46.7C1200 53 1320 67 1380 73.3L1440 80V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0V0Z"
+              fill="white"
+            />
+          </svg>
+        </div>
       </section>
-
-      {/* Wave Divider */}
-      <div className="relative h-24 bg-gradient-to-br from-blue-50 via-white to-yellow-50">
-        <svg className="absolute bottom-0 w-full h-24" preserveAspectRatio="none" viewBox="0 0 1440 74" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 0L60 8.3C120 16.7 240 33.3 360 37.3C480 41.3 600 33.3 720 29.3C840 25.3 960 25.3 1080 29.3C1200 33.3 1320 41.3 1380 45.3L1440 49.3V74H1380C1320 74 1200 74 1080 74C960 74 840 74 720 74C600 74 480 74 360 74C240 74 120 74 60 74H0V0Z" fill="white"/>
-        </svg>
-      </div>
 
       {/* Para Quem é o Instauto */}
       <section className="py-20 bg-white">
@@ -193,7 +196,7 @@ export default function HomePage() {
       </section>
 
       {/* Como Funciona */}
-      <section className="py-20 bg-gradient-to-br from-blue-600/5 to-yellow-400/5">
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-heading font-bold text-gray-900 mb-4">
@@ -291,13 +294,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* Wave Divider */}
-      <div className="relative h-24 bg-gradient-to-br from-blue-600/5 to-yellow-400/5">
-        <svg className="absolute bottom-0 w-full h-24" preserveAspectRatio="none" viewBox="0 0 1440 74" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0 49.3L60 45.3C120 41.3 240 33.3 360 29.3C480 25.3 600 25.3 720 29.3C840 33.3 960 41.3 1080 37.3C1200 33.3 1320 16.7 1380 8.3L1440 0V74H1380C1320 74 1200 74 1080 74C960 74 840 74 720 74C600 74 480 74 360 74C240 74 120 74 60 74H0V49.3Z" fill="#F9FAFB"/>
-        </svg>
-      </div>
 
       {/* Benefícios */}
       <section className="py-20 bg-gray-50">
