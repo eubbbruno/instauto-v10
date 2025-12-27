@@ -22,60 +22,65 @@ export default function HomePage() {
       {/* Header */}
       <Header />
 
-      {/* Hero Section */}
+      {/* Hero Section - Busca de Oficinas */}
       <section className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="text-white">
               <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-sans font-semibold mb-6">
-                <Zap className="h-4 w-4" />
-                Sistema de Gestão + Marketplace de Oficinas
+                <Car className="h-4 w-4" />
+                Encontre a Oficina Perfeita
               </div>
 
               <h1 className="text-4xl md:text-6xl font-heading font-bold mb-6 leading-tight">
-                Transforme sua oficina em um{" "}
+                Oficinas de confiança{" "}
                 <span className="text-yellow-400">
-                  negócio digital
+                  perto de você
                 </span>
               </h1>
 
               <p className="text-xl md:text-2xl text-blue-100 font-sans mb-8 leading-relaxed">
-                Sistema completo de gestão para oficinas mecânicas. Controle
-                clientes, ordens de serviço, estoque, financeiro e muito mais.
+                Compare preços, veja avaliações e agende serviços nas melhores oficinas da sua região.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 mb-10">
-                <Link href="/cadastro">
+              {/* Campo de Busca */}
+              <div className="bg-white rounded-2xl p-6 shadow-2xl mb-8">
+                <form action="/buscar-oficinas" method="GET" className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      📍 Onde você está?
+                    </label>
+                    <input
+                      type="text"
+                      name="location"
+                      placeholder="Digite seu CEP, cidade ou bairro"
+                      className="w-full px-4 py-4 text-gray-900 border-2 border-gray-200 rounded-xl focus:border-blue-600 focus:outline-none text-lg"
+                      required
+                    />
+                  </div>
                   <Button
+                    type="submit"
                     size="lg"
-                    className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-sans font-bold text-lg px-8 py-6 rounded-xl shadow-xl hover:shadow-2xl transition-all w-full sm:w-auto"
+                    className="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-sans font-bold text-lg px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all"
                   >
-                    Começar Teste Grátis
+                    Buscar Oficinas Próximas
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
-                </Link>
-                <a href="#funcionalidades">
-                  <Button
-                    size="lg"
-                    className="bg-white text-blue-600 hover:bg-gray-100 font-sans font-bold text-lg px-8 py-6 rounded-xl transition-all w-full sm:w-auto shadow-lg"
-                  >
-                    Ver Funcionalidades
-                  </Button>
-                </a>
+                </form>
               </div>
 
               <div className="flex flex-wrap gap-6 text-sm text-blue-100 font-sans">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-5 w-5 text-yellow-400" />
-                  <span>14 dias grátis</span>
+                  <span>100% Grátis</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-5 w-5 text-yellow-400" />
-                  <span>Sem cartão de crédito</span>
+                  <span>Avaliações Reais</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-5 w-5 text-yellow-400" />
-                  <span>Cancele quando quiser</span>
+                  <span>Compare Preços</span>
                 </div>
               </div>
             </div>
@@ -84,9 +89,9 @@ export default function HomePage() {
               <div className="relative">
                 <Image
                   src="/images/img-01.png"
-                  alt="Mecânico Instauto"
-                  width={500}
-                  height={500}
+                  alt="Encontre Oficinas"
+                  width={400}
+                  height={400}
                   className="object-contain drop-shadow-2xl"
                   priority
                 />
@@ -111,90 +116,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Para Quem é o Instauto */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-heading font-bold text-gray-900 mb-4">
-              Feito para quem trabalha com carros
-            </h2>
-            <p className="text-xl text-gray-600 font-sans max-w-2xl mx-auto">
-              Seja você oficina mecânica ou motorista, temos a solução perfeita
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {/* Para Oficinas */}
-            <Link href="/oficinas">
-              <div className="group bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl border-2 border-blue-200 hover:border-blue-400 transition-all cursor-pointer hover:shadow-xl">
-                <div className="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <Wrench className="h-8 w-8 text-white" />
-                </div>
-                <h3 className="text-2xl font-heading font-bold text-gray-900 mb-4">
-                  Para Oficinas
-                </h3>
-                <p className="text-gray-700 font-sans mb-6 leading-relaxed">
-                  Sistema completo de gestão: clientes, ordens de serviço,
-                  estoque, financeiro, agenda, relatórios e muito mais.
-                </p>
-                <div className="space-y-2 mb-6">
-                  <div className="flex items-center gap-2 text-gray-700 font-sans">
-                    <CheckCircle2 className="h-5 w-5 text-blue-600" />
-                    <span>Gestão completa de OS</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-gray-700 font-sans">
-                    <CheckCircle2 className="h-5 w-5 text-blue-600" />
-                    <span>Controle de estoque</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-gray-700 font-sans">
-                    <CheckCircle2 className="h-5 w-5 text-blue-600" />
-                    <span>Relatórios financeiros</span>
-                  </div>
-                </div>
-                <div className="flex items-center text-blue-600 font-sans font-bold group-hover:gap-3 gap-2 transition-all">
-                  Conhecer sistema
-                  <ArrowRight className="h-5 w-5" />
-                </div>
-              </div>
-            </Link>
-
-            {/* Para Motoristas */}
-            <div className="group bg-gradient-to-br from-gray-50 to-gray-100 p-8 rounded-2xl border-2 border-gray-200 relative overflow-hidden">
-              <div className="absolute top-4 right-4 bg-yellow-400 text-gray-900 px-3 py-1 rounded-full text-xs font-sans font-bold">
-                Em breve
-              </div>
-              <div className="w-16 h-16 bg-gray-400 rounded-xl flex items-center justify-center mb-6 opacity-60">
-                <Car className="h-8 w-8 text-white" />
-              </div>
-              <h3 className="text-2xl font-heading font-bold text-gray-900 mb-4">
-                Para Motoristas
-              </h3>
-              <p className="text-gray-700 font-sans mb-6 leading-relaxed">
-                Marketplace para encontrar oficinas, pedir orçamentos e agendar
-                serviços. Tudo em um só lugar.
-              </p>
-              <div className="space-y-2 mb-6 opacity-60">
-                <div className="flex items-center gap-2 text-gray-700 font-sans">
-                  <CheckCircle2 className="h-5 w-5 text-gray-600" />
-                  <span>Encontre oficinas próximas</span>
-                </div>
-                <div className="flex items-center gap-2 text-gray-700 font-sans">
-                  <CheckCircle2 className="h-5 w-5 text-gray-600" />
-                  <span>Peça orçamentos online</span>
-                </div>
-                <div className="flex items-center gap-2 text-gray-700 font-sans">
-                  <CheckCircle2 className="h-5 w-5 text-gray-600" />
-                  <span>Agende serviços</span>
-                </div>
-              </div>
-              <div className="flex items-center text-gray-500 font-sans font-bold gap-2">
-                Em desenvolvimento
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Como Funciona */}
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
@@ -203,94 +124,73 @@ export default function HomePage() {
               Como funciona?
             </h2>
             <p className="text-xl text-gray-600 font-sans max-w-2xl mx-auto">
-              Comece a usar em 4 passos simples
+              Encontre a oficina ideal em 3 passos simples
             </p>
           </div>
 
-          <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {/* Passo 1 */}
             <div className="text-center">
-              <div className="mb-6 flex justify-center">
-                <Image
-                  src="/images/passo-01.png"
-                  alt="Passo 1 - Cadastro"
-                  width={200}
-                  height={200}
-                  className="object-contain"
-                />
-              </div>
-              <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-heading font-bold text-xl">
+              <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6 text-white font-heading font-bold text-2xl">
                 1
               </div>
+              <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <Users className="h-7 w-7 text-blue-600" />
+              </div>
               <h3 className="text-lg font-heading font-bold text-gray-900 mb-2">
-                Cadastre-se
+                Busque oficinas
               </h3>
-              <p className="text-gray-600 font-sans text-sm">
-                Crie sua conta grátis em menos de 2 minutos
+              <p className="text-gray-600 font-sans text-sm leading-relaxed">
+                Digite seu endereço e encontre oficinas próximas com avaliações reais
               </p>
             </div>
 
+            {/* Passo 2 */}
             <div className="text-center">
-              <div className="mb-6 flex justify-center">
-                <Image
-                  src="/images/passo-02.png"
-                  alt="Passo 2 - Configure"
-                  width={200}
-                  height={200}
-                  className="object-contain"
-                />
-              </div>
-              <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-heading font-bold text-xl">
+              <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6 text-white font-heading font-bold text-2xl">
                 2
               </div>
+              <div className="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <BarChart3 className="h-7 w-7 text-green-600" />
+              </div>
               <h3 className="text-lg font-heading font-bold text-gray-900 mb-2">
-                Configure
+                Compare preços
               </h3>
-              <p className="text-gray-600 font-sans text-sm">
-                Adicione as informações da sua oficina
+              <p className="text-gray-600 font-sans text-sm leading-relaxed">
+                Veja avaliações, serviços oferecidos e peça orçamentos online
               </p>
             </div>
 
+            {/* Passo 3 */}
             <div className="text-center">
-              <div className="mb-6 flex justify-center">
-                <Image
-                  src="/images/passo-03.png"
-                  alt="Passo 3 - Gerencie"
-                  width={200}
-                  height={200}
-                  className="object-contain"
-                />
-              </div>
-              <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-heading font-bold text-xl">
+              <div className="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-6 text-gray-900 font-heading font-bold text-2xl">
                 3
               </div>
+              <div className="w-14 h-14 bg-yellow-100 rounded-xl flex items-center justify-center mx-auto mb-4">
+                <CheckCircle2 className="h-7 w-7 text-yellow-600" />
+              </div>
               <h3 className="text-lg font-heading font-bold text-gray-900 mb-2">
-                Gerencie
+                Agende e avalie
               </h3>
-              <p className="text-gray-600 font-sans text-sm">
-                Cadastre clientes, veículos e ordens de serviço
+              <p className="text-gray-600 font-sans text-sm leading-relaxed">
+                Escolha a melhor opção e depois avalie o serviço prestado
               </p>
             </div>
+          </div>
 
-            <div className="text-center">
-              <div className="mb-6 flex justify-center">
-                <Image
-                  src="/images/passo-04.png"
-                  alt="Passo 4 - Cresça"
-                  width={200}
-                  height={200}
-                  className="object-contain"
-                />
-              </div>
-              <div className="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-900 font-heading font-bold text-xl">
-                4
-              </div>
-              <h3 className="text-lg font-heading font-bold text-gray-900 mb-2">
-                Cresça
-              </h3>
-              <p className="text-gray-600 font-sans text-sm">
-                Acompanhe relatórios e aumente seu faturamento
-              </p>
-            </div>
+          {/* CTA para Oficinas */}
+          <div className="mt-16 text-center">
+            <p className="text-gray-600 font-sans mb-4">Você é dono de oficina?</p>
+            <Link href="/oficinas">
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-sans font-bold text-lg px-8 py-4 rounded-xl transition-all"
+              >
+                <Wrench className="mr-2 h-5 w-5" />
+                Conheça o Sistema para Oficinas
+              </Button>
+            </Link>
           </div>
         </div>
       </section>
