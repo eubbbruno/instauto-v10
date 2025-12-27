@@ -42,10 +42,25 @@ export default function CadastroMotoristaPage() {
     setLoading(true);
 
     try {
-      await signUp(email, password, name);
+      const { user } = await signUp(email, password, name);
+      
+      // Criar perfil de motorista automaticamente
+      const supabase = (await import("@/lib/supabase")).createClient();
+      
+      const { error: motoristError } = await supabase
+        .from("motorists")
+        .insert({
+          profile_id: user.id,
+          name: name,
+        });
+      
+      if (motoristError) {
+        console.error("Erro ao criar motorista:", motoristError);
+      }
+      
       setSuccess(true);
       setTimeout(() => {
-        router.push("/completar-cadastro");
+        router.push("/motorista");
       }, 2000);
     } catch (err: any) {
       setError(err.message || "Erro ao criar conta. Tente novamente.");

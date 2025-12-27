@@ -94,13 +94,12 @@ export default function HomePage() {
 
             <div className="hidden md:flex justify-center items-center">
               <div className="relative">
-                <div className="absolute inset-0 bg-white/5 rounded-3xl backdrop-blur-sm"></div>
                 <Image
                   src="/images/img-01.png"
                   alt="Encontre Oficinas"
                   width={400}
                   height={400}
-                  className="object-contain drop-shadow-2xl relative z-10 rounded-3xl"
+                  className="object-contain drop-shadow-2xl"
                   priority
                 />
               </div>
@@ -520,16 +519,13 @@ export default function HomePage() {
                 </div>
               </div>
               <div className="hidden md:flex justify-center">
-                <div className="relative">
-                  <div className="absolute inset-0 bg-white/10 rounded-3xl backdrop-blur-md"></div>
-                  <Image
-                    src="/images/img-03.png"
-                    alt="Sistema de Gestão para Oficinas Mecânicas"
-                    width={400}
-                    height={400}
-                    className="object-contain drop-shadow-2xl relative z-10 rounded-3xl"
-                  />
-                </div>
+                <Image
+                  src="/images/img-03.png"
+                  alt="Sistema de Gestão para Oficinas Mecânicas"
+                  width={400}
+                  height={400}
+                  className="object-contain drop-shadow-2xl"
+                />
               </div>
             </div>
           </div>
