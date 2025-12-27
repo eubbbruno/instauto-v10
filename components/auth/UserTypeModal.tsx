@@ -22,8 +22,21 @@ export default function UserTypeModal({
   const subtitle = action === "login" ? "Escolha o tipo de conta" : "Escolha o tipo de conta para criar";
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 overflow-y-auto">
-      <div className="relative bg-white rounded-2xl shadow-2xl max-w-2xl w-full p-8 my-auto">
+    <div 
+      className="fixed z-[100] bg-black/60 backdrop-blur-sm"
+      style={{
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '1rem',
+        overflow: 'auto'
+      }}
+    >
+      <div className="relative bg-white rounded-2xl shadow-2xl max-w-2xl w-full p-8" style={{ margin: 'auto' }}>
         {/* Close button */}
         <button
           onClick={onClose}
