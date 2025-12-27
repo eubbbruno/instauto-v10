@@ -5,10 +5,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Menu, X, ChevronDown, Phone } from "lucide-react";
+import UserTypeModal from "@/components/auth/UserTypeModal";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalAction, setModalAction] = useState<"login" | "cadastro">("login");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -87,17 +90,24 @@ export default function Header() {
               (43) 99185-2779
             </a>
             
-            <Link
-              href="/login"
+            <button
+              onClick={() => {
+                setModalAction("login");
+                setIsModalOpen(true);
+              }}
               className="text-white hover:text-yellow-400 font-sans font-semibold transition-colors text-[15px]"
             >
               Entrar
-            </Link>
-            <Link href="/cadastro">
-              <Button className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 font-sans font-bold shadow-lg hover:shadow-xl transition-all hover:scale-105 text-[15px] px-6">
-                Começar Grátis
-              </Button>
-            </Link>
+            </button>
+            <Button
+              onClick={() => {
+                setModalAction("cadastro");
+                setIsModalOpen(true);
+              }}
+              className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 font-sans font-bold shadow-lg hover:shadow-xl transition-all hover:scale-105 text-[15px] px-6"
+            >
+              Cadastrar
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -165,22 +175,37 @@ export default function Header() {
               
               <div className="border-t border-gray-200 my-3"></div>
               
-              <Link
-                href="/login"
-                className="block text-center text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-sans font-semibold py-3 px-4 rounded-lg transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
+              <button
+                onClick={() => {
+                  setModalAction("login");
+                  setIsModalOpen(true);
+                  setIsMobileMenuOpen(false);
+                }}
+                className="block w-full text-center text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-sans font-semibold py-3 px-4 rounded-lg transition-colors"
               >
                 Entrar
-              </Link>
-              <Link href="/cadastro" onClick={() => setIsMobileMenuOpen(false)}>
-                <Button className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 font-sans font-bold shadow-lg py-6 text-base">
-                  Começar Grátis
-                </Button>
-              </Link>
+              </button>
+              <Button
+                onClick={() => {
+                  setModalAction("cadastro");
+                  setIsModalOpen(true);
+                  setIsMobileMenuOpen(false);
+                }}
+                className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 font-sans font-bold shadow-lg py-6 text-base"
+              >
+                Cadastrar
+              </Button>
             </div>
           </div>
         )}
       </nav>
+
+      {/* Modal de Seleção */}
+      <UserTypeModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        action={modalAction}
+      />
     </header>
   );
 }

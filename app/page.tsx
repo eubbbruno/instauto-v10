@@ -1,10 +1,13 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import AddressAutocomplete from "@/components/search/AddressAutocomplete";
 import {
   ArrowRight,
   CheckCircle2,
@@ -17,6 +20,15 @@ import {
 } from "lucide-react";
 
 export default function HomePage() {
+  const router = useRouter();
+  const [selectedLocation, setSelectedLocation] = useState("");
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (selectedLocation) {
+      router.push(`/buscar-oficinas?location=${encodeURIComponent(selectedLocation)}`);
+    }
+  };
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
@@ -33,30 +45,25 @@ export default function HomePage() {
               </div>
 
               <h1 className="text-4xl md:text-6xl font-heading font-bold mb-6 leading-tight">
-                Oficinas de confiança{" "}
+                Encontre a melhor{" "}
                 <span className="text-yellow-400">
-                  perto de você
+                  oficina mecânica
                 </span>
+                {" "}perto de você
               </h1>
 
               <p className="text-xl md:text-2xl text-blue-100 font-sans mb-8 leading-relaxed">
-                Compare preços, veja avaliações e agende serviços nas melhores oficinas da sua região.
+                Solicite orçamentos grátis, compare preços e avaliações de oficinas mecânicas confiáveis na sua região. Manutenção automotiva com transparência e qualidade.
               </p>
 
               {/* Campo de Busca */}
               <div className="bg-white rounded-2xl p-6 shadow-2xl mb-8">
-                <form action="/buscar-oficinas" method="GET" className="space-y-4">
+                <form onSubmit={handleSearch} className="space-y-4">
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       📍 Onde você está?
                     </label>
-                    <input
-                      type="text"
-                      name="location"
-                      placeholder="Digite seu CEP, cidade ou bairro"
-                      className="w-full px-4 py-4 text-gray-900 border-2 border-gray-200 rounded-xl focus:border-blue-600 focus:outline-none text-lg"
-                      required
-                    />
+                    <AddressAutocomplete onSelect={setSelectedLocation} />
                   </div>
                   <Button
                     type="submit"
@@ -116,81 +123,157 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Como Funciona */}
-      <section className="py-20 bg-white">
+      {/* Tipos de Veículos */}
+      <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-heading font-bold text-gray-900 mb-4">
-              Como funciona?
+          <div className="text-center mb-12">
+            <h2 className="text-2xl md:text-4xl font-heading font-bold text-gray-900 mb-4">
+              Oficinas para todos os tipos de veículos
             </h2>
-            <p className="text-xl text-gray-600 font-sans max-w-2xl mx-auto">
-              Encontre a oficina ideal em 3 passos simples
+            <p className="text-lg text-gray-600 font-sans max-w-2xl mx-auto">
+              Carros, motos, caminhões e mais. Encontre especialistas para cada tipo de manutenção automotiva.
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {/* Carros */}
+            <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl border-2 border-blue-100 hover:border-blue-300 transition-all hover:shadow-lg">
+              <div className="flex justify-center mb-6">
+                <Image
+                  src="/images/car-3d.png"
+                  alt="Oficina Mecânica para Carros"
+                  width={150}
+                  height={150}
+                  className="object-contain"
+                />
+              </div>
+              <h3 className="text-xl font-heading font-bold text-gray-900 mb-2 text-center">
+                Carros
+              </h3>
+              <p className="text-gray-600 font-sans text-sm text-center">
+                Manutenção preventiva, troca de óleo, freios, suspensão e muito mais
+              </p>
+            </div>
+
+            {/* Motos */}
+            <div className="bg-gradient-to-br from-yellow-50 to-white p-8 rounded-2xl border-2 border-yellow-100 hover:border-yellow-300 transition-all hover:shadow-lg">
+              <div className="flex justify-center mb-6">
+                <Image
+                  src="/images/moto-3d.png"
+                  alt="Oficina Mecânica para Motos"
+                  width={150}
+                  height={150}
+                  className="object-contain"
+                />
+              </div>
+              <h3 className="text-xl font-heading font-bold text-gray-900 mb-2 text-center">
+                Motos
+              </h3>
+              <p className="text-gray-600 font-sans text-sm text-center">
+                Revisão completa, troca de corrente, pneus e serviços especializados
+              </p>
+            </div>
+
+            {/* Caminhões */}
+            <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl border-2 border-green-100 hover:border-green-300 transition-all hover:shadow-lg">
+              <div className="flex justify-center mb-6">
+                <Image
+                  src="/images/truck-3d.png"
+                  alt="Oficina Mecânica para Caminhões"
+                  width={150}
+                  height={150}
+                  className="object-contain"
+                />
+              </div>
+              <h3 className="text-xl font-heading font-bold text-gray-900 mb-2 text-center">
+                Caminhões
+              </h3>
+              <p className="text-gray-600 font-sans text-sm text-center">
+                Manutenção pesada, motor, transmissão e serviços para frotas
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Como Funciona */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-heading font-bold text-gray-900 mb-4">
+              Como solicitar orçamento de oficina mecânica?
+            </h2>
+            <p className="text-xl text-gray-600 font-sans max-w-2xl mx-auto">
+              Encontre oficinas mecânicas confiáveis em 3 passos simples
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-12 max-w-6xl mx-auto">
             {/* Passo 1 */}
-            <div className="text-center">
-              <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6 text-white font-heading font-bold text-2xl">
+            <div className="text-center bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all">
+              <div className="mb-6 flex justify-center">
+                <Image
+                  src="/images/passo-01.png"
+                  alt="Buscar oficinas mecânicas próximas"
+                  width={180}
+                  height={180}
+                  className="object-contain"
+                />
+              </div>
+              <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-heading font-bold text-xl">
                 1
               </div>
-              <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <Users className="h-7 w-7 text-blue-600" />
-              </div>
-              <h3 className="text-lg font-heading font-bold text-gray-900 mb-2">
-                Busque oficinas
+              <h3 className="text-xl font-heading font-bold text-gray-900 mb-3">
+                Busque oficinas próximas
               </h3>
-              <p className="text-gray-600 font-sans text-sm leading-relaxed">
-                Digite seu endereço e encontre oficinas próximas com avaliações reais
+              <p className="text-gray-600 font-sans leading-relaxed">
+                Digite seu CEP ou endereço e encontre oficinas mecânicas na sua região com avaliações reais de clientes
               </p>
             </div>
 
             {/* Passo 2 */}
-            <div className="text-center">
-              <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6 text-white font-heading font-bold text-2xl">
+            <div className="text-center bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all">
+              <div className="mb-6 flex justify-center">
+                <Image
+                  src="/images/passo-02.png"
+                  alt="Solicitar orçamento de oficina mecânica"
+                  width={180}
+                  height={180}
+                  className="object-contain"
+                />
+              </div>
+              <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-heading font-bold text-xl">
                 2
               </div>
-              <div className="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <BarChart3 className="h-7 w-7 text-green-600" />
-              </div>
-              <h3 className="text-lg font-heading font-bold text-gray-900 mb-2">
-                Compare preços
+              <h3 className="text-xl font-heading font-bold text-gray-900 mb-3">
+                Solicite orçamentos grátis
               </h3>
-              <p className="text-gray-600 font-sans text-sm leading-relaxed">
-                Veja avaliações, serviços oferecidos e peça orçamentos online
+              <p className="text-gray-600 font-sans leading-relaxed">
+                Compare preços, serviços oferecidos e avaliações. Peça orçamentos online sem compromisso
               </p>
             </div>
 
             {/* Passo 3 */}
-            <div className="text-center">
-              <div className="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-6 text-gray-900 font-heading font-bold text-2xl">
+            <div className="text-center bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all">
+              <div className="mb-6 flex justify-center">
+                <Image
+                  src="/images/passo-03.png"
+                  alt="Agendar serviço em oficina mecânica"
+                  width={180}
+                  height={180}
+                  className="object-contain"
+                />
+              </div>
+              <div className="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-900 font-heading font-bold text-xl">
                 3
               </div>
-              <div className="w-14 h-14 bg-yellow-100 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <CheckCircle2 className="h-7 w-7 text-yellow-600" />
-              </div>
-              <h3 className="text-lg font-heading font-bold text-gray-900 mb-2">
-                Agende e avalie
+              <h3 className="text-xl font-heading font-bold text-gray-900 mb-3">
+                Agende e avalie o serviço
               </h3>
-              <p className="text-gray-600 font-sans text-sm leading-relaxed">
-                Escolha a melhor opção e depois avalie o serviço prestado
+              <p className="text-gray-600 font-sans leading-relaxed">
+                Escolha a melhor oficina mecânica, agende seu serviço e depois compartilhe sua experiência
               </p>
             </div>
-          </div>
-
-          {/* CTA para Oficinas */}
-          <div className="mt-16 text-center">
-            <p className="text-gray-600 font-sans mb-4">Você é dono de oficina?</p>
-            <Link href="/oficinas">
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-sans font-bold text-lg px-8 py-4 rounded-xl transition-all"
-              >
-                <Wrench className="mr-2 h-5 w-5" />
-                Conheça o Sistema para Oficinas
-              </Button>
-            </Link>
           </div>
         </div>
       </section>
@@ -384,24 +467,68 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-blue-600 to-blue-700">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-5xl font-heading font-bold text-white mb-6">
-            Pronto para transformar sua oficina?
-          </h2>
-          <p className="text-xl text-blue-100 font-sans mb-10 max-w-2xl mx-auto">
-            Comece seu teste grátis de 14 dias agora. Sem cartão de crédito.
-          </p>
-          <Link href="/cadastro">
-            <Button
-              size="lg"
-              className="bg-white text-blue-600 hover:bg-gray-100 font-sans font-bold text-lg px-10 py-6 rounded-xl shadow-xl hover:shadow-2xl transition-all group"
-            >
-              Começar Teste Grátis
-              <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-            </Button>
-          </Link>
+      {/* CTA Section para Oficinas */}
+      <section className="py-20 bg-gradient-to-br from-yellow-400 via-yellow-500 to-orange-500">
+        <div className="container mx-auto px-4">
+          <div className="max-w-5xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div>
+                <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-sans font-semibold mb-6 text-gray-900">
+                  <Wrench className="h-4 w-4" />
+                  Para Oficinas Mecânicas
+                </div>
+                <h2 className="text-3xl md:text-5xl font-heading font-bold text-gray-900 mb-6 leading-tight">
+                  Você é dono de oficina mecânica?
+                </h2>
+                <p className="text-xl text-gray-800 font-sans mb-8 leading-relaxed">
+                  Tenha um sistema completo de gestão + apareça no marketplace para milhares de motoristas. Aumente seu faturamento com tecnologia.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <Link href="/oficinas">
+                    <Button
+                      size="lg"
+                      className="bg-gray-900 hover:bg-gray-800 text-white font-sans font-bold text-lg px-10 py-6 rounded-xl shadow-xl hover:shadow-2xl transition-all group"
+                    >
+                      Conhecer Sistema
+                      <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </Link>
+                  <Link href="/cadastro">
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      className="bg-white hover:bg-gray-50 text-gray-900 border-2 border-gray-900 font-sans font-bold text-lg px-10 py-6 rounded-xl shadow-lg transition-all"
+                    >
+                      Começar Teste Grátis (14 dias)
+                    </Button>
+                  </Link>
+                </div>
+                <div className="flex flex-wrap gap-6 mt-8 text-sm text-gray-800 font-sans">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-gray-900" />
+                    <span>Sem cartão de crédito</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-gray-900" />
+                    <span>Cancele quando quiser</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-5 w-5 text-gray-900" />
+                    <span>Suporte dedicado</span>
+                  </div>
+                </div>
+              </div>
+              <div className="hidden md:flex justify-center">
+                <Image
+                  src="/images/oficina.png"
+                  alt="Sistema de Gestão para Oficinas Mecânicas"
+                  width={400}
+                  height={400}
+                  className="object-contain drop-shadow-2xl"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

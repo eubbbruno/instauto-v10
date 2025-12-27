@@ -17,9 +17,9 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Instauto - Sistema de Gestão para Oficinas Mecânicas",
-  description: "Sistema completo de gestão para oficinas mecânicas. Controle clientes, ordens de serviço, estoque, financeiro e muito mais. Teste grátis por 14 dias.",
-  keywords: ["oficina mecânica", "gestão de oficina", "sistema para oficina", "ordem de serviço", "controle de estoque"],
+  title: "Encontre Oficina Mecânica Perto de Você | Orçamento Grátis | Instauto",
+  description: "Encontre oficinas mecânicas confiáveis perto de você. Solicite orçamentos grátis, compare preços e avaliações. Manutenção automotiva para carros, motos e caminhões. Sistema completo de gestão para oficinas.",
+  keywords: ["oficina mecânica", "oficina mecânica perto de mim", "orçamento oficina mecânica", "solicitar orçamento oficina", "manutenção automotiva", "conserto de carro", "mecânico de confiança", "gestão de oficina", "sistema para oficina"],
   authors: [{ name: "Instauto" }],
   icons: {
     icon: [
@@ -27,8 +27,8 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: "Instauto - Sistema de Gestão para Oficinas Mecânicas",
-    description: "Sistema completo de gestão para oficinas mecânicas. Teste grátis por 14 dias.",
+    title: "Encontre Oficina Mecânica Perto de Você | Orçamento Grátis",
+    description: "Solicite orçamentos grátis em oficinas mecânicas confiáveis. Compare preços e avaliações. Manutenção automotiva com transparência.",
     url: "https://www.instauto.com.br",
     siteName: "Instauto",
     locale: "pt_BR",
@@ -38,14 +38,14 @@ export const metadata: Metadata = {
         url: '/images/img-01.png',
         width: 1200,
         height: 630,
-        alt: 'Instauto - Sistema de Gestão para Oficinas',
+        alt: 'Instauto - Encontre Oficinas Mecânicas e Solicite Orçamentos',
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Instauto - Sistema de Gestão para Oficinas",
-    description: "Sistema completo de gestão para oficinas mecânicas",
+    title: "Encontre Oficina Mecânica | Orçamento Grátis | Instauto",
+    description: "Solicite orçamentos grátis em oficinas mecânicas confiáveis perto de você",
     images: ['/images/img-01.png'],
   },
   robots: {
