@@ -42,20 +42,24 @@ export default function CadastroMotoristaPage() {
     setLoading(true);
 
     try {
-      const { user } = await signUp(email, password, name);
+      await signUp(email, password, name);
       
-      // Criar perfil de motorista automaticamente
+      // Buscar usuário da sessão
       const supabase = (await import("@/lib/supabase")).createClient();
+      const { data: { session } } = await supabase.auth.getSession();
       
-      const { error: motoristError } = await supabase
-        .from("motorists")
-        .insert({
-          profile_id: user.id,
-          name: name,
-        });
-      
-      if (motoristError) {
-        console.error("Erro ao criar motorista:", motoristError);
+      if (session?.user) {
+        // Criar perfil de motorista automaticamente
+        const { error: motoristError } = await supabase
+          .from("motorists")
+          .insert({
+            profile_id: session.user.id,
+            name: name,
+          });
+        
+        if (motoristError) {
+          console.error("Erro ao criar motorista:", motoristError);
+        }
       }
       
       setSuccess(true);
