@@ -1,14 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase";
 import { Workshop } from "@/types/database";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { Search, MapPin, Star, Phone, Mail, Clock, CheckCircle2, MessageSquare } from "lucide-react";
+import { Search, MapPin, Star, Phone, Mail, Clock, CheckCircle2, MessageSquare, Lock } from "lucide-react";
 import Link from "next/link";
 
 export default function BuscarOficinasPage() {
+  const router = useRouter();
   const [workshops, setWorkshops] = useState<Workshop[]>([]);
   const [filteredWorkshops, setFilteredWorkshops] = useState<Workshop[]>([]);
   const [loading, setLoading] = useState(true);
@@ -16,16 +18,43 @@ export default function BuscarOficinasPage() {
   const [cityFilter, setCityFilter] = useState("");
   const [stateFilter, setStateFilter] = useState("");
   const [serviceFilter, setServiceFilter] = useState("");
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(5);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const supabase = createClient();
 
   useEffect(() => {
     loadWorkshops();
+    checkAuth();
   }, []);
 
   useEffect(() => {
     filterWorkshops();
   }, [searchTerm, cityFilter, stateFilter, serviceFilter, workshops]);
+
+  // Timer de 5 segundos
+  useEffect(() => {
+    if (!isAuthenticated && !showLoginModal) {
+      const timer = setInterval(() => {
+        setTimeLeft((prev) => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            setShowLoginModal(true);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+
+      return () => clearInterval(timer);
+    }
+  }, [isAuthenticated, showLoginModal]);
+
+  const checkAuth = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    setIsAuthenticated(!!session);
+  };
 
   const loadWorkshops = async () => {
     try {
@@ -95,8 +124,47 @@ export default function BuscarOficinasPage() {
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
 
+      {/* Banner de Timer */}
+      {!isAuthenticated && !showLoginModal && timeLeft > 0 && (
+        <div className="bg-yellow-400 text-gray-900 py-3 px-4 text-center font-bold sticky top-0 z-50">
+          ⏰ Você tem {timeLeft} segundo{timeLeft !== 1 ? 's' : ''} para ver as oficinas. Depois, faça login para continuar!
+        </div>
+      )}
+
+      {/* Modal de Login */}
+      {showLoginModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 p-8 text-center">
+            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Lock className="h-8 w-8 text-blue-600" />
+            </div>
+            <h2 className="text-3xl font-heading font-bold text-gray-900 mb-4">
+              Faça login para continuar
+            </h2>
+            <p className="text-gray-600 mb-8 leading-relaxed">
+              Para ver todas as oficinas, solicitar orçamentos e comparar preços, você precisa criar uma conta gratuita.
+            </p>
+            <div className="space-y-3">
+              <Link href="/cadastro-motorista">
+                <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-xl transition-all shadow-lg hover:shadow-xl">
+                  Criar Conta Grátis
+                </button>
+              </Link>
+              <Link href="/login-motorista">
+                <button className="w-full bg-gray-100 hover:bg-gray-200 text-gray-900 font-bold py-4 px-6 rounded-xl transition-all">
+                  Já tenho conta
+                </button>
+              </Link>
+            </div>
+            <p className="text-sm text-gray-500 mt-6">
+              100% grátis para motoristas • Sem cartão de crédito
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-white py-16">
+      <section className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-white py-16 pt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
@@ -124,7 +192,7 @@ export default function BuscarOficinasPage() {
       </section>
 
       {/* Filtros */}
-      <section className="bg-white border-b sticky top-0 z-10 shadow-sm">
+      <section className="bg-white border-b z-10 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <select
