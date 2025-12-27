@@ -45,7 +45,7 @@ export default function LoginMotoristaPage() {
         .single();
 
       if (motorist) {
-        router.push("/motorista/garagem");
+        router.push("/motorista");
       } else if (workshop) {
         router.push("/oficina");
       } else {

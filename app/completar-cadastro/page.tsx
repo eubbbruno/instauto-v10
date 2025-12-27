@@ -59,7 +59,7 @@ export default function CompletarCadastroPage() {
 
       if (motorist) {
         // Já tem motorista, redirecionar
-        router.push("/motorista/garagem");
+        router.push("/motorista");
         return;
       }
 
@@ -134,7 +134,7 @@ export default function CompletarCadastroPage() {
 
         setSuccess(true);
         setTimeout(() => {
-          router.push("/motorista/garagem");
+          router.push("/motorista");
         }, 1500);
       }
     } catch (err: any) {

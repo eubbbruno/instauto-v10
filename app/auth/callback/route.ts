@@ -26,13 +26,17 @@ export async function GET(request: Request) {
 
         // Se não tem profile, criar um básico (será completado depois)
         if (!profile) {
-          await supabase
+          const { error: insertError } = await supabase
             .from("profiles")
             .insert({
               id: data.user.id,
               email: data.user.email,
               name: data.user.user_metadata?.name || data.user.email?.split("@")[0],
             });
+          
+          if (insertError) {
+            console.error("Erro ao criar profile:", insertError);
+          }
         }
 
         // Verificar se já tem oficina ou motorista cadastrado
@@ -53,7 +57,7 @@ export async function GET(request: Request) {
           return NextResponse.redirect(new URL("/oficina", requestUrl.origin));
         }
         if (motorist) {
-          return NextResponse.redirect(new URL("/motorista/garagem", requestUrl.origin));
+          return NextResponse.redirect(new URL("/motorista", requestUrl.origin));
         }
 
         // Se não tem, redirecionar para completar cadastro

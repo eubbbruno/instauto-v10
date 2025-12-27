@@ -42,23 +42,48 @@ export default function CadastroMotoristaPage() {
     setLoading(true);
 
     try {
+      // 1. Criar conta no Supabase Auth
       await signUp(email, password, name);
       
-      // Buscar usuário da sessão
-      const supabase = (await import("@/lib/supabase")).createClient();
-      const { data: { session } } = await supabase.auth.getSession();
+      // 2. Aguardar um pouco para garantir que o perfil foi criado
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
-      if (session?.user) {
-        // Criar perfil de motorista automaticamente
-        const { error: motoristError } = await supabase
-          .from("motorists")
-          .insert({
-            profile_id: session.user.id,
-            name: name,
-          });
-        
-        if (motoristError) {
-          console.error("Erro ao criar motorista:", motoristError);
+      // 3. Buscar usuário da sessão
+      const supabase = (await import("@/lib/supabase")).createClient();
+      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+      
+      if (sessionError) {
+        console.error("Erro ao obter sessão:", sessionError);
+        throw new Error("Erro ao criar sessão. Tente fazer login.");
+      }
+      
+      if (!session?.user) {
+        throw new Error("Sessão não criada. Tente fazer login.");
+      }
+      
+      // 4. Atualizar profile com tipo motorista
+      const { error: profileError } = await supabase
+        .from("profiles")
+        .update({ type: "motorista" })
+        .eq("id", session.user.id);
+      
+      if (profileError) {
+        console.error("Erro ao atualizar perfil:", profileError);
+      }
+      
+      // 5. Criar perfil de motorista
+      const { error: motoristError } = await supabase
+        .from("motorists")
+        .insert({
+          profile_id: session.user.id,
+          name: name,
+        });
+      
+      if (motoristError) {
+        console.error("Erro ao criar motorista:", motoristError);
+        // Se já existe, não é erro crítico
+        if (motoristError.code !== "23505") { // 23505 = unique violation
+          throw new Error("Erro ao criar perfil de motorista.");
         }
       }
       
@@ -67,6 +92,7 @@ export default function CadastroMotoristaPage() {
         router.push("/motorista");
       }, 2000);
     } catch (err: any) {
+      console.error("Erro completo:", err);
       setError(err.message || "Erro ao criar conta. Tente novamente.");
     } finally {
       setLoading(false);
