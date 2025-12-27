@@ -164,26 +164,30 @@ export default function BuscarOficinasPage() {
       )}
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-white py-16 pt-24">
+      <section className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white py-20 pt-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Encontre a Oficina Ideal
+            <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-semibold mb-6">
+              <Search className="h-4 w-4" />
+              Marketplace de Oficinas
+            </div>
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+              Encontre a <span className="text-yellow-400">Oficina Ideal</span>
             </h1>
-            <p className="text-xl text-blue-100 mb-8">
-              Compare preços, veja avaliações e solicite orçamentos online
+            <p className="text-xl md:text-2xl text-blue-100 mb-10 max-w-3xl mx-auto leading-relaxed">
+              Compare preços, veja avaliações reais e solicite orçamentos grátis em oficinas mecânicas confiáveis
             </p>
 
             {/* Barra de Busca Principal */}
-            <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-xl p-4">
-              <div className="flex items-center gap-2">
-                <Search className="text-gray-400" size={24} />
+            <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-2xl p-6">
+              <div className="flex items-center gap-4">
+                <Search className="text-gray-400 flex-shrink-0" size={28} />
                 <input
                   type="text"
                   placeholder="Buscar por nome, cidade ou serviço..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="flex-1 text-gray-900 outline-none text-lg"
+                  className="flex-1 text-gray-900 outline-none text-lg placeholder:text-gray-400"
                 />
               </div>
             </div>
@@ -192,15 +196,15 @@ export default function BuscarOficinasPage() {
       </section>
 
       {/* Filtros */}
-      <section className="bg-white border-b z-10 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <section className="bg-white border-b z-10 shadow-md">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <select
               value={cityFilter}
               onChange={(e) => setCityFilter(e.target.value)}
-              className="border rounded-lg px-4 py-2 text-gray-700"
+              className="border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-semibold focus:border-blue-600 focus:outline-none transition-colors"
             >
-              <option value="">Todas as Cidades</option>
+              <option value="">📍 Todas as Cidades</option>
               {uniqueCities.map((city) => (
                 <option key={city} value={city}>
                   {city}
@@ -211,9 +215,9 @@ export default function BuscarOficinasPage() {
             <select
               value={stateFilter}
               onChange={(e) => setStateFilter(e.target.value)}
-              className="border rounded-lg px-4 py-2 text-gray-700"
+              className="border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-semibold focus:border-blue-600 focus:outline-none transition-colors"
             >
-              <option value="">Todos os Estados</option>
+              <option value="">🗺️ Todos os Estados</option>
               {uniqueStates.map((state) => (
                 <option key={state} value={state}>
                   {state}
@@ -224,9 +228,9 @@ export default function BuscarOficinasPage() {
             <select
               value={serviceFilter}
               onChange={(e) => setServiceFilter(e.target.value)}
-              className="border rounded-lg px-4 py-2 text-gray-700"
+              className="border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-semibold focus:border-blue-600 focus:outline-none transition-colors"
             >
-              <option value="">Todos os Serviços</option>
+              <option value="">🔧 Todos os Serviços</option>
               {serviceTypes.map((service) => (
                 <option key={service} value={service}>
                   {service}
@@ -257,11 +261,11 @@ export default function BuscarOficinasPage() {
                 {filteredWorkshops.length} oficina(s) encontrada(s)
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {filteredWorkshops.map((workshop) => (
                   <div
                     key={workshop.id}
-                    className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow p-6"
+                    className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all p-8 border-2 border-gray-100 hover:border-blue-200"
                   >
                     {/* Header do Card */}
                     <div className="flex justify-between items-start mb-4">
