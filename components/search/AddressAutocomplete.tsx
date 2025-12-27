@@ -13,7 +13,6 @@ export default function AddressAutocomplete({ onSelect }: AddressAutocompletePro
   const [isLoading, setIsLoading] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const citiesCache = useRef<any[]>([]);
 
   // Fechar sugestões ao clicar fora
   useEffect(() => {
@@ -26,24 +25,7 @@ export default function AddressAutocomplete({ onSelect }: AddressAutocompletePro
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Carregar cidades uma vez
-  useEffect(() => {
-    const loadCities = async () => {
-      if (citiesCache.current.length > 0) return;
-      
-      try {
-        const response = await fetch("https://brasilapi.com.br/api/ibge/municipios/v1");
-        const cities = await response.json();
-        citiesCache.current = cities;
-      } catch (error) {
-        console.error("Erro ao carregar cidades:", error);
-      }
-    };
-    
-    loadCities();
-  }, []);
-
-  // Buscar endereços
+  // Buscar endereços em tempo real
   useEffect(() => {
     const searchAddress = async () => {
       if (input.length < 3) {
@@ -62,16 +44,16 @@ export default function AddressAutocomplete({ onSelect }: AddressAutocompletePro
           const data = await response.json();
           
           if (!data.erro && data.localidade) {
-            const suggestions = [
-              `${data.localidade} - ${data.uf}`,
-            ];
+            const suggestions = [];
+            
+            if (data.logradouro) {
+              suggestions.push(`${data.logradouro}, ${data.bairro}, ${data.localidade} - ${data.uf}`);
+            }
+            
+            suggestions.push(`${data.localidade} - ${data.uf}`);
             
             if (data.bairro) {
               suggestions.push(`${data.bairro}, ${data.localidade} - ${data.uf}`);
-            }
-            
-            if (data.logradouro) {
-              suggestions.unshift(`${data.logradouro}, ${data.localidade} - ${data.uf}`);
             }
             
             setSuggestions(suggestions);
@@ -81,14 +63,51 @@ export default function AddressAutocomplete({ onSelect }: AddressAutocompletePro
             setShowSuggestions(false);
           }
         } else {
-          // Buscar em cache de cidades
-          if (citiesCache.current.length > 0) {
-            const filtered = citiesCache.current
-              .filter((city: any) => 
-                city.nome.toLowerCase().includes(input.toLowerCase())
-              )
-              .slice(0, 5)
-              .map((city: any) => `${city.nome} - ${city.microrregiao.mesorregiao.UF.sigla}`);
+          // Buscar endereços via Nominatim (OpenStreetMap) - GRÁTIS
+          const response = await fetch(
+            `https://nominatim.openstreetmap.org/search?` +
+            `q=${encodeURIComponent(input)},Brazil&` +
+            `format=json&` +
+            `addressdetails=1&` +
+            `limit=5&` +
+            `countrycodes=br`,
+            {
+              headers: {
+                'User-Agent': 'Instauto/1.0'
+              }
+            }
+          );
+          
+          const data = await response.json();
+          
+          if (data && data.length > 0) {
+            const filtered = data
+              .map((item: any) => {
+                const address = item.address;
+                const parts = [];
+                
+                // Rua/Avenida
+                if (address.road) parts.push(address.road);
+                
+                // Bairro
+                if (address.suburb || address.neighbourhood) {
+                  parts.push(address.suburb || address.neighbourhood);
+                }
+                
+                // Cidade
+                if (address.city || address.town || address.village) {
+                  parts.push(address.city || address.town || address.village);
+                }
+                
+                // Estado
+                if (address.state) {
+                  const stateAbbr = address.state.substring(0, 2).toUpperCase();
+                  parts.push(stateAbbr);
+                }
+                
+                return parts.join(', ');
+              })
+              .filter((addr: string) => addr.length > 0);
             
             setSuggestions(filtered);
             setShowSuggestions(filtered.length > 0);
@@ -106,7 +125,7 @@ export default function AddressAutocomplete({ onSelect }: AddressAutocompletePro
       }
     };
 
-    const debounce = setTimeout(searchAddress, 500);
+    const debounce = setTimeout(searchAddress, 600);
     return () => clearTimeout(debounce);
   }, [input]);
 
