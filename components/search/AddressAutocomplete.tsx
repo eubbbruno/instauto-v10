@@ -13,6 +13,7 @@ export default function AddressAutocomplete({ onSelect }: AddressAutocompletePro
   const [isLoading, setIsLoading] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const citiesCache = useRef<any[]>([]);
 
   // Fechar sugestões ao clicar fora
   useEffect(() => {
@@ -25,11 +26,29 @@ export default function AddressAutocomplete({ onSelect }: AddressAutocompletePro
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Carregar cidades uma vez
+  useEffect(() => {
+    const loadCities = async () => {
+      if (citiesCache.current.length > 0) return;
+      
+      try {
+        const response = await fetch("https://brasilapi.com.br/api/ibge/municipios/v1");
+        const cities = await response.json();
+        citiesCache.current = cities;
+      } catch (error) {
+        console.error("Erro ao carregar cidades:", error);
+      }
+    };
+    
+    loadCities();
+  }, []);
+
   // Buscar endereços
   useEffect(() => {
     const searchAddress = async () => {
       if (input.length < 3) {
         setSuggestions([]);
+        setShowSuggestions(false);
         return;
       }
 
@@ -42,35 +61,52 @@ export default function AddressAutocomplete({ onSelect }: AddressAutocompletePro
           const response = await fetch(`https://viacep.com.br/ws/${cepOnly}/json/`);
           const data = await response.json();
           
-          if (!data.erro) {
-            const fullAddress = `${data.logradouro}, ${data.bairro}, ${data.localidade} - ${data.uf}`;
-            setSuggestions([fullAddress, `${data.localidade} - ${data.uf}`, data.bairro]);
+          if (!data.erro && data.localidade) {
+            const suggestions = [
+              `${data.localidade} - ${data.uf}`,
+            ];
+            
+            if (data.bairro) {
+              suggestions.push(`${data.bairro}, ${data.localidade} - ${data.uf}`);
+            }
+            
+            if (data.logradouro) {
+              suggestions.unshift(`${data.logradouro}, ${data.localidade} - ${data.uf}`);
+            }
+            
+            setSuggestions(suggestions);
             setShowSuggestions(true);
+          } else {
+            setSuggestions([]);
+            setShowSuggestions(false);
           }
         } else {
-          // Buscar cidades brasileiras
-          const response = await fetch("https://brasilapi.com.br/api/ibge/municipios/v1");
-          const cities = await response.json();
-          
-          const filtered = cities
-            .filter((city: any) => 
-              city.nome.toLowerCase().includes(input.toLowerCase())
-            )
-            .slice(0, 5)
-            .map((city: any) => `${city.nome} - ${city.microrregiao.mesorregiao.UF.sigla}`);
-          
-          setSuggestions(filtered);
-          setShowSuggestions(filtered.length > 0);
+          // Buscar em cache de cidades
+          if (citiesCache.current.length > 0) {
+            const filtered = citiesCache.current
+              .filter((city: any) => 
+                city.nome.toLowerCase().includes(input.toLowerCase())
+              )
+              .slice(0, 5)
+              .map((city: any) => `${city.nome} - ${city.microrregiao.mesorregiao.UF.sigla}`);
+            
+            setSuggestions(filtered);
+            setShowSuggestions(filtered.length > 0);
+          } else {
+            setSuggestions([]);
+            setShowSuggestions(false);
+          }
         }
       } catch (error) {
         console.error("Erro ao buscar endereço:", error);
         setSuggestions([]);
+        setShowSuggestions(false);
       } finally {
         setIsLoading(false);
       }
     };
 
-    const debounce = setTimeout(searchAddress, 300);
+    const debounce = setTimeout(searchAddress, 500);
     return () => clearTimeout(debounce);
   }, [input]);
 

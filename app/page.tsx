@@ -520,7 +520,7 @@ export default function HomePage() {
               </div>
               <div className="hidden md:flex justify-center">
                 <Image
-                  src="/images/oficina.png"
+                  src="/images/img-03.png"
                   alt="Sistema de Gestão para Oficinas Mecânicas"
                   width={400}
                   height={400}

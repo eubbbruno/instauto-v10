@@ -3,12 +3,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
-import { AlertCircle, CheckCircle, Loader2, Mail, Lock, User, Car } from "lucide-react";
+import { AlertCircle, CheckCircle, Loader2, Mail, Lock, User, Car, Sparkles } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
@@ -66,23 +67,71 @@ export default function CadastroMotoristaPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-blue-50 via-white to-blue-50">
       <Header />
       
-      <div className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full">
-          <Card className="border-2 shadow-xl">
-            <CardHeader className="space-y-1 pb-6">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <Car className="h-6 w-6 text-blue-600" />
-                </div>
-                <CardTitle className="text-3xl font-heading font-bold">Cadastro Motorista</CardTitle>
+      <div className="flex-1 flex items-center justify-center py-20 px-4 sm:px-6 lg:px-8 pt-28">
+        <div className="max-w-6xl w-full">
+          <div className="grid lg:grid-cols-2 gap-8 items-center">
+            {/* Coluna da Imagem */}
+            <div className="hidden lg:flex flex-col items-center justify-center bg-gradient-to-br from-blue-600 to-blue-800 rounded-3xl p-12 text-white shadow-2xl">
+              <div className="mb-8">
+                <Image
+                  src="/images/motorista.png"
+                  alt="Cadastro Motorista"
+                  width={400}
+                  height={400}
+                  className="object-contain drop-shadow-2xl"
+                />
               </div>
-              <CardDescription className="text-base">
-                Crie sua conta e encontre as melhores oficinas
-              </CardDescription>
-            </CardHeader>
+              <h2 className="text-3xl font-heading font-bold mb-4 text-center">
+                Encontre as melhores oficinas
+              </h2>
+              <p className="text-blue-100 text-center text-lg leading-relaxed mb-6">
+                Compare preços, veja avaliações reais e solicite orçamentos grátis. Tudo 100% gratuito para motoristas!
+              </p>
+              <div className="space-y-3 w-full max-w-md">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="h-5 w-5" />
+                  </div>
+                  <span className="text-blue-50">Busca de oficinas próximas</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="h-5 w-5" />
+                  </div>
+                  <span className="text-blue-50">Orçamentos online gratuitos</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="h-5 w-5" />
+                  </div>
+                  <span className="text-blue-50">Avaliações de clientes reais</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="h-5 w-5" />
+                  </div>
+                  <span className="text-blue-50">Histórico de manutenções</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Coluna do Formulário */}
+            <div>
+              <Card className="border-2 shadow-2xl">
+                <CardHeader className="space-y-1 pb-6">
+                  <div className="flex items-center gap-3 mb-2">
+                    <div className="p-2 bg-blue-100 rounded-lg">
+                      <Car className="h-6 w-6 text-blue-600" />
+                    </div>
+                    <CardTitle className="text-3xl font-heading font-bold">Criar sua conta</CardTitle>
+                  </div>
+                  <CardDescription className="text-base">
+                    100% grátis para motoristas - sem cartão de crédito
+                  </CardDescription>
+                </CardHeader>
             <form onSubmit={handleSubmit}>
               <CardContent className="space-y-5">
                 {error && (
@@ -102,11 +151,11 @@ export default function CadastroMotoristaPage() {
                 )}
 
                 <div className="space-y-2">
-                  <Label htmlFor="name" className="text-sm font-semibold text-gray-700">
+                  <Label htmlFor="name" className="text-sm font-bold text-gray-700">
                     Nome completo
                   </Label>
                   <div className="relative">
-                    <User className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                     <Input
                       id="name"
                       type="text"
@@ -114,17 +163,18 @@ export default function CadastroMotoristaPage() {
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       required
-                      className="pl-10 h-11 border-2"
+                      disabled={loading || success}
+                      className="pl-10 h-12 border-2"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-sm font-semibold text-gray-700">
-                    E-mail
+                  <Label htmlFor="email" className="text-sm font-bold text-gray-700">
+                    Email
                   </Label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                     <Input
                       id="email"
                       type="email"
@@ -132,51 +182,54 @@ export default function CadastroMotoristaPage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
-                      className="pl-10 h-11 border-2"
+                      disabled={loading || success}
+                      className="pl-10 h-12 border-2"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="password" className="text-sm font-semibold text-gray-700">
+                  <Label htmlFor="password" className="text-sm font-bold text-gray-700">
                     Senha
                   </Label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                     <Input
                       id="password"
                       type="password"
-                      placeholder="Mínimo 6 caracteres"
+                      placeholder="••••••••"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
-                      className="pl-10 h-11 border-2"
+                      disabled={loading || success}
+                      className="pl-10 h-12 border-2"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="confirmPassword" className="text-sm font-semibold text-gray-700">
+                  <Label htmlFor="confirmPassword" className="text-sm font-bold text-gray-700">
                     Confirmar senha
                   </Label>
                   <div className="relative">
-                    <Lock className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                     <Input
                       id="confirmPassword"
                       type="password"
-                      placeholder="Digite a senha novamente"
+                      placeholder="••••••••"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       required
-                      className="pl-10 h-11 border-2"
+                      disabled={loading || success}
+                      className="pl-10 h-12 border-2"
                     />
                   </div>
                 </div>
 
                 <Button
                   type="submit"
-                  className="w-full h-12 text-base font-semibold bg-blue-600 hover:bg-blue-700"
-                  disabled={loading}
+                  className="w-full h-12 text-base font-bold bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl transition-all"
+                  disabled={loading || success}
                 >
                   {loading ? (
                     <>
@@ -185,8 +238,8 @@ export default function CadastroMotoristaPage() {
                     </>
                   ) : (
                     <>
-                      <Car className="mr-2 h-5 w-5" />
-                      Criar conta de motorista
+                      <Sparkles className="mr-2 h-5 w-5" />
+                      Criar Conta Grátis
                     </>
                   )}
                 </Button>
@@ -235,15 +288,19 @@ export default function CadastroMotoristaPage() {
                   </Link>
                 </div>
 
-                <div className="text-center text-sm text-gray-600 border-t-2 pt-4 mt-4">
-                  É uma oficina?{" "}
-                  <Link href="/cadastro" className="font-semibold text-blue-600 hover:text-blue-700">
-                    Cadastre sua oficina aqui
-                  </Link>
+                <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-4 text-center">
+                  <p className="text-sm text-gray-700">
+                    É uma oficina?{" "}
+                    <Link href="/cadastro" className="font-bold text-blue-600 hover:text-blue-700 underline">
+                      Cadastre sua oficina aqui
+                    </Link>
+                  </p>
                 </div>
               </CardContent>
             </form>
           </Card>
+            </div>
+          </div>
         </div>
       </div>
 
