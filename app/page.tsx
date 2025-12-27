@@ -25,70 +25,69 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-blue-50 via-white to-yellow-50 pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
-            <div className="text-center md:text-left">
-            <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-sans font-semibold mb-8">
-              <Zap className="h-4 w-4" />
-              Sistema de Gestão + Marketplace de Oficinas
-            </div>
-
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold text-gray-900 mb-6 leading-tight">
-              Transforme sua oficina em um{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">
-                negócio digital
-              </span>
-            </h1>
-
-            <p className="text-lg md:text-xl text-gray-600 font-sans mb-10 leading-relaxed">
-              Sistema completo de gestão para oficinas mecânicas. Controle
-              clientes, ordens de serviço, estoque, financeiro e muito mais.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start items-center mb-12">
-              <Link href="/cadastro">
-                <Button
-                  size="lg"
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-sans font-bold text-lg px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all group"
-                >
-                  Começar Teste Grátis (14 dias)
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Button>
-              </Link>
-              <Link href="/oficinas">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-2 border-gray-300 text-gray-700 hover:border-blue-600 hover:text-blue-600 font-sans font-bold text-lg px-8 py-6 rounded-xl transition-all"
-                >
-                  Conhecer Funcionalidades
-                </Button>
-              </Link>
-            </div>
-
-            <div className="flex flex-wrap justify-center md:justify-start gap-6 text-sm text-gray-600 font-sans">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-green-600" />
-                <span>Sem cartão de crédito</span>
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-2 rounded-full text-sm font-sans font-semibold mb-6">
+                <Zap className="h-4 w-4" />
+                Sistema de Gestão + Marketplace de Oficinas
               </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-green-600" />
-                <span>Cancele quando quiser</span>
+
+              <h1 className="text-4xl md:text-6xl font-heading font-bold text-gray-900 mb-6 leading-tight">
+                Transforme sua oficina em um{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-400">
+                  negócio digital
+                </span>
+              </h1>
+
+              <p className="text-xl md:text-2xl text-gray-600 font-sans mb-8 leading-relaxed">
+                Sistema completo de gestão para oficinas mecânicas. Controle
+                clientes, ordens de serviço, estoque, financeiro e muito mais.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 mb-10">
+                <Link href="/cadastro">
+                  <Button
+                    size="lg"
+                    className="bg-blue-600 hover:bg-blue-700 text-white font-sans font-bold text-lg px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all w-full sm:w-auto"
+                  >
+                    Começar Teste Grátis
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </Link>
+                <Link href="/oficinas">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-2 border-gray-300 text-gray-700 hover:border-blue-600 hover:text-blue-600 font-sans font-bold text-lg px-8 py-6 rounded-xl transition-all w-full sm:w-auto"
+                  >
+                    Conhecer Funcionalidades
+                  </Button>
+                </Link>
               </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-green-600" />
-                <span>Suporte em português</span>
+
+              <div className="flex flex-wrap gap-6 text-sm text-gray-600 font-sans">
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-green-600" />
+                  <span>14 dias grátis</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-green-600" />
+                  <span>Sem cartão de crédito</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="h-5 w-5 text-green-600" />
+                  <span>Cancele quando quiser</span>
+                </div>
               </div>
-            </div>
             </div>
 
-            {/* Hero Image */}
             <div className="hidden md:flex justify-center items-center">
-              <div className="relative w-full max-w-md">
+              <div className="relative">
                 <Image
                   src="/images/img-01.png"
                   alt="Mecânico Instauto"
-                  width={400}
-                  height={400}
+                  width={500}
+                  height={500}
                   className="object-contain drop-shadow-2xl"
                   priority
                 />
