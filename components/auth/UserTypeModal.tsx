@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { X, Car, Wrench } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -16,12 +17,29 @@ export default function UserTypeModal({
   onClose,
   action,
 }: UserTypeModalProps) {
-  if (!isOpen) return null;
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    
+    // Bloquear scroll quando modal abrir
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
+  if (!isOpen || !mounted) return null;
 
   const title = action === "login" ? "Como você quer entrar?" : "Como você quer se cadastrar?";
   const subtitle = action === "login" ? "Escolha o tipo de conta" : "Escolha o tipo de conta para criar";
 
-  return (
+  const modalContent = (
     <div 
       className="fixed z-[100] bg-black/60 backdrop-blur-sm"
       style={{
@@ -100,5 +118,7 @@ export default function UserTypeModal({
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 }
 

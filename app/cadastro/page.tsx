@@ -74,14 +74,15 @@ export default function CadastroPage() {
         <div className="max-w-6xl w-full">
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             {/* Coluna da Imagem */}
-            <div className="hidden lg:flex flex-col items-center justify-center bg-gradient-to-br from-yellow-500 to-orange-600 rounded-3xl p-12 text-white shadow-2xl">
-              <div className="mb-8">
+            <div className="hidden lg:flex flex-col items-center justify-center bg-gradient-to-br from-yellow-500 to-orange-600 rounded-3xl p-12 text-white shadow-2xl backdrop-blur-xl">
+              <div className="mb-8 relative">
+                <div className="absolute inset-0 bg-white/10 rounded-3xl backdrop-blur-md"></div>
                 <Image
                   src="/images/oficina.png"
                   alt="Cadastro Oficina"
                   width={400}
                   height={400}
-                  className="object-contain drop-shadow-2xl"
+                  className="object-contain drop-shadow-2xl relative z-10 rounded-3xl"
                 />
               </div>
               <h2 className="text-3xl font-heading font-bold mb-4 text-center">
