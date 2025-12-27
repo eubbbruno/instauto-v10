@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -20,6 +20,15 @@ export default function LoginMotoristaPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showWelcome, setShowWelcome] = useState(false);
+
+  useEffect(() => {
+    // Verificar se veio do cadastro
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("registered") === "true") {
+      setShowWelcome(true);
+    }
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -133,6 +142,24 @@ export default function LoginMotoristaPage() {
                 </CardHeader>
                 <form onSubmit={handleSubmit}>
                   <CardContent className="space-y-5">
+                    {showWelcome && (
+                      <div className="bg-blue-50 border-2 border-blue-200 text-blue-800 rounded-lg p-4">
+                        <div className="flex items-start gap-3">
+                          <CheckCircle className="h-5 w-5 mt-0.5 flex-shrink-0" />
+                          <div>
+                            <p className="font-bold text-base mb-1">✉️ Confirme seu email!</p>
+                            <p className="text-sm">
+                              Enviamos um link de confirmação para seu email. 
+                              Clique no link para ativar sua conta e fazer login.
+                            </p>
+                            <p className="text-sm mt-2 text-blue-600">
+                              Não recebeu? Verifique a pasta de spam.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    
                     {error && (
                       <div className="bg-red-50 border-2 border-red-200 text-red-800 rounded-lg p-4 flex items-start gap-3">
                         <AlertCircle className="h-5 w-5 mt-0.5 flex-shrink-0" />

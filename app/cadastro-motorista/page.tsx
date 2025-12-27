@@ -42,57 +42,18 @@ export default function CadastroMotoristaPage() {
     setLoading(true);
 
     try {
-      // 1. Criar conta no Supabase Auth
+      // Criar conta no Supabase Auth
       await signUp(email, password, name);
       
-      // 2. Aguardar um pouco para garantir que o perfil foi criado
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // 3. Buscar usuário da sessão
-      const supabase = (await import("@/lib/supabase")).createClient();
-      const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-      
-      if (sessionError) {
-        console.error("Erro ao obter sessão:", sessionError);
-        throw new Error("Erro ao criar sessão. Tente fazer login.");
-      }
-      
-      if (!session?.user) {
-        throw new Error("Sessão não criada. Tente fazer login.");
-      }
-      
-      // 4. Atualizar profile com tipo motorista
-      const { error: profileError } = await supabase
-        .from("profiles")
-        .update({ type: "motorista" })
-        .eq("id", session.user.id);
-      
-      if (profileError) {
-        console.error("Erro ao atualizar perfil:", profileError);
-      }
-      
-      // 5. Criar perfil de motorista
-      const { error: motoristError } = await supabase
-        .from("motorists")
-        .insert({
-          profile_id: session.user.id,
-          name: name,
-        });
-      
-      if (motoristError) {
-        console.error("Erro ao criar motorista:", motoristError);
-        // Se já existe, não é erro crítico
-        if (motoristError.code !== "23505") { // 23505 = unique violation
-          throw new Error("Erro ao criar perfil de motorista.");
-        }
-      }
-      
       setSuccess(true);
+      setError("");
+      
+      // Mostrar mensagem de sucesso por 3 segundos antes de redirecionar
       setTimeout(() => {
-        router.push("/motorista");
-      }, 2000);
+        router.push("/login-motorista?registered=true");
+      }, 3000);
     } catch (err: any) {
-      console.error("Erro completo:", err);
+      console.error("Erro ao criar conta:", err);
       setError(err.message || "Erro ao criar conta. Tente novamente.");
     } finally {
       setLoading(false);
@@ -188,11 +149,22 @@ export default function CadastroMotoristaPage() {
                 )}
 
                 {success && (
-                  <div className="bg-green-50 border-2 border-green-200 text-green-800 rounded-lg p-4 flex items-start gap-3">
-                    <CheckCircle className="h-5 w-5 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm font-medium">
-                      Conta criada com sucesso! Redirecionando...
-                    </span>
+                  <div className="bg-green-50 border-2 border-green-200 text-green-800 rounded-lg p-4">
+                    <div className="flex items-start gap-3 mb-2">
+                      <CheckCircle className="h-5 w-5 mt-0.5 flex-shrink-0" />
+                      <div>
+                        <p className="font-bold text-base mb-1">🎉 Bem-vindo ao Instauto!</p>
+                        <p className="text-sm">
+                          Enviamos um email de confirmação para <strong>{email}</strong>
+                        </p>
+                        <p className="text-sm mt-2">
+                          Por favor, verifique sua caixa de entrada (e spam) e clique no link de confirmação.
+                        </p>
+                        <p className="text-sm mt-2 text-green-700">
+                          Redirecionando para o login...
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 )}
 
