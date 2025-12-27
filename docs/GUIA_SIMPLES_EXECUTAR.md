@@ -127,6 +127,20 @@ Equipe Instauto
 
 ---
 
+## 🧹 LIMPAR USUÁRIOS DE TESTE (OPCIONAL)
+
+Se você já usou todos os seus emails e quer resetar tudo:
+
+1. No **SQL Editor** do Supabase
+2. Copie e cole TODO o conteúdo do arquivo: **`docs/SQL_LIMPAR_USUARIOS.sql`**
+3. Clique em **Run**
+4. ✅ Todos os usuários serão deletados
+5. ✅ Agora você pode usar os mesmos emails novamente
+
+⚠️ **ATENÇÃO:** Isso deleta TODOS os usuários! Use apenas em desenvolvimento.
+
+---
+
 ## 🎉 É ISSO!
 
 Só executar os 2 SQLs e testar. Simples assim! 🚀
