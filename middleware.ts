@@ -7,12 +7,15 @@ export function middleware(request: NextRequest) {
   // Se está na home (/) e tem um code, redirecionar para /auth/callback
   if (pathname === '/' && searchParams.has('code')) {
     const code = searchParams.get('code');
-    const callbackUrl = new URL('/auth/callback', request.url);
-    callbackUrl.searchParams.set('code', code);
     
-    console.log('Redirecting to callback with code:', code);
-    
-    return NextResponse.redirect(callbackUrl);
+    if (code) {
+      const callbackUrl = new URL('/auth/callback', request.url);
+      callbackUrl.searchParams.set('code', code);
+      
+      console.log('Redirecting to callback with code:', code);
+      
+      return NextResponse.redirect(callbackUrl);
+    }
   }
   
   return NextResponse.next();
