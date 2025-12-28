@@ -39,6 +39,9 @@ export async function GET(request: Request) {
       console.log("User:", user?.id, user?.email);
 
       if (user) {
+        console.log("User authenticated:", user.id, user.email);
+        console.log("User metadata:", user.user_metadata);
+        
         // Verificar se já existe profile
         const { data: existingProfile, error: profileCheckError } = await supabase
           .from("profiles")
@@ -103,17 +106,40 @@ export async function GET(request: Request) {
               console.log("Motorist already exists (created by trigger)");
             }
           }
-        }
-
-        // Determinar para onde redirecionar
-        const userType = existingProfile?.type || "motorista";
-        console.log("User type:", userType);
-        
-        if (userType === "oficina") {
-          return NextResponse.redirect(new URL("/oficina", requestUrl.origin));
-        } else {
+          
+          // Redirecionar para dashboard do motorista
           return NextResponse.redirect(new URL("/motorista?welcome=true", requestUrl.origin));
         }
+
+        // Se já tem profile, verificar tipo
+        if (existingProfile) {
+          // Verificar se tem motorista ou oficina
+          const { data: motorist } = await supabase
+            .from("motorists")
+            .select("id")
+            .eq("profile_id", user.id)
+            .single();
+
+          const { data: workshop } = await supabase
+            .from("workshops")
+            .select("id")
+            .eq("profile_id", user.id)
+            .single();
+
+          console.log("Motorist:", motorist, "Workshop:", workshop);
+
+          if (workshop) {
+            return NextResponse.redirect(new URL("/oficina", requestUrl.origin));
+          } else if (motorist) {
+            return NextResponse.redirect(new URL("/motorista?welcome=true", requestUrl.origin));
+          } else {
+            // Tem profile mas não tem motorista nem workshop
+            return NextResponse.redirect(new URL("/completar-cadastro", requestUrl.origin));
+          }
+        }
+
+        // Fallback: redirecionar para completar cadastro
+        return NextResponse.redirect(new URL("/completar-cadastro", requestUrl.origin));
       }
     } catch (err) {
       console.error("Callback error:", err);

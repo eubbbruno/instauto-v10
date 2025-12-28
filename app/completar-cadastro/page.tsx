@@ -156,7 +156,7 @@ export default function CompletarCadastroPage() {
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
 
-      <div className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 pt-28">
         <div className="max-w-md w-full">
           <Card className="border-2 shadow-xl">
             <CardHeader className="space-y-1 pb-6">
