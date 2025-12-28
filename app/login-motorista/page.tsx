@@ -38,29 +38,40 @@ export default function LoginMotoristaPage() {
     try {
       const { user } = await signIn(email, password);
       
-      // Verificar se tem motorista ou oficina
-      const supabase = (await import("@/lib/supabase")).createClient();
+      console.log("Login bem-sucedido, user:", user.id);
       
-      const { data: motorist } = await supabase
+      // Verificar se tem motorista ou oficina
+      const { createClient } = await import("@/lib/supabase");
+      const supabase = createClient();
+      
+      const { data: motorist, error: motoristError } = await supabase
         .from("motorists")
         .select("id")
         .eq("profile_id", user.id)
         .single();
 
-      const { data: workshop } = await supabase
+      console.log("Motorist:", motorist, "Error:", motoristError);
+
+      const { data: workshop, error: workshopError } = await supabase
         .from("workshops")
         .select("id")
         .eq("profile_id", user.id)
         .single();
 
+      console.log("Workshop:", workshop, "Error:", workshopError);
+
       if (motorist) {
+        console.log("Redirecionando para /motorista");
         router.push("/motorista");
       } else if (workshop) {
+        console.log("Redirecionando para /oficina");
         router.push("/oficina");
       } else {
+        console.log("Nenhum perfil encontrado, redirecionando para /completar-cadastro");
         router.push("/completar-cadastro");
       }
     } catch (err: any) {
+      console.error("Erro no login:", err);
       setError(err.message || "Erro ao fazer login. Verifique suas credenciais.");
     } finally {
       setLoading(false);
