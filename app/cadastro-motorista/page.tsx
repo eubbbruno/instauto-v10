@@ -309,7 +309,7 @@ export default function CadastroMotoristaPage() {
                 <div className="bg-blue-50 border-2 border-blue-200 rounded-lg p-4 text-center">
                   <p className="text-sm text-gray-700">
                     É uma oficina?{" "}
-                    <Link href="/cadastro" className="font-bold text-blue-600 hover:text-blue-700 underline">
+                    <Link href="/cadastro-oficina" className="font-bold text-blue-600 hover:text-blue-700 underline">
                       Cadastre sua oficina aqui
                     </Link>
                   </p>

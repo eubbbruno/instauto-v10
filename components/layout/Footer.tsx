@@ -126,10 +126,18 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/cadastro"
+                  href="/cadastro-oficina"
                   className="hover:text-yellow-400 transition-colors hover:translate-x-1 inline-block"
                 >
-                  Criar Conta
+                  Cadastro Oficina
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/cadastro-motorista"
+                  className="hover:text-yellow-400 transition-colors hover:translate-x-1 inline-block"
+                >
+                  Cadastro Motorista
                 </Link>
               </li>
               <li>
