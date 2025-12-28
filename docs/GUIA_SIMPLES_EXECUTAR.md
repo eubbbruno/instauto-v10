@@ -22,7 +22,21 @@
 
 ---
 
-## ⚡ PASSO 3: CONFIGURAR EMAIL DE CONFIRMAÇÃO (OPCIONAL)
+## ⚡ PASSO 3: CONFIGURAR REDIRECT URL
+
+1. No Supabase, vá em **Authentication** → **URL Configuration**
+2. Em **"Site URL"**, coloque: `https://www.instauto.com.br`
+3. Em **"Redirect URLs"**, adicione (uma por linha):
+   ```
+   https://www.instauto.com.br/auth/callback
+   https://instauto.com.br/auth/callback
+   http://localhost:3000/auth/callback
+   ```
+4. Clique em **Save**
+
+---
+
+## ⚡ PASSO 4: CONFIGURAR EMAIL DE CONFIRMAÇÃO (OPCIONAL)
 
 Se quiser personalizar o email de boas-vindas:
 

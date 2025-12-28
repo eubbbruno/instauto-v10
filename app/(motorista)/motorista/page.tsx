@@ -16,8 +16,21 @@ export default function MotoristaDashboard() {
     maintenances: 0,
   });
   const [loading, setLoading] = useState(true);
+  const [showConfirmed, setShowConfirmed] = useState(false);
 
   const supabase = createClient();
+
+  useEffect(() => {
+    // Verificar se veio da confirmação de email
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("confirmed") === "true") {
+      setShowConfirmed(true);
+      // Remover o parâmetro da URL
+      window.history.replaceState({}, "", "/motorista");
+      // Esconder mensagem após 5 segundos
+      setTimeout(() => setShowConfirmed(false), 5000);
+    }
+  }, []);
 
   useEffect(() => {
     if (!profile) {
@@ -82,6 +95,27 @@ export default function MotoristaDashboard() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Mensagem de Email Confirmado */}
+        {showConfirmed && (
+          <div className="mb-6 bg-green-50 border-2 border-green-200 rounded-lg p-4 animate-fade-in">
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0">
+                <svg className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-green-900">
+                  🎉 Email confirmado com sucesso!
+                </h3>
+                <p className="text-sm text-green-700 mt-1">
+                  Sua conta está ativa. Agora você pode aproveitar todos os recursos do Instauto!
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">

@@ -17,6 +17,11 @@ export async function GET(request: Request) {
       }
 
       if (data?.user) {
+        console.log("✅ Email confirmado para:", data.user.email);
+        
+        // Aguardar 2 segundos para o trigger criar o perfil
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        
         // Verificar se já tem profile criado
         const { data: profile } = await supabase
           .from("profiles")
@@ -24,14 +29,18 @@ export async function GET(request: Request) {
           .eq("id", data.user.id)
           .single();
 
-        // Se não tem profile, criar um básico (será completado depois)
+        console.log("Profile encontrado:", profile);
+
+        // Se não tem profile, criar um básico
         if (!profile) {
+          console.log("Criando profile básico...");
           const { error: insertError } = await supabase
             .from("profiles")
             .insert({
               id: data.user.id,
               email: data.user.email,
               name: data.user.user_metadata?.name || data.user.email?.split("@")[0],
+              type: "motorista",
             });
           
           if (insertError) {
@@ -52,12 +61,29 @@ export async function GET(request: Request) {
           .eq("profile_id", data.user.id)
           .single();
 
+        console.log("Workshop:", workshop, "Motorist:", motorist);
+
+        // Se não tem motorista, criar agora
+        if (!motorist && !workshop) {
+          console.log("Criando motorista...");
+          const { error: motoristError } = await supabase
+            .from("motorists")
+            .insert({
+              profile_id: data.user.id,
+              name: data.user.user_metadata?.name || data.user.email?.split("@")[0],
+            });
+          
+          if (motoristError) {
+            console.error("Erro ao criar motorista:", motoristError);
+          }
+        }
+
         // Se já tem cadastro completo, redirecionar para dashboard
         if (workshop) {
           return NextResponse.redirect(new URL("/oficina", requestUrl.origin));
         }
-        if (motorist) {
-          return NextResponse.redirect(new URL("/motorista", requestUrl.origin));
+        if (motorist || !workshop) {
+          return NextResponse.redirect(new URL("/motorista?confirmed=true", requestUrl.origin));
         }
 
         // Se não tem, redirecionar para completar cadastro
