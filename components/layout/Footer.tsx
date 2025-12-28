@@ -134,10 +134,18 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/login"
+                  href="/login-oficina"
                   className="hover:text-yellow-400 transition-colors hover:translate-x-1 inline-block"
                 >
-                  Acessar Sistema
+                  Login Oficina
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/login-motorista"
+                  className="hover:text-yellow-400 transition-colors hover:translate-x-1 inline-block"
+                >
+                  Login Motorista
                 </Link>
               </li>
             </ul>

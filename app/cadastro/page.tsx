@@ -284,7 +284,7 @@ export default function CadastroPage() {
 
                     <div className="text-center text-sm text-gray-600 mt-6">
                       Já tem uma conta?{" "}
-                      <Link href="/login" className="font-semibold text-blue-600 hover:text-blue-700">
+                      <Link href="/login-oficina" className="font-semibold text-blue-600 hover:text-blue-700">
                         Fazer login
                       </Link>
                     </div>

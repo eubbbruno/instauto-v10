@@ -96,7 +96,7 @@ export default function UserTypeModal({
 
           {/* Oficina */}
           <Link
-            href={action === "login" ? "/login" : "/cadastro"}
+            href={action === "login" ? "/login-oficina" : "/cadastro"}
             onClick={onClose}
           >
             <div className="group bg-gradient-to-br from-yellow-50 to-yellow-100 p-8 rounded-2xl border-2 border-yellow-200 hover:border-yellow-400 transition-all cursor-pointer hover:shadow-xl">

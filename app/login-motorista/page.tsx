@@ -281,7 +281,7 @@ export default function LoginMotoristaPage() {
                     <div className="bg-yellow-50 border-2 border-yellow-200 rounded-lg p-4 text-center">
                       <p className="text-sm text-gray-700">
                         É uma oficina?{" "}
-                        <Link href="/login" className="font-bold text-yellow-600 hover:text-yellow-700 underline">
+                        <Link href="/login-oficina" className="font-bold text-yellow-600 hover:text-yellow-700 underline">
                           Entre aqui
                         </Link>
                       </p>
