@@ -23,7 +23,7 @@ export default function MotoristaDashboard() {
   useEffect(() => {
     // Verificar se veio da confirmação de email
     const params = new URLSearchParams(window.location.search);
-    if (params.get("confirmed") === "true") {
+    if (params.get("confirmed") === "true" || params.get("welcome") === "true") {
       setShowConfirmed(true);
       // Remover o parâmetro da URL
       window.history.replaceState({}, "", "/motorista");

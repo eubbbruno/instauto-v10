@@ -12,9 +12,9 @@ Execute nesta ordem:
    - Configura políticas de acesso
    - ⏱️ Execute UMA VEZ apenas
 
-2. **`SQL_TRIGGER_MOTORISTA.sql`**
-   - Cria trigger automático
-   - Quando usuário confirma email → cria motorista automaticamente
+2. **`SQL_REMOVER_TRIGGER_PROBLEMA.sql`** ⚠️ **IMPORTANTE!**
+   - Remove trigger problemático que causa erro
+   - Atualiza policies de RLS
    - ⏱️ Execute UMA VEZ apenas
 
 3. **CONFIGURAR CALLBACK URL (MANUAL)**
@@ -36,6 +36,11 @@ Execute nesta ordem:
   - Deleta todos os usuários de teste
   - Use quando quiser resetar e testar novamente
   - ⚠️ NÃO use em produção!
+
+- **`SQL_REMOVER_TRIGGER_PROBLEMA.sql`** ⚠️
+  - Remove trigger que causa erro "Error confirming user"
+  - Atualiza policies de RLS
+  - **EXECUTE ESTE ANTES DE TESTAR!**
 
 - **`SQL_CONFIGURAR_REDIRECT.sql`**
   - Apenas referência (não precisa executar)
@@ -79,7 +84,7 @@ Execute nesta ordem:
 ```
 1. Abra Supabase → SQL Editor
 2. Execute: SQL_UNICO_EXECUTAR.sql
-3. Execute: SQL_TRIGGER_MOTORISTA.sql
+3. Execute: SQL_REMOVER_TRIGGER_PROBLEMA.sql (IMPORTANTE!)
 ```
 
 ### **PASSO 2: Configurar Callback URL**
@@ -146,7 +151,7 @@ docs/
 Antes de testar, confirme que:
 
 - [ ] Executou `SQL_UNICO_EXECUTAR.sql`
-- [ ] Executou `SQL_TRIGGER_MOTORISTA.sql`
+- [ ] Executou `SQL_REMOVER_TRIGGER_PROBLEMA.sql` ⚠️
 - [ ] Configurou Callback URL no Supabase
 - [ ] Site URL: `https://www.instauto.com.br`
 - [ ] Redirect URLs: 3 URLs configuradas

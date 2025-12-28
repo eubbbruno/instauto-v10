@@ -1,101 +1,129 @@
-import { createClient } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get("code");
+  const error = requestUrl.searchParams.get("error");
+  const errorDescription = requestUrl.searchParams.get("error_description");
+  const next = requestUrl.searchParams.get("next") || "/";
+
+  console.log("=== AUTH CALLBACK ===");
+  console.log("Code:", code ? "exists" : "missing");
+  console.log("Error:", error);
+  console.log("Error Description:", errorDescription);
+
+  // Se veio com erro, redireciona com mensagem
+  if (error) {
+    console.error("Auth error:", error, errorDescription);
+    const redirectUrl = new URL("/login-motorista", requestUrl.origin);
+    redirectUrl.searchParams.set("error", errorDescription || error);
+    return NextResponse.redirect(redirectUrl);
+  }
 
   if (code) {
-    const supabase = createClient();
-    
     try {
-      const { data, error } = await supabase.auth.exchangeCodeForSession(code);
-
-      if (error) {
-        console.error("OAuth error:", error);
-        return NextResponse.redirect(new URL("/login?error=oauth_failed", requestUrl.origin));
+      const supabase = await createClient();
+      
+      // Trocar código por sessão
+      const { data: sessionData, error: sessionError } = await supabase.auth.exchangeCodeForSession(code);
+      
+      if (sessionError) {
+        console.error("Session error:", sessionError);
+        const redirectUrl = new URL("/login-motorista", requestUrl.origin);
+        redirectUrl.searchParams.set("error", sessionError.message);
+        return NextResponse.redirect(redirectUrl);
       }
 
-      if (data?.user) {
-        console.log("✅ Email confirmado para:", data.user.email);
-        
-        // Aguardar 2 segundos para o trigger criar o perfil
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        
-        // Verificar se já tem profile criado
-        const { data: profile } = await supabase
+      const user = sessionData?.user;
+      console.log("User:", user?.id, user?.email);
+
+      if (user) {
+        // Verificar se já existe profile
+        const { data: existingProfile, error: profileCheckError } = await supabase
           .from("profiles")
           .select("id, type")
-          .eq("id", data.user.id)
+          .eq("id", user.id)
           .single();
 
-        console.log("Profile encontrado:", profile);
+        console.log("Existing profile:", existingProfile);
+        console.log("Profile check error:", profileCheckError);
 
-        // Se não tem profile, criar um básico
-        if (!profile) {
-          console.log("Criando profile básico...");
-          const { error: insertError } = await supabase
+        // Se não existe profile, criar
+        if (!existingProfile && profileCheckError?.code === "PGRST116") {
+          const userName = user.user_metadata?.name || 
+                          user.user_metadata?.full_name || 
+                          user.email?.split("@")[0] || 
+                          "Usuário";
+
+          console.log("Creating profile for:", userName);
+
+          // Criar profile
+          const { data: newProfile, error: profileError } = await supabase
             .from("profiles")
             .insert({
-              id: data.user.id,
-              email: data.user.email,
-              name: data.user.user_metadata?.name || data.user.email?.split("@")[0],
+              id: user.id,
+              email: user.email,
+              name: userName,
               type: "motorista",
-            });
-          
-          if (insertError) {
-            console.error("Erro ao criar profile:", insertError);
+            })
+            .select()
+            .single();
+
+          if (profileError) {
+            console.error("Error creating profile:", profileError);
+          } else {
+            console.log("Profile created:", newProfile);
+
+            // Verificar se o trigger criou o motorist
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            const { data: existingMotorist } = await supabase
+              .from("motorists")
+              .select("id")
+              .eq("profile_id", user.id)
+              .single();
+
+            // Se o trigger não criou, criar manualmente
+            if (!existingMotorist) {
+              console.log("Creating motorist manually...");
+              const { error: motoristError } = await supabase
+                .from("motorists")
+                .insert({
+                  profile_id: user.id,
+                  name: userName,
+                });
+
+              if (motoristError) {
+                console.error("Error creating motorist:", motoristError);
+              } else {
+                console.log("Motorist created successfully");
+              }
+            } else {
+              console.log("Motorist already exists (created by trigger)");
+            }
           }
         }
 
-        // Verificar se já tem oficina ou motorista cadastrado
-        const { data: workshop } = await supabase
-          .from("workshops")
-          .select("id")
-          .eq("profile_id", data.user.id)
-          .single();
-
-        const { data: motorist } = await supabase
-          .from("motorists")
-          .select("id")
-          .eq("profile_id", data.user.id)
-          .single();
-
-        console.log("Workshop:", workshop, "Motorist:", motorist);
-
-        // Se não tem motorista, criar agora
-        if (!motorist && !workshop) {
-          console.log("Criando motorista...");
-          const { error: motoristError } = await supabase
-            .from("motorists")
-            .insert({
-              profile_id: data.user.id,
-              name: data.user.user_metadata?.name || data.user.email?.split("@")[0],
-            });
-          
-          if (motoristError) {
-            console.error("Erro ao criar motorista:", motoristError);
-          }
-        }
-
-        // Se já tem cadastro completo, redirecionar para dashboard
-        if (workshop) {
+        // Determinar para onde redirecionar
+        const userType = existingProfile?.type || "motorista";
+        console.log("User type:", userType);
+        
+        if (userType === "oficina") {
           return NextResponse.redirect(new URL("/oficina", requestUrl.origin));
+        } else {
+          return NextResponse.redirect(new URL("/motorista?welcome=true", requestUrl.origin));
         }
-        if (motorist || !workshop) {
-          return NextResponse.redirect(new URL("/motorista?confirmed=true", requestUrl.origin));
-        }
-
-        // Se não tem, redirecionar para completar cadastro
-        return NextResponse.redirect(new URL("/completar-cadastro", requestUrl.origin));
       }
     } catch (err) {
       console.error("Callback error:", err);
-      return NextResponse.redirect(new URL("/login?error=callback_failed", requestUrl.origin));
+      const redirectUrl = new URL("/login-motorista", requestUrl.origin);
+      redirectUrl.searchParams.set("error", "Erro ao processar autenticação");
+      return NextResponse.redirect(redirectUrl);
     }
   }
 
-  // Fallback: redirecionar para login
-  return NextResponse.redirect(new URL("/login", requestUrl.origin));
+  // Fallback
+  return NextResponse.redirect(new URL(next, requestUrl.origin));
 }
 
