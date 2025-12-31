@@ -9,9 +9,9 @@ export interface AuthContextType {
   user: User | null;
   profile: Profile | null;
   loading: boolean;
-  signUp: (email: string, password: string, name: string, userType?: 'motorista' | 'oficina') => Promise<void>;
+  signUp: (email: string, password: string, name: string, userType: 'motorista' | 'oficina') => Promise<void>;
   signIn: (email: string, password: string) => Promise<{ user: User }>;
-  signInWithGoogle: (userType?: 'motorista' | 'oficina') => Promise<void>;
+  signInWithGoogle: (userType: 'motorista' | 'oficina') => Promise<void>;
   signOut: () => Promise<void>;
 }
 
@@ -67,29 +67,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const signUp = async (email: string, password: string, name: string, userType?: 'motorista' | 'oficina') => {
+  const signUp = async (
+    email: string, 
+    password: string, 
+    name: string, 
+    userType: 'motorista' | 'oficina' = 'motorista'
+  ) => {
+    const redirectTo = userType === 'motorista' 
+      ? `${window.location.origin}/auth/callback?type=motorista`
+      : `${window.location.origin}/auth/callback?type=oficina`;
+
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
+        emailRedirectTo: redirectTo,
         data: {
-          name,
-          user_type: userType || 'motorista',
+          name: name,
+          user_type: userType, // Salva nos metadados do user
         },
       },
     });
 
     if (error) throw error;
-
-    // Criar profile básico com tipo
-    if (data.user) {
-      await supabase.from("profiles").insert({
-        id: data.user.id,
-        email: data.user.email,
-        name: name,
-        type: userType || 'motorista',
-      });
-    }
+    return data;
   };
 
   const signIn = async (email: string, password: string) => {
@@ -104,23 +105,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return { user: data.user };
   };
 
-  const signInWithGoogle = async (userType?: 'motorista' | 'oficina') => {
-    const redirectUrl = userType 
-      ? `${window.location.origin}/auth/callback?type=${userType}`
-      : `${window.location.origin}/auth/callback`;
-    
-    const { error } = await supabase.auth.signInWithOAuth({
+  const signInWithGoogle = async (userType: 'motorista' | 'oficina' = 'motorista') => {
+    const redirectTo = `${window.location.origin}/auth/callback?type=${userType}`;
+
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: redirectUrl,
+        redirectTo: redirectTo,
         queryParams: {
-          access_type: 'offline',
-          prompt: 'consent',
+          access_type: "offline",
+          prompt: "consent",
         },
       },
     });
 
     if (error) throw error;
+    return data;
   };
 
   const signOut = async () => {

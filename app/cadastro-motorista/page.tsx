@@ -42,16 +42,15 @@ export default function CadastroMotoristaPage() {
     setLoading(true);
 
     try {
-      // Criar conta no Supabase Auth
-      await signUp(email, password, name, 'motorista');
+      await signUp(email, password, name, "motorista");
       
       setSuccess(true);
       setError("");
       
-      // Mostrar mensagem de sucesso por 3 segundos antes de redirecionar
+      // Redireciona para login com mensagem
       setTimeout(() => {
-        router.push("/login-motorista?registered=true");
-      }, 3000);
+        router.push("/login-motorista?message=Verifique+seu+email+para+confirmar+a+conta");
+      }, 2000);
     } catch (err: any) {
       console.error("Erro ao criar conta:", err);
       setError(err.message || "Erro ao criar conta. Tente novamente.");
@@ -65,7 +64,7 @@ export default function CadastroMotoristaPage() {
     setLoading(true);
 
     try {
-      await signInWithGoogle('motorista');
+      await signInWithGoogle("motorista");
     } catch (err: any) {
       setError(err.message || "Erro ao cadastrar com Google.");
       setLoading(false);

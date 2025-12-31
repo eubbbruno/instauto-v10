@@ -42,10 +42,14 @@ export default function CadastroPage() {
     setLoading(true);
 
     try {
-      await signUp(email, password, name, 'oficina');
+      await signUp(email, password, name, "oficina");
+      
       setSuccess(true);
+      setError("");
+      
+      // Redireciona para login com mensagem
       setTimeout(() => {
-        router.push("/completar-cadastro");
+        router.push("/login-oficina?message=Verifique+seu+email+para+confirmar+a+conta");
       }, 2000);
     } catch (err: any) {
       setError(err.message || "Erro ao criar conta. Tente novamente.");
@@ -59,7 +63,7 @@ export default function CadastroPage() {
     setLoading(true);
 
     try {
-      await signInWithGoogle('oficina');
+      await signInWithGoogle("oficina");
     } catch (err: any) {
       setError(err.message || "Erro ao cadastrar com Google.");
       setLoading(false);
