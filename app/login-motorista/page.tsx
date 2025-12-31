@@ -83,7 +83,7 @@ export default function LoginMotoristaPage() {
     setLoading(true);
 
     try {
-      await signInWithGoogle();
+      await signInWithGoogle('motorista');
     } catch (err: any) {
       setError(err.message || "Erro ao fazer login com Google.");
       setLoading(false);

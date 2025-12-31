@@ -59,7 +59,7 @@ export default function CadastroPage() {
     setLoading(true);
 
     try {
-      await signInWithGoogle();
+      await signInWithGoogle('oficina');
     } catch (err: any) {
       setError(err.message || "Erro ao cadastrar com Google.");
       setLoading(false);

@@ -63,7 +63,7 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      await signInWithGoogle();
+      await signInWithGoogle('oficina');
     } catch (err: any) {
       setError(err.message || "Erro ao fazer login com Google.");
       setLoading(false);

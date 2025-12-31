@@ -65,7 +65,7 @@ export default function CadastroMotoristaPage() {
     setLoading(true);
 
     try {
-      await signInWithGoogle();
+      await signInWithGoogle('motorista');
     } catch (err: any) {
       setError(err.message || "Erro ao cadastrar com Google.");
       setLoading(false);

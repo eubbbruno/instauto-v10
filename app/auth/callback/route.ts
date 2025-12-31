@@ -6,10 +6,12 @@ export async function GET(request: Request) {
   const code = requestUrl.searchParams.get("code");
   const error = requestUrl.searchParams.get("error");
   const errorDescription = requestUrl.searchParams.get("error_description");
+  const userType = requestUrl.searchParams.get("type") as 'motorista' | 'oficina' | null;
   const next = requestUrl.searchParams.get("next") || "/";
 
   console.log("=== AUTH CALLBACK ===");
   console.log("Code:", code ? "exists" : "missing");
+  console.log("User Type:", userType);
   console.log("Error:", error);
   console.log("Error Description:", errorDescription);
 
@@ -59,7 +61,10 @@ export async function GET(request: Request) {
                           user.email?.split("@")[0] || 
                           "Usuário";
 
-          console.log("Creating profile for:", userName);
+          console.log("Creating profile for:", userName, "Type:", userType);
+
+          // Determinar tipo de usuário (padrão: motorista se não especificado)
+          const profileType = userType || "motorista";
 
           // Criar profile
           const { data: newProfile, error: profileError } = await supabase
@@ -68,7 +73,7 @@ export async function GET(request: Request) {
               id: user.id,
               email: user.email,
               name: userName,
-              type: "motorista",
+              type: profileType,
             })
             .select()
             .single();
@@ -78,37 +83,43 @@ export async function GET(request: Request) {
           } else {
             console.log("Profile created:", newProfile);
 
-            // Verificar se o trigger criou o motorist
-            await new Promise(resolve => setTimeout(resolve, 500));
-            
-            const { data: existingMotorist } = await supabase
-              .from("motorists")
-              .select("id")
-              .eq("profile_id", user.id)
-              .single();
-
-            // Se o trigger não criou, criar manualmente
-            if (!existingMotorist) {
-              console.log("Creating motorist manually...");
-              const { error: motoristError } = await supabase
+            // Se for motorista, criar motorist
+            if (profileType === "motorista") {
+              // Verificar se o trigger criou o motorist
+              await new Promise(resolve => setTimeout(resolve, 500));
+              
+              const { data: existingMotorist } = await supabase
                 .from("motorists")
-                .insert({
-                  profile_id: user.id,
-                  name: userName,
-                });
+                .select("id")
+                .eq("profile_id", user.id)
+                .single();
 
-              if (motoristError) {
-                console.error("Error creating motorist:", motoristError);
+              // Se o trigger não criou, criar manualmente
+              if (!existingMotorist) {
+                console.log("Creating motorist manually...");
+                const { error: motoristError } = await supabase
+                  .from("motorists")
+                  .insert({
+                    profile_id: user.id,
+                    name: userName,
+                  });
+
+                if (motoristError) {
+                  console.error("Error creating motorist:", motoristError);
+                } else {
+                  console.log("Motorist created successfully");
+                }
               } else {
-                console.log("Motorist created successfully");
+                console.log("Motorist already exists (created by trigger)");
               }
+
+              // Redirecionar para dashboard do motorista
+              return NextResponse.redirect(new URL("/motorista?welcome=true", requestUrl.origin));
             } else {
-              console.log("Motorist already exists (created by trigger)");
+              // Se for oficina, redirecionar para completar cadastro
+              return NextResponse.redirect(new URL("/completar-cadastro", requestUrl.origin));
             }
           }
-          
-          // Redirecionar para dashboard do motorista
-          return NextResponse.redirect(new URL("/motorista?welcome=true", requestUrl.origin));
         }
 
         // Se já tem profile, verificar tipo
