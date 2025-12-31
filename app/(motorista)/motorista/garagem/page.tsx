@@ -73,22 +73,22 @@ export default function GaragemPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Minha Garagem</h1>
-            <p className="text-gray-600">Gerencie seus veículos e histórico de manutenções</p>
-          </div>
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Minha Garagem</h1>
+          <p className="text-gray-600">Gerencie seus veículos e histórico de manutenções</p>
+        </div>
 
-          {/* Botão Adicionar */}
-          <div className="mb-6">
-            <Button className="bg-blue-600 hover:bg-blue-700">
-              <Plus className="h-5 w-5 mr-2" />
-              Adicionar Veículo
-            </Button>
-          </div>
+        {/* Botão Adicionar */}
+        <div className="mb-6">
+          <Button className="bg-blue-600 hover:bg-blue-700">
+            <Plus className="h-5 w-5 mr-2" />
+            Adicionar Veículo
+          </Button>
+        </div>
 
-          {/* Lista de Veículos */}
-          {vehicles.length === 0 ? (
+        {/* Lista de Veículos */}
+        {vehicles.length === 0 ? (
             <Card className="text-center py-12">
               <CardContent>
                 <Car className="h-16 w-16 text-gray-400 mx-auto mb-4" />
@@ -160,7 +160,6 @@ export default function GaragemPage() {
               ))}
             </div>
           )}
-        </div>
       </div>
     </div>
   );
