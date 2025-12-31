@@ -93,7 +93,7 @@ export default function MotoristaDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Mensagem de Email Confirmado */}
         {showConfirmed && (
@@ -117,91 +117,118 @@ export default function MotoristaDashboard() {
         )}
 
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+        <div className="mb-10">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3">
             Olá, {profile?.name}! 👋
           </h1>
-          <p className="text-gray-600">
-            Bem-vindo ao seu painel de controle
+          <p className="text-lg text-gray-600">
+            Gerencie seus veículos e encontre as melhores oficinas
           </p>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white rounded-lg shadow-sm p-6 border-l-4 border-blue-600">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-blue-100 hover:shadow-xl transition-all hover:-translate-y-1">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Meus Veículos</p>
-                <p className="text-3xl font-bold text-gray-900">{stats.vehicles}</p>
+                <p className="text-sm font-medium text-gray-600 mb-2">Meus Veículos</p>
+                <p className="text-4xl font-bold bg-gradient-to-br from-blue-600 to-blue-800 bg-clip-text text-transparent">
+                  {stats.vehicles}
+                </p>
               </div>
-              <Car className="h-12 w-12 text-blue-600 opacity-20" />
+              <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-4">
+                <Car className="h-8 w-8 text-white" />
+              </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-sm p-6 border-l-4 border-green-600">
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-green-100 hover:shadow-xl transition-all hover:-translate-y-1">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Orçamentos</p>
-                <p className="text-3xl font-bold text-gray-900">{stats.quotes}</p>
+                <p className="text-sm font-medium text-gray-600 mb-2">Orçamentos</p>
+                <p className="text-4xl font-bold bg-gradient-to-br from-green-600 to-green-800 bg-clip-text text-transparent">
+                  {stats.quotes}
+                </p>
               </div>
-              <FileText className="h-12 w-12 text-green-600 opacity-20" />
+              <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-4">
+                <FileText className="h-8 w-8 text-white" />
+              </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-sm p-6 border-l-4 border-yellow-600">
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-6 border border-purple-100 hover:shadow-xl transition-all hover:-translate-y-1">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600 mb-1">Manutenções</p>
-                <p className="text-3xl font-bold text-gray-900">{stats.maintenances}</p>
+                <p className="text-sm font-medium text-gray-600 mb-2">Manutenções</p>
+                <p className="text-4xl font-bold bg-gradient-to-br from-purple-600 to-purple-800 bg-clip-text text-transparent">
+                  {stats.maintenances}
+                </p>
               </div>
-              <History className="h-12 w-12 text-yellow-600 opacity-20" />
+              <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-4">
+                <History className="h-8 w-8 text-white" />
+              </div>
             </div>
           </div>
         </div>
 
         {/* Quick Actions */}
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Ações Rápidas</h2>
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-8 mb-10 border border-gray-100">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
+            <div className="w-1 h-8 bg-gradient-to-b from-blue-600 to-purple-600 rounded-full"></div>
+            Ações Rápidas
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Link href="/buscar-oficinas">
-              <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-6 rounded-lg transition-all flex items-center justify-center gap-2">
-                <Plus className="h-5 w-5" />
-                Buscar Oficinas
-              </button>
+            <Link href="/buscar-oficinas" className="group">
+              <div className="h-full bg-gradient-to-br from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-6 px-6 rounded-xl transition-all flex flex-col items-center justify-center gap-3 shadow-lg hover:shadow-xl hover:-translate-y-1">
+                <div className="bg-white/20 rounded-full p-3">
+                  <Plus className="h-6 w-6" />
+                </div>
+                <span className="text-center">Buscar Oficinas</span>
+              </div>
             </Link>
 
-            <Link href="/motorista/garagem">
-              <button className="w-full bg-gray-100 hover:bg-gray-200 text-gray-900 font-semibold py-4 px-6 rounded-lg transition-all flex items-center justify-center gap-2">
-                <Car className="h-5 w-5" />
-                Minha Garagem
-              </button>
+            <Link href="/motorista/garagem" className="group">
+              <div className="h-full bg-white hover:bg-gray-50 border-2 border-gray-200 hover:border-blue-300 text-gray-900 font-semibold py-6 px-6 rounded-xl transition-all flex flex-col items-center justify-center gap-3 shadow-md hover:shadow-lg hover:-translate-y-1">
+                <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-full p-3">
+                  <Car className="h-6 w-6 text-white" />
+                </div>
+                <span className="text-center">Minha Garagem</span>
+              </div>
             </Link>
 
-            <Link href="/motorista/orcamentos">
-              <button className="w-full bg-gray-100 hover:bg-gray-200 text-gray-900 font-semibold py-4 px-6 rounded-lg transition-all flex items-center justify-center gap-2">
-                <FileText className="h-5 w-5" />
-                Meus Orçamentos
-              </button>
+            <Link href="/motorista/orcamentos" className="group">
+              <div className="h-full bg-white hover:bg-gray-50 border-2 border-gray-200 hover:border-green-300 text-gray-900 font-semibold py-6 px-6 rounded-xl transition-all flex flex-col items-center justify-center gap-3 shadow-md hover:shadow-lg hover:-translate-y-1">
+                <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-full p-3">
+                  <FileText className="h-6 w-6 text-white" />
+                </div>
+                <span className="text-center">Meus Orçamentos</span>
+              </div>
             </Link>
 
-            <Link href="/motorista/historico">
-              <button className="w-full bg-gray-100 hover:bg-gray-200 text-gray-900 font-semibold py-4 px-6 rounded-lg transition-all flex items-center justify-center gap-2">
-                <History className="h-5 w-5" />
-                Histórico
-              </button>
+            <Link href="/motorista/historico" className="group">
+              <div className="h-full bg-white hover:bg-gray-50 border-2 border-gray-200 hover:border-purple-300 text-gray-900 font-semibold py-6 px-6 rounded-xl transition-all flex flex-col items-center justify-center gap-3 shadow-md hover:shadow-lg hover:-translate-y-1">
+                <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-full p-3">
+                  <History className="h-6 w-6 text-white" />
+                </div>
+                <span className="text-center">Histórico</span>
+              </div>
             </Link>
           </div>
         </div>
 
         {/* Info Card */}
-        <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-6 border-2 border-blue-200">
-          <h3 className="text-lg font-bold text-gray-900 mb-2">
-            🎉 Sua conta é 100% gratuita!
-          </h3>
-          <p className="text-gray-700">
-            Busque oficinas, solicite orçamentos e gerencie seus veículos sem pagar nada.
-            Tudo grátis para sempre!
-          </p>
+        <div className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-blue-700 to-purple-700 rounded-2xl p-8 shadow-2xl">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32"></div>
+          <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full -ml-24 -mb-24"></div>
+          <div className="relative z-10">
+            <h3 className="text-2xl font-bold text-white mb-3 flex items-center gap-2">
+              🎉 Sua conta é 100% gratuita!
+            </h3>
+            <p className="text-blue-50 text-lg leading-relaxed">
+              Busque oficinas, solicite orçamentos e gerencie seus veículos sem pagar nada.
+              <span className="font-bold text-white"> Tudo grátis para sempre!</span>
+            </p>
+          </div>
         </div>
       </div>
     </div>
