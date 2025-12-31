@@ -11,7 +11,7 @@ export interface AuthContextType {
   loading: boolean;
   signUp: (email: string, password: string, name: string) => Promise<void>;
   signIn: (email: string, password: string) => Promise<{ user: User }>;
-  signInWithGoogle: () => Promise<void>;
+  signInWithGoogle: (userType?: 'motorista' | 'oficina') => Promise<void>;
   signOut: () => Promise<void>;
 }
 
