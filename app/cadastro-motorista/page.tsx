@@ -43,7 +43,7 @@ export default function CadastroMotoristaPage() {
 
     try {
       // Criar conta no Supabase Auth
-      await signUp(email, password, name);
+      await signUp(email, password, name, 'motorista');
       
       setSuccess(true);
       setError("");

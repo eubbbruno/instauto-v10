@@ -33,7 +33,7 @@ export default function CompletarCadastroPage() {
 
   const checkIfNeedsCompletion = async () => {
     if (!profile) {
-      router.push("/login");
+      router.push("/login-oficina");
       return;
     }
 

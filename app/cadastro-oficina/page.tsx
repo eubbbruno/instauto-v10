@@ -42,7 +42,7 @@ export default function CadastroPage() {
     setLoading(true);
 
     try {
-      await signUp(email, password, name);
+      await signUp(email, password, name, 'oficina');
       setSuccess(true);
       setTimeout(() => {
         router.push("/completar-cadastro");

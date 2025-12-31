@@ -9,7 +9,7 @@ export interface AuthContextType {
   user: User | null;
   profile: Profile | null;
   loading: boolean;
-  signUp: (email: string, password: string, name: string) => Promise<void>;
+  signUp: (email: string, password: string, name: string, userType?: 'motorista' | 'oficina') => Promise<void>;
   signIn: (email: string, password: string) => Promise<{ user: User }>;
   signInWithGoogle: (userType?: 'motorista' | 'oficina') => Promise<void>;
   signOut: () => Promise<void>;
@@ -67,25 +67,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const signUp = async (email: string, password: string, name: string) => {
+  const signUp = async (email: string, password: string, name: string, userType?: 'motorista' | 'oficina') => {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         data: {
           name,
+          user_type: userType || 'motorista',
         },
       },
     });
 
     if (error) throw error;
 
-    // Criar profile básico
+    // Criar profile básico com tipo
     if (data.user) {
       await supabase.from("profiles").insert({
         id: data.user.id,
         email: data.user.email,
         name: name,
+        type: userType || 'motorista',
       });
     }
   };
