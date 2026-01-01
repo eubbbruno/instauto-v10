@@ -77,7 +77,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       ? `${window.location.origin}/auth/callback?type=motorista`
       : `${window.location.origin}/auth/callback?type=oficina`;
 
-    const { data, error } = await supabase.auth.signUp({
+    const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -90,7 +90,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
 
     if (error) throw error;
-    return data;
   };
 
   const signIn = async (email: string, password: string) => {
@@ -108,7 +107,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const signInWithGoogle = async (userType: 'motorista' | 'oficina' = 'motorista') => {
     const redirectTo = `${window.location.origin}/auth/callback?type=${userType}`;
 
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
         redirectTo: redirectTo,
@@ -120,7 +119,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
 
     if (error) throw error;
-    return data;
   };
 
   const signOut = async () => {
