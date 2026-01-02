@@ -8,7 +8,8 @@ export async function GET(request: Request) {
   const errorDescription = requestUrl.searchParams.get("error_description");
   const typeFromUrl = requestUrl.searchParams.get("type") as 'motorista' | 'oficina' | null;
 
-  console.log("=== AUTH CALLBACK ===");
+  console.log("=== AUTH CALLBACK START ===");
+  console.log("Full URL:", requestUrl.href);
   console.log("Code:", code ? "exists" : "missing");
   console.log("Type from URL:", typeFromUrl);
   console.log("Error:", error);
@@ -27,6 +28,19 @@ export async function GET(request: Request) {
 
   try {
     const supabase = await createClient();
+    
+    // Criar admin client para bypassing RLS
+    const { createClient: createSupabaseClient } = await import("@supabase/supabase-js");
+    const supabaseAdmin = createSupabaseClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!,
+      {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false
+        }
+      }
+    );
     
     // Trocar código por sessão
     const { data: sessionData, error: sessionError } = await supabase.auth.exchangeCodeForSession(code);
@@ -51,8 +65,8 @@ export async function GET(request: Request) {
     const userType = typeFromUrl || user.user_metadata?.user_type || 'motorista';
     console.log("Final user type:", userType);
 
-    // Verificar se já existe profile
-    const { data: existingProfile } = await supabase
+    // Verificar se já existe profile (usando admin client)
+    const { data: existingProfile } = await supabaseAdmin
       .from("profiles")
       .select("id, type")
       .eq("id", user.id)
@@ -69,8 +83,8 @@ export async function GET(request: Request) {
 
       console.log("Creating profile:", { id: user.id, email: user.email, name: userName, type: userType });
 
-      // Criar profile
-      const { error: profileError } = await supabase
+      // Criar profile (usando admin client para bypass RLS)
+      const { error: profileError } = await supabaseAdmin
         .from("profiles")
         .insert({
           id: user.id,
@@ -86,9 +100,9 @@ export async function GET(request: Request) {
         console.log("Profile created successfully");
       }
 
-      // Se for motorista, criar registro em motorists
+      // Se for motorista, criar registro em motorists (usando admin client)
       if (userType === 'motorista') {
-        const { error: motoristError } = await supabase
+        const { error: motoristError } = await supabaseAdmin
           .from("motorists")
           .insert({
             profile_id: user.id,
@@ -107,8 +121,8 @@ export async function GET(request: Request) {
     const finalType = existingProfile?.type || userType;
     
     if (finalType === "oficina") {
-      // Verificar se já tem workshop
-      const { data: existingWorkshop } = await supabase
+      // Verificar se já tem workshop (usando admin client)
+      const { data: existingWorkshop } = await supabaseAdmin
         .from("workshops")
         .select("id")
         .eq("profile_id", user.id)
