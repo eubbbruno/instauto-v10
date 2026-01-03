@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
+import { createClient as createSupabaseAdminClient } from "@supabase/supabase-js";
 
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
@@ -8,8 +9,7 @@ export async function GET(request: Request) {
   const errorDescription = requestUrl.searchParams.get("error_description");
   const typeFromUrl = requestUrl.searchParams.get("type") as 'motorista' | 'oficina' | null;
 
-  console.log("=== AUTH CALLBACK START ===");
-  console.log("Full URL:", requestUrl.href);
+  console.log("=== AUTH CALLBACK ===");
   console.log("Code:", code ? "exists" : "missing");
   console.log("Type from URL:", typeFromUrl);
   console.log("Error:", error);
@@ -29,20 +29,10 @@ export async function GET(request: Request) {
   try {
     const supabase = await createClient();
     
-    // Verificar se temos a service role key
-    if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
-      console.error("❌ SUPABASE_SERVICE_ROLE_KEY não configurada!");
-      console.error("Configure no Vercel: https://vercel.com/dashboard/env");
-      return NextResponse.redirect(
-        new URL("/?error=Configuracao+incompleta+do+servidor", requestUrl.origin)
-      );
-    }
-    
     // Criar admin client para bypassing RLS
-    const { createClient: createSupabaseClient } = await import("@supabase/supabase-js");
-    const supabaseAdmin = createSupabaseClient(
+    const supabaseAdmin = createSupabaseAdminClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!,
       {
         auth: {
           autoRefreshToken: false,
@@ -74,7 +64,7 @@ export async function GET(request: Request) {
     const userType = typeFromUrl || user.user_metadata?.user_type || 'motorista';
     console.log("Final user type:", userType);
 
-    // Verificar se já existe profile (usando admin client)
+    // Verificar se já existe profile
     const { data: existingProfile } = await supabaseAdmin
       .from("profiles")
       .select("id, type")
@@ -92,7 +82,7 @@ export async function GET(request: Request) {
 
       console.log("Creating profile:", { id: user.id, email: user.email, name: userName, type: userType });
 
-      // Criar profile (usando admin client para bypass RLS)
+      // Criar profile
       const { error: profileError } = await supabaseAdmin
         .from("profiles")
         .insert({
@@ -109,7 +99,7 @@ export async function GET(request: Request) {
         console.log("Profile created successfully");
       }
 
-      // Se for motorista, criar registro em motorists (usando admin client)
+      // Se for motorista, criar registro em motorists
       if (userType === 'motorista') {
         const { error: motoristError } = await supabaseAdmin
           .from("motorists")
@@ -130,7 +120,7 @@ export async function GET(request: Request) {
     const finalType = existingProfile?.type || userType;
     
     if (finalType === "oficina") {
-      // Verificar se já tem workshop (usando admin client)
+      // Verificar se já tem workshop
       const { data: existingWorkshop } = await supabaseAdmin
         .from("workshops")
         .select("id")
