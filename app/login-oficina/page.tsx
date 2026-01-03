@@ -47,8 +47,24 @@ export default function LoginPage() {
       if (workshop) {
         router.push("/oficina");
       } else if (motorist) {
-        router.push("/motorista/garagem");
+        router.push("/motorista");
       } else {
+        // Criar profile se não existir
+        const response = await fetch("/api/create-profile", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userType: "oficina" }),
+        });
+        
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.error("Erro ao criar perfil:", errorData);
+          setError("Erro ao criar perfil. Tente novamente.");
+          return;
+        }
+        
         router.push("/completar-cadastro");
       }
     } catch (err: any) {

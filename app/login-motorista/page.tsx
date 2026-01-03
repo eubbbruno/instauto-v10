@@ -67,46 +67,25 @@ export default function LoginMotoristaPage() {
         console.log("Redirecionando para /oficina");
         router.push("/oficina");
       } else {
-        // Não tem motorist nem workshop, criar motorist automaticamente
-        console.log("Criando motorist automaticamente...");
+        // Não tem motorist nem workshop, criar motorist automaticamente via API
+        console.log("Criando motorist automaticamente via API...");
         
-        const userName = user.user_metadata?.name || 
-                        user.user_metadata?.full_name || 
-                        user.email?.split("@")[0] || 
-                        "Motorista";
+        const response = await fetch("/api/create-profile", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userType: "motorista" }),
+        });
         
-        const { error: createError } = await supabase
-          .from("motorists")
-          .insert({
-            profile_id: user.id,
-            name: userName,
-          });
-        
-        if (createError) {
-          console.error("Erro ao criar motorist:", createError);
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.error("Erro ao criar perfil:", errorData);
           setError("Erro ao criar perfil de motorista. Tente novamente.");
           return;
         }
         
-        // Criar profile se não existir
-        const { data: existingProfile } = await supabase
-          .from("profiles")
-          .select("id")
-          .eq("id", user.id)
-          .single();
-        
-        if (!existingProfile) {
-          await supabase
-            .from("profiles")
-            .insert({
-              id: user.id,
-              email: user.email,
-              name: userName,
-              type: "motorista",
-            });
-        }
-        
-        console.log("Motorist criado, redirecionando para /motorista");
+        console.log("Motorist criado com sucesso, redirecionando para /motorista");
         router.push("/motorista?welcome=true");
       }
     } catch (err: any) {
