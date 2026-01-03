@@ -44,31 +44,42 @@ export default function CadastroMotoristaPage() {
     try {
       await signUp(email, password, name, "motorista");
       
-      // Criar profile e motorist imediatamente via API
-      const response = await fetch("/api/create-profile", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ 
-          userType: "motorista",
-          email: email,
-          name: name
-        }),
-      });
-      
-      if (!response.ok) {
-        console.error("Erro ao criar perfil inicial");
-        // Continua mesmo com erro - será criado no login
-      }
-      
       setSuccess(true);
       setError("");
+      
+      // Aguardar 2 segundos para o usuário ser criado no Supabase
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Criar profile e motorist imediatamente via API
+      try {
+        const response = await fetch("/api/create-profile", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ 
+            userType: "motorista",
+            email: email,
+            name: name
+          }),
+        });
+        
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.error("Erro ao criar perfil inicial:", errorData);
+          // Continua mesmo com erro - será criado no login
+        } else {
+          console.log("Profile e motorist criados com sucesso!");
+        }
+      } catch (apiError) {
+        console.error("Erro na API:", apiError);
+        // Continua mesmo com erro - será criado no login
+      }
       
       // Redireciona para login com mensagem
       setTimeout(() => {
         router.push("/login-motorista?registered=true");
-      }, 2000);
+      }, 1000);
     } catch (err: any) {
       console.error("Erro ao criar conta:", err);
       setError(err.message || "Erro ao criar conta. Tente novamente.");

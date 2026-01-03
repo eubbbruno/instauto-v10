@@ -44,31 +44,42 @@ export default function CadastroPage() {
     try {
       await signUp(email, password, name, "oficina");
       
-      // Criar profile imediatamente via API
-      const response = await fetch("/api/create-profile", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ 
-          userType: "oficina",
-          email: email,
-          name: name
-        }),
-      });
-      
-      if (!response.ok) {
-        console.error("Erro ao criar perfil inicial");
-        // Continua mesmo com erro - será criado no login
-      }
-      
       setSuccess(true);
       setError("");
+      
+      // Aguardar 2 segundos para o usuário ser criado no Supabase
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      // Criar profile imediatamente via API
+      try {
+        const response = await fetch("/api/create-profile", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ 
+            userType: "oficina",
+            email: email,
+            name: name
+          }),
+        });
+        
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.error("Erro ao criar perfil inicial:", errorData);
+          // Continua mesmo com erro - será criado no login
+        } else {
+          console.log("Profile criado com sucesso!");
+        }
+      } catch (apiError) {
+        console.error("Erro na API:", apiError);
+        // Continua mesmo com erro - será criado no login
+      }
       
       // Redireciona para login com mensagem
       setTimeout(() => {
         router.push("/login-oficina?registered=true");
-      }, 2000);
+      }, 1000);
     } catch (err: any) {
       setError(err.message || "Erro ao criar conta. Tente novamente.");
     } finally {

@@ -40,19 +40,26 @@ export async function POST(request: Request) {
       if (listError) {
         console.error("Error listing users:", listError);
         return NextResponse.json(
-          { error: "Erro ao buscar usuário" },
+          { error: "Erro ao buscar usuário", details: listError },
           { status: 500 }
         );
       }
       
+      console.log("Total users found:", users.users.length);
+      console.log("Looking for email:", email);
+      
       const foundUser = users.users.find(u => u.email === email);
       
       if (!foundUser) {
+        console.error("User not found with email:", email);
+        console.log("Available emails:", users.users.map(u => u.email));
         return NextResponse.json(
-          { error: "Usuário não encontrado" },
+          { error: "Usuário não encontrado", email, availableUsers: users.users.length },
           { status: 404 }
         );
       }
+      
+      console.log("Found user:", foundUser.id, foundUser.email);
       
       userId = foundUser.id;
       userEmail = foundUser.email!;
