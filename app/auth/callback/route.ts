@@ -42,6 +42,7 @@ export async function GET(request: Request) {
     );
     
     // Trocar código por sessão
+    console.log("Exchanging code for session...");
     const { data: sessionData, error: sessionError } = await supabase.auth.exchangeCodeForSession(code);
     
     if (sessionError) {
@@ -52,13 +53,17 @@ export async function GET(request: Request) {
     }
 
     const user = sessionData?.user;
-    if (!user) {
-      return NextResponse.redirect(new URL("/", requestUrl.origin));
+    const session = sessionData?.session;
+    
+    if (!user || !session) {
+      console.error("No user or session after exchange");
+      return NextResponse.redirect(new URL("/?error=Sessao+invalida", requestUrl.origin));
     }
 
-    console.log("User ID:", user.id);
+    console.log("✅ Session established for user:", user.id);
     console.log("User email:", user.email);
     console.log("User metadata:", user.user_metadata);
+    console.log("Session expires at:", session.expires_at);
 
     // Determinar tipo: URL > metadados > default motorista
     const userType = typeFromUrl || user.user_metadata?.user_type || 'motorista';
