@@ -27,7 +27,6 @@ export default function CompletarCadastroOficinaPage() {
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
-  const [zipCode, setZipCode] = useState("");
   const [description, setDescription] = useState("");
   
   const supabase = createClient();
@@ -99,13 +98,6 @@ export default function CompletarCadastroOficinaPage() {
     return value;
   };
 
-  const formatZipCode = (value: string) => {
-    const numbers = value.replace(/\D/g, "");
-    if (numbers.length <= 8) {
-      return numbers.replace(/(\d{5})(\d)/, "$1-$2");
-    }
-    return value;
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -117,8 +109,27 @@ export default function CompletarCadastroOficinaPage() {
         throw new Error("Usuário não autenticado");
       }
 
+      // Validações
       if (!workshopName.trim()) {
         setError("Por favor, informe o nome da oficina.");
+        setSubmitting(false);
+        return;
+      }
+
+      if (!phone.trim()) {
+        setError("Por favor, informe o telefone.");
+        setSubmitting(false);
+        return;
+      }
+
+      if (!cnpj.trim()) {
+        setError("Por favor, informe o CNPJ ou CPF.");
+        setSubmitting(false);
+        return;
+      }
+
+      if (!address.trim() || !city.trim() || !state.trim()) {
+        setError("Por favor, preencha o endereço completo.");
         setSubmitting(false);
         return;
       }
@@ -141,12 +152,11 @@ export default function CompletarCadastroOficinaPage() {
         .insert({
           profile_id: profile.id,
           name: workshopName,
-          cnpj: cnpj || null,
-          phone: phone || null,
-          address: address || null,
-          city: city || null,
-          state: state || null,
-          zip_code: zipCode.replace(/\D/g, "") || null,
+          cnpj: cnpj.replace(/\D/g, ""),
+          phone: phone.replace(/\D/g, ""),
+          address: address,
+          city: city,
+          state: state.toUpperCase(),
           description: description || null,
           plan_type: "free",
           trial_ends_at: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
@@ -248,15 +258,16 @@ export default function CompletarCadastroOficinaPage() {
 
                     <div className="space-y-2">
                       <Label htmlFor="cnpj" className="text-sm font-semibold text-gray-700">
-                        CNPJ (opcional)
+                        CNPJ ou CPF *
                       </Label>
                       <Input
                         id="cnpj"
                         type="text"
-                        placeholder="00.000.000/0000-00"
+                        placeholder="00.000.000/0000-00 ou 000.000.000-00"
                         value={cnpj}
                         onChange={(e) => setCnpj(formatCNPJ(e.target.value))}
                         maxLength={18}
+                        required
                         disabled={submitting || success}
                         className="h-11 border-2"
                       />
@@ -304,13 +315,13 @@ export default function CompletarCadastroOficinaPage() {
                 <div className="space-y-4 pt-4 border-t">
                   <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
                     <MapPin className="h-5 w-5 text-yellow-600" />
-                    Endereço (opcional)
+                    Endereço *
                   </h3>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2 md:col-span-2">
                       <Label htmlFor="address" className="text-sm font-semibold text-gray-700">
-                        Rua/Avenida
+                        Rua/Avenida, Número *
                       </Label>
                       <Input
                         id="address"
@@ -318,22 +329,7 @@ export default function CompletarCadastroOficinaPage() {
                         placeholder="Rua, número, complemento"
                         value={address}
                         onChange={(e) => setAddress(e.target.value)}
-                        disabled={submitting || success}
-                        className="h-11 border-2"
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="zipCode" className="text-sm font-semibold text-gray-700">
-                        CEP
-                      </Label>
-                      <Input
-                        id="zipCode"
-                        type="text"
-                        placeholder="00000-000"
-                        value={zipCode}
-                        onChange={(e) => setZipCode(formatZipCode(e.target.value))}
-                        maxLength={9}
+                        required
                         disabled={submitting || success}
                         className="h-11 border-2"
                       />
@@ -341,7 +337,7 @@ export default function CompletarCadastroOficinaPage() {
 
                     <div className="space-y-2">
                       <Label htmlFor="city" className="text-sm font-semibold text-gray-700">
-                        Cidade
+                        Cidade *
                       </Label>
                       <Input
                         id="city"
@@ -349,6 +345,7 @@ export default function CompletarCadastroOficinaPage() {
                         placeholder="Sua cidade"
                         value={city}
                         onChange={(e) => setCity(e.target.value)}
+                        required
                         disabled={submitting || success}
                         className="h-11 border-2"
                       />
@@ -356,15 +353,16 @@ export default function CompletarCadastroOficinaPage() {
 
                     <div className="space-y-2">
                       <Label htmlFor="state" className="text-sm font-semibold text-gray-700">
-                        Estado
+                        Estado (UF) *
                       </Label>
                       <Input
                         id="state"
                         type="text"
-                        placeholder="UF"
+                        placeholder="Ex: SP"
                         value={state}
                         onChange={(e) => setState(e.target.value.toUpperCase())}
                         maxLength={2}
+                        required
                         disabled={submitting || success}
                         className="h-11 border-2"
                       />
