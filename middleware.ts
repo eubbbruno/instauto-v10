@@ -12,7 +12,14 @@ export function middleware(request: NextRequest) {
       const callbackUrl = new URL('/auth/callback', request.url);
       callbackUrl.searchParams.set('code', code);
       
-      console.log('Redirecting to callback with code:', code);
+      // Preservar o parâmetro 'type' se existir
+      const type = searchParams.get('type');
+      if (type) {
+        callbackUrl.searchParams.set('type', type);
+        console.log('Redirecting to callback with code and type:', code, type);
+      } else {
+        console.log('Redirecting to callback with code:', code);
+      }
       
       return NextResponse.redirect(callbackUrl);
     }
