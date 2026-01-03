@@ -67,8 +67,47 @@ export default function LoginMotoristaPage() {
         console.log("Redirecionando para /oficina");
         router.push("/oficina");
       } else {
-        console.log("Nenhum perfil encontrado, redirecionando para /completar-cadastro");
-        router.push("/completar-cadastro");
+        // Não tem motorist nem workshop, criar motorist automaticamente
+        console.log("Criando motorist automaticamente...");
+        
+        const userName = user.user_metadata?.name || 
+                        user.user_metadata?.full_name || 
+                        user.email?.split("@")[0] || 
+                        "Motorista";
+        
+        const { error: createError } = await supabase
+          .from("motorists")
+          .insert({
+            profile_id: user.id,
+            name: userName,
+          });
+        
+        if (createError) {
+          console.error("Erro ao criar motorist:", createError);
+          setError("Erro ao criar perfil de motorista. Tente novamente.");
+          return;
+        }
+        
+        // Criar profile se não existir
+        const { data: existingProfile } = await supabase
+          .from("profiles")
+          .select("id")
+          .eq("id", user.id)
+          .single();
+        
+        if (!existingProfile) {
+          await supabase
+            .from("profiles")
+            .insert({
+              id: user.id,
+              email: user.email,
+              name: userName,
+              type: "motorista",
+            });
+        }
+        
+        console.log("Motorist criado, redirecionando para /motorista");
+        router.push("/motorista?welcome=true");
       }
     } catch (err: any) {
       console.error("Erro no login:", err);

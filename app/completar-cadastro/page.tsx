@@ -33,7 +33,8 @@ export default function CompletarCadastroPage() {
 
   const checkIfNeedsCompletion = async () => {
     if (!profile) {
-      router.push("/login-oficina");
+      // Redirecionar para home, não para login
+      router.push("/");
       return;
     }
 
