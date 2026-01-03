@@ -4,17 +4,63 @@ import { createClient } from "@/lib/supabase/server";
 
 export async function POST(request: Request) {
   try {
-    const { userType } = await request.json();
+    const { userType, email, name } = await request.json();
     
     // Verificar se o usuário está autenticado
     const supabase = await createClient();
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     
+    // Se não estiver autenticado mas tiver email, buscar o usuário pelo email
+    let userId: string;
+    let userEmail: string;
+    let userName: string;
+    
     if (authError || !user) {
-      return NextResponse.json(
-        { error: "Não autenticado" },
-        { status: 401 }
+      if (!email) {
+        return NextResponse.json(
+          { error: "Não autenticado e email não fornecido" },
+          { status: 401 }
+        );
+      }
+      
+      // Buscar usuário pelo email usando admin client
+      const supabaseAdmin = createSupabaseAdminClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY!,
+        {
+          auth: {
+            autoRefreshToken: false,
+            persistSession: false
+          }
+        }
       );
+      
+      const { data: users, error: listError } = await supabaseAdmin.auth.admin.listUsers();
+      
+      if (listError) {
+        console.error("Error listing users:", listError);
+        return NextResponse.json(
+          { error: "Erro ao buscar usuário" },
+          { status: 500 }
+        );
+      }
+      
+      const foundUser = users.users.find(u => u.email === email);
+      
+      if (!foundUser) {
+        return NextResponse.json(
+          { error: "Usuário não encontrado" },
+          { status: 404 }
+        );
+      }
+      
+      userId = foundUser.id;
+      userEmail = foundUser.email!;
+      userName = name || foundUser.user_metadata?.name || foundUser.email?.split("@")[0] || "Usuário";
+    } else {
+      userId = user.id;
+      userEmail = user.email!;
+      userName = name || user.user_metadata?.name || user.user_metadata?.full_name || user.email?.split("@")[0] || "Usuário";
     }
 
     // Criar admin client para bypass RLS
@@ -29,16 +75,11 @@ export async function POST(request: Request) {
       }
     );
 
-    const userName = user.user_metadata?.name || 
-                    user.user_metadata?.full_name || 
-                    user.email?.split("@")[0] || 
-                    "Usuário";
-
     // Verificar se já existe profile
     const { data: existingProfile } = await supabaseAdmin
       .from("profiles")
       .select("id")
-      .eq("id", user.id)
+      .eq("id", userId)
       .single();
 
     // Criar profile se não existir
@@ -46,8 +87,8 @@ export async function POST(request: Request) {
       const { error: profileError } = await supabaseAdmin
         .from("profiles")
         .insert({
-          id: user.id,
-          email: user.email,
+          id: userId,
+          email: userEmail,
           name: userName,
           type: userType,
         });
@@ -66,14 +107,14 @@ export async function POST(request: Request) {
       const { data: existingMotorist } = await supabaseAdmin
         .from("motorists")
         .select("id")
-        .eq("profile_id", user.id)
+        .eq("profile_id", userId)
         .single();
 
       if (!existingMotorist) {
         const { error: motoristError } = await supabaseAdmin
           .from("motorists")
           .insert({
-            profile_id: user.id,
+            profile_id: userId,
             name: userName,
           });
 

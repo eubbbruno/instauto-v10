@@ -44,12 +44,30 @@ export default function CadastroPage() {
     try {
       await signUp(email, password, name, "oficina");
       
+      // Criar profile imediatamente via API
+      const response = await fetch("/api/create-profile", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ 
+          userType: "oficina",
+          email: email,
+          name: name
+        }),
+      });
+      
+      if (!response.ok) {
+        console.error("Erro ao criar perfil inicial");
+        // Continua mesmo com erro - será criado no login
+      }
+      
       setSuccess(true);
       setError("");
       
       // Redireciona para login com mensagem
       setTimeout(() => {
-        router.push("/login-oficina?message=Verifique+seu+email+para+confirmar+a+conta");
+        router.push("/login-oficina?registered=true");
       }, 2000);
     } catch (err: any) {
       setError(err.message || "Erro ao criar conta. Tente novamente.");

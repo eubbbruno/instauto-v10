@@ -44,12 +44,30 @@ export default function CadastroMotoristaPage() {
     try {
       await signUp(email, password, name, "motorista");
       
+      // Criar profile e motorist imediatamente via API
+      const response = await fetch("/api/create-profile", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ 
+          userType: "motorista",
+          email: email,
+          name: name
+        }),
+      });
+      
+      if (!response.ok) {
+        console.error("Erro ao criar perfil inicial");
+        // Continua mesmo com erro - será criado no login
+      }
+      
       setSuccess(true);
       setError("");
       
       // Redireciona para login com mensagem
       setTimeout(() => {
-        router.push("/login-motorista?message=Verifique+seu+email+para+confirmar+a+conta");
+        router.push("/login-motorista?registered=true");
       }, 2000);
     } catch (err: any) {
       console.error("Erro ao criar conta:", err);
