@@ -122,7 +122,6 @@ export async function POST(request: Request) {
           .from("motorists")
           .insert({
             profile_id: userId,
-            name: userName,
           });
 
         if (motoristError) {
@@ -132,6 +131,8 @@ export async function POST(request: Request) {
             { status: 500 }
           );
         }
+        
+        console.log("Motorist created successfully for user:", userId);
       }
     }
 
