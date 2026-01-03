@@ -105,7 +105,6 @@ export async function GET(request: Request) {
           .from("motorists")
           .insert({
             profile_id: user.id,
-            name: userName,
           });
 
         if (motoristError) {
@@ -137,6 +136,29 @@ export async function GET(request: Request) {
         return NextResponse.redirect(new URL("/completar-cadastro", requestUrl.origin));
       }
     } else {
+      // Motorista - verificar se já tem motorist
+      const { data: existingMotorist } = await supabaseAdmin
+        .from("motorists")
+        .select("id")
+        .eq("profile_id", user.id)
+        .single();
+
+      if (!existingMotorist) {
+        // Criar motorist se não existir
+        console.log("Creating motorist for user:", user.id);
+        const { error: motoristError } = await supabaseAdmin
+          .from("motorists")
+          .insert({
+            profile_id: user.id,
+          });
+
+        if (motoristError) {
+          console.error("Error creating motorist:", motoristError);
+        } else {
+          console.log("Motorist created successfully");
+        }
+      }
+
       // Motorista vai direto pro dashboard
       console.log("Motorista, redirecting to /motorista");
       return NextResponse.redirect(new URL("/motorista?welcome=true", requestUrl.origin));
