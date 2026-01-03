@@ -29,11 +29,20 @@ export async function GET(request: Request) {
   try {
     const supabase = await createClient();
     
+    // Verificar se temos a service role key
+    if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      console.error("❌ SUPABASE_SERVICE_ROLE_KEY não configurada!");
+      console.error("Configure no Vercel: https://vercel.com/dashboard/env");
+      return NextResponse.redirect(
+        new URL("/?error=Configuracao+incompleta+do+servidor", requestUrl.origin)
+      );
+    }
+    
     // Criar admin client para bypassing RLS
     const { createClient: createSupabaseClient } = await import("@supabase/supabase-js");
     const supabaseAdmin = createSupabaseClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY,
       {
         auth: {
           autoRefreshToken: false,
