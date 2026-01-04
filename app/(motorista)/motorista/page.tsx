@@ -71,7 +71,7 @@ export default function MotoristaDashboard() {
       if (motoristError || !motorist) {
         console.warn("Motorista não encontrado, mostrando dashboard vazio");
         setStats({ vehicles: 0, quotes: 0, maintenances: 0 });
-        setLoading(false);
+        setStatsLoading(false);
         return;
       }
 
