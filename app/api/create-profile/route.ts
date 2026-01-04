@@ -134,6 +134,34 @@ export async function POST(request: Request) {
         
         console.log("Motorist created successfully for user:", userId);
       }
+    } else if (userType === 'oficina') {
+      // Se for oficina, criar registro básico em workshops
+      const { data: existingWorkshop } = await supabaseAdmin
+        .from("workshops")
+        .select("id")
+        .eq("profile_id", userId)
+        .single();
+
+      if (!existingWorkshop) {
+        const { error: workshopError } = await supabaseAdmin
+          .from("workshops")
+          .insert({
+            profile_id: userId,
+            name: userName,
+            plan_type: "free",
+            trial_ends_at: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(), // 14 dias
+          });
+
+        if (workshopError) {
+          console.error("Error creating workshop:", workshopError);
+          return NextResponse.json(
+            { error: "Erro ao criar workshop", details: workshopError },
+            { status: 500 }
+          );
+        }
+        
+        console.log("Workshop created successfully for user:", userId);
+      }
     }
 
     return NextResponse.json({ success: true });

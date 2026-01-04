@@ -155,13 +155,34 @@ export async function GET(request: Request) {
     let redirectUrl: string;
 
     if (finalType === "oficina") {
+      // Verificar se workshop existe
       const { data: workshop } = await supabaseAdmin
         .from("workshops")
         .select("id")
         .eq("profile_id", user.id)
         .single();
 
-      redirectUrl = workshop ? "/oficina" : "/completar-cadastro";
+      if (!workshop) {
+        // Criar workshop básico se não existir
+        console.log("Creating basic workshop entry...");
+        const userName = user.user_metadata?.name || user.user_metadata?.full_name || user.email?.split("@")[0] || "Oficina";
+        
+        const { error: workshopError } = await supabaseAdmin.from("workshops").insert({
+          profile_id: user.id,
+          name: userName,
+          plan_type: "free",
+          trial_ends_at: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(), // 14 dias
+        });
+
+        if (workshopError) {
+          console.error("Workshop creation error:", workshopError);
+        } else {
+          console.log("✅ Basic workshop created");
+        }
+      }
+
+      // Sempre redireciona para completar cadastro (para preencher dados completos)
+      redirectUrl = "/completar-cadastro";
     } else {
       // Verificar se motorist existe
       const { data: motorist } = await supabaseAdmin
@@ -172,9 +193,16 @@ export async function GET(request: Request) {
 
       if (!motorist) {
         // Criar motorist se não existir
-        await supabaseAdmin.from("motorists").insert({
+        console.log("Creating motorist (fallback)...");
+        const { error: motoristError } = await supabaseAdmin.from("motorists").insert({
           profile_id: user.id,
         });
+
+        if (motoristError) {
+          console.error("Motorist creation error:", motoristError);
+        } else {
+          console.log("✅ Motorist created (fallback)");
+        }
       }
 
       redirectUrl = "/motorista?welcome=true";
