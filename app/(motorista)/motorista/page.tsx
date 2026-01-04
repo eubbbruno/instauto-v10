@@ -81,9 +81,9 @@ export default function MotoristaDashboard() {
   const name = profile?.name?.split(" ")[0] || "Motorista";
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-16">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-600 via-blue-700 to-purple-600 text-white pt-24 pb-32 px-4 relative overflow-hidden">
+      <div className="bg-gradient-to-r from-blue-600 via-blue-700 to-purple-600 text-white pt-12 pb-32 px-4 relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('/images/pattern.svg')] opacity-10"></div>
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">

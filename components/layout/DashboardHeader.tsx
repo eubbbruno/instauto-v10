@@ -90,7 +90,7 @@ export default function DashboardHeader() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 bg-white border-b border-gray-200 shadow-sm">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-600 via-blue-700 to-purple-600 border-b border-blue-800 shadow-lg">
       <nav className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -100,7 +100,7 @@ export default function DashboardHeader() {
               alt="Instauto"
               width={140}
               height={40}
-              className="h-10 w-auto"
+              className="h-10 w-auto brightness-0 invert"
             />
           </Link>
 
@@ -111,12 +111,12 @@ export default function DashboardHeader() {
               <Button
                 variant="outline"
                 size="sm"
-                className="relative border-yellow-300 bg-yellow-50 hover:bg-yellow-100 text-yellow-900 hidden sm:flex"
+                className="relative border-yellow-300 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold hidden sm:flex"
                 onClick={handleNotificationClick}
               >
                 <FileText className="h-4 w-4 mr-2" />
                 {profile?.type === "motorista" ? "Respostas" : "Novos"}
-                <Badge className="ml-2 bg-yellow-500 hover:bg-yellow-600 text-white">
+                <Badge className="ml-2 bg-gray-900 hover:bg-gray-800 text-white">
                   {notifications}
                 </Badge>
               </Button>
@@ -126,18 +126,18 @@ export default function DashboardHeader() {
             <Button
               variant="ghost"
               size="icon"
-              className="relative sm:hidden"
+              className="relative sm:hidden text-white hover:bg-white/20"
               onClick={handleNotificationClick}
             >
-              <Bell className="h-5 w-5 text-gray-600" />
+              <Bell className="h-5 w-5" />
               {notifications > 0 && (
-                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                <span className="absolute top-1 right-1 w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></span>
               )}
             </Button>
 
             {/* User Info */}
             {profile && (
-              <div className="hidden md:flex items-center gap-2 text-gray-700">
+              <div className="hidden md:flex items-center gap-2 text-white">
                 <User className="h-5 w-5" />
                 <span className="font-medium">{profile.name}</span>
               </div>
@@ -148,7 +148,7 @@ export default function DashboardHeader() {
               onClick={handleSignOut}
               variant="outline"
               size="sm"
-              className="flex items-center gap-2 border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700 hover:border-red-300"
+              className="flex items-center gap-2 border-white/30 text-white hover:bg-white/20 hover:border-white/50"
             >
               <LogOut className="h-4 w-4" />
               <span className="hidden sm:inline">Sair</span>

@@ -33,15 +33,23 @@ export default function GaragemPage() {
   const { toast } = useToast();
 
   useEffect(() => {
-    if (!authLoading && profile) {
-      loadVehicles();
-    } else if (!authLoading && !profile) {
-      setLoading(false);
+    if (!authLoading) {
+      if (profile) {
+        loadVehicles();
+      } else {
+        setLoading(false);
+      }
     }
   }, [profile, authLoading]);
 
   const loadVehicles = async () => {
-    if (!profile) return;
+    if (!profile) {
+      console.log("❌ Garagem: Sem profile");
+      setLoading(false);
+      return;
+    }
+
+    console.log("🔄 Garagem: Carregando veículos para profile:", profile.id);
 
     try {
       // Buscar motorista
@@ -52,15 +60,17 @@ export default function GaragemPage() {
         .single();
 
       if (motoristError) {
-        console.error("Erro ao buscar motorista:", motoristError);
+        console.error("❌ Erro ao buscar motorista:", motoristError);
         toast({
           title: "Erro",
           description: "Não foi possível carregar seus dados. Tente novamente.",
           variant: "destructive",
         });
+        setLoading(false);
         return;
       }
 
+      console.log("✅ Motorista encontrado:", motorist.id);
       setMotoristId(motorist.id);
 
       // Buscar veículos
@@ -71,16 +81,22 @@ export default function GaragemPage() {
         .eq("is_active", true)
         .order("created_at", { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error("❌ Erro ao buscar veículos:", error);
+        throw error;
+      }
+      
+      console.log("✅ Veículos carregados:", data?.length || 0);
       setVehicles(data || []);
     } catch (error) {
-      console.error("Erro ao carregar veículos:", error);
+      console.error("❌ Erro ao carregar veículos:", error);
       toast({
         title: "Erro",
         description: "Não foi possível carregar seus veículos. Tente novamente.",
         variant: "destructive",
       });
     } finally {
+      console.log("✅ Garagem: Loading finalizado");
       setLoading(false);
     }
   };
@@ -182,8 +198,8 @@ export default function GaragemPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-4">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Minha Garagem</h1>
