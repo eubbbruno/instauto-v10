@@ -21,16 +21,18 @@ interface Vehicle {
 }
 
 export default function GaragemPage() {
-  const { profile } = useAuth();
+  const { profile, loading: authLoading } = useAuth();
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [loading, setLoading] = useState(true);
   const supabase = createClient();
 
   useEffect(() => {
-    if (profile) {
+    if (!authLoading && profile) {
       loadVehicles();
+    } else if (!authLoading && !profile) {
+      setLoading(false);
     }
-  }, [profile]);
+  }, [profile, authLoading]);
 
   const loadVehicles = async () => {
     if (!profile) return;

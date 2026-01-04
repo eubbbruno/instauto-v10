@@ -9,13 +9,13 @@ import Link from "next/link";
 
 export default function MotoristaDashboard() {
   const router = useRouter();
-  const { profile } = useAuth();
+  const { profile, loading: authLoading } = useAuth();
   const [stats, setStats] = useState({
     vehicles: 0,
     quotes: 0,
     maintenances: 0,
   });
-  const [loading, setLoading] = useState(true);
+  const [statsLoading, setStatsLoading] = useState(true);
   const [showConfirmed, setShowConfirmed] = useState(false);
 
   const supabase = createClient();
@@ -33,17 +33,27 @@ export default function MotoristaDashboard() {
   }, []);
 
   useEffect(() => {
-    console.log("🔄 Dashboard motorista - Profile:", profile);
+    console.log("🔄 Dashboard motorista - Profile:", profile, "Auth Loading:", authLoading);
     
-    if (!profile) {
+    // Aguardar o AuthContext terminar de carregar
+    if (authLoading) {
+      console.log("⏳ Aguardando AuthContext carregar...");
+      return;
+    }
+    
+    // Se não está carregando e não tem profile, redirecionar
+    if (!authLoading && !profile) {
       console.log("⚠️ Sem profile, redirecionando para login...");
       router.push("/login-motorista");
       return;
     }
     
-    console.log("✅ Profile encontrado, carregando stats...");
-    loadStats();
-  }, [profile, router]);
+    // Se tem profile, carregar stats
+    if (profile) {
+      console.log("✅ Profile encontrado, carregando stats...");
+      loadStats();
+    }
+  }, [profile, authLoading, router]);
 
   const loadStats = async () => {
     try {
@@ -100,11 +110,12 @@ export default function MotoristaDashboard() {
       console.error("❌ Erro ao carregar estatísticas:", error);
       setStats({ vehicles: 0, quotes: 0, maintenances: 0 });
     } finally {
-      setLoading(false);
+      setStatsLoading(false);
     }
   };
 
-  if (loading) {
+  // Mostrar loading enquanto auth ou stats estão carregando
+  if (authLoading || statsLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>

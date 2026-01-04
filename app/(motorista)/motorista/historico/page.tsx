@@ -33,19 +33,26 @@ interface Maintenance {
 
 export default function HistoricoMotoristPage() {
   const router = useRouter();
-  const { profile } = useAuth();
+  const { profile, loading: authLoading } = useAuth();
   const [maintenances, setMaintenances] = useState<Maintenance[]>([]);
   const [loading, setLoading] = useState(true);
 
   const supabase = createClient();
 
   useEffect(() => {
-    if (!profile) {
+    if (authLoading) {
+      return;
+    }
+    
+    if (!authLoading && !profile) {
       router.push("/login-motorista");
       return;
     }
-    loadMaintenances();
-  }, [profile]);
+    
+    if (profile) {
+      loadMaintenances();
+    }
+  }, [profile, authLoading, router]);
 
   const loadMaintenances = async () => {
     try {

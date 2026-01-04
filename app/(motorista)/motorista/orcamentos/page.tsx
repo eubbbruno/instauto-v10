@@ -29,19 +29,26 @@ interface Quote {
 
 export default function OrcamentosMotoristPage() {
   const router = useRouter();
-  const { profile } = useAuth();
+  const { profile, loading: authLoading } = useAuth();
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [loading, setLoading] = useState(true);
 
   const supabase = createClient();
 
   useEffect(() => {
-    if (!profile) {
+    if (authLoading) {
+      return;
+    }
+    
+    if (!authLoading && !profile) {
       router.push("/login-motorista");
       return;
     }
-    loadQuotes();
-  }, [profile]);
+    
+    if (profile) {
+      loadQuotes();
+    }
+  }, [profile, authLoading, router]);
 
   const loadQuotes = async () => {
     try {
