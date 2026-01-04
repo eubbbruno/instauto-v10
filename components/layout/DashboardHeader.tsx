@@ -4,12 +4,73 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { LogOut, User } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { LogOut, User, Bell, FileText } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useState, useEffect } from "react";
+import { createClient } from "@/lib/supabase";
 
 export default function DashboardHeader() {
   const router = useRouter();
   const { profile, signOut } = useAuth();
+  const [notifications, setNotifications] = useState(0);
+  const supabase = createClient();
+
+  useEffect(() => {
+    if (profile) {
+      loadNotifications();
+      
+      // Atualizar a cada 30 segundos
+      const interval = setInterval(loadNotifications, 30000);
+      return () => clearInterval(interval);
+    }
+  }, [profile]);
+
+  const loadNotifications = async () => {
+    if (!profile) return;
+
+    try {
+      if (profile.type === "motorista") {
+        // Buscar motorista
+        const { data: motorist } = await supabase
+          .from("motorists")
+          .select("id")
+          .eq("profile_id", profile.id)
+          .single();
+
+        if (!motorist) return;
+
+        // Contar orçamentos respondidos não visualizados
+        const { count } = await supabase
+          .from("quotes")
+          .select("*", { count: "exact", head: true })
+          .eq("motorist_id", motorist.id)
+          .eq("status", "responded");
+
+        setNotifications(count || 0);
+      } else if (profile.type === "oficina") {
+        // Buscar oficina
+        const { data: workshop } = await supabase
+          .from("workshops")
+          .select("id")
+          .eq("profile_id", profile.id)
+          .single();
+
+        if (!workshop) return;
+
+        // Contar orçamentos pendentes
+        const { count } = await supabase
+          .from("quotes")
+          .select("*", { count: "exact", head: true })
+          .eq("workshop_id", workshop.id)
+          .eq("status", "pending");
+
+        setNotifications(count || 0);
+      }
+    } catch (error) {
+      console.error("Erro ao carregar notificações:", error);
+    }
+  };
 
   const handleSignOut = async () => {
     try {
@@ -17,6 +78,14 @@ export default function DashboardHeader() {
       router.push("/");
     } catch (error) {
       console.error("Erro ao fazer logout:", error);
+    }
+  };
+
+  const handleNotificationClick = () => {
+    if (profile?.type === "motorista") {
+      router.push("/motorista/orcamentos");
+    } else if (profile?.type === "oficina") {
+      router.push("/oficina/orcamentos");
     }
   };
 
@@ -35,18 +104,50 @@ export default function DashboardHeader() {
             />
           </Link>
 
-          {/* User Info & Logout */}
-          <div className="flex items-center gap-4">
+          {/* User Info & Actions */}
+          <div className="flex items-center gap-2 sm:gap-4">
+            {/* Notificações */}
+            {notifications > 0 && (
+              <Button
+                variant="outline"
+                size="sm"
+                className="relative border-yellow-300 bg-yellow-50 hover:bg-yellow-100 text-yellow-900 hidden sm:flex"
+                onClick={handleNotificationClick}
+              >
+                <FileText className="h-4 w-4 mr-2" />
+                {profile?.type === "motorista" ? "Respostas" : "Novos"}
+                <Badge className="ml-2 bg-yellow-500 hover:bg-yellow-600 text-white">
+                  {notifications}
+                </Badge>
+              </Button>
+            )}
+
+            {/* Bell Icon (Mobile) */}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="relative sm:hidden"
+              onClick={handleNotificationClick}
+            >
+              <Bell className="h-5 w-5 text-gray-600" />
+              {notifications > 0 && (
+                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+              )}
+            </Button>
+
+            {/* User Info */}
             {profile && (
-              <div className="hidden sm:flex items-center gap-2 text-gray-700">
+              <div className="hidden md:flex items-center gap-2 text-gray-700">
                 <User className="h-5 w-5" />
                 <span className="font-medium">{profile.name}</span>
               </div>
             )}
             
+            {/* Logout */}
             <Button
               onClick={handleSignOut}
               variant="outline"
+              size="sm"
               className="flex items-center gap-2 border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700 hover:border-red-300"
             >
               <LogOut className="h-4 w-4" />
