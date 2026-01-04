@@ -24,9 +24,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const supabase = createClient();
 
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
     const initAuth = async () => {
       try {
-        console.log("AuthContext: Initializing auth...");
+        console.log("=== INIT AUTH ===");
         
         // Primeiro tenta pegar sessão existente
         const { data: { session }, error } = await supabase.auth.getSession();
@@ -35,7 +37,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           console.error("AuthContext: Error getting session:", error);
         }
 
-        if (session) {
+        console.log("Session:", session?.user?.id || "none");
+
+        if (session?.user) {
           console.log("AuthContext: Session found for user:", session.user.id);
           setUser(session.user);
           await loadProfile(session.user.id);
@@ -50,6 +54,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
 
     initAuth();
+
+    // TIMEOUT de segurança - se demorar mais de 5 segundos, para de carregar
+    timeoutId = setTimeout(() => {
+      console.warn("⚠️ Auth timeout - forcing loading false after 5s");
+      setLoading(false);
+    }, 5000);
 
     // Listener para mudanças
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
@@ -67,23 +77,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
     );
 
-    return () => subscription.unsubscribe();
+    return () => {
+      clearTimeout(timeoutId);
+      subscription.unsubscribe();
+    };
   }, []);
 
   const loadProfile = async (userId: string) => {
     try {
+      console.log("📋 Loading profile for user:", userId);
+      
       const { data, error } = await supabase
         .from("profiles")
         .select("*")
         .eq("id", userId)
         .single();
 
+      console.log("Profile data:", data);
+      console.log("Profile error:", error);
+
       if (error) throw error;
+      
       setProfile(data);
+      console.log("✅ Profile loaded successfully");
     } catch (error) {
-      console.error("Erro ao carregar perfil:", error);
+      console.error("❌ Erro ao carregar perfil:", error);
+      setProfile(null);
     } finally {
       setLoading(false);
+      console.log("🏁 Auth loading finished");
     }
   };
 
@@ -142,8 +164,61 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) throw error;
+    try {
+      console.log("🚪 Iniciando logout...");
+      
+      // Limpar estado local PRIMEIRO
+      setUser(null);
+      setProfile(null);
+      setLoading(false);
+
+      // Fazer logout no Supabase
+      const { error } = await supabase.auth.signOut();
+      
+      if (error) {
+        console.error("Erro no signOut do Supabase:", error);
+      }
+
+      // FORÇAR limpeza de cookies manualmente
+      if (typeof window !== "undefined") {
+        console.log("🧹 Limpando cookies e localStorage...");
+        
+        // Limpar todos os cookies do Supabase
+        const cookies = document.cookie.split(";");
+        for (let cookie of cookies) {
+          const cookieName = cookie.split("=")[0].trim();
+          if (cookieName.startsWith("sb-")) {
+            document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=${window.location.hostname}`;
+            document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+          }
+        }
+        
+        // Limpar localStorage também
+        Object.keys(localStorage).forEach(key => {
+          if (key.startsWith("sb-")) {
+            localStorage.removeItem(key);
+          }
+        });
+        
+        // Limpar sessionStorage
+        Object.keys(sessionStorage).forEach(key => {
+          if (key.startsWith("sb-")) {
+            sessionStorage.removeItem(key);
+          }
+        });
+        
+        console.log("✅ Cookies e storage limpos!");
+      }
+
+      // Redirecionar para home com reload completo
+      console.log("🏠 Redirecionando para home...");
+      window.location.href = "/";
+      
+    } catch (error) {
+      console.error("❌ Erro ao fazer logout:", error);
+      // Força redirect mesmo com erro
+      window.location.href = "/";
+    }
   };
 
   return (
