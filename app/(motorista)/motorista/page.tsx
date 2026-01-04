@@ -33,52 +33,72 @@ export default function MotoristaDashboard() {
   }, []);
 
   useEffect(() => {
+    console.log("🔄 Dashboard motorista - Profile:", profile);
+    
     if (!profile) {
+      console.log("⚠️ Sem profile, redirecionando para login...");
       router.push("/login-motorista");
       return;
     }
+    
+    console.log("✅ Profile encontrado, carregando stats...");
     loadStats();
-  }, [profile]);
+  }, [profile, router]);
 
   const loadStats = async () => {
     try {
+      console.log("🔍 Carregando stats para profile:", profile?.id);
+      
       // Buscar motorista
-      const { data: motorist } = await supabase
+      const { data: motorist, error: motoristError } = await supabase
         .from("motorists")
         .select("id")
         .eq("profile_id", profile?.id)
         .single();
 
-      if (!motorist) {
+      console.log("Motorist:", motorist, "Error:", motoristError);
+
+      if (motoristError || !motorist) {
+        console.warn("Motorista não encontrado, mostrando dashboard vazio");
+        setStats({ vehicles: 0, quotes: 0, maintenances: 0 });
         setLoading(false);
         return;
       }
 
       // Contar veículos
-      const { count: vehiclesCount } = await supabase
+      const { count: vehiclesCount, error: vehiclesError } = await supabase
         .from("motorist_vehicles")
         .select("*", { count: "exact", head: true })
         .eq("motorist_id", motorist.id);
 
+      if (vehiclesError) console.warn("Erro ao contar veículos:", vehiclesError);
+
       // Contar orçamentos
-      const { count: quotesCount } = await supabase
+      const { count: quotesCount, error: quotesError } = await supabase
         .from("quotes")
         .select("*", { count: "exact", head: true })
         .eq("motorist_id", motorist.id);
 
+      if (quotesError) console.warn("Erro ao contar orçamentos:", quotesError);
+
       // Contar manutenções
-      const { count: maintenancesCount } = await supabase
+      const { count: maintenancesCount, error: maintenancesError } = await supabase
         .from("maintenance_history")
         .select("*", { count: "exact", head: true })
         .eq("motorist_id", motorist.id);
+
+      if (maintenancesError) console.warn("Erro ao contar manutenções:", maintenancesError);
 
       setStats({
         vehicles: vehiclesCount || 0,
         quotes: quotesCount || 0,
         maintenances: maintenancesCount || 0,
       });
+      
+      console.log("✅ Stats carregadas:", { vehiclesCount, quotesCount, maintenancesCount });
     } catch (error) {
-      console.error("Erro ao carregar estatísticas:", error);
+      console.error("❌ Erro ao carregar estatísticas:", error);
+      setStats({ vehicles: 0, quotes: 0, maintenances: 0 });
     } finally {
       setLoading(false);
     }
