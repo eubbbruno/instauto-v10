@@ -230,12 +230,11 @@ export default function OficinasPage() {
 
                   {/* Botões */}
                   <div className="flex gap-2 pt-4 border-t">
-                    <Button className="flex-1" size="sm">
-                      Ver Detalhes
-                    </Button>
-                    <Button variant="outline" size="sm" className="flex-1">
-                      Solicitar Orçamento
-                    </Button>
+                    <Link href={`/motorista/oficinas/${workshop.id}`} className="flex-1">
+                      <Button className="w-full" size="sm">
+                        Ver Detalhes
+                      </Button>
+                    </Link>
                   </div>
                 </CardContent>
               </Card>

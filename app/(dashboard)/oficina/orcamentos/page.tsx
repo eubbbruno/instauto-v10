@@ -3,72 +3,101 @@
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
-import { Quote, Workshop } from "@/types/database";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { 
-  MessageSquare, 
-  Clock, 
-  CheckCircle2, 
-  XCircle, 
-  AlertCircle,
-  Calendar,
-  Car,
-  User,
-  Phone,
-  Mail
+  Loader2, FileText, Clock, CheckCircle2, XCircle, 
+  AlertCircle, Car, User, Calendar, Filter 
 } from "lucide-react";
-import PlanGuard from "@/components/auth/PlanGuard";
+import { RespondQuoteDialog } from "@/components/oficina/RespondQuoteDialog";
 
-export default function OrcamentosPage() {
-  const { profile } = useAuth();
-  const [workshop, setWorkshop] = useState<Workshop | null>(null);
+interface Quote {
+  id: string;
+  motorist_id: string;
+  vehicle_id: string | null;
+  service_type: string;
+  description: string;
+  urgency: string;
+  status: string;
+  workshop_response: string | null;
+  estimated_price: number | null;
+  responded_at: string | null;
+  created_at: string;
+  motorist: {
+    profile_id: string;
+    profiles: {
+      name: string;
+      email: string;
+      phone: string | null;
+    };
+  };
+  vehicle: {
+    make: string;
+    model: string;
+    year: number;
+    plate: string | null;
+  } | null;
+}
+
+export default function OrcamentosOficinaPage() {
+  const { user, profile, loading: authLoading } = useAuth();
+  const router = useRouter();
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState<"all" | "pending" | "quoted" | "accepted">("all");
+  const [workshopId, setWorkshopId] = useState<string | null>(null);
   const [selectedQuote, setSelectedQuote] = useState<Quote | null>(null);
-  const [showResponseDialog, setShowResponseDialog] = useState(false);
-  const [responseData, setResponseData] = useState({
-    workshop_response: "",
-    estimated_price: "",
-    estimated_days: "",
-  });
-
+  const [respondDialogOpen, setRespondDialogOpen] = useState(false);
+  const [filterStatus, setFilterStatus] = useState<string>("all");
+  const [searchTerm, setSearchTerm] = useState("");
   const supabase = createClient();
 
   useEffect(() => {
-    if (profile) {
-      loadWorkshop();
+    if (!authLoading && !user) {
+      router.push("/login-oficina");
+      return;
     }
-  }, [profile]);
 
-  const loadWorkshop = async () => {
+    if (user) {
+      loadWorkshopAndQuotes();
+    }
+  }, [user, authLoading, router]);
+
+  const loadWorkshopAndQuotes = async () => {
     if (!profile) return;
 
+    setLoading(true);
     try {
-      const { data, error } = await supabase
+      // Buscar oficina
+      const { data: workshop, error: workshopError } = await supabase
         .from("workshops")
-        .select("*")
+        .select("id")
         .eq("profile_id", profile.id)
         .single();
 
-      if (error) throw error;
-      setWorkshop(data);
-      if (data) {
-        loadQuotes(data.id);
+      if (workshopError) throw workshopError;
+      if (!workshop) {
+        router.push("/completar-cadastro");
+        return;
       }
-    } catch (error) {
-      console.error("Erro ao carregar oficina:", error);
-    }
-  };
 
-  const loadQuotes = async (workshopId?: string) => {
-    const id = workshopId || workshop?.id;
-    if (!id) return;
+      setWorkshopId(workshop.id);
 
-    try {
+      // Buscar orçamentos
       const { data, error } = await supabase
         .from("quotes")
-        .select("*")
-        .eq("workshop_id", id)
+        .select(`
+          *,
+          motorist:motorists!quotes_motorist_id_fkey(
+            profile_id,
+            profiles(name, email, phone)
+          ),
+          vehicle:motorist_vehicles(make, model, year, plate)
+        `)
+        .eq("workshop_id", workshop.id)
         .order("created_at", { ascending: false });
 
       if (error) throw error;
@@ -80,373 +109,261 @@ export default function OrcamentosPage() {
     }
   };
 
-  const handleRespond = async () => {
-    if (!selectedQuote) return;
-
-    try {
-      const { error } = await supabase
-        .from("quotes")
-        .update({
-          status: "quoted",
-          workshop_response: responseData.workshop_response,
-          estimated_price: responseData.estimated_price ? parseFloat(responseData.estimated_price) : null,
-          estimated_days: responseData.estimated_days ? parseInt(responseData.estimated_days) : null,
-          responded_at: new Date().toISOString(),
-        })
-        .eq("id", selectedQuote.id);
-
-      if (error) throw error;
-
-      setShowResponseDialog(false);
-      setSelectedQuote(null);
-      setResponseData({ workshop_response: "", estimated_price: "", estimated_days: "" });
-      loadQuotes();
-    } catch (error) {
-      console.error("Erro ao responder orçamento:", error);
-      alert("Erro ao enviar resposta. Tente novamente.");
-    }
+  const handleRespondSuccess = () => {
+    loadWorkshopAndQuotes();
+    setRespondDialogOpen(false);
+    setSelectedQuote(null);
   };
-
-  const handleStatusChange = async (quoteId: string, newStatus: "accepted" | "rejected") => {
-    try {
-      const { error } = await supabase
-        .from("quotes")
-        .update({ status: newStatus })
-        .eq("id", quoteId);
-
-      if (error) throw error;
-      loadQuotes();
-    } catch (error) {
-      console.error("Erro ao atualizar status:", error);
-    }
-  };
-
-  const filteredQuotes = quotes.filter((q) => {
-    if (filter === "all") return true;
-    return q.status === filter;
-  });
 
   const getStatusBadge = (status: string) => {
-    const styles = {
-      pending: "bg-yellow-100 text-yellow-800 border-yellow-200",
-      quoted: "bg-blue-100 text-blue-800 border-blue-200",
-      accepted: "bg-green-100 text-green-800 border-green-200",
-      rejected: "bg-red-100 text-red-800 border-red-200",
-      expired: "bg-gray-100 text-gray-800 border-gray-200",
+    const badges = {
+      pending: { icon: Clock, label: "Aguardando", className: "bg-yellow-100 text-yellow-800" },
+      responded: { icon: CheckCircle2, label: "Respondido", className: "bg-green-100 text-green-800" },
+      accepted: { icon: CheckCircle2, label: "Aceito", className: "bg-blue-100 text-blue-800" },
+      rejected: { icon: XCircle, label: "Recusado", className: "bg-red-100 text-red-800" },
+      cancelled: { icon: XCircle, label: "Cancelado", className: "bg-gray-100 text-gray-800" },
     };
 
-    const labels = {
-      pending: "Pendente",
-      quoted: "Respondido",
-      accepted: "Aceito",
-      rejected: "Recusado",
-      expired: "Expirado",
-    };
+    const badge = badges[status as keyof typeof badges] || badges.pending;
+    const Icon = badge.icon;
 
     return (
-      <span className={`px-3 py-1 rounded-full text-sm font-medium border ${styles[status as keyof typeof styles]}`}>
-        {labels[status as keyof typeof labels]}
-      </span>
+      <Badge className={`${badge.className} border-0`}>
+        <Icon className="h-3 w-3 mr-1" />
+        {badge.label}
+      </Badge>
     );
   };
 
   const getUrgencyBadge = (urgency: string) => {
-    const styles = {
-      low: "bg-green-100 text-green-800",
-      medium: "bg-yellow-100 text-yellow-800",
-      high: "bg-red-100 text-red-800",
+    const badges = {
+      low: { label: "Baixa", className: "bg-gray-100 text-gray-700" },
+      normal: { label: "Normal", className: "bg-blue-100 text-blue-700" },
+      high: { label: "Alta", className: "bg-red-100 text-red-700" },
     };
 
-    const labels = {
-      low: "Baixa",
-      medium: "Média",
-      high: "Alta",
-    };
+    const badge = badges[urgency as keyof typeof badges] || badges.normal;
 
     return (
-      <span className={`px-2 py-1 rounded text-xs font-medium ${styles[urgency as keyof typeof styles]}`}>
-        {labels[urgency as keyof typeof labels]}
-      </span>
+      <Badge variant="outline" className={badge.className}>
+        {badge.label}
+      </Badge>
     );
   };
 
-  return (
-    <PlanGuard feature="quotes">
-      <div className="p-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Orçamentos</h1>
-          <p className="text-gray-600">Gerencie solicitações de orçamento dos clientes</p>
-        </div>
+  const filteredQuotes = quotes.filter((quote) => {
+    // Filtro de status
+    if (filterStatus !== "all" && quote.status !== filterStatus) {
+      return false;
+    }
 
-        {/* Filtros */}
-        <div className="mb-6 flex gap-2">
-          <button
-            onClick={() => setFilter("all")}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-              filter === "all"
-                ? "bg-blue-600 text-white"
-                : "bg-white text-gray-700 border hover:bg-gray-50"
-            }`}
-          >
-            Todos ({quotes.length})
-          </button>
-          <button
-            onClick={() => setFilter("pending")}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-              filter === "pending"
-                ? "bg-blue-600 text-white"
-                : "bg-white text-gray-700 border hover:bg-gray-50"
-            }`}
-          >
-            Pendentes ({quotes.filter((q) => q.status === "pending").length})
-          </button>
-          <button
-            onClick={() => setFilter("quoted")}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-              filter === "quoted"
-                ? "bg-blue-600 text-white"
-                : "bg-white text-gray-700 border hover:bg-gray-50"
-            }`}
-          >
-            Respondidos ({quotes.filter((q) => q.status === "quoted").length})
-          </button>
-          <button
-            onClick={() => setFilter("accepted")}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-              filter === "accepted"
-                ? "bg-blue-600 text-white"
-                : "bg-white text-gray-700 border hover:bg-gray-50"
-            }`}
-          >
-            Aceitos ({quotes.filter((q) => q.status === "accepted").length})
-          </button>
+    // Filtro de busca
+    if (searchTerm) {
+      const term = searchTerm.toLowerCase();
+      const motoristName = quote.motorist?.profiles?.name?.toLowerCase() || "";
+      const serviceType = quote.service_type.toLowerCase();
+      const description = quote.description.toLowerCase();
+      
+      return motoristName.includes(term) || 
+             serviceType.includes(term) || 
+             description.includes(term);
+    }
+
+    return true;
+  });
+
+  const pendingCount = quotes.filter(q => q.status === "pending").length;
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50 pt-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Orçamentos Recebidos</h1>
+              <p className="text-gray-600">Gerencie as solicitações de orçamento dos clientes</p>
+            </div>
+            {pendingCount > 0 && (
+              <Badge className="bg-yellow-500 text-white text-lg px-4 py-2 w-fit">
+                {pendingCount} {pendingCount === 1 ? "novo" : "novos"}
+              </Badge>
+            )}
+          </div>
+
+          {/* Filtros */}
+          <Card>
+            <CardContent className="pt-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {/* Busca */}
+                <div className="md:col-span-2">
+                  <Input
+                    placeholder="Buscar por cliente, serviço ou descrição..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full"
+                  />
+                </div>
+
+                {/* Status */}
+                <Select value={filterStatus} onValueChange={setFilterStatus}>
+                  <SelectTrigger>
+                    <Filter className="h-4 w-4 mr-2" />
+                    <SelectValue placeholder="Filtrar por status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Todos os status</SelectItem>
+                    <SelectItem value="pending">Aguardando</SelectItem>
+                    <SelectItem value="responded">Respondido</SelectItem>
+                    <SelectItem value="accepted">Aceito</SelectItem>
+                    <SelectItem value="rejected">Recusado</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Lista de Orçamentos */}
-        {loading ? (
-          <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          </div>
-        ) : filteredQuotes.length === 0 ? (
-          <div className="bg-white rounded-lg shadow p-12 text-center">
-            <MessageSquare className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">
-              Nenhum orçamento encontrado
-            </h3>
-            <p className="text-gray-600">
-              {filter === "all"
-                ? "Você ainda não recebeu solicitações de orçamento."
-                : `Nenhum orçamento com status "${filter}".`}
-            </p>
-          </div>
+        {filteredQuotes.length === 0 ? (
+          <Card className="text-center py-12">
+            <CardContent className="pt-6">
+              <FileText className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                {quotes.length === 0 
+                  ? "Nenhum orçamento recebido ainda"
+                  : "Nenhum orçamento encontrado"
+                }
+              </h3>
+              <p className="text-gray-600">
+                {quotes.length === 0
+                  ? "Quando clientes solicitarem orçamentos, eles aparecerão aqui."
+                  : "Tente ajustar os filtros de busca."}
+              </p>
+            </CardContent>
+          </Card>
         ) : (
           <div className="space-y-4">
             {filteredQuotes.map((quote) => (
-              <div key={quote.id} className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow">
-                <div className="p-6">
-                  {/* Header */}
-                  <div className="flex justify-between items-start mb-4">
-                    <div>
-                      <div className="flex items-center gap-3 mb-2">
-                        <h3 className="text-xl font-bold text-gray-900">
-                          {quote.vehicle_brand} {quote.vehicle_model} ({quote.vehicle_year})
-                        </h3>
+              <Card key={quote.id} className="hover:shadow-md transition-shadow">
+                <CardHeader>
+                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        {getStatusBadge(quote.status)}
                         {getUrgencyBadge(quote.urgency)}
                       </div>
-                      <p className="text-gray-600 text-sm">
-                        Solicitado em {new Date(quote.created_at).toLocaleDateString("pt-BR")} às{" "}
-                        {new Date(quote.created_at).toLocaleTimeString("pt-BR", {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
+                      <CardTitle className="text-xl mb-1">
+                        {quote.service_type}
+                      </CardTitle>
+                      <CardDescription className="flex flex-col gap-1">
+                        <span className="flex items-center gap-1">
+                          <User className="h-4 w-4" />
+                          {quote.motorist?.profiles?.name || "Cliente"}
+                        </span>
+                        <span className="flex items-center gap-1">
+                          <Calendar className="h-4 w-4" />
+                          {new Date(quote.created_at).toLocaleDateString("pt-BR")} às{" "}
+                          {new Date(quote.created_at).toLocaleTimeString("pt-BR", {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </span>
+                      </CardDescription>
+                    </div>
+                    {quote.status === "pending" && (
+                      <Button
+                        onClick={() => {
+                          setSelectedQuote(quote);
+                          setRespondDialogOpen(true);
+                        }}
+                        className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto"
+                      >
+                        Responder
+                      </Button>
+                    )}
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {/* Veículo */}
+                  {quote.vehicle && (
+                    <div className="bg-gray-50 rounded-lg p-4">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Car className="h-5 w-5 text-gray-600" />
+                        <span className="font-semibold text-gray-900">Veículo</span>
+                      </div>
+                      <p className="text-gray-700">
+                        {quote.vehicle.make} {quote.vehicle.model} - {quote.vehicle.year}
+                        {quote.vehicle.plate && ` • Placa: ${quote.vehicle.plate}`}
                       </p>
                     </div>
-                    {getStatusBadge(quote.status)}
-                  </div>
-
-                  {/* Informações do Cliente */}
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 p-4 bg-gray-50 rounded-lg">
-                    <div className="flex items-center gap-2">
-                      <User className="text-gray-400" size={18} />
-                      <div>
-                        <p className="text-xs text-gray-500">Cliente</p>
-                        <p className="font-medium text-gray-900">{quote.motorist_name}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Phone className="text-gray-400" size={18} />
-                      <div>
-                        <p className="text-xs text-gray-500">Telefone</p>
-                        <p className="font-medium text-gray-900">{quote.motorist_phone}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Mail className="text-gray-400" size={18} />
-                      <div>
-                        <p className="text-xs text-gray-500">E-mail</p>
-                        <p className="font-medium text-gray-900 truncate">{quote.motorist_email}</p>
-                      </div>
-                    </div>
-                  </div>
+                  )}
 
                   {/* Descrição */}
-                  <div className="mb-4">
-                    <h4 className="font-semibold text-gray-900 mb-2">Descrição do Serviço:</h4>
-                    <p className="text-gray-700">{quote.description}</p>
+                  <div>
+                    <p className="text-sm font-semibold text-gray-700 mb-2">Descrição do Problema:</p>
+                    <p className="text-gray-900 whitespace-pre-line">{quote.description}</p>
                   </div>
 
-                  {/* Resposta da Oficina */}
+                  {/* Resposta */}
                   {quote.workshop_response && (
-                    <div className="mb-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                      <h4 className="font-semibold text-blue-900 mb-2">Sua Resposta:</h4>
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                      <p className="text-sm font-semibold text-blue-900 mb-2">Sua Resposta:</p>
                       <p className="text-blue-800 mb-2">{quote.workshop_response}</p>
                       {quote.estimated_price && (
-                        <p className="text-sm text-blue-700">
-                          <strong>Valor estimado:</strong> R$ {quote.estimated_price.toFixed(2)}
+                        <p className="text-lg font-bold text-blue-900">
+                          Valor Estimado: R$ {quote.estimated_price.toFixed(2)}
                         </p>
                       )}
-                      {quote.estimated_days && (
-                        <p className="text-sm text-blue-700">
-                          <strong>Prazo estimado:</strong> {quote.estimated_days} dia(s)
+                      {quote.responded_at && (
+                        <p className="text-xs text-blue-700 mt-2">
+                          Respondido em {new Date(quote.responded_at).toLocaleDateString("pt-BR")}
                         </p>
                       )}
                     </div>
                   )}
 
-                  {/* Ações */}
-                  <div className="flex gap-3">
-                    {quote.status === "pending" && (
-                      <button
-                        onClick={() => {
-                          setSelectedQuote(quote);
-                          setShowResponseDialog(true);
-                        }}
-                        className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium"
-                      >
-                        Responder Orçamento
-                      </button>
+                  {/* Contato do Cliente */}
+                  <div className="flex flex-wrap gap-4 text-sm text-gray-600 pt-4 border-t">
+                    {quote.motorist?.profiles?.email && (
+                      <span>📧 {quote.motorist.profiles.email}</span>
                     )}
-                    {quote.status === "quoted" && (
-                      <>
-                        <button
-                          onClick={() => handleStatusChange(quote.id, "accepted")}
-                          className="flex-1 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors font-medium"
-                        >
-                          Marcar como Aceito
-                        </button>
-                        <button
-                          onClick={() => handleStatusChange(quote.id, "rejected")}
-                          className="flex-1 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors font-medium"
-                        >
-                          Marcar como Recusado
-                        </button>
-                      </>
+                    {quote.motorist?.profiles?.phone && (
+                      <span>📱 {quote.motorist.profiles.phone}</span>
                     )}
                   </div>
-                </div>
-              </div>
+                </CardContent>
+              </Card>
             ))}
           </div>
         )}
 
-        {/* Dialog de Resposta */}
-        {showResponseDialog && selectedQuote && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-              <div className="p-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                  Responder Orçamento
-                </h2>
-
-                <div className="mb-4 p-4 bg-gray-50 rounded-lg">
-                  <p className="text-sm text-gray-600">
-                    <strong>Cliente:</strong> {selectedQuote.motorist_name}
-                  </p>
-                  <p className="text-sm text-gray-600">
-                    <strong>Veículo:</strong> {selectedQuote.vehicle_brand} {selectedQuote.vehicle_model}{" "}
-                    ({selectedQuote.vehicle_year})
-                  </p>
-                  <p className="text-sm text-gray-600 mt-2">
-                    <strong>Solicitação:</strong> {selectedQuote.description}
-                  </p>
-                </div>
-
-                <div className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Sua Resposta *
-                    </label>
-                    <textarea
-                      rows={5}
-                      value={responseData.workshop_response}
-                      onChange={(e) =>
-                        setResponseData({ ...responseData, workshop_response: e.target.value })
-                      }
-                      placeholder="Descreva o serviço, peças necessárias, etc..."
-                      className="w-full border rounded-lg px-4 py-2"
-                      required
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Valor Estimado (R$)
-                      </label>
-                      <input
-                        type="number"
-                        step="0.01"
-                        value={responseData.estimated_price}
-                        onChange={(e) =>
-                          setResponseData({ ...responseData, estimated_price: e.target.value })
-                        }
-                        placeholder="0.00"
-                        className="w-full border rounded-lg px-4 py-2"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Prazo (dias)
-                      </label>
-                      <input
-                        type="number"
-                        value={responseData.estimated_days}
-                        onChange={(e) =>
-                          setResponseData({ ...responseData, estimated_days: e.target.value })
-                        }
-                        placeholder="Ex: 3"
-                        className="w-full border rounded-lg px-4 py-2"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex gap-3 mt-6">
-                  <button
-                    onClick={() => {
-                      setShowResponseDialog(false);
-                      setSelectedQuote(null);
-                      setResponseData({ workshop_response: "", estimated_price: "", estimated_days: "" });
-                    }}
-                    className="flex-1 border border-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-50 transition-colors font-medium"
-                  >
-                    Cancelar
-                  </button>
-                  <button
-                    onClick={handleRespond}
-                    disabled={!responseData.workshop_response}
-                    className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    Enviar Resposta
-                  </button>
-                </div>
-              </div>
-            </div>
+        {/* Contador */}
+        {filteredQuotes.length > 0 && (
+          <div className="mt-8 text-center text-gray-600">
+            Mostrando {filteredQuotes.length} de {quotes.length} orçamento(s)
           </div>
         )}
       </div>
-    </PlanGuard>
+
+      {/* Dialog de Responder */}
+      {selectedQuote && workshopId && (
+        <RespondQuoteDialog
+          open={respondDialogOpen}
+          onOpenChange={setRespondDialogOpen}
+          quote={selectedQuote}
+          workshopId={workshopId}
+          onSuccess={handleRespondSuccess}
+        />
+      )}
+    </div>
   );
 }
-
