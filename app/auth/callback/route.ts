@@ -1,37 +1,100 @@
-import { createClient } from "@/lib/supabase/server";
+import { createServerClient, type CookieOptions } from "@supabase/ssr";
+import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { createClient as createSupabaseAdminClient } from "@supabase/supabase-js";
-import { cookies } from "next/headers";
 
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get("code");
   const error = requestUrl.searchParams.get("error");
-  const errorDescription = requestUrl.searchParams.get("error_description");
-  const typeFromUrl = requestUrl.searchParams.get("type") as 'motorista' | 'oficina' | null;
+  const typeFromUrl = requestUrl.searchParams.get("type") as "motorista" | "oficina" | null;
 
-  console.log("=== AUTH CALLBACK ===");
-  console.log("Code:", code ? "exists" : "missing");
-  console.log("Type from URL:", typeFromUrl);
+  console.log("========== AUTH CALLBACK ==========");
+  console.log("Code:", code ? "SIM" : "NÃO");
+  console.log("Type:", typeFromUrl);
   console.log("Error:", error);
 
-  // Erro do OAuth
-  if (error) {
-    console.error("Auth error:", error, errorDescription);
-    return NextResponse.redirect(
-      new URL(`/?error=${encodeURIComponent(errorDescription || error)}`, requestUrl.origin)
-    );
+  if (error || !code) {
+    return NextResponse.redirect(new URL(`/?error=${error || "no_code"}`, requestUrl.origin));
   }
 
-  if (!code) {
-    return NextResponse.redirect(new URL("/", requestUrl.origin));
-  }
+  // IMPORTANTE: Criar response primeiro para poder setar cookies
+  const response = NextResponse.redirect(new URL("/", requestUrl.origin));
 
   try {
     const cookieStore = await cookies();
-    const supabase = await createClient();
     
-    // Criar admin client para bypassing RLS
+    // Criar cliente com cookieStore E response
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll() {
+            return cookieStore.getAll();
+          },
+          setAll(cookiesToSet) {
+            cookiesToSet.forEach(({ name, value, options }) => {
+              // Setar no cookieStore
+              try {
+                cookieStore.set(name, value, options);
+              } catch (e) {
+                // Ignore
+              }
+              // IMPORTANTE: Setar também no response
+              response.cookies.set(name, value, options as CookieOptions);
+            });
+          },
+        },
+      }
+    );
+
+    // Trocar código por sessão
+    console.log("Exchanging code for session...");
+    const { data: sessionData, error: sessionError } = await supabase.auth.exchangeCodeForSession(code);
+
+    if (sessionError || !sessionData?.user) {
+      console.error("Session error:", sessionError);
+      return NextResponse.redirect(new URL(`/?error=session_error`, requestUrl.origin));
+    }
+
+    const user = sessionData.user;
+    const session = sessionData.session;
+    
+    console.log("✅ User:", user.id, user.email);
+    console.log("✅ Session access_token exists:", !!session?.access_token);
+
+    // FORÇAR cookies de sessão no response
+    if (session) {
+      const cookieOptions: CookieOptions = {
+        path: "/",
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 60 * 60 * 24 * 7, // 7 dias
+      };
+
+      response.cookies.set("sb-access-token", session.access_token, cookieOptions);
+      response.cookies.set("sb-refresh-token", session.refresh_token, cookieOptions);
+      
+      // Cookie específico do projeto Supabase
+      const projectRef = process.env.NEXT_PUBLIC_SUPABASE_URL?.match(/https:\/\/(.+)\.supabase/)?.[1];
+      if (projectRef) {
+        response.cookies.set(
+          `sb-${projectRef}-auth-token`,
+          JSON.stringify({ 
+            access_token: session.access_token, 
+            refresh_token: session.refresh_token,
+            expires_at: session.expires_at,
+          }),
+          cookieOptions
+        );
+        console.log("✅ Set project-specific cookie:", `sb-${projectRef}-auth-token`);
+      }
+      
+      console.log("✅ Session cookies set in response");
+    }
+
+    // Criar admin client para bypass RLS
     const supabaseAdmin = createSupabaseAdminClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.SUPABASE_SERVICE_ROLE_KEY!,
@@ -42,157 +105,100 @@ export async function GET(request: Request) {
         }
       }
     );
-    
-    // Trocar código por sessão
-    console.log("Exchanging code for session...");
-    const { data: sessionData, error: sessionError } = await supabase.auth.exchangeCodeForSession(code);
-    
-    if (sessionError) {
-      console.error("Session error:", sessionError);
-      return NextResponse.redirect(
-        new URL(`/?error=${encodeURIComponent(sessionError.message)}`, requestUrl.origin)
-      );
-    }
 
-    const user = sessionData?.user;
-    const session = sessionData?.session;
-    
-    if (!user || !session) {
-      console.error("No user or session after exchange");
-      return NextResponse.redirect(new URL("/?error=Sessao+invalida", requestUrl.origin));
-    }
+    // Determinar tipo
+    const userType = typeFromUrl || user.user_metadata?.user_type || "motorista";
+    console.log("User type:", userType);
 
-    console.log("✅ Session established for user:", user.id);
-    console.log("User email:", user.email);
-    console.log("User metadata:", user.user_metadata);
-    console.log("Session expires at:", session.expires_at);
-    
-    // Garantir que os cookies da sessão sejam setados
-    if (session) {
-      console.log("Setting session cookies...");
-      cookieStore.set('sb-access-token', session.access_token, {
-        path: '/',
-        maxAge: session.expires_in,
-        sameSite: 'lax',
-        secure: process.env.NODE_ENV === 'production',
-      });
-      cookieStore.set('sb-refresh-token', session.refresh_token, {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 7, // 7 days
-        sameSite: 'lax',
-        secure: process.env.NODE_ENV === 'production',
-      });
-      console.log("✅ Session cookies set");
-    }
-
-    // Determinar tipo: URL > metadados > default motorista
-    const userType = typeFromUrl || user.user_metadata?.user_type || 'motorista';
-    console.log("Final user type:", userType);
-
-    // Verificar se já existe profile
+    // Verificar/criar profile
     const { data: existingProfile } = await supabaseAdmin
       .from("profiles")
       .select("id, type")
       .eq("id", user.id)
       .single();
 
-    console.log("Existing profile:", existingProfile);
-
-    // Se não existe profile, criar
     if (!existingProfile) {
-      const userName = user.user_metadata?.name || 
-                      user.user_metadata?.full_name || 
-                      user.email?.split("@")[0] || 
-                      "Usuário";
-
-      console.log("Creating profile:", { id: user.id, email: user.email, name: userName, type: userType });
-
+      const userName = user.user_metadata?.name || user.user_metadata?.full_name || user.email?.split("@")[0] || "Usuário";
+      
+      console.log("Creating profile...");
       // Criar profile
-      const { error: profileError } = await supabaseAdmin
-        .from("profiles")
-        .insert({
-          id: user.id,
-          email: user.email,
-          name: userName,
-          type: userType,
-        });
+      const { error: profileError } = await supabaseAdmin.from("profiles").insert({
+        id: user.id,
+        email: user.email,
+        name: userName,
+        type: userType,
+      });
 
       if (profileError) {
-        console.error("Error creating profile:", profileError);
-        // Continua mesmo com erro - pode já existir
+        console.error("Profile error:", profileError);
       } else {
-        console.log("Profile created successfully");
+        console.log("✅ Profile created");
       }
 
-      // Se for motorista, criar registro em motorists
-      if (userType === 'motorista') {
-        const { error: motoristError } = await supabaseAdmin
-          .from("motorists")
-          .insert({
-            profile_id: user.id,
-          });
+      // Se motorista, criar motorist
+      if (userType === "motorista") {
+        console.log("Creating motorist...");
+        const { error: motoristError } = await supabaseAdmin.from("motorists").insert({
+          profile_id: user.id,
+        });
 
         if (motoristError) {
-          console.error("Error creating motorist:", motoristError);
+          console.error("Motorist error:", motoristError);
         } else {
-          console.log("Motorist created successfully");
+          console.log("✅ Motorist created");
         }
       }
     }
 
-    // Redirecionar baseado no tipo
+    // Definir URL de redirecionamento
     const finalType = existingProfile?.type || userType;
-    
+    let redirectUrl: string;
+
     if (finalType === "oficina") {
-      // Verificar se já tem workshop
-      const { data: existingWorkshop } = await supabaseAdmin
+      const { data: workshop } = await supabaseAdmin
         .from("workshops")
         .select("id")
         .eq("profile_id", user.id)
         .single();
 
-      if (existingWorkshop) {
-        // Já completou cadastro, vai pro dashboard
-        console.log("Workshop exists, redirecting to /oficina");
-        return NextResponse.redirect(new URL("/oficina", requestUrl.origin));
-      } else {
-        // Precisa completar cadastro
-        console.log("Workshop missing, redirecting to /completar-cadastro");
-        return NextResponse.redirect(new URL("/completar-cadastro", requestUrl.origin));
-      }
+      redirectUrl = workshop ? "/oficina" : "/completar-cadastro";
     } else {
-      // Motorista - verificar se já tem motorist
-      const { data: existingMotorist } = await supabaseAdmin
+      // Verificar se motorist existe
+      const { data: motorist } = await supabaseAdmin
         .from("motorists")
         .select("id")
         .eq("profile_id", user.id)
         .single();
 
-      if (!existingMotorist) {
+      if (!motorist) {
         // Criar motorist se não existir
-        console.log("Creating motorist for user:", user.id);
-        const { error: motoristError } = await supabaseAdmin
-          .from("motorists")
-          .insert({
-            profile_id: user.id,
-          });
-
-        if (motoristError) {
-          console.error("Error creating motorist:", motoristError);
-        } else {
-          console.log("Motorist created successfully");
-        }
+        await supabaseAdmin.from("motorists").insert({
+          profile_id: user.id,
+        });
       }
 
-      // Motorista vai direto pro dashboard
-      console.log("Motorista, redirecting to /motorista");
-      return NextResponse.redirect(new URL("/motorista?welcome=true", requestUrl.origin));
+      redirectUrl = "/motorista?welcome=true";
     }
+
+    console.log("Redirecting to:", redirectUrl);
+
+    // Atualizar URL de redirecionamento na response
+    const finalResponse = NextResponse.redirect(new URL(redirectUrl, requestUrl.origin));
+    
+    // Copiar todos os cookies da response original
+    response.cookies.getAll().forEach((cookie) => {
+      finalResponse.cookies.set(cookie.name, cookie.value, {
+        path: "/",
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 60 * 60 * 24 * 7,
+      });
+    });
+
+    return finalResponse;
 
   } catch (err) {
     console.error("Callback error:", err);
-    return NextResponse.redirect(
-      new URL("/?error=Erro+ao+processar+autenticacao", requestUrl.origin)
-    );
+    return NextResponse.redirect(new URL("/?error=internal", requestUrl.origin));
   }
 }
