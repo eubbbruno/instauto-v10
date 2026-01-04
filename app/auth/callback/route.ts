@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
 import { createClient as createSupabaseAdminClient } from "@supabase/supabase-js";
+import { cookies } from "next/headers";
 
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
@@ -27,6 +28,7 @@ export async function GET(request: Request) {
   }
 
   try {
+    const cookieStore = await cookies();
     const supabase = await createClient();
     
     // Criar admin client para bypassing RLS
@@ -64,6 +66,24 @@ export async function GET(request: Request) {
     console.log("User email:", user.email);
     console.log("User metadata:", user.user_metadata);
     console.log("Session expires at:", session.expires_at);
+    
+    // Garantir que os cookies da sessão sejam setados
+    if (session) {
+      console.log("Setting session cookies...");
+      cookieStore.set('sb-access-token', session.access_token, {
+        path: '/',
+        maxAge: session.expires_in,
+        sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production',
+      });
+      cookieStore.set('sb-refresh-token', session.refresh_token, {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7, // 7 days
+        sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production',
+      });
+      console.log("✅ Session cookies set");
+    }
 
     // Determinar tipo: URL > metadados > default motorista
     const userType = typeFromUrl || user.user_metadata?.user_type || 'motorista';
