@@ -1,4 +1,4 @@
-import Header from "@/components/layout/Header";
+import DashboardHeader from "@/components/layout/DashboardHeader";
 import Footer from "@/components/layout/Footer";
 
 export default function MotoristaLayout({
@@ -8,7 +8,7 @@ export default function MotoristaLayout({
 }) {
   return (
     <>
-      <Header />
+      <DashboardHeader />
       <main className="pt-20">
         {children}
       </main>

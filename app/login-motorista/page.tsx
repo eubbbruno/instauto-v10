@@ -36,62 +36,18 @@ export default function LoginMotoristaPage() {
     setLoading(true);
 
     try {
-      const { user } = await signIn(email, password);
+      await signIn(email, password);
+      console.log("Login bem-sucedido, redirecionando...");
       
-      console.log("Login bem-sucedido, user:", user.id);
-      
-      // Verificar se tem motorista ou oficina
-      const { createClient } = await import("@/lib/supabase");
-      const supabase = createClient();
-      
-      const { data: motorist, error: motoristError } = await supabase
-        .from("motorists")
-        .select("id")
-        .eq("profile_id", user.id)
-        .single();
-
-      console.log("Motorist:", motorist, "Error:", motoristError);
-
-      const { data: workshop, error: workshopError } = await supabase
-        .from("workshops")
-        .select("id")
-        .eq("profile_id", user.id)
-        .single();
-
-      console.log("Workshop:", workshop, "Error:", workshopError);
-
-      if (motorist) {
-        console.log("Redirecionando para /motorista");
+      // Aguardar um pouco para garantir que o AuthContext carregou
+      setTimeout(() => {
         router.push("/motorista");
-      } else if (workshop) {
-        console.log("Redirecionando para /oficina");
-        router.push("/oficina");
-      } else {
-        // Não tem motorist nem workshop, criar motorist automaticamente via API
-        console.log("Criando motorist automaticamente via API...");
-        
-        const response = await fetch("/api/create-profile", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userType: "motorista" }),
-        });
-        
-        if (!response.ok) {
-          const errorData = await response.json();
-          console.error("Erro ao criar perfil:", errorData);
-          setError("Erro ao criar perfil de motorista. Tente novamente.");
-          return;
-        }
-        
-        console.log("Motorist criado com sucesso, redirecionando para /motorista");
-        router.push("/motorista?welcome=true");
-      }
+        setLoading(false);
+      }, 500);
+      
     } catch (err: any) {
       console.error("Erro no login:", err);
       setError(err.message || "Erro ao fazer login. Verifique suas credenciais.");
-    } finally {
       setLoading(false);
     }
   };

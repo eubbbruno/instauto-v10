@@ -27,49 +27,17 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const { user } = await signIn(email, password);
+      await signIn(email, password);
+      console.log("Login bem-sucedido, redirecionando...");
       
-      // Verificar se tem oficina ou motorista
-      const supabase = (await import("@/lib/supabase")).createClient();
-      
-      const { data: workshop } = await supabase
-        .from("workshops")
-        .select("id")
-        .eq("profile_id", user.id)
-        .single();
-
-      const { data: motorist } = await supabase
-        .from("motorists")
-        .select("id")
-        .eq("profile_id", user.id)
-        .single();
-
-      if (workshop) {
+      // Aguardar um pouco para garantir que o AuthContext carregou
+      setTimeout(() => {
         router.push("/oficina");
-      } else if (motorist) {
-        router.push("/motorista");
-      } else {
-        // Criar profile se não existir
-        const response = await fetch("/api/create-profile", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userType: "oficina" }),
-        });
-        
-        if (!response.ok) {
-          const errorData = await response.json();
-          console.error("Erro ao criar perfil:", errorData);
-          setError("Erro ao criar perfil. Tente novamente.");
-          return;
-        }
-        
-        router.push("/completar-cadastro");
-      }
+        setLoading(false);
+      }, 500);
+      
     } catch (err: any) {
       setError(err.message || "Erro ao fazer login. Verifique suas credenciais.");
-    } finally {
       setLoading(false);
     }
   };
