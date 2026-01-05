@@ -1,4 +1,5 @@
 "use client";
+// Updated: 2025-01-04 - New Epic Design
 
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
