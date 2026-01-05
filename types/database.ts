@@ -263,3 +263,86 @@ export interface MaintenanceHistory {
   updated_at?: string;
 }
 
+// =====================================================
+// NOVAS INTERFACES - FUNCIONALIDADES FINANCEIRAS
+// =====================================================
+
+export type FuelType = "gasoline" | "ethanol" | "diesel" | "gnv";
+
+export interface MotoristFueling {
+  id: string;
+  motorist_id: string;
+  vehicle_id: string;
+  fuel_type: FuelType;
+  liters: number;
+  price_per_liter: number;
+  total_amount: number;
+  odometer: number;
+  gas_station?: string;
+  city?: string;
+  state?: string;
+  notes?: string;
+  date: string;
+  created_at: string;
+  updated_at?: string;
+}
+
+export type ExpenseCategory = "fuel" | "maintenance" | "insurance" | "ipva" | "fine" | "parking" | "toll" | "wash" | "other";
+
+export interface MotoristExpense {
+  id: string;
+  motorist_id: string;
+  vehicle_id: string;
+  category: ExpenseCategory;
+  amount: number;
+  description?: string;
+  date: string;
+  receipt_url?: string;
+  notes?: string;
+  created_at: string;
+  updated_at?: string;
+}
+
+export type ReminderType = "ipva" | "insurance" | "revision" | "licensing" | "tire_rotation" | "oil_change" | "inspection" | "other";
+export type ReminderPriority = "low" | "medium" | "high";
+
+export interface MotoristReminder {
+  id: string;
+  motorist_id: string;
+  vehicle_id?: string;
+  type: ReminderType;
+  title: string;
+  description?: string;
+  due_date: string;
+  is_completed: boolean;
+  completed_at?: string;
+  reminder_days_before: number[];
+  priority: ReminderPriority;
+  amount?: number;
+  notes?: string;
+  created_at: string;
+  updated_at?: string;
+}
+
+// Stats para dashboard
+export interface VehicleFuelStats {
+  vehicle_id: string;
+  motorist_id: string;
+  fuel_type: FuelType;
+  total_fuelings: number;
+  total_liters: number;
+  total_spent: number;
+  avg_price_per_liter: number;
+  total_km: number;
+  avg_consumption_per_100km: number;
+}
+
+export interface MonthlyExpenseSummary {
+  motorist_id: string;
+  vehicle_id: string;
+  category: ExpenseCategory;
+  month: string;
+  total_expenses: number;
+  total_amount: number;
+}
+

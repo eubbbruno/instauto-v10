@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { LogOut, Bell, User, Menu, X, Car, FileText, Clock, Search, Settings } from "lucide-react";
+import { LogOut, Bell, User, Menu, X, Car, FileText, Clock, Search, Settings, Fuel, DollarSign, Bell as BellReminder } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { createClient } from "@/lib/supabase";
 import NotificationCenter from "@/components/notifications/NotificationCenter";
@@ -90,6 +90,9 @@ export default function DashboardHeader() {
     { href: "/motorista/oficinas", label: "Oficinas", icon: Search },
     { href: "/motorista/orcamentos", label: "Orçamentos", icon: FileText },
     { href: "/motorista/historico", label: "Histórico", icon: Clock },
+    { href: "/motorista/abastecimento", label: "Abastecimento", icon: Fuel },
+    { href: "/motorista/despesas", label: "Despesas", icon: DollarSign },
+    { href: "/motorista/lembretes", label: "Lembretes", icon: BellReminder },
   ] : [
     { href: "/oficina", label: "Dashboard", icon: Car },
     { href: "/oficina/orcamentos", label: "Orçamentos", icon: FileText },
