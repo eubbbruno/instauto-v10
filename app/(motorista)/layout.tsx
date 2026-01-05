@@ -1,5 +1,4 @@
 import DashboardHeader from "@/components/layout/DashboardHeader";
-import Footer from "@/components/layout/Footer";
 
 // Desabilitar cache no layout
 export const dynamic = 'force-dynamic';
@@ -13,10 +12,9 @@ export default function MotoristaLayout({
   return (
     <>
       <DashboardHeader />
-      <main className="pt-20">
+      <main className="pt-16">
         {children}
       </main>
-      <Footer />
     </>
   );
 }
