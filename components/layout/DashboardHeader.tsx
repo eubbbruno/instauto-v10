@@ -7,6 +7,7 @@ import Image from "next/image";
 import { LogOut, Bell, User, Menu, X, Car, FileText, Clock, Search, Settings } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { createClient } from "@/lib/supabase";
+import NotificationCenter from "@/components/notifications/NotificationCenter";
 
 export default function DashboardHeader() {
   const router = useRouter();
@@ -133,17 +134,7 @@ export default function DashboardHeader() {
             <div className="h-6 w-px bg-white/30"></div>
             
             {/* Notifications */}
-            <Link
-              href={profile?.type === "motorista" ? "/motorista/orcamentos" : "/oficina/orcamentos"}
-              className="relative p-2 text-white hover:text-yellow-400 transition-colors"
-            >
-              <Bell className="w-5 h-5" />
-              {notifications > 0 && (
-                <span className="absolute top-0 right-0 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center">
-                  {notifications > 9 ? "9+" : notifications}
-                </span>
-              )}
-            </Link>
+            <NotificationCenter />
 
             {/* User menu */}
             <div className="flex items-center gap-3 pl-3 border-l border-white/30">
