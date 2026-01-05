@@ -1,5 +1,5 @@
 "use client";
-// Updated: 2025-01-04 23:45 - New Epic Design v2
+// Updated: 2025-01-04 23:50 - New Epic Design v3 (Fixed)
 
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
@@ -7,10 +7,6 @@ import { useEffect, useState } from "react";
 import { Car, FileText, Clock, Search, Plus, ChevronRight, Loader2, Sparkles, Zap, TrendingUp } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase";
-
-// Force no cache
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
 
 export default function MotoristaDashboard() {
   const { user, profile, loading } = useAuth();
