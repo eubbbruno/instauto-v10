@@ -18,6 +18,13 @@ export default function MotoristaDashboard() {
 
   useEffect(() => {
     setMounted(true);
+    
+    // Force cache refresh on first load
+    if (typeof window !== 'undefined' && !window.location.search.includes('v=')) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('v', '2025-01-04');
+      window.history.replaceState({}, '', url.toString());
+    }
   }, []);
 
   useEffect(() => {
