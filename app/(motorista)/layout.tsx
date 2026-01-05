@@ -12,7 +12,7 @@ export default function MotoristaLayout({
   return (
     <>
       <DashboardHeader />
-      <main className="pt-16">
+      <main>
         {children}
       </main>
     </>
