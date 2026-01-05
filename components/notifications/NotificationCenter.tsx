@@ -54,58 +54,64 @@ export default function NotificationCenter() {
     if (!profile) return;
 
     try {
-      const mockNotifications: Notification[] = [];
+      // Buscar notificações do banco
+      const { data, error } = await supabase
+        .from("notifications")
+        .select("*")
+        .eq("user_id", profile.id)
+        .order("created_at", { ascending: false })
+        .limit(20);
 
-      if (profile.type === "motorista") {
-        // Buscar orçamentos respondidos
-        const { data: motorist } = await supabase
-          .from("motorists")
-          .select("id")
-          .eq("profile_id", profile.id)
-          .single();
+      if (error) throw error;
 
-        if (motorist) {
-          const { data: quotes } = await supabase
-            .from("quotes")
-            .select("*, workshops(name)")
-            .eq("motorist_id", motorist.id)
-            .eq("status", "responded")
-            .order("updated_at", { ascending: false })
-            .limit(10);
+      const formattedNotifications: Notification[] = (data || []).map((notif: any) => ({
+        id: notif.id,
+        type: notif.type,
+        title: notif.title,
+        message: notif.message,
+        link: notif.link || "/motorista",
+        read: notif.is_read,
+        created_at: notif.created_at,
+      }));
 
-          if (quotes) {
-            quotes.forEach((quote: any) => {
-              mockNotifications.push({
-                id: quote.id,
-                type: "quote_response",
-                title: "Orçamento Respondido",
-                message: `${quote.workshops?.name || "Uma oficina"} respondeu seu orçamento`,
-                link: "/motorista/orcamentos",
-                read: false,
-                created_at: quote.updated_at,
-              });
-            });
-          }
-        }
-      }
-
-      setNotifications(mockNotifications);
-      setUnreadCount(mockNotifications.filter(n => !n.read).length);
+      setNotifications(formattedNotifications);
+      setUnreadCount(formattedNotifications.filter(n => !n.read).length);
     } catch (error) {
       console.error("Erro ao carregar notificações:", error);
     }
   };
 
-  const markAsRead = (id: string) => {
-    setNotifications(prev =>
-      prev.map(n => n.id === id ? { ...n, read: true } : n)
-    );
-    setUnreadCount(prev => Math.max(0, prev - 1));
+  const markAsRead = async (id: string) => {
+    try {
+      await supabase
+        .from("notifications")
+        .update({ is_read: true, read_at: new Date().toISOString() })
+        .eq("id", id);
+
+      setNotifications(prev =>
+        prev.map(n => n.id === id ? { ...n, read: true } : n)
+      );
+      setUnreadCount(prev => Math.max(0, prev - 1));
+    } catch (error) {
+      console.error("Erro ao marcar notificação como lida:", error);
+    }
   };
 
-  const markAllAsRead = () => {
-    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
-    setUnreadCount(0);
+  const markAllAsRead = async () => {
+    try {
+      if (!profile) return;
+
+      await supabase
+        .from("notifications")
+        .update({ is_read: true, read_at: new Date().toISOString() })
+        .eq("user_id", profile.id)
+        .eq("is_read", false);
+
+      setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+      setUnreadCount(0);
+    } catch (error) {
+      console.error("Erro ao marcar todas como lidas:", error);
+    }
   };
 
   const getIcon = (type: string) => {

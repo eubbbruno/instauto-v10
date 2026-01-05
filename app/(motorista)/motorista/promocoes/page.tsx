@@ -6,15 +6,16 @@ import { useEffect, useState } from "react";
 import { Gift, Tag, Star, Clock, ExternalLink, Filter, Search, TrendingUp, Sparkles, Users, Package } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { createClient } from "@/lib/supabase";
 
 interface Promotion {
-  id: number;
+  id: string;
   partner: string;
   title: string;
   description: string;
   discount: string;
   category: string;
-  validUntil: string;
+  valid_until: string;
   color: string;
   icon: string;
   terms: string;
@@ -24,8 +25,11 @@ interface Promotion {
 export default function PromocoesPage() {
   const { user, profile, loading } = useAuth();
   const router = useRouter();
+  const [promotions, setPromotions] = useState<Promotion[]>([]);
+  const [promotionsLoading, setPromotionsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const supabase = createClient();
 
   useEffect(() => {
     if (!loading && !user) {
@@ -33,7 +37,31 @@ export default function PromocoesPage() {
     }
   }, [user, loading, router]);
 
-  if (loading) {
+  useEffect(() => {
+    loadPromotions();
+  }, []);
+
+  const loadPromotions = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("promotions")
+        .select("*")
+        .eq("is_active", true)
+        .gte("valid_until", new Date().toISOString().split("T")[0])
+        .order("featured", { ascending: false })
+        .order("created_at", { ascending: false });
+
+      if (error) throw error;
+
+      setPromotions(data || []);
+    } catch (error) {
+      console.error("Erro ao carregar promoções:", error);
+    } finally {
+      setPromotionsLoading(false);
+    }
+  };
+
+  if (loading || promotionsLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
@@ -43,115 +71,8 @@ export default function PromocoesPage() {
 
   if (!user) return null;
 
-  // Promoções (depois conectar com banco)
-  const promotions: Promotion[] = [
-    {
-      id: 1,
-      partner: "Uber",
-      title: "15% OFF em manutenções preventivas",
-      description: "Parceiros Uber têm desconto especial em todos os serviços de manutenção preventiva",
-      discount: "15%",
-      category: "Manutenção",
-      validUntil: "2025-03-31",
-      color: "from-black to-gray-800",
-      icon: "🚗",
-      terms: "Válido para parceiros Uber ativos. Apresentar comprovante de parceria.",
-      featured: true,
-    },
-    {
-      id: 2,
-      partner: "Mercado Livre",
-      title: "10% OFF + Frete Grátis em peças",
-      description: "Compre peças automotivas originais com desconto exclusivo e frete grátis",
-      discount: "10%",
-      category: "Peças",
-      validUntil: "2025-02-28",
-      color: "from-yellow-400 to-yellow-500",
-      icon: "📦",
-      terms: "Válido para compras acima de R$ 200. Código: INSTAUTO10",
-      featured: true,
-    },
-    {
-      id: 3,
-      partner: "iFood",
-      title: "20% OFF em revisões completas",
-      description: "Entregadores parceiros economizam mais em revisões completas",
-      discount: "20%",
-      category: "Revisão",
-      validUntil: "2025-04-30",
-      color: "from-red-500 to-red-600",
-      icon: "🍔",
-      terms: "Válido para entregadores iFood com mais de 100 entregas/mês.",
-      featured: true,
-    },
-    {
-      id: 4,
-      partner: "99",
-      title: "12% OFF em troca de óleo",
-      description: "Motoristas 99 têm desconto especial em troca de óleo e filtros",
-      discount: "12%",
-      category: "Manutenção",
-      validUntil: "2025-03-15",
-      color: "from-orange-500 to-orange-600",
-      icon: "🚕",
-      terms: "Válido para motoristas 99 ativos.",
-      featured: false,
-    },
-    {
-      id: 5,
-      partner: "Rappi",
-      title: "18% OFF em alinhamento e balanceamento",
-      description: "Parceiros Rappi economizam em serviços de alinhamento",
-      discount: "18%",
-      category: "Manutenção",
-      validUntil: "2025-02-20",
-      color: "from-pink-500 to-pink-600",
-      icon: "🛵",
-      terms: "Válido para parceiros Rappi com cadastro ativo.",
-      featured: false,
-    },
-    {
-      id: 6,
-      partner: "Loggi",
-      title: "25% OFF em manutenção de freios",
-      description: "Desconto especial para motoristas Loggi em serviços de freios",
-      discount: "25%",
-      category: "Manutenção",
-      validUntil: "2025-03-25",
-      color: "from-green-500 to-green-600",
-      icon: "📦",
-      terms: "Válido para motoristas Loggi com mais de 50 entregas/mês.",
-      featured: false,
-    },
-    {
-      id: 7,
-      partner: "Lalamove",
-      title: "15% OFF em diagnóstico completo",
-      description: "Diagnóstico completo com desconto para parceiros Lalamove",
-      discount: "15%",
-      category: "Diagnóstico",
-      validUntil: "2025-04-10",
-      color: "from-blue-500 to-blue-600",
-      icon: "🔧",
-      terms: "Válido para parceiros Lalamove ativos.",
-      featured: false,
-    },
-    {
-      id: 8,
-      partner: "Zé Delivery",
-      title: "20% OFF em troca de pneus",
-      description: "Parceiros Zé Delivery economizam na troca de pneus",
-      discount: "20%",
-      category: "Pneus",
-      validUntil: "2025-03-31",
-      color: "from-yellow-600 to-yellow-700",
-      icon: "🍺",
-      terms: "Válido para parceiros Zé Delivery com cadastro ativo.",
-      featured: false,
-    },
-  ];
-
-  const categories = ["all", "Manutenção", "Revisão", "Peças", "Pneus", "Diagnóstico"];
+  // Extrair categorias únicas das promoções
+  const categories = ["all", ...Array.from(new Set(promotions.map(p => p.category)))];
 
   const filteredPromotions = promotions.filter(promo => {
     const matchesSearch = promo.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -278,7 +199,7 @@ export default function PromocoesPage() {
                   <div className="flex items-center justify-between text-xs opacity-75 mb-4">
                     <span className="flex items-center gap-1">
                       <Clock className="w-3 h-3" />
-                      Válido até {new Date(promo.validUntil).toLocaleDateString("pt-BR")}
+                      Válido até {new Date(promo.valid_until).toLocaleDateString("pt-BR")}
                     </span>
                     <span className="font-medium">{promo.partner}</span>
                   </div>
@@ -319,7 +240,7 @@ export default function PromocoesPage() {
                   <div className="flex items-center justify-between text-xs text-gray-500 mb-4">
                     <span className="flex items-center gap-1">
                       <Clock className="w-3 h-3" />
-                      Até {new Date(promo.validUntil).toLocaleDateString("pt-BR")}
+                      Até {new Date(promo.valid_until).toLocaleDateString("pt-BR")}
                     </span>
                     <Badge className="bg-gray-100 text-gray-700">{promo.category}</Badge>
                   </div>
