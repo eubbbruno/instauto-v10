@@ -21,6 +21,7 @@
     "@radix-ui/react-toast": "^1.2.2",
     "@supabase/ssr": "^0.5.1",
     "@supabase/supabase-js": "^2.39.3",
+    "chart.js": "^4.5.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "date-fns": "^4.1.0",
@@ -33,7 +34,10 @@
     "openai": "^6.15.0",
     "react": "^19.2.3",
     "react-big-calendar": "^1.19.4",
+    "react-calendar": "^6.0.0",
+    "react-chartjs-2": "^5.3.1",
     "react-dom": "^19.2.3",
+    "react-hot-toast": "^2.6.0",
     "recharts": "^3.6.0",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7"

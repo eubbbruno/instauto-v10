@@ -1,356 +1,253 @@
-# 🚗 Instauto V10
+# 🚗 Instauto - Plataforma de Gestão Automotiva
 
-> Sistema completo de gestão para oficinas mecânicas
+> Sistema completo para conectar motoristas e oficinas mecânicas
 
-[![Next.js](https://img.shields.io/badge/Next.js-15-black)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3-38bdf8)](https://tailwindcss.com/)
-[![Supabase](https://img.shields.io/badge/Supabase-Latest-3ecf8e)](https://supabase.com/)
-
----
+[![Next.js](https://img.shields.io/badge/Next.js-16.0-black)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
+[![Supabase](https://img.shields.io/badge/Supabase-Latest-green)](https://supabase.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38bdf8)](https://tailwindcss.com/)
 
 ## 📋 Índice
 
-- [Sobre](#-sobre)
-- [Stack](#-stack)
-- [Funcionalidades](#-funcionalidades)
-- [Instalação](#-instalação)
-- [Configuração](#️-configuração)
-- [Uso](#-uso)
-- [Estrutura](#-estrutura)
-- [Documentação](#-documentação)
-- [Roadmap](#-roadmap)
-- [Contribuindo](#-contribuindo)
-
----
+- [Sobre](#sobre)
+- [Funcionalidades](#funcionalidades)
+- [Tecnologias](#tecnologias)
+- [Instalação](#instalação)
+- [Estrutura do Projeto](#estrutura-do-projeto)
+- [Documentação](#documentação)
 
 ## 🎯 Sobre
 
-O **Instauto V10** é um SaaS completo para gestão de oficinas mecânicas, desenvolvido com as tecnologias mais modernas do mercado. Oferece controle total sobre clientes, veículos e ordens de serviço, com planos gratuitos e pagos.
-
-### Por que usar o Instauto?
-
-✅ **Plano FREE disponível** - Acesso ao marketplace de orçamentos  
-✅ **Fácil de usar** - Interface intuitiva e moderna  
-✅ **Seguro** - Autenticação robusta e dados protegidos  
-✅ **Completo** - Sistema de gestão completo no plano PRO  
-✅ **Escalável** - Cresce junto com seu negócio  
-
----
-
-## 🚀 Stack
-
-### Frontend
-- **[Next.js 15](https://nextjs.org/)** - Framework React com App Router
-- **[TypeScript 5](https://www.typescriptlang.org/)** - Tipagem estática
-- **[Tailwind CSS 3](https://tailwindcss.com/)** - Estilização utility-first
-- **[shadcn/ui](https://ui.shadcn.com/)** - Componentes acessíveis
-- **[Lucide Icons](https://lucide.dev/)** - Ícones modernos
-
-### Backend
-- **[Supabase](https://supabase.com/)** - Backend as a Service
-  - PostgreSQL (Database)
-  - Auth (Autenticação)
-  - Row Level Security (Segurança)
-  - Real-time (Futuro)
-
-### Deploy
-- **[Vercel](https://vercel.com/)** - Hospedagem e CI/CD
-
----
+O **Instauto** é uma plataforma que conecta motoristas a oficinas mecânicas, facilitando:
+- Solicitação de orçamentos
+- Gerenciamento de veículos
+- Histórico de manutenções
+- Chat em tempo real
+- Promoções exclusivas
 
 ## ✨ Funcionalidades
 
-### ✅ Implementado (Fase 1)
+### 👤 Para Motoristas:
+- ✅ Dashboard completo com estatísticas
+- ✅ Gerenciamento de veículos (Garagem)
+- ✅ Sistema de Frotas (5+ veículos)
+- ✅ Busca de oficinas por localização
+- ✅ Solicitação de orçamentos
+- ✅ Chat em tempo real com oficinas
+- ✅ Histórico de manutenções
+- ✅ Promoções exclusivas de parceiros
+- ✅ Notificações em tempo real
+- ✅ Conta 100% gratuita
 
-#### 🔐 Autenticação
-- Login com email/senha
-- Cadastro de oficinas
-- OAuth Google
-- Recuperação de senha
-- Proteção de rotas
+### 🔧 Para Oficinas:
+- ✅ Dashboard com métricas
+- ✅ Gestão de orçamentos
+- ✅ Chat com clientes
+- ✅ Calendário de agendamentos
+- ✅ Gestão de clientes
+- ✅ Planos PRO com recursos avançados
 
-#### 📊 Dashboard
-- Estatísticas em tempo real
-- Total de clientes
-- Total de veículos
-- Ordens de serviço (pendentes/andamento/concluídas)
-- Faturamento total
-- Ações rápidas
+## 🛠️ Tecnologias
 
-#### 👥 Gestão de Clientes
-- Listar todos os clientes
-- Buscar por nome, email, telefone ou CPF
-- Criar novo cliente
-- Editar dados do cliente
-- Excluir cliente
-- Visualizar histórico
+### Frontend:
+- **Next.js 16** - Framework React
+- **TypeScript** - Tipagem estática
+- **Tailwind CSS** - Estilização
+- **Shadcn UI** - Componentes
+- **Framer Motion** - Animações (removido por performance)
+- **Recharts** - Gráficos
+- **React Hot Toast** - Notificações
+- **React Calendar** - Calendário
 
-#### 🚗 Gestão de Veículos (Em desenvolvimento)
-- Cadastro de veículos
-- Vincular com cliente
-- Histórico de manutenções
+### Backend:
+- **Supabase** - Backend as a Service
+  - PostgreSQL Database
+  - Authentication
+  - Real-time subscriptions
+  - Row Level Security (RLS)
+  - Storage
 
-#### 📝 Ordens de Serviço (Em desenvolvimento)
-- Criar nova OS
-- Editar OS
-- Finalizar OS
-- Cancelar OS
-- Calcular valores
-- Imprimir OS
+### Integrações:
+- **Mercado Pago** - Pagamentos
+- **Google OAuth** - Login social
+- **Email/Password** - Autenticação tradicional
 
-### 💰 Planos
+## 🚀 Instalação
 
-#### **FREE (R$ 0/mês)**
-- Dashboard básico
-- Configurações da oficina
-- Marketplace de orçamentos (futuro)
-- Perfeito para oficinas que querem apenas receber orçamentos
-
-#### **PRO (R$ 97/mês)**
-- **14 dias grátis para testar**
-- Sistema de gestão COMPLETO:
-  - Clientes ilimitados
-  - Veículos ilimitados
-  - Ordens de Serviço ilimitadas
-  - Estoque de peças
-  - Financeiro (receitas/despesas)
-  - Agenda completa
-  - Relatórios avançados
-  - Diagnóstico IA
-  - Integração WhatsApp
-
-### 🔄 Próximas Funcionalidades
-
-- 🤖 Diagnóstico IA (implementação real)
-- 📊 Relatórios PDF/Excel
-- 💬 WhatsApp Business API
-- 🏪 Marketplace motorista ↔ oficina
-- ⭐ Sistema de avaliações
-- 🔔 Notificações (email/push)
-- 📱 App mobile (React Native)
-
----
-
-## 📦 Instalação
-
-### Pré-requisitos
-
-- Node.js 18+ 
+### Pré-requisitos:
+- Node.js 18+
 - npm ou yarn
-- Conta no Supabase (gratuita)
+- Conta no Supabase
 
-### Passo a Passo
-
+### 1. Clone o repositório:
 ```bash
-# 1. Clone o repositório
 git clone https://github.com/seu-usuario/instauto-v10.git
 cd instauto-v10
+```
 
-# 2. Instale as dependências
+### 2. Instale as dependências:
+```bash
 npm install
+```
 
-# 3. Configure as variáveis de ambiente
+### 3. Configure as variáveis de ambiente:
+```bash
 cp .env.example .env.local
-# Edite .env.local com suas credenciais do Supabase
-
-# 4. Inicie o servidor de desenvolvimento
-npm run dev
 ```
 
-Acesse [http://localhost:3000](http://localhost:3000)
-
----
-
-## ⚙️ Configuração
-
-### 1. Supabase
-
-Siga o guia completo em **[docs/SETUP_SUPABASE.md](./docs/SETUP_SUPABASE.md)**
-
-Resumo:
-1. Crie um projeto no [Supabase](https://supabase.com)
-2. Execute o SQL em `docs/database-schema.sql`
-3. Configure OAuth (opcional)
-4. Copie as credenciais
-
-### 2. Variáveis de Ambiente
-
-Crie o arquivo `.env.local` na raiz:
-
+Edite `.env.local`:
 ```env
-NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+NEXT_PUBLIC_SUPABASE_URL=sua_url_supabase
+NEXT_PUBLIC_SUPABASE_ANON_KEY=sua_chave_anonima
+SUPABASE_SERVICE_ROLE_KEY=sua_chave_service_role
 ```
 
-### 3. Deploy na Vercel
+### 4. Configure o banco de dados:
+Execute os scripts SQL na ordem:
+1. `docs/SQL_CRIAR_TABELAS_MOTORISTA.sql`
+2. `docs/SQL_CRIAR_TABELAS_COMPLETAS.sql`
 
+### 5. Inicie o servidor de desenvolvimento:
 ```bash
-# Instale a CLI da Vercel
-npm i -g vercel
-
-# Faça deploy
-vercel
-
-# Configure as variáveis de ambiente no dashboard da Vercel
-```
-
----
-
-## 🎮 Uso
-
-### Desenvolvimento
-
-```bash
-# Iniciar servidor
 npm run dev
-
-# Build de produção
-npm run build
-
-# Iniciar produção
-npm start
-
-# Linter
-npm run lint
 ```
 
-### Comandos Úteis
+Acesse: [http://localhost:3000](http://localhost:3000)
 
-Veja todos os comandos em **[docs/COMANDOS_UTEIS.md](./docs/COMANDOS_UTEIS.md)**
-
----
-
-## 📁 Estrutura
+## 📁 Estrutura do Projeto
 
 ```
 instauto-v10/
-├── app/                      # Next.js App Router
-│   ├── (auth)/              # Rotas de autenticação
-│   │   ├── login/           # Página de login
-│   │   └── cadastro/        # Página de cadastro
-│   ├── (dashboard)/         # Rotas protegidas
-│   │   └── oficina/         # Dashboard da oficina
-│   │       ├── clientes/    # CRUD de clientes
-│   │       ├── veiculos/    # CRUD de veículos
-│   │       └── ordens/      # CRUD de OS
-│   └── page.tsx             # Landing page
-├── components/              # Componentes React
-│   └── ui/                  # Componentes shadcn/ui
-├── contexts/                # React Contexts
-│   └── AuthContext.tsx      # Context de autenticação
-├── lib/                     # Utilitários
-│   ├── supabase.ts         # Cliente Supabase
-│   └── utils.ts            # Funções auxiliares
-├── types/                   # TypeScript types
-│   └── database.ts         # Types do banco
-└── supabase/               # Configurações Supabase
-    └── schema.sql          # Schema do banco
+├── app/                          # App Router (Next.js 16)
+│   ├── (auth)/                   # Rotas de autenticação
+│   ├── (dashboard)/              # Dashboard oficina
+│   ├── (motorista)/              # Dashboard motorista
+│   │   ├── motorista/
+│   │   │   ├── page.tsx         # Dashboard principal
+│   │   │   ├── garagem/         # Gerenciamento de veículos
+│   │   │   ├── frotas/          # Sistema de frotas
+│   │   │   ├── oficinas/        # Busca de oficinas
+│   │   │   ├── orcamentos/      # Orçamentos
+│   │   │   ├── historico/       # Histórico
+│   │   │   ├── promocoes/       # Promoções
+│   │   │   └── chat/            # Chat com oficinas
+│   │   └── layout.tsx           # Layout motorista
+│   ├── api/                     # API Routes
+│   └── auth/                    # Callbacks OAuth
+├── components/                   # Componentes React
+│   ├── layout/                  # Header, Footer, etc
+│   ├── motorista/               # Componentes motorista
+│   ├── oficina/                 # Componentes oficina
+│   ├── notifications/           # Sistema de notificações
+│   └── ui/                      # Componentes UI (Shadcn)
+├── contexts/                     # React Contexts
+│   └── AuthContext.tsx          # Contexto de autenticação
+├── lib/                         # Utilitários
+│   └── supabase.ts              # Cliente Supabase
+├── types/                       # TypeScript types
+│   └── database.ts              # Tipos do banco
+├── docs/                        # Documentação
+│   ├── SQL_CRIAR_TABELAS_MOTORISTA.sql
+│   ├── SQL_CRIAR_TABELAS_COMPLETAS.sql
+│   └── LIMPEZA_COMPLETA.md
+└── public/                      # Arquivos estáticos
+    └── images/                  # Imagens e logos
 ```
-
-Veja detalhes em **[docs/ESTRUTURA_PROJETO.md](./docs/ESTRUTURA_PROJETO.md)**
-
----
 
 ## 📚 Documentação
 
-- **[README.md](./README.md)** - Este arquivo
-- **[docs/SETUP_SUPABASE.md](./docs/SETUP_SUPABASE.md)** - Guia de configuração do Supabase
-- **[docs/database-schema.sql](./docs/database-schema.sql)** - Schema SQL completo
-- **[docs/ESTRUTURA_PROJETO.md](./docs/ESTRUTURA_PROJETO.md)** - Estrutura detalhada do projeto
-- **[docs/STATUS_PROJETO.md](./docs/STATUS_PROJETO.md)** - Status atual do desenvolvimento
-- **[docs/COMANDOS_UTEIS.md](./docs/COMANDOS_UTEIS.md)** - Comandos úteis para desenvolvimento
+### Scripts SQL:
+- **`SQL_CRIAR_TABELAS_MOTORISTA.sql`** - Tabelas base (motoristas, veículos, orçamentos)
+- **`SQL_CRIAR_TABELAS_COMPLETAS.sql`** - Tabelas avançadas (promoções, chat, notificações)
 
----
+### Guias:
+- **`LIMPEZA_COMPLETA.md`** - Histórico de refatoração do projeto
 
-## 🗺️ Roadmap
+## 🔐 Autenticação
 
-### ✅ Fase 1 - MVP (Atual)
-- [x] Setup do projeto
-- [x] Autenticação completa
-- [x] Dashboard com estatísticas
-- [x] CRUD de clientes
-- [ ] CRUD de veículos
-- [ ] CRUD de ordens de serviço
-- [ ] Configurações da oficina
+### Tipos de Usuário:
+1. **Motorista** - Conta gratuita
+2. **Oficina** - Planos Free e PRO
 
-### 🔄 Fase 2 - Monetização
-- [ ] Integração Stripe
-- [ ] Planos FREE e PRO
-- [ ] Limites de uso
-- [ ] Billing dashboard
+### Fluxo de Autenticação:
+```
+1. Cadastro/Login → 2. Verificação → 3. Criação de Profile → 4. Redirecionamento
+```
 
-### 🚀 Fase 3 - Marketplace
-- [ ] Perfil de motorista
-- [ ] Busca de oficinas
-- [ ] Sistema de avaliações
-- [ ] Agendamento online
+### Rotas Protegidas:
+- `/motorista/*` - Apenas motoristas autenticados
+- `/oficina/*` - Apenas oficinas autenticadas
 
-### 📱 Fase 4 - Mobile
-- [ ] App React Native
-- [ ] Notificações push
-- [ ] Offline-first
+## 📊 Banco de Dados
 
----
+### Tabelas Principais:
+- `profiles` - Dados dos usuários
+- `motorists` - Dados específicos de motoristas
+- `workshops` - Dados de oficinas
+- `motorist_vehicles` - Veículos dos motoristas
+- `quotes` - Orçamentos
+- `maintenance_history` - Histórico de manutenções
+- `promotions` - Promoções de parceiros
+- `conversations` - Conversas do chat
+- `messages` - Mensagens
+- `notifications` - Notificações do sistema
+
+### RLS (Row Level Security):
+Todas as tabelas possuem políticas de segurança configuradas.
+
+## 🎨 Design System
+
+### Cores:
+- **Primária**: Azul (`#3B82F6`)
+- **Secundária**: Amarelo (`#FCD34D`)
+- **Sucesso**: Verde (`#10B981`)
+- **Erro**: Vermelho (`#EF4444`)
+
+### Componentes UI:
+Utilizamos **Shadcn UI** com customizações.
+
+## 🚀 Deploy
+
+### Vercel (Recomendado):
+```bash
+vercel --prod
+```
+
+### Variáveis de Ambiente (Vercel):
+Configure as mesmas variáveis do `.env.local` no painel da Vercel.
+
+## 📈 Performance
+
+- ✅ Server-side rendering (SSR)
+- ✅ Static generation onde possível
+- ✅ Image optimization (Next.js)
+- ✅ Code splitting automático
+- ✅ Lazy loading de componentes
 
 ## 🤝 Contribuindo
 
-Contribuições são bem-vindas! Por favor:
-
 1. Fork o projeto
 2. Crie uma branch (`git checkout -b feature/nova-funcionalidade`)
-3. Commit suas mudanças (`git commit -m 'feat: adiciona nova funcionalidade'`)
+3. Commit suas mudanças (`git commit -m 'Adiciona nova funcionalidade'`)
 4. Push para a branch (`git push origin feature/nova-funcionalidade`)
 5. Abra um Pull Request
 
-### Convenções de Commit
+## 📝 Licença
 
-Usamos [Conventional Commits](https://www.conventionalcommits.org/):
+Este projeto está sob a licença MIT.
 
-- `feat:` - Nova funcionalidade
-- `fix:` - Correção de bug
-- `docs:` - Documentação
-- `style:` - Formatação
-- `refactor:` - Refatoração
-- `test:` - Testes
-- `chore:` - Manutenção
+## 👥 Equipe
 
----
+- **Desenvolvimento**: Bruno
+- **Design**: Bruno
+- **Backend**: Supabase
 
-## 📄 Licença
+## 📞 Contato
 
-Este projeto é proprietário. Todos os direitos reservados.
+- **Email**: contato@instauto.com.br
+- **WhatsApp**: (43) 99185-2779
+- **Site**: [www.instauto.com.br](https://www.instauto.com.br)
 
 ---
 
-## 👨‍💻 Autor
-
-**Bruno**
-
----
-
-## 🙏 Agradecimentos
-
-- [Next.js](https://nextjs.org/)
-- [Supabase](https://supabase.com/)
-- [shadcn/ui](https://ui.shadcn.com/)
-- [Vercel](https://vercel.com/)
-
----
-
-## 📞 Suporte
-
-- 📧 Email: suporte@instauto.com
-- 💬 Discord: [Link do Discord]
-- 📖 Docs: [Link da Documentação]
-
----
-
-<div align="center">
-
-**⭐ Se este projeto te ajudou, deixe uma estrela! ⭐**
-
-Feito com ❤️ para revolucionar a gestão de oficinas mecânicas
-
-</div>
-
+**Feito com ❤️ por Instauto**
