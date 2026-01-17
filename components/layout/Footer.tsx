@@ -69,7 +69,7 @@ export default function Footer() {
             <ul className="space-y-3 font-sans text-[15px]">
               <li>
                 <Link
-                  href="/oficinas"
+                  href="/para-oficinas"
                   className="hover:text-yellow-400 transition-colors hover:translate-x-1 inline-block"
                 >
                   Para Oficinas

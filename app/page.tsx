@@ -484,7 +484,7 @@ export default function HomePage() {
                   Tenha um sistema completo de gestão + apareça no marketplace para milhares de motoristas. Aumente seu faturamento com tecnologia.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <Link href="/oficinas">
+                  <Link href="/para-oficinas">
                     <Button
                       size="lg"
                       className="bg-gray-900 hover:bg-gray-800 text-white font-sans font-bold text-lg px-10 py-6 rounded-xl shadow-xl hover:shadow-2xl transition-all group"
