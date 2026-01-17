@@ -134,7 +134,7 @@ export default function PlanosPage() {
                 </li>
               </ul>
 
-              <Link href="/cadastro">
+              <Link href="/cadastro-oficina">
                 <Button
                   variant="outline"
                   className="w-full border-2 border-gray-300 text-gray-700 hover:border-blue-600 hover:text-blue-600 font-sans font-bold py-6 rounded-xl"
@@ -228,7 +228,7 @@ export default function PlanosPage() {
                 </li>
               </ul>
 
-              <Link href="/cadastro">
+              <Link href="/cadastro-oficina">
                 <Button className="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-sans font-bold py-6 rounded-xl shadow-xl text-lg">
                   Começar Teste de 14 Dias
                   <ArrowRight className="ml-2 h-5 w-5" />
@@ -500,7 +500,7 @@ export default function PlanosPage() {
           <p className="text-xl text-blue-100 font-sans mb-10 max-w-2xl mx-auto">
             Teste o plano PRO por 14 dias sem compromisso
           </p>
-          <Link href="/cadastro">
+          <Link href="/cadastro-oficina">
             <Button
               size="lg"
               className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-sans font-bold text-lg px-10 py-6 rounded-xl shadow-xl hover:shadow-2xl transition-all"

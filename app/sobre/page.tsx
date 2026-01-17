@@ -252,7 +252,7 @@ export default function SobrePage() {
             Junte-se a centenas de oficinas que já transformaram seus negócios com o Instauto
           </p>
 
-          <Link href="/cadastro">
+          <Link href="/cadastro-oficina">
             <Button
               size="lg"
               className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-sans font-bold text-lg px-10 py-6 rounded-xl shadow-xl hover:shadow-2xl transition-all hover:scale-105"
