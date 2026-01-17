@@ -21,12 +21,12 @@ export default function PlanosPage() {
       <Header />
 
       {/* Hero */}
-      <section className="bg-gradient-to-br from-blue-50 via-white to-yellow-50 pt-32 pb-20">
+      <section className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 pt-32 pb-20">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-6xl font-heading font-bold text-gray-900 mb-6">
+          <h1 className="text-4xl md:text-6xl font-heading font-bold text-white mb-6">
             Planos e Preços
           </h1>
-          <p className="text-xl md:text-2xl text-gray-600 font-sans max-w-3xl mx-auto">
+          <p className="text-xl md:text-2xl text-blue-100 font-sans max-w-3xl mx-auto">
             Escolha o plano ideal para sua oficina. Comece grátis ou teste o PRO
             por 14 dias.
           </p>

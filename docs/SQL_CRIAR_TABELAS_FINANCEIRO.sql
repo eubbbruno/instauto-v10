@@ -331,7 +331,7 @@ GROUP BY motorist_id, vehicle_id, category, DATE_TRUNC('month', date);
 CREATE OR REPLACE VIEW motorist_pending_reminders AS
 SELECT
     r.*,
-    v.brand,
+    v.make,
     v.model,
     v.plate,
     (r.due_date - CURRENT_DATE) as days_until_due
