@@ -51,7 +51,7 @@ export default function OficinasPage() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 mb-10">
-                <Link href="/cadastro">
+                <Link href="/cadastro-oficina">
                   <Button
                     size="lg"
                     className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-sans font-bold text-lg px-8 py-6 rounded-xl shadow-xl hover:shadow-2xl transition-all w-full sm:w-auto"
@@ -199,7 +199,7 @@ export default function OficinasPage() {
             </div>
 
             <div className="text-center">
-              <Link href="/cadastro">
+              <Link href="/cadastro-oficina">
                 <Button
                   size="lg"
                   className="bg-blue-600 hover:bg-blue-700 text-white font-sans font-bold text-lg px-10 py-6 rounded-xl shadow-lg"
@@ -335,7 +335,7 @@ export default function OficinasPage() {
           </div>
 
           <div className="text-center mt-12">
-            <Link href="/cadastro">
+            <Link href="/cadastro-oficina">
               <Button
                 size="lg"
                 className="bg-blue-600 hover:bg-blue-700 text-white font-sans font-bold text-lg px-10 py-6 rounded-xl shadow-lg"
@@ -417,7 +417,7 @@ export default function OficinasPage() {
                 </li>
               </ul>
 
-              <Link href="/cadastro">
+              <Link href="/cadastro-oficina">
                 <Button
                   variant="outline"
                   className="w-full border-2 border-gray-300 text-gray-700 hover:border-blue-600 hover:text-blue-600 font-sans font-bold py-6 rounded-xl"
@@ -499,7 +499,7 @@ export default function OficinasPage() {
                 </li>
               </ul>
 
-              <Link href="/cadastro">
+              <Link href="/cadastro-oficina">
                 <Button className="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-sans font-bold py-6 rounded-xl shadow-xl text-lg">
                   Começar Teste de 14 Dias
                   <ArrowRight className="ml-2 h-5 w-5" />
@@ -641,7 +641,7 @@ export default function OficinasPage() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <Link href="/cadastro">
+            <Link href="/cadastro-oficina">
               <Button
                 size="lg"
                 className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-sans font-bold text-lg px-10 py-6 rounded-xl shadow-xl hover:shadow-2xl transition-all"
