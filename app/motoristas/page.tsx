@@ -24,37 +24,45 @@ export default function MotoristasPage() {
       <Header />
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-gray-800 via-gray-700 to-gray-900 pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="text-white">
-              <div className="inline-flex items-center gap-2 bg-yellow-400 text-gray-900 px-4 py-2 rounded-full text-sm font-sans font-semibold mb-6">
+              <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-sans font-semibold mb-6">
                 <Sparkles className="h-4 w-4" />
-                Em breve - Cadastre-se para ser avisado
+                Plataforma #1 para Motoristas
               </div>
 
               <h1 className="text-4xl md:text-6xl font-heading font-bold mb-6 leading-tight">
                 Encontre a oficina ideal para seu veículo
               </h1>
 
-              <p className="text-xl md:text-2xl text-gray-300 font-sans mb-8 leading-relaxed">
+              <p className="text-xl md:text-2xl text-blue-100 font-sans mb-8 leading-relaxed">
                 Marketplace que conecta motoristas a oficinas de confiança. 
                 Compare preços, agende serviços e avalie.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 mb-10">
-                <Link href="/cadastro">
+                <Link href="/cadastro-motorista">
                   <Button
                     size="lg"
                     className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-sans font-bold text-lg px-8 py-6 rounded-xl shadow-xl hover:shadow-2xl transition-all w-full sm:w-auto"
                   >
-                    Cadastrar Interesse
+                    Cadastrar Grátis
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </Link>
+                <a href="#funcionalidades">
+                  <Button
+                    size="lg"
+                    className="bg-white text-blue-600 hover:bg-gray-100 font-sans font-bold text-lg px-8 py-6 rounded-xl transition-all w-full sm:w-auto shadow-lg"
+                  >
+                    Ver Funcionalidades
+                  </Button>
+                </a>
               </div>
 
-              <div className="flex flex-wrap gap-6 text-sm text-gray-300 font-sans">
+              <div className="flex flex-wrap gap-6 text-sm text-blue-100 font-sans">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="h-5 w-5 text-yellow-400" />
                   <span>100% gratuito</span>
@@ -75,8 +83,8 @@ export default function MotoristasPage() {
                 <Image
                   src="/images/car-3d.png"
                   alt="Carro 3D"
-                  width={500}
-                  height={500}
+                  width={400}
+                  height={400}
                   className="object-contain drop-shadow-2xl"
                   priority
                 />
@@ -182,7 +190,7 @@ export default function MotoristasPage() {
       </section>
 
       {/* Funcionalidades */}
-      <section className="py-20 bg-gray-50">
+      <section id="funcionalidades" className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-heading font-bold text-gray-900 mb-4">
@@ -354,27 +362,39 @@ export default function MotoristasPage() {
       {/* CTA Final */}
       <section className="py-20 bg-gradient-to-br from-blue-600 to-blue-800">
         <div className="container mx-auto px-4 text-center">
-          <div className="inline-flex items-center gap-2 bg-yellow-400 text-gray-900 px-4 py-2 rounded-full text-sm font-sans font-semibold mb-8">
-            <Sparkles className="h-4 w-4" />
-            Lançamento em breve
-          </div>
-
           <h2 className="text-3xl md:text-5xl font-heading font-bold text-white mb-6">
-            Seja um dos primeiros a usar
+            Pronto para começar?
           </h2>
           <p className="text-xl text-blue-100 font-sans mb-10 max-w-2xl mx-auto">
-            Cadastre seu interesse e seja avisado quando o marketplace estiver disponível
+            Cadastre-se grátis e comece a gerenciar seus veículos e manutenções hoje mesmo
           </p>
 
-          <Link href="/cadastro">
-            <Button
-              size="lg"
-              className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-sans font-bold text-lg px-10 py-6 rounded-xl shadow-xl hover:shadow-2xl transition-all hover:scale-105"
-            >
-              Quero Ser Avisado
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-          </Link>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+            <Link href="/cadastro-motorista">
+              <Button
+                size="lg"
+                className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-sans font-bold text-lg px-10 py-6 rounded-xl shadow-xl hover:shadow-2xl transition-all"
+              >
+                Cadastrar Grátis Agora
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+          </div>
+
+          <div className="flex flex-wrap justify-center gap-8 text-blue-100 font-sans">
+            <div className="flex items-center gap-2">
+              <Clock className="h-5 w-5" />
+              <span>Cadastro em 2 minutos</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Shield className="h-5 w-5" />
+              <span>100% seguro</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="h-5 w-5" />
+              <span>Sempre gratuito</span>
+            </div>
+          </div>
         </div>
       </section>
 
