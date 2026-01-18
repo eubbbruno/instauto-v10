@@ -94,6 +94,7 @@ export default function OficinasPage() {
                   width={500}
                   height={500}
                   className="object-contain drop-shadow-2xl"
+                  style={{ maxHeight: '400px', width: 'auto', height: 'auto' }}
                   priority
                 />
               </div>
