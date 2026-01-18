@@ -35,105 +35,107 @@ export default function HomePage() {
       <Header />
 
       {/* Hero Section - Busca de Oficinas */}
-      <section className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+      <section className="relative min-h-[90vh] bg-gradient-to-br from-blue-600 via-blue-500 to-blue-600 overflow-hidden">
+        {/* Elementos decorativos de fundo */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-400/30 rounded-full blur-3xl" />
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-yellow-400/20 rounded-full blur-3xl" />
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Conteúdo */}
             <div className="text-white">
-              <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-sans font-semibold mb-6">
-                <Car className="h-4 w-4" />
-                Plataforma #1 para Motoristas
+              {/* Badge com animação */}
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-sans font-semibold mb-6">
+                <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                Mais de 500 oficinas cadastradas
               </div>
 
-              <h1 className="text-4xl md:text-6xl font-heading font-bold mb-6 leading-tight">
+              {/* Título */}
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-6">
                 Encontre a melhor{" "}
-                <span className="text-yellow-400">
-                  oficina mecânica
-                </span>
-                {" "}perto de você
+                <span className="text-yellow-400">oficina mecânica</span>{" "}
+                perto de você
               </h1>
 
-              <p className="text-xl md:text-2xl text-blue-100 font-sans mb-8 leading-relaxed">
-                Solicite orçamentos grátis, compare preços e avaliações de oficinas mecânicas confiáveis. Manutenção automotiva com transparência e qualidade.
+              {/* Subtítulo */}
+              <p className="text-lg md:text-xl text-blue-100 font-sans mb-8 max-w-xl">
+                Solicite orçamentos grátis, compare preços e avaliações de oficinas confiáveis na sua região.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 mb-10">
-                <Link href="/buscar-oficinas">
+              {/* CAMPO DE BUSCA - PRINCIPAL */}
+              <div className="bg-white rounded-2xl shadow-2xl p-2 mb-6">
+                <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-2">
+                  <div className="flex-1 flex items-center gap-3 px-4">
+                    <MapPin className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                    <AddressAutocomplete onSelect={setSelectedLocation} />
+                  </div>
                   <Button
+                    type="submit"
                     size="lg"
-                    className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-sans font-bold text-lg px-8 py-6 rounded-xl shadow-xl hover:shadow-2xl transition-all w-full sm:w-auto"
+                    className="flex items-center justify-center gap-2 px-8 py-4 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-sans font-bold rounded-xl transition-all hover:shadow-lg hover:scale-[1.02]"
                   >
                     Buscar Oficinas
-                    <ArrowRight className="ml-2 h-5 w-5" />
+                    <ArrowRight className="w-5 h-5" />
                   </Button>
-                </Link>
-                <Link href="/cadastro-motorista">
-                  <Button
-                    size="lg"
-                    className="bg-white text-blue-600 hover:bg-gray-100 font-sans font-bold text-lg px-8 py-6 rounded-xl transition-all w-full sm:w-auto shadow-lg"
-                  >
-                    Cadastrar Grátis
-                  </Button>
-                </Link>
+                </form>
               </div>
 
-              <div className="flex flex-wrap gap-6 text-sm text-blue-100 font-sans">
+              {/* Badges de benefícios */}
+              <div className="flex flex-wrap gap-6 text-sm text-white/90 font-sans">
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-5 w-5 text-yellow-400" />
+                  <CheckCircle2 className="w-5 h-5 text-green-400" />
                   <span>100% Grátis</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-5 w-5 text-yellow-400" />
-                  <span>Avaliações Reais</span>
+                  <CheckCircle2 className="w-5 h-5 text-green-400" />
+                  <span>Sem compromisso</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-5 w-5 text-yellow-400" />
-                  <span>Compare Preços</span>
+                  <CheckCircle2 className="w-5 h-5 text-green-400" />
+                  <span>Orçamento em minutos</span>
                 </div>
               </div>
             </div>
 
-            <div className="hidden md:flex justify-center items-center">
+            {/* Imagem 3D com elementos decorativos */}
+            <div className="hidden lg:flex justify-center items-center">
               <div className="relative">
                 <Image
                   src="/images/img-01.png"
-                  alt="Encontre Oficinas"
+                  alt="Mecânico Instauto"
                   width={500}
                   height={500}
-                  className="object-contain drop-shadow-2xl"
-                  style={{ maxHeight: '380px', width: 'auto', height: 'auto' }}
+                  className="drop-shadow-2xl hover:scale-105 transition-transform duration-500"
+                  style={{ maxHeight: '450px', width: 'auto', height: 'auto' }}
                   priority
                 />
+                {/* Badge de avaliação flutuante */}
+                <div className="absolute -top-4 -left-4 w-20 h-20 bg-yellow-400 rounded-2xl flex items-center justify-center shadow-lg animate-bounce">
+                  <Star className="w-10 h-10 text-gray-900" fill="currentColor" />
+                </div>
+                {/* Badge de usuários */}
+                <div className="absolute -bottom-4 -right-4 px-4 py-2 bg-white rounded-xl shadow-lg">
+                  <div className="flex items-center gap-2">
+                    <div className="flex -space-x-2">
+                      <div className="w-8 h-8 bg-blue-500 rounded-full border-2 border-white" />
+                      <div className="w-8 h-8 bg-green-500 rounded-full border-2 border-white" />
+                      <div className="w-8 h-8 bg-yellow-500 rounded-full border-2 border-white" />
+                    </div>
+                    <span className="text-sm font-semibold text-gray-900">+2.500 usuários</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Decorative wave */}
+        {/* Wave no final */}
         <div className="absolute bottom-0 left-0 right-0">
-          <svg
-            viewBox="0 0 1440 120"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-full h-auto"
-          >
-            <path
-              d="M0 0L60 10C120 20 240 40 360 46.7C480 53 600 47 720 43.3C840 40 960 40 1080 46.7C1200 53 1320 67 1380 73.3L1440 80V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0V0Z"
-              fill="white"
-            />
+          <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
+            <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="white"/>
           </svg>
-        </div>
-
-        {/* Animated Car */}
-        <div className="absolute bottom-24 left-0 w-full overflow-hidden pointer-events-none">
-          <div className="animate-[slide_20s_linear_infinite]">
-            <Image
-              src="/images/car-3d.png"
-              alt="Carro"
-              width={120}
-              height={120}
-              className="object-contain opacity-30"
-            />
-          </div>
         </div>
       </section>
 
@@ -151,14 +153,14 @@ export default function HomePage() {
 
           <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {/* Carros */}
-            <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl border-2 border-blue-100 hover:border-blue-300 transition-all hover:shadow-lg">
+            <div className="bg-gradient-to-b from-blue-50 to-white p-8 rounded-3xl hover:shadow-xl hover:-translate-y-2 transition-all duration-300 cursor-pointer">
               <div className="flex justify-center mb-6">
                 <Image
                   src="/images/car-3d.png"
                   alt="Oficina Mecânica para Carros"
                   width={150}
                   height={150}
-                  className="object-contain"
+                  className="object-contain hover:scale-110 transition-transform duration-300"
                   style={{ maxHeight: '120px', width: 'auto', height: 'auto' }}
                 />
               </div>
@@ -171,14 +173,14 @@ export default function HomePage() {
             </div>
 
             {/* Motos */}
-            <div className="bg-gradient-to-br from-yellow-50 to-white p-8 rounded-2xl border-2 border-yellow-100 hover:border-yellow-300 transition-all hover:shadow-lg">
+            <div className="bg-gradient-to-b from-yellow-50 to-white p-8 rounded-3xl hover:shadow-xl hover:-translate-y-2 transition-all duration-300 cursor-pointer">
               <div className="flex justify-center mb-6">
                 <Image
                   src="/images/moto-3d.png"
                   alt="Oficina Mecânica para Motos"
                   width={150}
                   height={150}
-                  className="object-contain"
+                  className="object-contain hover:scale-110 transition-transform duration-300"
                 />
               </div>
               <h3 className="text-xl font-heading font-bold text-gray-900 mb-2 text-center">
@@ -190,14 +192,14 @@ export default function HomePage() {
             </div>
 
             {/* Caminhões */}
-            <div className="bg-gradient-to-br from-green-50 to-white p-8 rounded-2xl border-2 border-green-100 hover:border-green-300 transition-all hover:shadow-lg">
+            <div className="bg-gradient-to-b from-green-50 to-white p-8 rounded-3xl hover:shadow-xl hover:-translate-y-2 transition-all duration-300 cursor-pointer">
               <div className="flex justify-center mb-6">
                 <Image
                   src="/images/truck-3d.png"
                   alt="Oficina Mecânica para Caminhões"
                   width={150}
                   height={150}
-                  className="object-contain"
+                  className="object-contain hover:scale-110 transition-transform duration-300"
                 />
               </div>
               <h3 className="text-xl font-heading font-bold text-gray-900 mb-2 text-center">
@@ -225,7 +227,7 @@ export default function HomePage() {
 
           <div className="grid md:grid-cols-3 gap-12 max-w-6xl mx-auto">
             {/* Passo 1 */}
-            <div className="text-center bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all">
+            <div className="relative text-center bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all">
               <div className="mb-6 flex justify-center">
                 <Image
                   src="/images/passo-01.png"
@@ -235,7 +237,7 @@ export default function HomePage() {
                   className="object-contain"
                 />
               </div>
-              <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-heading font-bold text-xl">
+              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-yellow-400 text-gray-900 font-heading font-bold flex items-center justify-center shadow-lg">
                 1
               </div>
               <h3 className="text-xl font-heading font-bold text-gray-900 mb-3">
@@ -247,7 +249,7 @@ export default function HomePage() {
             </div>
 
             {/* Passo 2 */}
-            <div className="text-center bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all">
+            <div className="relative text-center bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all">
               <div className="mb-6 flex justify-center">
                 <Image
                   src="/images/passo-02.png"
@@ -257,7 +259,7 @@ export default function HomePage() {
                   className="object-contain"
                 />
               </div>
-              <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-white font-heading font-bold text-xl">
+              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-yellow-400 text-gray-900 font-heading font-bold flex items-center justify-center shadow-lg">
                 2
               </div>
               <h3 className="text-xl font-heading font-bold text-gray-900 mb-3">
@@ -269,7 +271,7 @@ export default function HomePage() {
             </div>
 
             {/* Passo 3 */}
-            <div className="text-center bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all">
+            <div className="relative text-center bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all">
               <div className="mb-6 flex justify-center">
                 <Image
                   src="/images/passo-03.png"
@@ -279,7 +281,7 @@ export default function HomePage() {
                   className="object-contain"
                 />
               </div>
-              <div className="w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-900 font-heading font-bold text-xl">
+              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-yellow-400 text-gray-900 font-heading font-bold flex items-center justify-center shadow-lg">
                 3
               </div>
               <h3 className="text-xl font-heading font-bold text-gray-900 mb-3">
@@ -293,28 +295,28 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Benefícios */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
+      {/* Por que escolher o Instauto */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-heading font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-4">
               Por que escolher o Instauto?
             </h2>
-            <p className="text-xl text-gray-600 font-sans max-w-2xl mx-auto">
-              Tecnologia moderna para oficinas que querem crescer
+            <p className="text-lg text-gray-600 font-sans max-w-2xl mx-auto">
+              Tecnologia moderna para encontrar as melhores oficinas
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-shadow">
-              <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
-                <Zap className="h-7 w-7 text-blue-600" />
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl border-2 border-blue-100 hover:border-blue-500 hover:shadow-xl transition-all duration-300">
+              <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
+                <Zap className="w-8 h-8 text-blue-600" />
               </div>
               <h3 className="text-xl font-heading font-bold text-gray-900 mb-3">
                 Rápido e Fácil
               </h3>
               <p className="text-gray-600 font-sans leading-relaxed">
-                Interface intuitiva que qualquer um aprende a usar em minutos.
+                Encontre oficinas em segundos. Interface simples e intuitiva para solicitar orçamentos sem complicação.
                 Sem complicação.
               </p>
             </div>
