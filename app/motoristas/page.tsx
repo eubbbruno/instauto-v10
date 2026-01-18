@@ -79,13 +79,13 @@ export default function MotoristasPage() {
             </div>
 
             <div className="hidden md:flex justify-center items-center">
-              <div className="relative max-w-md">
+              <div className="relative w-64 h-64">
                 <Image
                   src="/images/car-3d.png"
                   alt="Carro 3D"
-                  width={350}
-                  height={350}
-                  className="object-contain drop-shadow-2xl w-full h-auto"
+                  width={256}
+                  height={256}
+                  className="object-contain drop-shadow-2xl"
                   priority
                 />
               </div>
