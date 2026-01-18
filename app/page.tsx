@@ -145,6 +145,7 @@ export default function HomePage() {
                   width={150}
                   height={150}
                   className="object-contain"
+                  style={{ maxHeight: '120px', width: 'auto', height: 'auto' }}
                 />
               </div>
               <h3 className="text-xl font-heading font-bold text-gray-900 mb-2 text-center">
