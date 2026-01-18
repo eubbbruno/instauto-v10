@@ -19,6 +19,7 @@ import {
   Users,
   MapPin,
   Star,
+  Check,
 } from "lucide-react";
 
 export default function HomePage() {
@@ -352,91 +353,55 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Empresas que confiam */}
-      <section className="py-16 bg-white border-y border-gray-200">
-        <div className="container mx-auto px-4">
-          <p className="text-center text-sm text-gray-500 font-sans mb-8 uppercase tracking-wider">
+      {/* Empresas Parceiras */}
+      <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p className="text-center text-sm font-medium text-gray-500 uppercase tracking-wider mb-8">
             Empresas que confiam em soluções automotivas
           </p>
-          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12 opacity-60 grayscale hover:grayscale-0 transition-all">
-            <Image
-              src="/images/uber-seeklogo.png"
-              alt="Uber"
-              width={100}
-              height={40}
-              className="object-contain h-8 md:h-10 w-auto"
-            />
-            <Image
-              src="/images/rappi-seeklogo.png"
-              alt="Rappi"
-              width={100}
-              height={40}
-              className="object-contain h-8 md:h-10 w-auto"
-            />
-            <Image
-              src="/images/mercado-livre-seeklogo.png"
-              alt="Mercado Livre"
-              width={100}
-              height={40}
-              className="object-contain h-8 md:h-10 w-auto"
-            />
-            <Image
-              src="/images/mercedes-benz-seeklogo.png"
-              alt="Mercedes-Benz"
-              width={100}
-              height={40}
-              className="object-contain h-8 md:h-10 w-auto"
-            />
-            <Image
-              src="/images/scania-seeklogo.png"
-              alt="Scania"
-              width={100}
-              height={40}
-              className="object-contain h-8 md:h-10 w-auto"
-            />
-            <Image
-              src="/images/volvo-seeklogo.png"
-              alt="Volvo"
-              width={100}
-              height={40}
-              className="object-contain h-8 md:h-10 w-auto"
-            />
-            <Image
-              src="/images/localiza-seeklogo.png"
-              alt="Localiza"
-              width={100}
-              height={40}
-              className="object-contain h-8 md:h-10 w-auto"
-            />
-            <Image
-              src="/images/unidas-rent-a-car-seeklogo.png"
-              alt="Unidas"
-              width={100}
-              height={40}
-              className="object-contain h-8 md:h-10 w-auto"
-            />
-            <Image
-              src="/images/correios-seeklogo.png"
-              alt="Correios"
-              width={100}
-              height={40}
-              className="object-contain h-8 md:h-10 w-auto"
-            />
+          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
+            {[
+              { src: "/images/uber-seeklogo.png", alt: "Uber" },
+              { src: "/images/rappi-seeklogo.png", alt: "Rappi" },
+              { src: "/images/mercado-livre-seeklogo.png", alt: "Mercado Livre" },
+              { src: "/images/mercedes-benz-seeklogo.png", alt: "Mercedes-Benz" },
+              { src: "/images/scania-seeklogo.png", alt: "Scania" },
+              { src: "/images/volvo-seeklogo.png", alt: "Volvo" },
+              { src: "/images/localiza-seeklogo.png", alt: "Localiza" },
+              { src: "/images/unidas-rent-a-car-seeklogo.png", alt: "Unidas" },
+              { src: "/images/correios-seeklogo.png", alt: "Correios" },
+            ].map((logo) => (
+              <div key={logo.alt} className="grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
+                <Image
+                  src={logo.src}
+                  alt={logo.alt}
+                  width={120}
+                  height={40}
+                  className="h-8 md:h-10 w-auto object-contain"
+                />
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Presente em todo Brasil */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 to-white">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+      {/* Mapa do Brasil */}
+      <section className="py-20 bg-gradient-to-br from-blue-600 to-blue-700 text-white relative overflow-hidden">
+        {/* Decoração de fundo */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 left-0 w-64 h-64 bg-white rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-0 w-64 h-64 bg-yellow-400 rounded-full blur-3xl" />
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Conteúdo */}
             <div>
-              <h2 className="text-3xl md:text-5xl font-heading font-bold text-gray-900 mb-6">
+              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
                 Presente em todo o Brasil
               </h2>
-              <p className="text-xl text-gray-600 font-sans mb-8 leading-relaxed">
-                Oficinas de norte a sul do país já confiam no Instauto para
-                gerenciar seus negócios e aumentar o faturamento.
+              <p className="text-blue-100 text-lg mb-10">
+                Oficinas de norte a sul do país já confiam no Instauto para gerenciar seus negócios e aumentar o faturamento.
               </p>
               <div className="grid grid-cols-2 gap-6">
                 <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
@@ -473,79 +438,92 @@ export default function HomePage() {
                 </div>
               </div>
             </div>
-            <div className="flex justify-center">
-              <Image
-                src="/images/brazil-map.png"
-                alt="Mapa do Brasil - Instauto"
-                width={500}
-                height={500}
-                className="object-contain drop-shadow-2xl"
-              />
+            {/* Mapa */}
+            <div className="hidden lg:flex justify-center">
+              <div className="relative">
+                <Image
+                  src="/images/brazil-map.png"
+                  alt="Mapa do Brasil"
+                  width={450}
+                  height={500}
+                  className="opacity-90"
+                />
+                {/* Pontos pulsando nas cidades */}
+                <div className="absolute top-[30%] left-[60%] w-3 h-3 bg-yellow-400 rounded-full animate-ping" />
+                <div className="absolute top-[45%] left-[65%] w-3 h-3 bg-yellow-400 rounded-full animate-ping" style={{ animationDelay: '0.5s' }} />
+                <div className="absolute top-[55%] left-[55%] w-3 h-3 bg-yellow-400 rounded-full animate-ping" style={{ animationDelay: '1s' }} />
+                <div className="absolute top-[70%] left-[50%] w-3 h-3 bg-yellow-400 rounded-full animate-ping" style={{ animationDelay: '1.5s' }} />
+                <div className="absolute top-[75%] left-[45%] w-3 h-3 bg-yellow-400 rounded-full animate-ping" style={{ animationDelay: '2s' }} />
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* CTA Section para Oficinas */}
-      <section className="py-20 bg-gradient-to-br from-yellow-400 via-yellow-500 to-orange-500">
-        <div className="container mx-auto px-4">
-          <div className="max-w-5xl mx-auto">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div>
-                <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-sans font-semibold mb-6 text-gray-900">
-                  <Wrench className="h-4 w-4" />
-                  Para Oficinas Mecânicas
-                </div>
-                <h2 className="text-3xl md:text-5xl font-heading font-bold text-gray-900 mb-6 leading-tight">
-                  Você é dono de oficina mecânica?
-                </h2>
-                <p className="text-xl text-gray-800 font-sans mb-8 leading-relaxed">
-                  Tenha um sistema completo de gestão + apareça no marketplace para milhares de motoristas. Aumente seu faturamento com tecnologia.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Link href="/para-oficinas">
-                    <Button
-                      size="lg"
-                      className="bg-gray-900 hover:bg-gray-800 text-white font-sans font-bold text-lg px-10 py-6 rounded-xl shadow-xl hover:shadow-2xl transition-all group"
-                    >
-                      Conhecer Sistema
-                      <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                  </Link>
-                  <Link href="/cadastro">
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      className="bg-white hover:bg-gray-50 text-gray-900 border-2 border-gray-900 font-sans font-bold text-lg px-10 py-6 rounded-xl shadow-lg transition-all"
-                    >
-                      Começar Teste Grátis (14 dias)
-                    </Button>
-                  </Link>
-                </div>
-                <div className="flex flex-wrap gap-6 mt-8 text-sm text-gray-800 font-sans">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-gray-900" />
-                    <span>Sem cartão de crédito</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-gray-900" />
-                    <span>Cancele quando quiser</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle2 className="h-5 w-5 text-gray-900" />
-                    <span>Suporte dedicado</span>
-                  </div>
-                </div>
+      {/* CTA para Oficinas */}
+      <section className="py-20 bg-gray-900 relative overflow-hidden">
+        {/* Decoração */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="absolute -top-20 -right-20 w-80 h-80 bg-yellow-400 rounded-full blur-3xl" />
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Conteúdo */}
+            <div>
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-400/20 rounded-full text-yellow-400 text-sm font-medium mb-6">
+                <Wrench className="w-4 h-4" />
+                Para Oficinas Mecânicas
               </div>
-              <div className="hidden md:flex justify-center">
-                <Image
-                  src="/images/img-03.png"
-                  alt="Sistema de Gestão para Oficinas Mecânicas"
-                  width={400}
-                  height={400}
-                  className="object-contain drop-shadow-2xl"
-                />
+              
+              <h2 className="text-3xl md:text-4xl font-heading font-bold text-white mb-6">
+                Você é dono de oficina mecânica?
+              </h2>
+              <p className="text-gray-400 text-lg mb-8">
+                Tenha um sistema completo de gestão e apareça no marketplace para milhares de motoristas. Aumente seu faturamento com tecnologia.
+              </p>
+              
+              {/* CTAs */}
+              <div className="flex flex-col sm:flex-row gap-4 mb-6">
+                <Link
+                  href="/para-oficinas"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-4 border-2 border-white text-white font-semibold rounded-xl hover:bg-white hover:text-gray-900 transition-all"
+                >
+                  Conhecer Sistema
+                </Link>
+                <Link
+                  href="/cadastro-oficina"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-4 bg-yellow-400 text-gray-900 font-semibold rounded-xl hover:bg-yellow-300 transition-all"
+                >
+                  Começar Teste Grátis (14 dias)
+                  <ArrowRight className="w-5 h-5" />
+                </Link>
               </div>
+              
+              {/* Benefícios */}
+              <div className="flex flex-wrap gap-4 text-sm text-gray-400">
+                <span className="flex items-center gap-1">
+                  <Check className="w-4 h-4 text-green-500" /> Sem cartão de crédito
+                </span>
+                <span className="flex items-center gap-1">
+                  <Check className="w-4 h-4 text-green-500" /> Cancele quando quiser
+                </span>
+                <span className="flex items-center gap-1">
+                  <Check className="w-4 h-4 text-green-500" /> Suporte dedicado
+                </span>
+              </div>
+            </div>
+            
+            {/* Imagem */}
+            <div className="hidden lg:flex justify-center">
+              <Image
+                src="/images/img-03.png"
+                alt="Mecânico"
+                width={400}
+                height={400}
+                className="drop-shadow-2xl"
+              />
             </div>
           </div>
         </div>
