@@ -79,13 +79,14 @@ export default function MotoristasPage() {
             </div>
 
             <div className="hidden md:flex justify-center items-center">
-              <div className="relative h-64 w-auto">
+              <div className="relative" style={{ maxHeight: '220px', width: 'auto' }}>
                 <Image
                   src="/images/car-3d.png"
                   alt="Carro 3D"
                   width={579}
                   height={1023}
-                  className="object-contain drop-shadow-2xl h-64 w-auto"
+                  className="object-contain drop-shadow-2xl"
+                  style={{ maxHeight: '220px', width: 'auto', height: 'auto' }}
                   priority
                 />
               </div>
