@@ -100,7 +100,7 @@ export default function HomePage() {
                   width={500}
                   height={500}
                   className="object-contain drop-shadow-2xl"
-                  style={{ maxHeight: '300px', width: 'auto', height: 'auto' }}
+                  style={{ maxHeight: '380px', width: 'auto', height: 'auto' }}
                   priority
                 />
               </div>
