@@ -41,7 +41,7 @@ export default function HomePage() {
             <div className="text-white">
               <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-sans font-semibold mb-6">
                 <Car className="h-4 w-4" />
-                Encontre a Oficina Perfeita
+                Plataforma #1 para Motoristas
               </div>
 
               <h1 className="text-4xl md:text-6xl font-heading font-bold mb-6 leading-tight">
@@ -53,27 +53,27 @@ export default function HomePage() {
               </h1>
 
               <p className="text-xl md:text-2xl text-blue-100 font-sans mb-8 leading-relaxed">
-                Solicite orçamentos grátis, compare preços e avaliações de oficinas mecânicas confiáveis na sua região. Manutenção automotiva com transparência e qualidade.
+                Solicite orçamentos grátis, compare preços e avaliações de oficinas mecânicas confiáveis. Manutenção automotiva com transparência e qualidade.
               </p>
 
-              {/* Campo de Busca */}
-              <div className="bg-white rounded-2xl p-6 shadow-2xl mb-8">
-                <form onSubmit={handleSearch} className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      📍 Onde você está?
-                    </label>
-                    <AddressAutocomplete onSelect={setSelectedLocation} />
-                  </div>
+              <div className="flex flex-col sm:flex-row gap-4 mb-10">
+                <Link href="/buscar-oficinas">
                   <Button
-                    type="submit"
                     size="lg"
-                    className="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-sans font-bold text-lg px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all"
+                    className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-sans font-bold text-lg px-8 py-6 rounded-xl shadow-xl hover:shadow-2xl transition-all w-full sm:w-auto"
                   >
-                    Buscar Oficinas Próximas
+                    Buscar Oficinas
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
-                </form>
+                </Link>
+                <Link href="/cadastro-motorista">
+                  <Button
+                    size="lg"
+                    className="bg-white text-blue-600 hover:bg-gray-100 font-sans font-bold text-lg px-8 py-6 rounded-xl transition-all w-full sm:w-auto shadow-lg"
+                  >
+                    Cadastrar Grátis
+                  </Button>
+                </Link>
               </div>
 
               <div className="flex flex-wrap gap-6 text-sm text-blue-100 font-sans">
