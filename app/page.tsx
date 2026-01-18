@@ -17,6 +17,8 @@ import {
   Shield,
   Zap,
   Users,
+  MapPin,
+  Star,
 } from "lucide-react";
 
 export default function HomePage() {
