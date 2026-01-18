@@ -83,8 +83,8 @@ export default function MotoristasPage() {
                 <Image
                   src="/images/car-3d.png"
                   alt="Carro 3D"
-                  width={400}
-                  height={400}
+                  width={300}
+                  height={300}
                   className="object-contain drop-shadow-2xl"
                   priority
                 />
