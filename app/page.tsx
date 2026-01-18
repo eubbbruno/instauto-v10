@@ -122,6 +122,19 @@ export default function HomePage() {
             />
           </svg>
         </div>
+
+        {/* Animated Car */}
+        <div className="absolute bottom-24 left-0 w-full overflow-hidden pointer-events-none">
+          <div className="animate-[slide_20s_linear_infinite]">
+            <Image
+              src="/images/car-3d.png"
+              alt="Carro"
+              width={120}
+              height={120}
+              className="object-contain opacity-30"
+            />
+          </div>
+        </div>
       </section>
 
       {/* Tipos de Veículos */}
