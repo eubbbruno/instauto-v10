@@ -97,9 +97,10 @@ export default function HomePage() {
                 <Image
                   src="/images/img-01.png"
                   alt="Encontre Oficinas"
-                  width={400}
-                  height={400}
+                  width={500}
+                  height={500}
                   className="object-contain drop-shadow-2xl"
+                  style={{ maxHeight: '300px', width: 'auto', height: 'auto' }}
                   priority
                 />
               </div>
