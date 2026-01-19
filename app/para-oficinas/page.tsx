@@ -2,677 +2,541 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import {
   ArrowRight,
-  CheckCircle2,
+  Check,
+  X,
+  CheckCircle,
   Wrench,
+  TrendingUp,
   Users,
   Car,
+  FileText,
   Package,
   DollarSign,
   Calendar,
-  BarChart3,
-  MessageSquare,
   Brain,
-  FileText,
-  X,
-  Sparkles,
-  Clock,
+  MessageCircle,
   Shield,
-  Zap,
+  ChevronDown,
 } from "lucide-react";
 
 export default function OficinasPage() {
   return (
     <div className="min-h-screen bg-white">
-      {/* Header */}
       <Header />
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+      <section className="relative min-h-[85vh] bg-gradient-to-br from-blue-600 via-blue-500 to-blue-600 overflow-hidden">
+        {/* Elementos decorativos */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-96 h-96 bg-yellow-400/20 rounded-full blur-3xl" />
+          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-400/30 rounded-full blur-3xl" />
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Conteúdo */}
             <div className="text-white">
-              <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-sans font-semibold mb-6">
-                <Sparkles className="h-4 w-4" />
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-sans font-semibold mb-6">
+                <Wrench className="w-4 h-4" />
                 Sistema #1 para Oficinas no Brasil
               </div>
 
-              <h1 className="text-4xl md:text-6xl font-heading font-bold mb-6 leading-tight">
-                Gestão completa para sua oficina
+              {/* Título */}
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-6">
+                Gestão completa{" "}
+                <span className="text-yellow-400">para sua oficina</span>
               </h1>
 
-              <p className="text-xl md:text-2xl text-blue-100 font-sans mb-8 leading-relaxed">
-                Sistema completo de gestão que organiza sua oficina, aumenta o
-                faturamento e libera seu tempo.
+              {/* Subtítulo */}
+              <p className="text-lg md:text-xl text-blue-100 font-sans mb-8 max-w-xl">
+                Sistema completo de gestão que organiza sua oficina, aumenta o faturamento e libera seu tempo.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 mb-10">
-                <Link href="/cadastro-oficina">
-                  <Button
-                    size="lg"
-                    className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-sans font-bold text-lg px-8 py-6 rounded-xl shadow-xl hover:shadow-2xl transition-all w-full sm:w-auto"
-                  >
-                    Começar Teste Grátis
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
+              {/* CTAs */}
+              <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                <Link
+                  href="/cadastro-oficina"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-sans font-bold rounded-xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+                >
+                  Começar Teste Grátis
+                  <ArrowRight className="w-5 h-5" />
                 </Link>
-                <a href="#funcionalidades">
-                  <Button
-                    size="lg"
-                    className="bg-white text-blue-600 hover:bg-gray-100 font-sans font-bold text-lg px-8 py-6 rounded-xl transition-all w-full sm:w-auto shadow-lg"
-                  >
-                    Ver Funcionalidades
-                  </Button>
+                <a
+                  href="#funcionalidades"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-sans font-semibold rounded-xl transition-all backdrop-blur-sm"
+                >
+                  Ver Funcionalidades
                 </a>
               </div>
 
-              <div className="flex flex-wrap gap-6 text-sm text-blue-100 font-sans">
+              {/* Benefícios */}
+              <div className="flex flex-wrap gap-6 text-sm text-white/90 font-sans">
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-5 w-5 text-yellow-400" />
+                  <CheckCircle className="w-5 h-5 text-green-400" />
                   <span>14 dias grátis</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-5 w-5 text-yellow-400" />
+                  <CheckCircle className="w-5 h-5 text-green-400" />
                   <span>Sem cartão de crédito</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-5 w-5 text-yellow-400" />
+                  <CheckCircle className="w-5 h-5 text-green-400" />
                   <span>Cancele quando quiser</span>
                 </div>
               </div>
             </div>
 
-            <div className="hidden md:flex justify-center items-center">
+            {/* Imagem */}
+            <div className="hidden lg:flex justify-center items-center">
               <div className="relative">
                 <Image
                   src="/images/img-03.png"
                   alt="Mecânico Instauto"
-                  width={500}
-                  height={500}
-                  className="object-contain drop-shadow-2xl"
+                  width={450}
+                  height={450}
+                  className="drop-shadow-2xl"
                   style={{ maxHeight: '400px', width: 'auto', height: 'auto' }}
                   priority
                 />
+                {/* Badge flutuante */}
+                <div className="absolute -top-4 -left-4 px-4 py-3 bg-white rounded-2xl shadow-xl">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                      <TrendingUp className="w-6 h-6 text-green-600" />
+                    </div>
+                    <div>
+                      <p className="text-2xl font-heading font-bold text-gray-900">+40%</p>
+                      <p className="text-sm text-gray-500">Faturamento</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Decorative wave */}
+        {/* Wave */}
         <div className="absolute bottom-0 left-0 right-0">
-          <svg
-            viewBox="0 0 1440 120"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-full h-auto"
-          >
-            <path
-              d="M0 0L60 10C120 20 240 40 360 46.7C480 53 600 47 720 43.3C840 40 960 40 1080 46.7C1200 53 1320 67 1380 73.3L1440 80V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0V0Z"
-              fill="white"
-            />
+          <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
+            <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="white"/>
           </svg>
         </div>
       </section>
 
-      {/* Problema → Solução */}
+      {/* Seção Problema vs Solução */}
       <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-5xl font-heading font-bold text-gray-900 mb-4">
-                Você está perdendo dinheiro sem perceber
-              </h2>
-              <p className="text-xl text-gray-600 font-sans">
-                Veja como a desorganização está custando caro
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-8 mb-12">
-              {/* Problemas */}
-              <div className="space-y-4">
-                <h3 className="text-2xl font-heading font-bold text-red-600 mb-6 flex items-center gap-2">
-                  <X className="h-6 w-6" />
-                  Sem Sistema
-                </h3>
-                <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
-                  <p className="text-gray-800 font-sans">
-                    📋 Planilhas bagunçadas e desatualizadas
-                  </p>
-                </div>
-                <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
-                  <p className="text-gray-800 font-sans">
-                    😰 Ordens de serviço perdidas ou esquecidas
-                  </p>
-                </div>
-                <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
-                  <p className="text-gray-800 font-sans">
-                    💸 Não sabe quanto está lucrando de verdade
-                  </p>
-                </div>
-                <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
-                  <p className="text-gray-800 font-sans">
-                    📦 Estoque descontrolado (falta ou sobra)
-                  </p>
-                </div>
-                <div className="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
-                  <p className="text-gray-800 font-sans">
-                    ⏰ Perde horas organizando papel e caderno
-                  </p>
-                </div>
-              </div>
-
-              {/* Soluções */}
-              <div className="space-y-4">
-                <h3 className="text-2xl font-heading font-bold text-green-600 mb-6 flex items-center gap-2">
-                  <CheckCircle2 className="h-6 w-6" />
-                  Com Instauto
-                </h3>
-                <div className="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg">
-                  <p className="text-gray-800 font-sans">
-                    ✅ Tudo organizado em um só lugar
-                  </p>
-                </div>
-                <div className="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg">
-                  <p className="text-gray-800 font-sans">
-                    ✅ Acompanhe todas as OS em tempo real
-                  </p>
-                </div>
-                <div className="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg">
-                  <p className="text-gray-800 font-sans">
-                    ✅ Relatórios automáticos de faturamento
-                  </p>
-                </div>
-                <div className="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg">
-                  <p className="text-gray-800 font-sans">
-                    ✅ Alertas quando o estoque está baixo
-                  </p>
-                </div>
-                <div className="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg">
-                  <p className="text-gray-800 font-sans">
-                    ✅ Economize 10+ horas por semana
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="text-center">
-              <Link href="/cadastro-oficina">
-                <Button
-                  size="lg"
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-sans font-bold text-lg px-10 py-6 rounded-xl shadow-lg"
-                >
-                  Resolver Agora com 14 Dias Grátis
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Funcionalidades */}
-      <section id="funcionalidades" className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Título */}
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-heading font-bold text-gray-900 mb-4">
-              Tudo que você precisa em um só sistema
+            <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-4">
+              Você está perdendo dinheiro sem perceber
             </h2>
-            <p className="text-xl text-gray-600 font-sans max-w-2xl mx-auto">
-              8 módulos completos para gerenciar sua oficina do início ao fim
+            <p className="text-lg text-gray-600 font-sans max-w-2xl mx-auto">
+              Veja como a desorganização está custando caro para sua oficina
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-            {/* Feature 1 */}
-            <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-shadow border border-gray-100">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                <Users className="h-6 w-6 text-blue-600" />
+          {/* Comparativo */}
+          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {/* Sem Sistema */}
+            <div className="bg-gradient-to-br from-red-50 to-orange-50 rounded-3xl p-8 border-2 border-red-100">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
+                  <X className="w-6 h-6 text-red-600" />
+                </div>
+                <h3 className="text-xl font-heading font-bold text-gray-900">Sem Sistema</h3>
               </div>
-              <h3 className="text-lg font-heading font-bold text-gray-900 mb-2">
-                Clientes
-              </h3>
-              <p className="text-gray-600 font-sans text-sm leading-relaxed">
-                Cadastro completo com histórico de serviços e veículos
-              </p>
+              <ul className="space-y-4">
+                {[
+                  "Planilhas bagunçadas e desatualizadas",
+                  "Ordens de serviço perdidas ou esquecidas",
+                  "Não sabe quanto está lucrando de verdade",
+                  "Estoque descontrolado (falta ou sobra)",
+                  "Perde horas organizando papel e caderno",
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <div className="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <X className="w-4 h-4 text-red-600" />
+                    </div>
+                    <span className="text-gray-700 font-sans">{item}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
 
-            {/* Feature 2 */}
-            <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-shadow border border-gray-100">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
-                <Car className="h-6 w-6 text-green-600" />
+            {/* Com Instauto */}
+            <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl p-8 border-2 border-green-200 shadow-lg relative">
+              {/* Badge Recomendado */}
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-green-500 text-white text-sm font-sans font-semibold rounded-full">
+                RECOMENDADO
               </div>
-              <h3 className="text-lg font-heading font-bold text-gray-900 mb-2">
-                Veículos
-              </h3>
-              <p className="text-gray-600 font-sans text-sm leading-relaxed">
-                Controle de frota com placa, modelo, ano e km rodados
-              </p>
-            </div>
-
-            {/* Feature 3 */}
-            <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-shadow border border-gray-100">
-              <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mb-4">
-                <FileText className="h-6 w-6 text-yellow-600" />
+              
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                  <Check className="w-6 h-6 text-green-600" />
+                </div>
+                <h3 className="text-xl font-heading font-bold text-gray-900">Com Instauto</h3>
               </div>
-              <h3 className="text-lg font-heading font-bold text-gray-900 mb-2">
-                Ordens de Serviço
-              </h3>
-              <p className="text-gray-600 font-sans text-sm leading-relaxed">
-                Gestão completa de OS com status e valores
-              </p>
-            </div>
-
-            {/* Feature 4 */}
-            <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-shadow border border-gray-100">
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
-                <Package className="h-6 w-6 text-purple-600" />
-              </div>
-              <h3 className="text-lg font-heading font-bold text-gray-900 mb-2">
-                Estoque
-              </h3>
-              <p className="text-gray-600 font-sans text-sm leading-relaxed">
-                Controle de peças com alertas de reposição
-              </p>
-            </div>
-
-            {/* Feature 5 */}
-            <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-shadow border border-gray-100">
-              <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
-                <DollarSign className="h-6 w-6 text-red-600" />
-              </div>
-              <h3 className="text-lg font-heading font-bold text-gray-900 mb-2">
-                Financeiro
-              </h3>
-              <p className="text-gray-600 font-sans text-sm leading-relaxed">
-                Receitas, despesas e fluxo de caixa em tempo real
-              </p>
-            </div>
-
-            {/* Feature 6 */}
-            <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-shadow border border-gray-100">
-              <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">
-                <Calendar className="h-6 w-6 text-indigo-600" />
-              </div>
-              <h3 className="text-lg font-heading font-bold text-gray-900 mb-2">
-                Agenda
-              </h3>
-              <p className="text-gray-600 font-sans text-sm leading-relaxed">
-                Agendamento de serviços e compromissos
-              </p>
-            </div>
-
-            {/* Feature 7 */}
-            <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-shadow border border-gray-100 relative">
-              <div className="absolute top-2 right-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900 px-2 py-1 rounded-full text-xs font-sans font-bold">
-                IA
-              </div>
-              <div className="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center mb-4">
-                <Brain className="h-6 w-6 text-pink-600" />
-              </div>
-              <h3 className="text-lg font-heading font-bold text-gray-900 mb-2">
-                Diagnóstico IA
-              </h3>
-              <p className="text-gray-600 font-sans text-sm leading-relaxed">
-                Inteligência artificial para diagnosticar problemas
-              </p>
-            </div>
-
-            {/* Feature 8 */}
-            <div className="bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-shadow border border-gray-100">
-              <div className="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center mb-4">
-                <MessageSquare className="h-6 w-6 text-teal-600" />
-              </div>
-              <h3 className="text-lg font-heading font-bold text-gray-900 mb-2">
-                WhatsApp
-              </h3>
-              <p className="text-gray-600 font-sans text-sm leading-relaxed">
-                Integração para enviar mensagens aos clientes
-              </p>
+              <ul className="space-y-4">
+                {[
+                  "Tudo organizado em um só lugar",
+                  "Acompanhe todas as OS em tempo real",
+                  "Relatórios automáticos de faturamento",
+                  "Alertas quando o estoque está baixo",
+                  "Economize 10+ horas por semana",
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Check className="w-4 h-4 text-green-600" />
+                    </div>
+                    <span className="text-gray-700 font-sans">{item}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
 
+          {/* CTA */}
           <div className="text-center mt-12">
-            <Link href="/cadastro-oficina">
-              <Button
-                size="lg"
-                className="bg-blue-600 hover:bg-blue-700 text-white font-sans font-bold text-lg px-10 py-6 rounded-xl shadow-lg"
-              >
-                Testar Todas as Funcionalidades Grátis
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
+            <Link
+              href="/cadastro-oficina"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-sans font-bold rounded-xl transition-all shadow-lg hover:shadow-xl"
+            >
+              Resolver Agora com 14 Dias Grátis
+              <ArrowRight className="w-5 h-5" />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Comparativo FREE vs PRO */}
-      <section id="planos" className="py-20 bg-white">
-        <div className="container mx-auto px-4">
+      {/* Seção Funcionalidades */}
+      <section id="funcionalidades" className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Título */}
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-heading font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-4">
+              Tudo que você precisa em um só sistema
+            </h2>
+            <p className="text-lg text-gray-600 font-sans max-w-2xl mx-auto">
+              8 módulos completos para gerenciar sua oficina do início ao fim
+            </p>
+          </div>
+
+          {/* Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            {[
+              { 
+                icon: Users, 
+                title: "Clientes", 
+                desc: "Cadastro completo com histórico de serviços realizados",
+                color: "blue"
+              },
+              { 
+                icon: Car, 
+                title: "Veículos", 
+                desc: "Controle de frota com peças, modelo e histórico",
+                color: "green"
+              },
+              { 
+                icon: FileText, 
+                title: "Ordens de Serviço", 
+                desc: "Gestão completa das OS com status e valores",
+                color: "yellow"
+              },
+              { 
+                icon: Package, 
+                title: "Estoque", 
+                desc: "Controle de peças com alertas de reposição",
+                color: "purple"
+              },
+              { 
+                icon: DollarSign, 
+                title: "Financeiro", 
+                desc: "Receitas, despesas e fluxo de caixa em tempo real",
+                color: "emerald"
+              },
+              { 
+                icon: Calendar, 
+                title: "Agenda", 
+                desc: "Agendamento de serviços e compromissos",
+                color: "orange"
+              },
+              { 
+                icon: Brain, 
+                title: "Diagnóstico IA", 
+                desc: "Inteligência artificial para identificar problemas",
+                color: "pink"
+              },
+              { 
+                icon: MessageCircle, 
+                title: "WhatsApp", 
+                desc: "Integração para enviar mensagens aos clientes",
+                color: "teal"
+              },
+            ].map((item) => {
+              const colorClasses = {
+                blue: "bg-blue-100 text-blue-600",
+                green: "bg-green-100 text-green-600",
+                yellow: "bg-yellow-100 text-yellow-600",
+                purple: "bg-purple-100 text-purple-600",
+                emerald: "bg-emerald-100 text-emerald-600",
+                orange: "bg-orange-100 text-orange-600",
+                pink: "bg-pink-100 text-pink-600",
+                teal: "bg-teal-100 text-teal-600",
+              };
+              
+              return (
+                <div 
+                  key={item.title}
+                  className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-100 group"
+                >
+                  <div className={`w-14 h-14 ${colorClasses[item.color]} rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                    <item.icon className="w-7 h-7" />
+                  </div>
+                  <h3 className="font-heading font-bold text-gray-900 mb-2">{item.title}</h3>
+                  <p className="text-sm text-gray-600 font-sans">{item.desc}</p>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* CTA */}
+          <div className="text-center mt-12">
+            <Link
+              href="/cadastro-oficina"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-sans font-bold rounded-xl transition-all"
+            >
+              Testar Todas as Funcionalidades Grátis
+              <ArrowRight className="w-5 h-5" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Seção Preços */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Título */}
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-4">
               Escolha o plano ideal para sua oficina
             </h2>
-            <p className="text-xl text-gray-600 font-sans max-w-2xl mx-auto">
+            <p className="text-lg text-gray-600 font-sans max-w-2xl mx-auto">
               Comece grátis ou teste o PRO por 14 dias sem compromisso
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          {/* Cards de Preço */}
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {/* Plano FREE */}
-            <div className="bg-gray-50 border-2 border-gray-200 rounded-2xl p-8">
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-heading font-bold text-gray-900 mb-2">
-                  FREE
-                </h3>
-                <div className="flex items-baseline justify-center gap-2 mb-4">
-                  <span className="text-5xl font-heading font-bold text-gray-900">
-                    R$ 0
-                  </span>
-                  <span className="text-gray-600 font-sans">/mês</span>
+            <div className="bg-white rounded-3xl p-8 border-2 border-gray-200 hover:border-gray-300 transition-all">
+              <div className="mb-6">
+                <h3 className="text-xl font-heading font-bold text-gray-900">FREE</h3>
+                <div className="mt-4">
+                  <span className="text-4xl font-heading font-bold text-gray-900">R$ 0</span>
+                  <span className="text-gray-500 font-sans">/mês</span>
                 </div>
-                <p className="text-gray-600 font-sans">
-                  Para testar o marketplace
-                </p>
+                <p className="text-gray-600 font-sans mt-2">Para testar o marketplace</p>
               </div>
-
+              
               <ul className="space-y-4 mb-8">
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-700 font-sans">
-                    Dashboard básico
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-700 font-sans">
-                    Configurações da oficina
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-700 font-sans">
-                    Marketplace (orçamentos)
-                  </span>
-                </li>
-                <li className="flex items-start gap-3 opacity-40">
-                  <X className="h-5 w-5 text-gray-400 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-500 font-sans line-through">
-                    Sistema de gestão completo
-                  </span>
-                </li>
-                <li className="flex items-start gap-3 opacity-40">
-                  <X className="h-5 w-5 text-gray-400 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-500 font-sans line-through">
-                    Clientes e veículos ilimitados
-                  </span>
-                </li>
-                <li className="flex items-start gap-3 opacity-40">
-                  <X className="h-5 w-5 text-gray-400 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-500 font-sans line-through">
-                    Ordens de serviço ilimitadas
-                  </span>
-                </li>
+                {[
+                  { text: "Dashboard básico", included: true },
+                  { text: "Configurações da oficina", included: true },
+                  { text: "Marketplace (orçamentos)", included: true },
+                  { text: "Perfil público", included: true },
+                  { text: "Gestão de clientes", included: false },
+                  { text: "Ordens de serviço", included: false },
+                  { text: "Estoque e financeiro", included: false },
+                ].map((item, i) => (
+                  <li key={i} className="flex items-center gap-3">
+                    {item.included ? (
+                      <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
+                    ) : (
+                      <X className="w-5 h-5 text-gray-300 flex-shrink-0" />
+                    )}
+                    <span className={`font-sans ${item.included ? "text-gray-700" : "text-gray-400"}`}>
+                      {item.text}
+                    </span>
+                  </li>
+                ))}
               </ul>
-
-              <Link href="/cadastro-oficina">
-                <Button
-                  variant="outline"
-                  className="w-full border-2 border-gray-300 text-gray-700 hover:border-blue-600 hover:text-blue-600 font-sans font-bold py-6 rounded-xl"
-                >
-                  Começar Grátis
-                </Button>
+              
+              <Link
+                href="/cadastro-oficina"
+                className="block w-full py-4 text-center border-2 border-gray-300 text-gray-700 font-sans font-semibold rounded-xl hover:bg-gray-50 transition-all"
+              >
+                Começar Grátis
               </Link>
             </div>
 
             {/* Plano PRO */}
-            <div className="bg-gradient-to-br from-blue-600 to-blue-700 border-2 border-blue-600 rounded-2xl p-8 relative shadow-2xl">
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-yellow-400 text-gray-900 px-6 py-2 rounded-full text-sm font-sans font-bold shadow-lg">
-                MAIS POPULAR
+            <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-3xl p-8 text-white relative shadow-2xl scale-105">
+              {/* Badge */}
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-yellow-400 text-gray-900 text-sm font-sans font-bold rounded-full">
+                ⭐ MAIS POPULAR
               </div>
-
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-heading font-bold text-white mb-2">
-                  PRO
-                </h3>
-                <div className="flex items-baseline justify-center gap-2 mb-4">
-                  <span className="text-5xl font-heading font-bold text-white">
-                    R$ 97
-                  </span>
+              
+              <div className="mb-6">
+                <h3 className="text-xl font-heading font-bold">PRO</h3>
+                <div className="mt-4">
+                  <span className="text-4xl font-heading font-bold">R$ 97</span>
                   <span className="text-blue-200 font-sans">/mês</span>
                 </div>
-                <p className="text-blue-100 font-sans">
-                  Sistema completo + 14 dias grátis
-                </p>
+                <p className="text-blue-200 font-sans mt-2">Sistema completo + 14 dias grátis</p>
               </div>
-
+              
               <ul className="space-y-4 mb-8">
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
-                  <span className="text-white font-sans">
-                    <strong>Tudo do FREE</strong> +
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
-                  <span className="text-white font-sans">
-                    Clientes e veículos <strong>ilimitados</strong>
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
-                  <span className="text-white font-sans">
-                    Ordens de serviço <strong>ilimitadas</strong>
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
-                  <span className="text-white font-sans">
-                    Controle de estoque completo
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
-                  <span className="text-white font-sans">
-                    Gestão financeira avançada
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
-                  <span className="text-white font-sans">
-                    Relatórios e gráficos
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
-                  <span className="text-white font-sans">
-                    Diagnóstico com IA (GPT-4)
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
-                  <span className="text-white font-sans">
-                    Integração WhatsApp
-                  </span>
-                </li>
+                {[
+                  "Tudo do FREE +",
+                  "Clientes e veículos ilimitados",
+                  "Ordens de serviço ilimitadas",
+                  "Controle de estoque completo",
+                  "Gestão financeira avançada",
+                  "Relatórios e gráficos",
+                  "Diagnóstico com IA (GPT-4)",
+                  "Integração WhatsApp",
+                ].map((item, i) => (
+                  <li key={i} className="flex items-center gap-3">
+                    <Check className="w-5 h-5 text-yellow-400 flex-shrink-0" />
+                    <span className="font-sans">{item}</span>
+                  </li>
+                ))}
               </ul>
-
-              <Link href="/cadastro-oficina">
-                <Button className="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-sans font-bold py-6 rounded-xl shadow-xl text-lg">
-                  Começar Teste de 14 Dias
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
+              
+              <Link
+                href="/cadastro-oficina"
+                className="block w-full py-4 text-center bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-sans font-bold rounded-xl transition-all"
+              >
+                Começar Teste de 14 Dias 🎉
               </Link>
-
-              <p className="text-center text-blue-100 text-sm font-sans mt-4">
+              
+              <p className="text-center text-sm text-blue-200 font-sans mt-4">
                 Sem cartão de crédito • Cancele quando quiser
               </p>
             </div>
           </div>
 
-          <div className="mt-16 max-w-4xl mx-auto">
-            <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-xl">
-              <div className="flex items-start gap-4">
-                <Shield className="h-8 w-8 text-blue-600 flex-shrink-0 mt-1" />
-                <div>
-                  <h4 className="text-lg font-heading font-bold text-gray-900 mb-2">
-                    Garantia de 14 dias - Risco Zero
-                  </h4>
-                  <p className="text-gray-700 font-sans leading-relaxed">
-                    Teste o plano PRO por 14 dias sem compromisso. Se não gostar,
-                    não paga nada. Simples assim.
-                  </p>
-                </div>
+          {/* Garantia */}
+          <div className="max-w-2xl mx-auto mt-12">
+            <div className="bg-gray-50 rounded-2xl p-6 flex items-start gap-4">
+              <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                <Shield className="w-6 h-6 text-green-600" />
+              </div>
+              <div>
+                <h4 className="font-heading font-bold text-gray-900">Garantia de 14 dias — Risco Zero</h4>
+                <p className="text-gray-600 font-sans mt-1">
+                  Teste o plano PRO por 14 dias sem compromisso. Se não gostar, não paga nada. Simples assim.
+                </p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* FAQ */}
-      <section id="faq" className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-heading font-bold text-gray-900 mb-4">
+      {/* Seção FAQ */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Título */}
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-4">
               Perguntas Frequentes
             </h2>
-            <p className="text-xl text-gray-600 font-sans">
+            <p className="text-lg text-gray-600 font-sans">
               Tire suas dúvidas sobre o Instauto
             </p>
           </div>
 
-          <div className="max-w-3xl mx-auto space-y-6">
-            <details className="bg-white p-6 rounded-xl shadow-sm group">
-              <summary className="font-heading font-bold text-lg text-gray-900 cursor-pointer list-none flex items-center justify-between">
-                Como funciona o teste grátis de 14 dias?
-                <span className="text-blue-600 group-open:rotate-180 transition-transform">
-                  ▼
-                </span>
-              </summary>
-              <p className="mt-4 text-gray-600 font-sans leading-relaxed">
-                Você se cadastra e tem acesso completo ao plano PRO por 14 dias.
-                Não precisa cadastrar cartão de crédito. Após o período, você
-                escolhe se quer continuar no PRO (R$ 97/mês) ou usar o plano FREE
-                para sempre.
-              </p>
-            </details>
-
-            <details className="bg-white p-6 rounded-xl shadow-sm group">
-              <summary className="font-heading font-bold text-lg text-gray-900 cursor-pointer list-none flex items-center justify-between">
-                Posso cancelar a qualquer momento?
-                <span className="text-blue-600 group-open:rotate-180 transition-transform">
-                  ▼
-                </span>
-              </summary>
-              <p className="mt-4 text-gray-600 font-sans leading-relaxed">
-                Sim! Não há fidelidade. Você pode cancelar quando quiser e
-                continuar usando o plano FREE. Seus dados ficam salvos.
-              </p>
-            </details>
-
-            <details className="bg-white p-6 rounded-xl shadow-sm group">
-              <summary className="font-heading font-bold text-lg text-gray-900 cursor-pointer list-none flex items-center justify-between">
-                Meus dados ficam seguros?
-                <span className="text-blue-600 group-open:rotate-180 transition-transform">
-                  ▼
-                </span>
-              </summary>
-              <p className="mt-4 text-gray-600 font-sans leading-relaxed">
-                Totalmente! Usamos criptografia de ponta e fazemos backup
-                automático diário. Seus dados estão protegidos em servidores
-                seguros.
-              </p>
-            </details>
-
-            <details className="bg-white p-6 rounded-xl shadow-sm group">
-              <summary className="font-heading font-bold text-lg text-gray-900 cursor-pointer list-none flex items-center justify-between">
-                Preciso instalar algum programa?
-                <span className="text-blue-600 group-open:rotate-180 transition-transform">
-                  ▼
-                </span>
-              </summary>
-              <p className="mt-4 text-gray-600 font-sans leading-relaxed">
-                Não! O Instauto funciona 100% online. Acesse de qualquer
-                computador, tablet ou celular com internet.
-              </p>
-            </details>
-
-            <details className="bg-white p-6 rounded-xl shadow-sm group">
-              <summary className="font-heading font-bold text-lg text-gray-900 cursor-pointer list-none flex items-center justify-between">
-                Tem limite de clientes ou ordens de serviço?
-                <span className="text-blue-600 group-open:rotate-180 transition-transform">
-                  ▼
-                </span>
-              </summary>
-              <p className="mt-4 text-gray-600 font-sans leading-relaxed">
-                No plano PRO, não! Você pode cadastrar quantos clientes, veículos
-                e ordens de serviço quiser. Sem limites.
-              </p>
-            </details>
-
-            <details className="bg-white p-6 rounded-xl shadow-sm group">
-              <summary className="font-heading font-bold text-lg text-gray-900 cursor-pointer list-none flex items-center justify-between">
-                Como funciona o pagamento?
-                <span className="text-blue-600 group-open:rotate-180 transition-transform">
-                  ▼
-                </span>
-              </summary>
-              <p className="mt-4 text-gray-600 font-sans leading-relaxed">
-                Após o período de teste, você paga R$ 97/mês via PIX ou cartão de
-                crédito através do MercadoPago. A cobrança é automática e você
-                recebe recibo por e-mail.
-              </p>
-            </details>
+          {/* FAQ Items */}
+          <div className="space-y-4">
+            {[
+              {
+                q: "Como funciona o teste grátis de 14 dias?",
+                a: "Você cria sua conta, tem acesso a TODAS as funcionalidades do plano PRO por 14 dias. Não pedimos cartão de crédito. Se gostar, você escolhe um plano. Se não gostar, sua conta vira FREE automaticamente."
+              },
+              {
+                q: "Posso cancelar a qualquer momento?",
+                a: "Sim! Não existe fidelidade ou multa. Você pode cancelar seu plano PRO quando quiser, diretamente pelo painel. Sua conta continua ativa como FREE."
+              },
+              {
+                q: "Meus dados ficam seguros?",
+                a: "Sim! Usamos criptografia de ponta e servidores seguros. Seus dados são seus e nunca serão compartilhados com terceiros. Fazemos backup automático diariamente."
+              },
+              {
+                q: "Preciso instalar algum programa?",
+                a: "Não! O Instauto funciona 100% no navegador (Chrome, Firefox, Safari). Acesse de qualquer computador, tablet ou celular. Também temos app para Android e iOS (em breve)."
+              },
+              {
+                q: "Tem limite de clientes ou ordens de serviço?",
+                a: "No plano PRO, não! Você pode cadastrar clientes, veículos e ordens de serviço ilimitados. No plano FREE, você só tem acesso ao marketplace."
+              },
+              {
+                q: "Como funciona o pagamento?",
+                a: "Aceitamos PIX, cartão de crédito e boleto. O pagamento é mensal (R$ 97/mês) e você pode cancelar quando quiser. Não existe taxa de adesão."
+              },
+            ].map((item, i) => (
+              <details
+                key={i}
+                className="bg-white rounded-2xl border border-gray-200 overflow-hidden group"
+              >
+                <summary className="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors">
+                  <span className="font-heading font-semibold text-gray-900 pr-4">{item.q}</span>
+                  <ChevronDown className="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform flex-shrink-0" />
+                </summary>
+                <div className="px-6 pb-6 text-gray-600 font-sans">
+                  {item.a}
+                </div>
+              </details>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Final */}
-      <section className="py-20 bg-gradient-to-br from-blue-600 to-blue-800">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-5xl font-heading font-bold text-white mb-6">
+      {/* Seção CTA Final */}
+      <section className="py-20 bg-gradient-to-br from-blue-600 to-blue-700 relative overflow-hidden">
+        {/* Decoração */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-40 -right-40 w-80 h-80 bg-yellow-400/20 rounded-full blur-3xl" />
+          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-400/30 rounded-full blur-3xl" />
+        </div>
+
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative">
+          <h2 className="text-3xl md:text-4xl font-heading font-bold text-white mb-6">
             Pronto para organizar sua oficina?
           </h2>
           <p className="text-xl text-blue-100 font-sans mb-10 max-w-2xl mx-auto">
-            Junte-se a centenas de oficinas que já transformaram seu negócio com
-            o Instauto
+            Junte-se a centenas de oficinas que já transformaram seu negócio com o Instauto
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <Link href="/cadastro-oficina">
-              <Button
-                size="lg"
-                className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-sans font-bold text-lg px-10 py-6 rounded-xl shadow-xl hover:shadow-2xl transition-all"
-              >
-                Começar Teste Grátis Agora
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
-          </div>
+          <Link
+            href="/cadastro-oficina"
+            className="inline-flex items-center gap-2 px-10 py-5 bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-sans font-bold text-lg rounded-xl transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1"
+          >
+            Começar Teste Grátis Agora
+            <ArrowRight className="w-6 h-6" />
+          </Link>
 
-          <div className="flex flex-wrap justify-center gap-8 text-blue-100 font-sans">
-            <div className="flex items-center gap-2">
-              <Clock className="h-5 w-5" />
-              <span>Configuração em 5 minutos</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Shield className="h-5 w-5" />
-              <span>100% seguro</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Zap className="h-5 w-5" />
-              <span>Suporte rápido</span>
-            </div>
+          {/* Benefícios */}
+          <div className="flex flex-wrap items-center justify-center gap-6 mt-8 text-sm text-white/80 font-sans">
+            <span className="flex items-center gap-2">
+              <Check className="w-4 h-4" /> Configuração em 5 minutos
+            </span>
+            <span className="flex items-center gap-2">
+              <Check className="w-4 h-4" /> 100% seguro
+            </span>
+            <span className="flex items-center gap-2">
+              <Check className="w-4 h-4" /> Suporte dedicado
+            </span>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
       <Footer />
     </div>
   );
 }
-
