@@ -234,75 +234,62 @@ export default function OficinasPage() {
                 icon: Users, 
                 title: "Clientes", 
                 desc: "Cadastro completo com histórico de serviços realizados",
-                color: "blue"
+                colorClass: "bg-blue-100 text-blue-600"
               },
               { 
                 icon: Car, 
                 title: "Veículos", 
                 desc: "Controle de frota com peças, modelo e histórico",
-                color: "green"
+                colorClass: "bg-green-100 text-green-600"
               },
               { 
                 icon: FileText, 
                 title: "Ordens de Serviço", 
                 desc: "Gestão completa das OS com status e valores",
-                color: "yellow"
+                colorClass: "bg-yellow-100 text-yellow-600"
               },
               { 
                 icon: Package, 
                 title: "Estoque", 
                 desc: "Controle de peças com alertas de reposição",
-                color: "purple"
+                colorClass: "bg-purple-100 text-purple-600"
               },
               { 
                 icon: DollarSign, 
                 title: "Financeiro", 
                 desc: "Receitas, despesas e fluxo de caixa em tempo real",
-                color: "emerald"
+                colorClass: "bg-emerald-100 text-emerald-600"
               },
               { 
                 icon: Calendar, 
                 title: "Agenda", 
                 desc: "Agendamento de serviços e compromissos",
-                color: "orange"
+                colorClass: "bg-orange-100 text-orange-600"
               },
               { 
                 icon: Brain, 
                 title: "Diagnóstico IA", 
                 desc: "Inteligência artificial para identificar problemas",
-                color: "pink"
+                colorClass: "bg-pink-100 text-pink-600"
               },
               { 
                 icon: MessageCircle, 
                 title: "WhatsApp", 
                 desc: "Integração para enviar mensagens aos clientes",
-                color: "teal"
+                colorClass: "bg-teal-100 text-teal-600"
               },
-            ].map((item) => {
-              const colorClasses = {
-                blue: "bg-blue-100 text-blue-600",
-                green: "bg-green-100 text-green-600",
-                yellow: "bg-yellow-100 text-yellow-600",
-                purple: "bg-purple-100 text-purple-600",
-                emerald: "bg-emerald-100 text-emerald-600",
-                orange: "bg-orange-100 text-orange-600",
-                pink: "bg-pink-100 text-pink-600",
-                teal: "bg-teal-100 text-teal-600",
-              };
-              
-              return (
-                <div 
-                  key={item.title}
-                  className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-100 group"
-                >
-                  <div className={`w-14 h-14 ${colorClasses[item.color]} rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                    <item.icon className="w-7 h-7" />
-                  </div>
-                  <h3 className="font-heading font-bold text-gray-900 mb-2">{item.title}</h3>
-                  <p className="text-sm text-gray-600 font-sans">{item.desc}</p>
+            ].map((item) => (
+              <div 
+                key={item.title}
+                className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-100 group"
+              >
+                <div className={`w-14 h-14 ${item.colorClass} rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                  <item.icon className="w-7 h-7" />
                 </div>
-              );
-            })}
+                <h3 className="font-heading font-bold text-gray-900 mb-2">{item.title}</h3>
+                <p className="text-sm text-gray-600 font-sans">{item.desc}</p>
+              </div>
+            ))}
           </div>
 
           {/* CTA */}
