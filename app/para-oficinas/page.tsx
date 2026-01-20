@@ -97,14 +97,14 @@ export default function OficinasPage() {
                 <Image
                   src="/images/img-03.png"
                   alt="Mecânico Instauto"
-                  width={450}
-                  height={450}
-                  className="drop-shadow-2xl"
-                  style={{ maxHeight: '400px', width: 'auto', height: 'auto' }}
+                  width={500}
+                  height={500}
+                  className="drop-shadow-2xl hover:scale-105 transition-transform duration-500"
+                  style={{ maxHeight: '450px', width: 'auto', height: 'auto' }}
                   priority
                 />
-                {/* Badge +40% faturamento */}
-                <div className="absolute -top-4 -left-4 px-4 py-3 bg-white rounded-2xl shadow-xl">
+                {/* Badge +40% faturamento - Animação bounce */}
+                <div className="absolute -top-4 -left-4 px-4 py-3 bg-white rounded-2xl shadow-xl animate-bounce">
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
                       <TrendingUp className="w-6 h-6 text-green-600" />
@@ -116,8 +116,8 @@ export default function OficinasPage() {
                   </div>
                 </div>
 
-                {/* Badge +60% clientes */}
-                <div className="absolute top-1/2 -right-8 px-4 py-3 bg-white rounded-2xl shadow-xl">
+                {/* Badge +60% clientes - Animação pulse */}
+                <div className="absolute top-1/2 -right-8 px-4 py-3 bg-white rounded-2xl shadow-xl animate-pulse">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
                       <Users className="w-5 h-5 text-blue-600" />
@@ -129,8 +129,8 @@ export default function OficinasPage() {
                   </div>
                 </div>
 
-                {/* Badge oficinas cadastradas */}
-                <div className="absolute -bottom-4 -right-4 px-4 py-3 bg-white rounded-2xl shadow-xl">
+                {/* Badge oficinas cadastradas - Animação fade */}
+                <div className="absolute -bottom-4 -right-4 px-4 py-3 bg-white rounded-2xl shadow-xl animate-pulse">
                   <div className="flex items-center gap-2">
                     <Wrench className="w-5 h-5 text-yellow-600" />
                     <span className="text-sm font-heading font-bold text-gray-900">+500 oficinas</span>

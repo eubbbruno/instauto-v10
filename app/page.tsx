@@ -106,19 +106,19 @@ export default function HomePage() {
                 <Image
                   src="/images/img-01.png"
                   alt="Mecânico Instauto"
-                  width={500}
-                  height={500}
+                  width={550}
+                  height={550}
                   className="drop-shadow-2xl hover:scale-105 transition-transform duration-500"
-                  style={{ maxHeight: '450px', width: 'auto', height: 'auto' }}
+                  style={{ maxHeight: '500px', width: 'auto', height: 'auto' }}
                   priority
                 />
-                {/* Badge Estrela com nota 5.0 */}
+                {/* Badge Estrela com nota 5.0 - Animação bounce */}
                 <div className="absolute -top-4 -left-4 w-20 h-20 bg-yellow-400 rounded-2xl flex flex-col items-center justify-center shadow-lg animate-bounce">
                   <Star className="w-8 h-8 text-gray-900" fill="currentColor" />
                   <span className="text-gray-900 font-bold text-lg">5.0</span>
                 </div>
-                {/* Badge com números de usuários */}
-                <div className="absolute -bottom-4 -right-4 px-5 py-3 bg-white rounded-xl shadow-lg">
+                {/* Badge com números de usuários - Animação fade in/out */}
+                <div className="absolute -bottom-4 -right-4 px-5 py-3 bg-white rounded-xl shadow-lg animate-pulse">
                   <div className="flex flex-col gap-1">
                     <div className="flex items-center gap-2">
                       <Users className="w-4 h-4 text-blue-600" />
