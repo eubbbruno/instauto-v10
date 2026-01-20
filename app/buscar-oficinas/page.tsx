@@ -126,7 +126,7 @@ export default function BuscarOficinasPage() {
 
       {/* Banner de Timer */}
       {!isAuthenticated && !showLoginModal && timeLeft > 0 && (
-        <div className="bg-yellow-400 text-gray-900 py-3 px-4 text-center font-bold sticky top-0 z-50">
+        <div className="bg-yellow-400 text-gray-900 py-3 px-4 text-center font-bold sticky top-16 z-40">
           ⏰ Você tem {timeLeft} segundo{timeLeft !== 1 ? 's' : ''} para ver as oficinas. Depois, faça login para continuar!
         </div>
       )}
