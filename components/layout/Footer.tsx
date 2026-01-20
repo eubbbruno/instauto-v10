@@ -11,7 +11,7 @@ export default function Footer() {
     <footer className="bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 text-gray-300">
       {/* Main Footer */}
       <div className="container mx-auto px-4 py-16">
-        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
+        <div className="grid md:grid-cols-2 lg:grid-cols-6 gap-8 mb-12">
           {/* Brand Column */}
           <div className="lg:col-span-2">
             <Image
@@ -69,18 +69,18 @@ export default function Footer() {
             <ul className="space-y-3 font-sans text-[15px]">
               <li>
                 <Link
-                  href="/para-oficinas"
+                  href="/buscar-oficinas"
                   className="hover:text-yellow-400 transition-colors hover:translate-x-1 inline-block"
                 >
-                  Para Oficinas
+                  Buscar Oficinas
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/motoristas"
+                  href="/para-oficinas"
                   className="hover:text-yellow-400 transition-colors hover:translate-x-1 inline-block"
                 >
-                  Para Motoristas
+                  Para Oficinas
                 </Link>
               </li>
               <li>
@@ -93,10 +93,10 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/oficinas#funcionalidades"
+                  href="/como-funciona"
                   className="hover:text-yellow-400 transition-colors hover:translate-x-1 inline-block"
                 >
-                  Funcionalidades
+                  Como Funciona
                 </Link>
               </li>
             </ul>
@@ -124,12 +124,46 @@ export default function Footer() {
                   Contato
                 </Link>
               </li>
+            </ul>
+          </div>
+
+          {/* Legal Column */}
+          <div>
+            <h4 className="text-white font-heading font-bold text-lg mb-6">
+              Legal
+            </h4>
+            <ul className="space-y-3 font-sans text-[15px]">
+              <li>
+                <Link
+                  href="/termos-uso"
+                  className="hover:text-yellow-400 transition-colors hover:translate-x-1 inline-block"
+                >
+                  Termos de Uso
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/politica-privacidade"
+                  className="hover:text-yellow-400 transition-colors hover:translate-x-1 inline-block"
+                >
+                  Política de Privacidade
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Acesso Column */}
+          <div>
+            <h4 className="text-white font-heading font-bold text-lg mb-6">
+              Acesso
+            </h4>
+            <ul className="space-y-3 font-sans text-[15px]">
               <li>
                 <Link
                   href="/cadastro-oficina"
                   className="hover:text-yellow-400 transition-colors hover:translate-x-1 inline-block"
                 >
-                  Cadastro Oficina
+                  Cadastrar Oficina
                 </Link>
               </li>
               <li>
@@ -137,7 +171,7 @@ export default function Footer() {
                   href="/cadastro-motorista"
                   className="hover:text-yellow-400 transition-colors hover:translate-x-1 inline-block"
                 >
-                  Cadastro Motorista
+                  Cadastrar Motorista
                 </Link>
               </li>
               <li>
@@ -159,38 +193,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact Column */}
-          <div>
-            <h4 className="text-white font-heading font-bold text-lg mb-6">
-              Contato
-            </h4>
-            <ul className="space-y-4 font-sans text-[15px]">
-              <li className="flex items-start gap-3">
-                <Mail className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
-                <a
-                  href="mailto:contato@instauto.com.br"
-                  className="hover:text-yellow-400 transition-colors"
-                >
-                  contato@instauto.com.br
-                </a>
-              </li>
-              <li className="flex items-start gap-3">
-                <Phone className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
-                <a
-                  href="tel:+5543991852779"
-                  className="hover:text-yellow-400 transition-colors"
-                >
-                  +55 (43) 99185-2779
-                </a>
-              </li>
-              <li className="flex items-start gap-3">
-                <MapPin className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
-                <span className="text-sm leading-relaxed">
-                  Londrina, PR<br />Brasil
-                </span>
-              </li>
-            </ul>
-          </div>
         </div>
       </div>
 
@@ -203,13 +205,13 @@ export default function Footer() {
             </p>
             <div className="flex gap-6 text-sm font-sans">
               <Link
-                href="/termos"
+                href="/termos-uso"
                 className="text-gray-400 hover:text-yellow-400 transition-colors"
               >
                 Termos de Uso
               </Link>
               <Link
-                href="/privacidade"
+                href="/politica-privacidade"
                 className="text-gray-400 hover:text-yellow-400 transition-colors"
               >
                 Privacidade
