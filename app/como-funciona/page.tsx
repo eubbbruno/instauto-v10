@@ -1,10 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 import { Search, FileText, CheckCircle, Car, Wrench, Star, ArrowRight } from "lucide-react";
 
 export default function ComoFuncionaPage() {
   return (
     <div className="min-h-screen bg-white">
+      <Header />
+      
       {/* Hero simples */}
       <section className="bg-gradient-to-br from-blue-600 to-blue-500 py-20 mt-16">
         <div className="max-w-4xl mx-auto px-4 text-center text-white">
@@ -232,6 +236,8 @@ export default function ComoFuncionaPage() {
           </div>
         </div>
       </section>
+      
+      <Footer />
     </div>
   );
 }

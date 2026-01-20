@@ -1,6 +1,11 @@
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+
 export default function TermosUsoPage() {
   return (
     <div className="min-h-screen bg-white">
+      <Header />
+      
       {/* Hero simples */}
       <section className="bg-gradient-to-br from-blue-600 to-blue-500 py-20 mt-16">
         <div className="max-w-4xl mx-auto px-4 text-center text-white">
@@ -124,6 +129,8 @@ export default function TermosUsoPage() {
           </p>
         </div>
       </section>
+      
+      <Footer />
     </div>
   );
 }

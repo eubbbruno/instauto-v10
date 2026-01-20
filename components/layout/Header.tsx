@@ -24,65 +24,83 @@ export default function Header() {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-white/80 backdrop-blur-md shadow-lg border-b border-gray-100"
-          : "bg-white/80 backdrop-blur-md border-b border-gray-100"
+          ? "bg-blue-900 shadow-lg"
+          : "bg-blue-900/95 backdrop-blur-sm"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+      <nav className="container mx-auto px-4 py-4">
+        <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center">
+          <Link href="/" className="relative z-10 flex items-center gap-3">
             <Image
-              src="/images/logo-of-dark.svg"
+              src="/images/logo.svg"
               alt="Instauto"
-              width={130}
-              height={36}
-              className="h-9 w-auto transition-transform hover:scale-105"
+              width={160}
+              height={45}
+              className="h-11 w-auto transition-transform hover:scale-105"
             />
           </Link>
 
-          {/* Menu Principal - Desktop */}
-          <nav className="hidden md:flex items-center gap-1">
+          {/* Desktop Menu */}
+          <div className="hidden lg:flex items-center gap-8">
             <Link
               href="/"
-              className="px-4 py-2 text-gray-600 hover:text-blue-600 font-medium rounded-lg hover:bg-gray-50 transition-all"
+              className="text-white hover:text-yellow-400 font-sans font-semibold transition-colors relative group text-[15px]"
             >
               Início
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
             </Link>
             <Link
               href="/buscar-oficinas"
-              className="px-4 py-2 text-gray-600 hover:text-blue-600 font-medium rounded-lg hover:bg-gray-50 transition-all"
+              className="text-white hover:text-yellow-400 font-sans font-semibold transition-colors relative group text-[15px]"
             >
               Buscar Oficinas
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
             </Link>
             <Link
               href="/para-oficinas"
-              className="px-4 py-2 text-gray-600 hover:text-blue-600 font-medium rounded-lg hover:bg-gray-50 transition-all"
+              className="text-white hover:text-yellow-400 font-sans font-semibold transition-colors relative group text-[15px]"
             >
               Para Oficinas
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
             </Link>
             <Link
               href="/planos"
-              className="px-4 py-2 text-gray-600 hover:text-blue-600 font-medium rounded-lg hover:bg-gray-50 transition-all"
+              className="text-white hover:text-yellow-400 font-sans font-semibold transition-colors relative group text-[15px]"
             >
               Planos
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
             </Link>
             <Link
               href="/como-funciona"
-              className="px-4 py-2 text-gray-600 hover:text-blue-600 font-medium rounded-lg hover:bg-gray-50 transition-all"
+              className="text-white hover:text-yellow-400 font-sans font-semibold transition-colors relative group text-[15px]"
             >
               Como Funciona
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
             </Link>
-          </nav>
-
-          {/* Ações - Desktop */}
-          <div className="hidden md:flex items-center gap-3">
+            <Link
+              href="/sobre"
+              className="text-white hover:text-yellow-400 font-sans font-semibold transition-colors relative group text-[15px]"
+            >
+              Sobre
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
+            </Link>
+            <Link
+              href="/contato"
+              className="text-white hover:text-yellow-400 font-sans font-semibold transition-colors relative group text-[15px]"
+            >
+              Contato
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
+            </Link>
+            
+            <div className="h-6 w-px bg-white/30"></div>
+            
             <button
               onClick={() => {
                 setModalAction("login");
                 setIsModalOpen(true);
               }}
-              className="px-4 py-2 text-gray-700 font-medium hover:text-blue-600 transition-all"
+              className="text-white hover:text-yellow-400 font-sans font-semibold transition-colors text-[15px]"
             >
               Entrar
             </button>
@@ -91,15 +109,15 @@ export default function Header() {
                 setModalAction("cadastro");
                 setIsModalOpen(true);
               }}
-              className="px-5 py-2.5 bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-semibold rounded-xl transition-all"
+              className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 font-sans font-bold shadow-lg hover:shadow-xl transition-all hover:scale-105 text-[15px] px-6 py-2 rounded-lg"
             >
-              Cadastrar Grátis
+              Cadastrar
             </button>
           </div>
 
-          {/* Menu Mobile */}
+          {/* Mobile Menu Button */}
           <button
-            className="md:hidden p-2 text-gray-600 hover:text-gray-900"
+            className="lg:hidden p-2 text-white hover:text-yellow-400 transition-colors"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? (
@@ -112,42 +130,56 @@ export default function Header() {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-2xl border-t border-gray-100 max-h-[calc(100vh-80px)] overflow-y-auto">
+          <div className="lg:hidden absolute top-full left-0 right-0 bg-white shadow-2xl border-t border-gray-100 max-h-[calc(100vh-80px)] overflow-y-auto">
             <div className="px-4 py-6 space-y-1">
               <Link
                 href="/"
-                className="block text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-medium py-3 px-4 rounded-lg transition-colors"
+                className="block text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-sans font-semibold py-3 px-4 rounded-lg transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Início
               </Link>
               <Link
                 href="/buscar-oficinas"
-                className="block text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-medium py-3 px-4 rounded-lg transition-colors"
+                className="block text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-sans font-semibold py-3 px-4 rounded-lg transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Buscar Oficinas
               </Link>
               <Link
                 href="/para-oficinas"
-                className="block text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-medium py-3 px-4 rounded-lg transition-colors"
+                className="block text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-sans font-semibold py-3 px-4 rounded-lg transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Para Oficinas
               </Link>
               <Link
                 href="/planos"
-                className="block text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-medium py-3 px-4 rounded-lg transition-colors"
+                className="block text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-sans font-semibold py-3 px-4 rounded-lg transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Planos
               </Link>
               <Link
                 href="/como-funciona"
-                className="block text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-medium py-3 px-4 rounded-lg transition-colors"
+                className="block text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-sans font-semibold py-3 px-4 rounded-lg transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Como Funciona
+              </Link>
+              <Link
+                href="/sobre"
+                className="block text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-sans font-semibold py-3 px-4 rounded-lg transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Sobre
+              </Link>
+              <Link
+                href="/contato"
+                className="block text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-sans font-semibold py-3 px-4 rounded-lg transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Contato
               </Link>
               
               <div className="border-t border-gray-200 my-3"></div>
@@ -158,7 +190,7 @@ export default function Header() {
                   setIsModalOpen(true);
                   setIsMobileMenuOpen(false);
                 }}
-                className="block w-full text-center text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-medium py-3 px-4 rounded-lg transition-colors"
+                className="block w-full text-center text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-sans font-semibold py-3 px-4 rounded-lg transition-colors"
               >
                 Entrar
               </button>
@@ -168,14 +200,14 @@ export default function Header() {
                   setIsModalOpen(true);
                   setIsMobileMenuOpen(false);
                 }}
-                className="w-full bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-semibold py-3 px-4 rounded-xl transition-all"
+                className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 font-sans font-bold shadow-lg py-6 text-base rounded-lg"
               >
-                Cadastrar Grátis
+                Cadastrar
               </button>
             </div>
           </div>
         )}
-      </div>
+      </nav>
 
       {/* Modal de Seleção */}
       <UserTypeModal

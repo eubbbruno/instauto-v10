@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
 
 export default function ContatoPage() {
@@ -32,6 +34,8 @@ export default function ContatoPage() {
 
   return (
     <div className="min-h-screen bg-white">
+      <Header />
+      
       {/* Hero simples */}
       <section className="bg-gradient-to-br from-blue-600 to-blue-500 py-20 mt-16">
         <div className="max-w-4xl mx-auto px-4 text-center text-white">
@@ -236,6 +240,8 @@ export default function ContatoPage() {
           </div>
         </div>
       </section>
+      
+      <Footer />
     </div>
   );
 }
