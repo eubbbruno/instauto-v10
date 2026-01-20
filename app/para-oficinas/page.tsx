@@ -103,7 +103,7 @@ export default function OficinasPage() {
                   style={{ maxHeight: '400px', width: 'auto', height: 'auto' }}
                   priority
                 />
-                {/* Badge flutuante */}
+                {/* Badge +40% faturamento */}
                 <div className="absolute -top-4 -left-4 px-4 py-3 bg-white rounded-2xl shadow-xl">
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
@@ -113,6 +113,27 @@ export default function OficinasPage() {
                       <p className="text-2xl font-heading font-bold text-gray-900">+40%</p>
                       <p className="text-sm text-gray-500">Faturamento</p>
                     </div>
+                  </div>
+                </div>
+
+                {/* Badge +60% clientes */}
+                <div className="absolute top-1/2 -right-8 px-4 py-3 bg-white rounded-2xl shadow-xl">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+                      <Users className="w-5 h-5 text-blue-600" />
+                    </div>
+                    <div>
+                      <p className="text-xl font-heading font-bold text-gray-900">+60%</p>
+                      <p className="text-xs text-gray-500">Clientes</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Badge oficinas cadastradas */}
+                <div className="absolute -bottom-4 -right-4 px-4 py-3 bg-white rounded-2xl shadow-xl">
+                  <div className="flex items-center gap-2">
+                    <Wrench className="w-5 h-5 text-yellow-600" />
+                    <span className="text-sm font-heading font-bold text-gray-900">+500 oficinas</span>
                   </div>
                 </div>
               </div>
