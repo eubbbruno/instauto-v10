@@ -4,7 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import AddressAutocomplete from "@/components/search/AddressAutocomplete";
@@ -67,21 +66,20 @@ export default function HomePage() {
                 Solicite orçamentos grátis, compare preços e avaliações de oficinas confiáveis na sua região.
               </p>
 
-              {/* CAMPO DE BUSCA - PRINCIPAL */}
-              <div className="bg-white rounded-2xl shadow-2xl p-2 mb-6">
-                <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-2">
+              {/* CAMPO DE BUSCA - PRINCIPAL (mais largo, menos alto) */}
+              <div className="bg-white rounded-2xl shadow-2xl p-2 mb-6 max-w-2xl">
+                <form onSubmit={handleSearch} className="flex items-center gap-2">
                   <div className="flex-1 flex items-center gap-3 px-4">
                     <MapPin className="w-5 h-5 text-gray-400 flex-shrink-0" />
                     <AddressAutocomplete onSelect={setSelectedLocation} />
                   </div>
-                  <Button
+                  <button
                     type="submit"
-                    size="lg"
-                    className="flex items-center justify-center gap-2 px-8 py-4 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-sans font-bold rounded-xl transition-all hover:shadow-lg hover:scale-[1.02]"
+                    className="flex items-center justify-center gap-2 px-6 py-3 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold rounded-xl transition-all whitespace-nowrap"
                   >
-                    Buscar Oficinas
+                    Buscar
                     <ArrowRight className="w-5 h-5" />
-                  </Button>
+                  </button>
                 </form>
               </div>
 
@@ -114,19 +112,22 @@ export default function HomePage() {
                   style={{ maxHeight: '450px', width: 'auto', height: 'auto' }}
                   priority
                 />
-                {/* Badge de avaliação flutuante */}
-                <div className="absolute -top-4 -left-4 w-20 h-20 bg-yellow-400 rounded-2xl flex items-center justify-center shadow-lg animate-bounce">
-                  <Star className="w-10 h-10 text-gray-900" fill="currentColor" />
+                {/* Badge Estrela com nota 5.0 */}
+                <div className="absolute -top-4 -left-4 w-20 h-20 bg-yellow-400 rounded-2xl flex flex-col items-center justify-center shadow-lg animate-bounce">
+                  <Star className="w-8 h-8 text-gray-900" fill="currentColor" />
+                  <span className="text-gray-900 font-bold text-lg">5.0</span>
                 </div>
-                {/* Badge de usuários */}
-                <div className="absolute -bottom-4 -right-4 px-4 py-2 bg-white rounded-xl shadow-lg">
-                  <div className="flex items-center gap-2">
-                    <div className="flex -space-x-2">
-                      <div className="w-8 h-8 bg-blue-500 rounded-full border-2 border-white" />
-                      <div className="w-8 h-8 bg-green-500 rounded-full border-2 border-white" />
-                      <div className="w-8 h-8 bg-yellow-500 rounded-full border-2 border-white" />
+                {/* Badge com números de usuários */}
+                <div className="absolute -bottom-4 -right-4 px-5 py-3 bg-white rounded-xl shadow-lg">
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-2">
+                      <Users className="w-4 h-4 text-blue-600" />
+                      <span className="text-sm font-bold text-gray-900">+2.500 motoristas</span>
                     </div>
-                    <span className="text-sm font-semibold text-gray-900">+2.500 usuários</span>
+                    <div className="flex items-center gap-2">
+                      <Wrench className="w-4 h-4 text-yellow-600" />
+                      <span className="text-sm font-bold text-gray-900">+500 oficinas</span>
+                    </div>
                   </div>
                 </div>
               </div>
