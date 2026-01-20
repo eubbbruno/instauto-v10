@@ -143,8 +143,40 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Tipos de Veículos */}
+      {/* Empresas Parceiras - Social Proof logo após Hero */}
       <section className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <p className="text-center text-sm font-medium text-gray-500 uppercase tracking-wider mb-8">
+            Empresas que confiam em soluções automotivas
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
+            {[
+              { src: "/images/uber-seeklogo.png", alt: "Uber" },
+              { src: "/images/rappi-seeklogo.png", alt: "Rappi" },
+              { src: "/images/mercado-livre-seeklogo.png", alt: "Mercado Livre" },
+              { src: "/images/mercedes-benz-seeklogo.png", alt: "Mercedes-Benz" },
+              { src: "/images/scania-seeklogo.png", alt: "Scania" },
+              { src: "/images/volvo-seeklogo.png", alt: "Volvo" },
+              { src: "/images/localiza-seeklogo.png", alt: "Localiza" },
+              { src: "/images/unidas-rent-a-car-seeklogo.png", alt: "Unidas" },
+              { src: "/images/correios-seeklogo.png", alt: "Correios" },
+            ].map((logo) => (
+              <div key={logo.alt} className="grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
+                <Image
+                  src={logo.src}
+                  alt={logo.alt}
+                  width={120}
+                  height={40}
+                  className="h-8 md:h-10 w-auto object-contain"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Tipos de Veículos */}
+      <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-4xl font-heading font-bold text-gray-900 mb-4">
@@ -218,7 +250,7 @@ export default function HomePage() {
       </section>
 
       {/* Como Funciona */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-5xl font-heading font-bold text-gray-900 mb-4">
@@ -300,7 +332,7 @@ export default function HomePage() {
       </section>
 
       {/* Por que escolher o Instauto */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-4">
@@ -350,38 +382,6 @@ export default function HomePage() {
                 em tempo real.
               </p>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Empresas Parceiras */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-sm font-medium text-gray-500 uppercase tracking-wider mb-8">
-            Empresas que confiam em soluções automotivas
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
-            {[
-              { src: "/images/uber-seeklogo.png", alt: "Uber" },
-              { src: "/images/rappi-seeklogo.png", alt: "Rappi" },
-              { src: "/images/mercado-livre-seeklogo.png", alt: "Mercado Livre" },
-              { src: "/images/mercedes-benz-seeklogo.png", alt: "Mercedes-Benz" },
-              { src: "/images/scania-seeklogo.png", alt: "Scania" },
-              { src: "/images/volvo-seeklogo.png", alt: "Volvo" },
-              { src: "/images/localiza-seeklogo.png", alt: "Localiza" },
-              { src: "/images/unidas-rent-a-car-seeklogo.png", alt: "Unidas" },
-              { src: "/images/correios-seeklogo.png", alt: "Correios" },
-            ].map((logo) => (
-              <div key={logo.alt} className="grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
-                <Image
-                  src={logo.src}
-                  alt={logo.alt}
-                  width={120}
-                  height={40}
-                  className="h-8 md:h-10 w-auto object-contain"
-                />
-              </div>
-            ))}
           </div>
         </div>
       </section>
