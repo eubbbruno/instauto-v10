@@ -12,7 +12,23 @@ export default function AddressAutocomplete({ onSelect }: AddressAutocompletePro
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const wrapperRef = useRef<HTMLDivElement>(null);
+
+  const placeholders = [
+    "Digite seu CEP...",
+    "Digite sua cidade...",
+    "Digite sua rua...",
+    "Digite seu bairro...",
+  ];
+
+  // Animar placeholder
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPlaceholderIndex((prev) => (prev + 1) % placeholders.length);
+    }, 2500);
+    return () => clearInterval(interval);
+  }, []);
 
   // Fechar sugestões ao clicar fora
   useEffect(() => {
@@ -144,8 +160,8 @@ export default function AddressAutocomplete({ onSelect }: AddressAutocompletePro
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
-          placeholder="Digite seu CEP, cidade ou bairro"
-          className="w-full px-4 py-4 text-gray-900 border-2 border-gray-200 rounded-xl focus:border-blue-600 focus:outline-none text-lg pr-12"
+          placeholder={placeholders[placeholderIndex]}
+          className="w-full py-3 text-gray-900 placeholder:text-gray-400 focus:outline-none transition-all"
           autoComplete="off"
         />
         {isLoading && (
