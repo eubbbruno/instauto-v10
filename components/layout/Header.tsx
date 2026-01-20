@@ -3,8 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { Menu, X, ChevronDown, Phone } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import UserTypeModal from "@/components/auth/UserTypeModal";
 
 export default function Header() {
@@ -23,96 +22,84 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-blue-900 shadow-lg"
-          : "bg-blue-900/95 backdrop-blur-sm"
+          ? "bg-white/80 backdrop-blur-md shadow-lg border-b border-gray-100"
+          : "bg-white/80 backdrop-blur-md border-b border-gray-100"
       }`}
     >
-      <nav className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="relative z-10 flex items-center gap-3">
+          <Link href="/" className="flex items-center">
             <Image
-              src="/images/logo.svg"
+              src="/images/logo-of-dark.svg"
               alt="Instauto"
-              width={160}
-              height={45}
-              className="h-11 w-auto transition-transform hover:scale-105"
+              width={130}
+              height={36}
+              className="h-9 w-auto transition-transform hover:scale-105"
             />
           </Link>
 
-          {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center gap-8">
+          {/* Menu Principal - Desktop */}
+          <nav className="hidden md:flex items-center gap-1">
             <Link
-              href="/para-oficinas"
-              className="text-white hover:text-yellow-400 font-sans font-semibold transition-colors relative group text-[15px]"
+              href="/"
+              className="px-4 py-2 text-gray-600 hover:text-blue-600 font-medium rounded-lg hover:bg-gray-50 transition-all"
             >
-              Para Oficinas
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
+              Início
             </Link>
             <Link
-              href="/motoristas"
-              className="text-white hover:text-yellow-400 font-sans font-semibold transition-colors relative group text-[15px]"
+              href="/buscar-oficinas"
+              className="px-4 py-2 text-gray-600 hover:text-blue-600 font-medium rounded-lg hover:bg-gray-50 transition-all"
             >
-              Para Motoristas
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
+              Buscar Oficinas
+            </Link>
+            <Link
+              href="/para-oficinas"
+              className="px-4 py-2 text-gray-600 hover:text-blue-600 font-medium rounded-lg hover:bg-gray-50 transition-all"
+            >
+              Para Oficinas
             </Link>
             <Link
               href="/planos"
-              className="text-white hover:text-yellow-400 font-sans font-semibold transition-colors relative group text-[15px]"
+              className="px-4 py-2 text-gray-600 hover:text-blue-600 font-medium rounded-lg hover:bg-gray-50 transition-all"
             >
               Planos
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
             </Link>
             <Link
-              href="/sobre"
-              className="text-white hover:text-yellow-400 font-sans font-semibold transition-colors relative group text-[15px]"
+              href="/como-funciona"
+              className="px-4 py-2 text-gray-600 hover:text-blue-600 font-medium rounded-lg hover:bg-gray-50 transition-all"
             >
-              Sobre
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
+              Como Funciona
             </Link>
-            <Link
-              href="/contato"
-              className="text-white hover:text-yellow-400 font-sans font-semibold transition-colors relative group text-[15px]"
-            >
-              Contato
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
-            </Link>
-            
-            <div className="h-6 w-px bg-white/30"></div>
-            
-            <a 
-              href="tel:+5543991852779" 
-              className="flex items-center gap-2 text-white hover:text-yellow-400 font-sans font-semibold transition-colors text-[15px]"
-            >
-              <Phone className="h-4 w-4" />
-              (43) 99185-2779
-            </a>
-            
+          </nav>
+
+          {/* Ações - Desktop */}
+          <div className="hidden md:flex items-center gap-3">
             <button
               onClick={() => {
                 setModalAction("login");
                 setIsModalOpen(true);
               }}
-              className="text-white hover:text-yellow-400 font-sans font-semibold transition-colors text-[15px]"
+              className="px-4 py-2 text-gray-700 font-medium hover:text-blue-600 transition-all"
             >
               Entrar
             </button>
-            <Button
+            <button
               onClick={() => {
                 setModalAction("cadastro");
                 setIsModalOpen(true);
               }}
-              className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 font-sans font-bold shadow-lg hover:shadow-xl transition-all hover:scale-105 text-[15px] px-6"
+              className="px-5 py-2.5 bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-semibold rounded-xl transition-all"
             >
-              Cadastrar
-            </Button>
+              Cadastrar Grátis
+            </button>
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Menu Mobile */}
           <button
-            className="lg:hidden p-2 text-white hover:text-yellow-400 transition-colors"
+            className="md:hidden p-2 text-gray-600 hover:text-gray-900"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
             {isMobileMenuOpen ? (
@@ -125,53 +112,43 @@ export default function Header() {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden absolute top-full left-0 right-0 bg-white shadow-2xl border-t border-gray-100 max-h-[calc(100vh-80px)] overflow-y-auto">
+          <div className="md:hidden absolute top-full left-0 right-0 bg-white shadow-2xl border-t border-gray-100 max-h-[calc(100vh-80px)] overflow-y-auto">
             <div className="px-4 py-6 space-y-1">
               <Link
+                href="/"
+                className="block text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-medium py-3 px-4 rounded-lg transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Início
+              </Link>
+              <Link
+                href="/buscar-oficinas"
+                className="block text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-medium py-3 px-4 rounded-lg transition-colors"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Buscar Oficinas
+              </Link>
+              <Link
                 href="/para-oficinas"
-                className="block text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-sans font-semibold py-3 px-4 rounded-lg transition-colors"
+                className="block text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-medium py-3 px-4 rounded-lg transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Para Oficinas
               </Link>
               <Link
-                href="/motoristas"
-                className="block text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-sans font-semibold py-3 px-4 rounded-lg transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Para Motoristas
-              </Link>
-              <Link
                 href="/planos"
-                className="block text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-sans font-semibold py-3 px-4 rounded-lg transition-colors"
+                className="block text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-medium py-3 px-4 rounded-lg transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Planos
               </Link>
               <Link
-                href="/sobre"
-                className="block text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-sans font-semibold py-3 px-4 rounded-lg transition-colors"
+                href="/como-funciona"
+                className="block text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-medium py-3 px-4 rounded-lg transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Sobre
+                Como Funciona
               </Link>
-              <Link
-                href="/contato"
-                className="block text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-sans font-semibold py-3 px-4 rounded-lg transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Contato
-              </Link>
-              
-              <div className="border-t border-gray-200 my-3"></div>
-              
-              <a 
-                href="tel:+5543991852779" 
-                className="flex items-center gap-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-sans font-semibold py-3 px-4 rounded-lg transition-colors"
-              >
-                <Phone className="h-4 w-4" />
-                (43) 99185-2779
-              </a>
               
               <div className="border-t border-gray-200 my-3"></div>
               
@@ -181,24 +158,24 @@ export default function Header() {
                   setIsModalOpen(true);
                   setIsMobileMenuOpen(false);
                 }}
-                className="block w-full text-center text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-sans font-semibold py-3 px-4 rounded-lg transition-colors"
+                className="block w-full text-center text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-medium py-3 px-4 rounded-lg transition-colors"
               >
                 Entrar
               </button>
-              <Button
+              <button
                 onClick={() => {
                   setModalAction("cadastro");
                   setIsModalOpen(true);
                   setIsMobileMenuOpen(false);
                 }}
-                className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 font-sans font-bold shadow-lg py-6 text-base"
+                className="w-full bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-semibold py-3 px-4 rounded-xl transition-all"
               >
-                Cadastrar
-              </Button>
+                Cadastrar Grátis
+              </button>
             </div>
           </div>
         )}
-      </nav>
+      </div>
 
       {/* Modal de Seleção */}
       <UserTypeModal
