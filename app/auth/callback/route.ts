@@ -51,17 +51,16 @@ export async function GET(request: Request) {
   console.log("User type final:", userType);
 
   // SEMPRE verificar e criar profile se não existir
-  const { data: existingProfile, error: profileError } = await supabase
+  const { data: existingProfile } = await supabase
     .from("profiles")
     .select("id, type")
     .eq("id", user.id)
-    .single();
+    .maybeSingle();
 
   console.log("Existing profile:", existingProfile?.id);
-  console.log("Profile error code:", profileError?.code);
 
-  // Se não existe profile (PGRST116 = not found), CRIAR
-  if (!existingProfile || profileError?.code === "PGRST116") {
+  // Se não existe profile, CRIAR
+  if (!existingProfile) {
     const name = user.user_metadata?.name || 
                  user.user_metadata?.full_name || 
                  user.email?.split("@")[0] || 
