@@ -19,7 +19,21 @@ export default function OficinaDashboard() {
     orders: 0
   });
   const [statsLoading, setStatsLoading] = useState(true);
+  const [forceLoaded, setForceLoaded] = useState(false);
   const supabase = createClient();
+
+  // Timeout de segurança para evitar loading infinito
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if ((authLoading || loading) && !forceLoaded) {
+        console.error("⚠️ Timeout: loading demorou mais de 10 segundos. Forçando carregamento.");
+        setForceLoaded(true);
+        setLoading(false);
+      }
+    }, 10000); // 10 segundos
+
+    return () => clearTimeout(timeout);
+  }, [authLoading, loading, forceLoaded]);
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -93,15 +107,18 @@ export default function OficinaDashboard() {
     }
   };
 
-  if (authLoading || loading) {
+  if ((authLoading || loading) && !forceLoaded) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Carregando...</p>
+        </div>
       </div>
     );
   }
 
-  if (!workshop) return null;
+  if (!workshop && !forceLoaded) return null;
 
   return (
     <div className="min-h-screen bg-gray-50 p-8">

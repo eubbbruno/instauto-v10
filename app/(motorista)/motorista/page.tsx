@@ -14,7 +14,20 @@ export default function MotoristaDashboard() {
   const router = useRouter();
   const [stats, setStats] = useState({ vehicles: 0, quotes: 0, maintenances: 0 });
   const [statsLoading, setStatsLoading] = useState(true);
+  const [forceLoaded, setForceLoaded] = useState(false);
   const supabase = createClient();
+
+  // Timeout de segurança para evitar loading infinito
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (loading && !forceLoaded) {
+        console.error("⚠️ Timeout: loading demorou mais de 10 segundos. Forçando carregamento.");
+        setForceLoaded(true);
+      }
+    }, 10000); // 10 segundos
+
+    return () => clearTimeout(timeout);
+  }, [loading, forceLoaded]);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -66,15 +79,18 @@ export default function MotoristaDashboard() {
     }
   };
 
-  if (loading) {
+  if (loading && !forceLoaded) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-sky-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Carregando...</p>
+        </div>
       </div>
     );
   }
 
-  if (!user) return null;
+  if (!user && !forceLoaded) return null;
 
   const firstName = profile?.name?.split(" ")[0] || "Motorista";
   const hasFleet = stats.vehicles >= 5;

@@ -28,24 +28,40 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     let mounted = true;
 
     const init = async () => {
+      console.log("=== AUTH CONTEXT INIT ===");
       try {
         const { data: { session } } = await supabase.auth.getSession();
+        console.log("Session user:", session?.user?.id);
         
         if (session?.user && mounted) {
           setUser(session.user);
           
-          const { data } = await supabase
+          console.log("Loading profile for user:", session.user.id);
+          const { data, error } = await supabase
             .from("profiles")
             .select("*")
             .eq("id", session.user.id)
             .single();
           
-          if (data && mounted) setProfile(data);
+          console.log("Profile data:", data?.id);
+          console.log("Profile error:", error?.code, error?.message);
+          
+          if (data && mounted) {
+            setProfile(data);
+            console.log("✅ Profile loaded:", data.type);
+          } else if (!data && !error) {
+            console.warn("⚠️ ATENÇÃO: Usuário sem profile! Pode ser login Google que falhou no callback.");
+          }
+        } else {
+          console.log("No session found");
         }
       } catch (e) {
-        console.error("Auth init error:", e);
+        console.error("❌ Auth init error:", e);
       } finally {
-        if (mounted) setLoading(false);
+        if (mounted) {
+          setLoading(false);
+          console.log("Auth init complete");
+        }
       }
     };
 
@@ -53,17 +69,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // Listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log("=== AUTH STATE CHANGE ===");
+      console.log("Event:", event);
+      console.log("User:", session?.user?.id);
+      
       if (!mounted) return;
       
       setUser(session?.user || null);
       
       if (session?.user) {
-        const { data } = await supabase
+        console.log("Loading profile for user:", session.user.id);
+        const { data, error } = await supabase
           .from("profiles")
           .select("*")
           .eq("id", session.user.id)
           .single();
+        
+        console.log("Profile data:", data?.id);
+        console.log("Profile error:", error?.code);
+        
         setProfile(data || null);
+        
+        if (!data) {
+          console.warn("⚠️ ATENÇÃO: Usuário autenticado mas sem profile!");
+        }
       } else {
         setProfile(null);
       }
