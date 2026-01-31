@@ -176,8 +176,12 @@ export default function HomePage() {
       </section>
 
       {/* Tipos de Veículos */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
+      <section className="py-16 bg-gray-50 relative">
+        {/* Pattern sutil */}
+        <div className="absolute inset-0 opacity-[0.03]" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+        }} />
+        <div className="container mx-auto px-4 relative">
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-4xl font-heading font-bold text-gray-900 mb-4">
               Oficinas para todos os tipos de veículos
@@ -332,7 +336,7 @@ export default function HomePage() {
       </section>
 
       {/* Por que escolher o Instauto */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-gradient-to-b from-blue-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-4">
@@ -462,11 +466,16 @@ export default function HomePage() {
       </section>
 
       {/* CTA para Oficinas */}
-      <section className="py-20 bg-gray-900 relative overflow-hidden">
-        {/* Decoração */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute -top-20 -right-20 w-80 h-80 bg-yellow-400 rounded-full blur-3xl" />
-        </div>
+      <section className="py-20 bg-[#0F172A] relative overflow-hidden">
+        {/* Gradiente sutil */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/50 to-transparent" />
+        
+        {/* Linha amarela decorativa no topo */}
+        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-yellow-400 to-transparent" />
+        
+        {/* Elementos decorativos amarelos */}
+        <div className="absolute -top-20 -right-20 w-96 h-96 bg-yellow-400/10 rounded-full blur-3xl" />
+        <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-yellow-400/5 rounded-full blur-3xl" />
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="grid lg:grid-cols-2 gap-12 items-center">

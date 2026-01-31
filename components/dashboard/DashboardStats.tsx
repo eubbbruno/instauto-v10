@@ -10,7 +10,7 @@ import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 
-export function DashboardHeader() {
+export function DashboardStats() {
   const { profile } = useAuth();
   const router = useRouter();
   const [pendingQuotes, setPendingQuotes] = useState(0);

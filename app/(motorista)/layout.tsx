@@ -51,26 +51,26 @@ export default function MotoristaLayout({ children }: { children: React.ReactNod
 
       {/* Sidebar */}
       <aside className={`
-        fixed top-0 left-0 h-full w-64 bg-gradient-to-b from-emerald-600 to-emerald-700 z-50
+        fixed top-0 left-0 h-full w-64 bg-gradient-to-b from-sky-600 to-sky-700 z-50
         transform transition-transform duration-300 lg:translate-x-0
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
         {/* Logo */}
-        <div className="p-6 border-b border-emerald-500/30">
+        <div className="p-6 border-b border-sky-500/30">
           <Link href="/motorista" className="flex items-center gap-3">
             <Image src="/images/logo.svg" alt="Instauto" width={120} height={32} />
           </Link>
         </div>
 
         {/* User Info */}
-        <div className="p-4 border-b border-emerald-500/30">
+        <div className="p-4 border-b border-sky-500/30">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-emerald-500 rounded-full flex items-center justify-center">
+            <div className="w-10 h-10 bg-sky-500 rounded-full flex items-center justify-center">
               <User className="w-5 h-5 text-white" />
             </div>
             <div>
               <p className="text-white font-medium text-sm">{profile?.name || "Motorista"}</p>
-              <p className="text-emerald-200 text-xs">Conta Gratuita</p>
+              <p className="text-sky-200 text-xs">Conta Gratuita</p>
             </div>
           </div>
         </div>
@@ -86,8 +86,8 @@ export default function MotoristaLayout({ children }: { children: React.ReactNod
                 className={`
                   flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-sm
                   ${isActive 
-                    ? 'bg-white text-emerald-700 font-semibold shadow-lg' 
-                    : 'text-emerald-100 hover:bg-emerald-500/50'
+                    ? 'bg-white text-sky-700 font-semibold shadow-lg' 
+                    : 'text-sky-100 hover:bg-sky-500/50'
                   }
                 `}
                 onClick={() => setSidebarOpen(false)}
@@ -100,10 +100,10 @@ export default function MotoristaLayout({ children }: { children: React.ReactNod
         </nav>
 
         {/* Logout */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-emerald-500/30">
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-sky-500/30">
           <button
             onClick={signOut}
-            className="flex items-center gap-3 w-full px-4 py-3 text-emerald-100 hover:bg-emerald-500/50 rounded-xl transition-all text-sm"
+            className="flex items-center gap-3 w-full px-4 py-3 text-sky-100 hover:bg-sky-500/50 rounded-xl transition-all text-sm"
           >
             <LogOut className="w-5 h-5" />
             Sair da conta

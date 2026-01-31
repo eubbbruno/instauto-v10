@@ -7,6 +7,7 @@ import { Car, FileText, Clock, Search, Plus, TrendingUp, Sparkles, Users, Tag, G
 import Link from "next/link";
 import { createClient } from "@/lib/supabase";
 import Image from "next/image";
+import { StatCard } from "@/components/dashboard/StatCard";
 
 export default function MotoristaDashboard() {
   const { user, profile, loading } = useAuth();
@@ -132,67 +133,33 @@ export default function MotoristaDashboard() {
 
         {/* Cards de Estatísticas */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg">
-                <Car className="w-6 h-6 text-white" />
-              </div>
-              {stats.vehicles > 0 && (
-                <span className="text-xs font-medium text-green-600 bg-green-50 px-2 py-1 rounded-full flex items-center gap-1">
-                  <TrendingUp className="w-3 h-3" />
-                  Ativo
-                </span>
-              )}
-            </div>
-            <p className="text-gray-500 text-sm mb-1">Meus Veículos</p>
-            <p className="text-3xl font-bold text-gray-900">{stats.vehicles}</p>
-            <p className="text-xs text-gray-400 mt-2">
-              {stats.vehicles === 0 ? "Nenhum veículo cadastrado" : 
-               stats.vehicles === 1 ? "veículo cadastrado" : "veículos cadastrados"}
-            </p>
-            {hasFleet && (
-              <div className="mt-3 pt-3 border-t border-gray-100">
-                <Link href="/motorista/frotas" className="text-sm text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1">
-                  <Users className="w-4 h-4" />
-                  Gerenciar Frota
-                  <ChevronRight className="w-3 h-3" />
-                </Link>
-              </div>
-            )}
-          </div>
-
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg">
-                <FileText className="w-6 h-6 text-white" />
-              </div>
-              {stats.quotes > 0 && (
-                <span className="text-xs font-medium text-blue-600 bg-blue-50 px-2 py-1 rounded-full">
-                  Pendente
-                </span>
-              )}
-            </div>
-            <p className="text-gray-500 text-sm mb-1">Orçamentos</p>
-            <p className="text-3xl font-bold text-gray-900">{stats.quotes}</p>
-            <p className="text-xs text-gray-400 mt-2">
-              {stats.quotes === 0 ? "Nenhum orçamento" : 
-               stats.quotes === 1 ? "orçamento solicitado" : "orçamentos solicitados"}
-            </p>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-xl flex items-center justify-center shadow-lg">
-                <Clock className="w-6 h-6 text-white" />
-              </div>
-            </div>
-            <p className="text-gray-500 text-sm mb-1">Manutenções</p>
-            <p className="text-3xl font-bold text-gray-900">{stats.maintenances}</p>
-            <p className="text-xs text-gray-400 mt-2">
-              {stats.maintenances === 0 ? "Nenhuma manutenção" : 
-               stats.maintenances === 1 ? "manutenção realizada" : "manutenções realizadas"}
-            </p>
-          </div>
+          <StatCard
+            title="Meus Veículos"
+            value={stats.vehicles}
+            description={stats.vehicles === 0 ? "Nenhum veículo cadastrado" : 
+                        stats.vehicles === 1 ? "veículo cadastrado" : "veículos cadastrados"}
+            icon={Car}
+            color="blue"
+            loading={statsLoading}
+          />
+          <StatCard
+            title="Orçamentos"
+            value={stats.quotes}
+            description={stats.quotes === 0 ? "Nenhum orçamento" : 
+                        stats.quotes === 1 ? "orçamento solicitado" : "orçamentos solicitados"}
+            icon={FileText}
+            color="green"
+            loading={statsLoading}
+          />
+          <StatCard
+            title="Manutenções"
+            value={stats.maintenances}
+            description={stats.maintenances === 0 ? "Nenhuma manutenção" : 
+                        stats.maintenances === 1 ? "manutenção realizada" : "manutenções realizadas"}
+            icon={Clock}
+            color="yellow"
+            loading={statsLoading}
+          />
         </div>
 
         {/* Ações Rápidas */}

@@ -33,6 +33,24 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
+  // Validar tipo de usuário vs rota
+  if (isProtected && user) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("type")
+      .eq("id", user.id)
+      .single();
+
+    // Redirecionar se tipo de usuário não corresponde à rota
+    if (pathname.startsWith("/motorista") && profile?.type !== "motorista") {
+      return NextResponse.redirect(new URL("/oficina", request.url));
+    }
+    
+    if (pathname.startsWith("/oficina") && profile?.type !== "oficina") {
+      return NextResponse.redirect(new URL("/motorista", request.url));
+    }
+  }
+
   return response;
 }
 
