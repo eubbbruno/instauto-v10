@@ -156,29 +156,37 @@ function ClientesContent() {
   const showLimitWarning = workshop?.plan_type === "free" && clients.length >= 8;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-green-50/20 to-blue-50/20 pb-12">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-green-50/30 to-blue-50/20 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-        <PageHeader
-          title="Clientes"
-          description={
-            <div className="flex items-center gap-3">
-              <span className="text-gray-600">
+        {/* Header Customizado com Gradiente */}
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-8">
+          <div className="space-y-3">
+            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-green-600 via-emerald-600 to-green-800 bg-clip-text text-transparent leading-tight">
+              Clientes 👥
+            </h1>
+            <div className="flex items-center gap-3 flex-wrap">
+              <p className="text-gray-600 text-lg">
                 Gerencie sua base de clientes
-              </span>
+              </p>
               {workshop?.plan_type === "free" && (
-                <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200 text-xs font-bold">
+                <Badge className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white border-0 text-sm font-bold px-3 py-1 shadow-lg animate-pulse">
                   {clients.length}/10 clientes
                 </Badge>
               )}
+              <Badge className="bg-green-100 text-green-800 border-green-200 text-sm font-bold px-3 py-1">
+                {clients.length} total
+              </Badge>
             </div>
-          }
-          action={
-            <Button onClick={() => handleOpenDialog()} className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 font-bold shadow-lg shadow-green-600/30 hover:scale-105 transition-transform">
-              <Plus className="mr-2 h-4 w-4" />
-              Novo Cliente
-            </Button>
-          }
-        />
+          </div>
+          <Button 
+            onClick={() => handleOpenDialog()} 
+            className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 font-bold shadow-xl shadow-green-600/40 hover:scale-105 transition-all duration-300 text-lg px-6 py-6"
+            size="lg"
+          >
+            <Plus className="mr-2 h-5 w-5" />
+            Novo Cliente
+          </Button>
+        </div>
 
         {/* Alerta de limite próximo */}
         {showLimitWarning && (
@@ -254,12 +262,14 @@ function ClientesContent() {
             </CardContent>
           </Card>
         ) : (
-          <Card className="border-2 shadow-lg hover:shadow-xl transition-shadow">
-            <CardHeader className="border-b bg-gradient-to-r from-gray-50 to-green-50/30">
-              <CardTitle className="flex items-center gap-2">
-                <Users className="h-5 w-5 text-green-600" />
-                Lista de Clientes
-                <Badge className="ml-auto bg-green-100 text-green-800 border-green-200">
+          <Card className="border-2 border-green-100 shadow-2xl hover:shadow-green-200/50 transition-all duration-300 overflow-hidden">
+            <CardHeader className="border-b-2 border-green-100 bg-gradient-to-r from-green-50 via-emerald-50 to-green-50/50 py-6">
+              <CardTitle className="flex items-center gap-3 text-2xl">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-green-500/30">
+                  <Users className="h-6 w-6 text-white" />
+                </div>
+                <span className="font-bold text-gray-900">Lista de Clientes</span>
+                <Badge className="ml-auto bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0 text-base px-4 py-2 shadow-lg">
                   {filteredClients.length} {filteredClients.length === 1 ? 'cliente' : 'clientes'}
                 </Badge>
               </CardTitle>
@@ -267,28 +277,45 @@ function ClientesContent() {
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-gray-50/50">
-                    <TableHead className="font-bold text-gray-900">Nome</TableHead>
-                    <TableHead className="font-bold text-gray-900 hidden md:table-cell">Email</TableHead>
-                    <TableHead className="font-bold text-gray-900">Telefone</TableHead>
-                    <TableHead className="font-bold text-gray-900 hidden lg:table-cell">CPF</TableHead>
-                    <TableHead className="text-right font-bold text-gray-900">Ações</TableHead>
+                  <TableRow className="bg-gradient-to-r from-gray-50 to-green-50/30 border-b-2 border-green-100">
+                    <TableHead className="font-bold text-gray-900 text-base py-4">Nome</TableHead>
+                    <TableHead className="font-bold text-gray-900 text-base py-4 hidden md:table-cell">Email</TableHead>
+                    <TableHead className="font-bold text-gray-900 text-base py-4">Telefone</TableHead>
+                    <TableHead className="font-bold text-gray-900 text-base py-4 hidden lg:table-cell">CPF</TableHead>
+                    <TableHead className="text-right font-bold text-gray-900 text-base py-4">Ações</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredClients.map((client) => (
-                    <TableRow key={client.id} className="hover:bg-green-50/30 transition-colors">
-                      <TableCell className="font-semibold text-gray-900">{client.name}</TableCell>
-                      <TableCell className="hidden md:table-cell text-gray-600">{client.email || "-"}</TableCell>
-                      <TableCell className="text-gray-600">{client.phone || "-"}</TableCell>
-                      <TableCell className="hidden lg:table-cell text-gray-600">{client.cpf || "-"}</TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex justify-end gap-1">
+                  {filteredClients.map((client, index) => (
+                    <TableRow 
+                      key={client.id} 
+                      className="group hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50/30 transition-all duration-300 border-b border-gray-100 hover:border-green-200"
+                      style={{ animationDelay: `${index * 50}ms` }}
+                    >
+                      <TableCell className="font-bold text-gray-900 py-4 group-hover:text-green-700 transition-colors">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center text-white font-bold shadow-md group-hover:scale-110 transition-transform">
+                            {client.name.charAt(0).toUpperCase()}
+                          </div>
+                          {client.name}
+                        </div>
+                      </TableCell>
+                      <TableCell className="hidden md:table-cell text-gray-600 py-4 group-hover:text-gray-900 transition-colors">
+                        {client.email || "-"}
+                      </TableCell>
+                      <TableCell className="text-gray-600 py-4 font-medium group-hover:text-gray-900 transition-colors">
+                        {client.phone || "-"}
+                      </TableCell>
+                      <TableCell className="hidden lg:table-cell text-gray-600 py-4 group-hover:text-gray-900 transition-colors">
+                        {client.cpf || "-"}
+                      </TableCell>
+                      <TableCell className="text-right py-4">
+                        <div className="flex justify-end gap-2">
                           <Button
                             variant="ghost"
                             size="icon"
                             onClick={() => handleOpenDialog(client)}
-                            className="hover:bg-blue-100 hover:text-blue-700 transition-colors"
+                            className="hover:bg-blue-500 hover:text-white transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-blue-500/50"
                           >
                             <Pencil className="h-4 w-4" />
                           </Button>
@@ -296,7 +323,7 @@ function ClientesContent() {
                             variant="ghost"
                             size="icon"
                             onClick={() => handleDelete(client.id)}
-                            className="hover:bg-red-100 hover:text-red-700 transition-colors"
+                            className="hover:bg-red-500 hover:text-white transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-red-500/50"
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
