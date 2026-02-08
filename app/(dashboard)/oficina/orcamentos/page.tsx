@@ -117,19 +117,19 @@ export default function OrcamentosOficinaPage() {
 
   const getStatusBadge = (status: string) => {
     const badges = {
-      pending: { icon: Clock, label: "Aguardando", className: "bg-yellow-100 text-yellow-800" },
-      responded: { icon: CheckCircle2, label: "Respondido", className: "bg-green-100 text-green-800" },
-      accepted: { icon: CheckCircle2, label: "Aceito", className: "bg-blue-100 text-blue-800" },
-      rejected: { icon: XCircle, label: "Recusado", className: "bg-red-100 text-red-800" },
-      cancelled: { icon: XCircle, label: "Cancelado", className: "bg-gray-100 text-gray-800" },
+      pending: { icon: Clock, label: "Aguardando", className: "bg-gradient-to-r from-yellow-400 to-orange-400 text-white shadow-lg shadow-yellow-500/40" },
+      responded: { icon: CheckCircle2, label: "Respondido", className: "bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg shadow-green-500/40" },
+      accepted: { icon: CheckCircle2, label: "Aceito", className: "bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/40" },
+      rejected: { icon: XCircle, label: "Recusado", className: "bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-lg shadow-red-500/40" },
+      cancelled: { icon: XCircle, label: "Cancelado", className: "bg-gradient-to-r from-gray-500 to-slate-500 text-white shadow-lg shadow-gray-500/40" },
     };
 
     const badge = badges[status as keyof typeof badges] || badges.pending;
     const Icon = badge.icon;
 
     return (
-      <Badge className={`${badge.className} border-0`}>
-        <Icon className="h-3 w-3 mr-1" />
+      <Badge className={`${badge.className} border-0 px-4 py-2 text-sm font-bold`}>
+        <Icon className="h-4 w-4 mr-2" />
         {badge.label}
       </Badge>
     );
@@ -137,15 +137,15 @@ export default function OrcamentosOficinaPage() {
 
   const getUrgencyBadge = (urgency: string) => {
     const badges = {
-      low: { label: "Baixa", className: "bg-gray-100 text-gray-700" },
-      normal: { label: "Normal", className: "bg-blue-100 text-blue-700" },
-      high: { label: "Alta", className: "bg-red-100 text-red-700" },
+      low: { label: "🟢 Baixa", className: "bg-gray-100 text-gray-800 border-2 border-gray-300 font-bold" },
+      normal: { label: "🔵 Normal", className: "bg-blue-100 text-blue-800 border-2 border-blue-300 font-bold" },
+      high: { label: "🔴 Alta", className: "bg-red-100 text-red-800 border-2 border-red-300 font-bold animate-pulse" },
     };
 
     const badge = badges[urgency as keyof typeof badges] || badges.normal;
 
     return (
-      <Badge variant="outline" className={badge.className}>
+      <Badge className={`${badge.className} px-3 py-1.5 text-sm`}>
         {badge.label}
       </Badge>
     );
@@ -265,17 +265,21 @@ export default function OrcamentosOficinaPage() {
             </CardContent>
           </Card>
         ) : (
-          <div className="space-y-4">
-            {filteredQuotes.map((quote) => (
-              <Card key={quote.id} className="border-2 hover:shadow-xl hover:border-blue-300 transition-all duration-300">
-                <CardHeader>
+          <div className="space-y-6">
+            {filteredQuotes.map((quote, index) => (
+              <Card 
+                key={quote.id} 
+                className="border-2 border-blue-100 hover:shadow-2xl hover:shadow-blue-200/50 hover:border-blue-400 transition-all duration-500 hover:scale-[1.02] overflow-hidden"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <CardHeader className="bg-gradient-to-r from-blue-50 via-purple-50/50 to-blue-50/30 border-b-2 border-blue-100 pb-6">
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                     <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
+                      <div className="flex items-center gap-3 mb-3">
                         {getStatusBadge(quote.status)}
                         {getUrgencyBadge(quote.urgency)}
                       </div>
-                      <CardTitle className="text-xl mb-1">
+                      <CardTitle className="text-2xl font-bold mb-2 bg-gradient-to-r from-blue-700 to-purple-700 bg-clip-text text-transparent">
                         {quote.service_type}
                       </CardTitle>
                       <CardDescription className="flex flex-col gap-1">
@@ -299,22 +303,26 @@ export default function OrcamentosOficinaPage() {
                           setSelectedQuote(quote);
                           setRespondDialogOpen(true);
                         }}
-                        className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto"
+                        className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 w-full sm:w-auto font-bold shadow-xl shadow-blue-600/40 hover:scale-105 transition-all duration-300 text-lg px-6 py-6"
+                        size="lg"
                       >
-                        Responder
+                        <FileText className="mr-2 h-5 w-5" />
+                        Responder Agora
                       </Button>
                     )}
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-5 pt-6">
                   {/* Veículo */}
                   {quote.vehicle && (
-                    <div className="bg-gray-50 rounded-lg p-4">
-                      <div className="flex items-center gap-2 mb-2">
-                        <Car className="h-5 w-5 text-gray-600" />
-                        <span className="font-semibold text-gray-900">Veículo</span>
+                    <div className="bg-gradient-to-r from-blue-50 to-cyan-50 border-2 border-blue-200 rounded-xl p-5 shadow-md hover:shadow-lg transition-shadow">
+                      <div className="flex items-center gap-3 mb-3">
+                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-lg">
+                          <Car className="h-5 w-5 text-white" />
+                        </div>
+                        <span className="font-bold text-gray-900 text-lg">Veículo</span>
                       </div>
-                      <p className="text-gray-700">
+                      <p className="text-gray-900 font-semibold text-base">
                         {quote.vehicle.make} {quote.vehicle.model} - {quote.vehicle.year}
                         {quote.vehicle.plate && ` • Placa: ${quote.vehicle.plate}`}
                       </p>
@@ -322,36 +330,44 @@ export default function OrcamentosOficinaPage() {
                   )}
 
                   {/* Descrição */}
-                  <div>
-                    <p className="text-sm font-semibold text-gray-700 mb-2">Descrição do Problema:</p>
-                    <p className="text-gray-900 whitespace-pre-line">{quote.description}</p>
+                  <div className="bg-gray-50 border-2 border-gray-200 rounded-xl p-5">
+                    <p className="text-sm font-bold text-gray-700 mb-3 uppercase tracking-wide">Descrição do Problema:</p>
+                    <p className="text-gray-900 whitespace-pre-line leading-relaxed">{quote.description}</p>
                   </div>
 
                   {/* Resposta */}
                   {quote.workshop_response && (
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                      <p className="text-sm font-semibold text-blue-900 mb-2">Sua Resposta:</p>
-                      <p className="text-blue-800 mb-2">{quote.workshop_response}</p>
+                    <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300 rounded-xl p-5 shadow-lg">
+                      <p className="text-sm font-bold text-green-900 mb-3 uppercase tracking-wide">✅ Sua Resposta:</p>
+                      <p className="text-green-900 mb-3 font-medium leading-relaxed">{quote.workshop_response}</p>
                       {quote.estimated_price && (
-                        <p className="text-lg font-bold text-blue-900">
-                          Valor Estimado: R$ {quote.estimated_price.toFixed(2)}
-                        </p>
+                        <div className="bg-white rounded-lg p-4 border-2 border-green-200 mt-3">
+                          <p className="text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                            Valor Estimado: R$ {quote.estimated_price.toFixed(2)}
+                          </p>
+                        </div>
                       )}
                       {quote.responded_at && (
-                        <p className="text-xs text-blue-700 mt-2">
-                          Respondido em {new Date(quote.responded_at).toLocaleDateString("pt-BR")}
+                        <p className="text-xs text-green-700 mt-3 font-medium">
+                          📅 Respondido em {new Date(quote.responded_at).toLocaleDateString("pt-BR")}
                         </p>
                       )}
                     </div>
                   )}
 
                   {/* Contato do Cliente */}
-                  <div className="flex flex-wrap gap-4 text-sm text-gray-600 pt-4 border-t">
+                  <div className="flex flex-wrap gap-4 pt-5 border-t-2 border-gray-200">
                     {quote.motorist?.profiles?.email && (
-                      <span>📧 {quote.motorist.profiles.email}</span>
+                      <div className="flex items-center gap-2 bg-blue-50 px-4 py-2 rounded-lg border border-blue-200">
+                        <span className="text-blue-600 font-medium">📧</span>
+                        <span className="text-gray-900 font-medium">{quote.motorist.profiles.email}</span>
+                      </div>
                     )}
                     {quote.motorist?.profiles?.phone && (
-                      <span>📱 {quote.motorist.profiles.phone}</span>
+                      <div className="flex items-center gap-2 bg-green-50 px-4 py-2 rounded-lg border border-green-200">
+                        <span className="text-green-600 font-medium">📱</span>
+                        <span className="text-gray-900 font-medium">{quote.motorist.profiles.phone}</span>
+                      </div>
                     )}
                   </div>
                 </CardContent>

@@ -251,29 +251,37 @@ function OrdensContent() {
   const showLimitWarning = workshop?.plan_type === "free" && ordersThisMonth >= 25;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/20 to-blue-50/20 pb-12">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/30 to-blue-50/20 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-        <PageHeader
-          title="Ordens de Serviço"
-          description={
-            <div className="flex items-center gap-3">
-              <span className="text-gray-600">
+        {/* Header Customizado com Gradiente */}
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-8">
+          <div className="space-y-3">
+            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-800 bg-clip-text text-transparent leading-tight">
+              Ordens de Serviço 🔧
+            </h1>
+            <div className="flex items-center gap-3 flex-wrap">
+              <p className="text-gray-600 text-lg">
                 Gerencie as ordens de serviço da oficina
-              </span>
+              </p>
               {workshop?.plan_type === "free" && (
-                <Badge className="bg-purple-100 text-purple-800 border-purple-200 text-xs font-bold">
+                <Badge className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white border-0 text-sm font-bold px-3 py-1 shadow-lg animate-pulse">
                   {ordersThisMonth}/30 OS este mês
                 </Badge>
               )}
+              <Badge className="bg-purple-100 text-purple-800 border-purple-200 text-sm font-bold px-3 py-1">
+                {orders.length} total
+              </Badge>
             </div>
-          }
-          action={
-            <Button onClick={() => handleOpenDialog()} className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 font-bold shadow-lg shadow-purple-600/30 hover:scale-105 transition-transform">
-              <Plus className="mr-2 h-4 w-4" />
-              Nova OS
-            </Button>
-          }
-        />
+          </div>
+          <Button 
+            onClick={() => handleOpenDialog()} 
+            className="bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-700 hover:to-fuchsia-700 font-bold shadow-xl shadow-purple-600/40 hover:scale-105 transition-all duration-300 text-lg px-6 py-6"
+            size="lg"
+          >
+            <Plus className="mr-2 h-5 w-5" />
+            Nova OS
+          </Button>
+        </div>
 
         {/* Alerta de limite próximo */}
         {showLimitWarning && (
@@ -351,45 +359,55 @@ function OrdensContent() {
             </CardContent>
           </Card>
         ) : (
-          <Card className="border-2 shadow-lg hover:shadow-xl transition-shadow">
-            <CardHeader className="border-b bg-gradient-to-r from-gray-50 to-purple-50/30">
-              <CardTitle className="flex items-center gap-2">
-                <Wrench className="h-5 w-5 text-purple-600" />
-                Lista de Ordens de Serviço
-                <Badge className="ml-auto bg-purple-100 text-purple-800 border-purple-200">
-                  {filteredOrders.length} {filteredOrders.length === 1 ? 'OS' : 'OS'}
+          <Card className="border-2 border-purple-100 shadow-2xl hover:shadow-purple-200/50 transition-all duration-300 overflow-hidden">
+            <CardHeader className="border-b-2 border-purple-100 bg-gradient-to-r from-purple-50 via-fuchsia-50 to-purple-50/50 py-6">
+              <CardTitle className="flex items-center gap-3 text-2xl">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-fuchsia-600 flex items-center justify-center shadow-lg shadow-purple-500/30">
+                  <Wrench className="h-6 w-6 text-white" />
+                </div>
+                <span className="font-bold text-gray-900">Lista de Ordens de Serviço</span>
+                <Badge className="ml-auto bg-gradient-to-r from-purple-500 to-fuchsia-500 text-white border-0 text-base px-4 py-2 shadow-lg">
+                  {filteredOrders.length} OS
                 </Badge>
               </CardTitle>
             </CardHeader>
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
-                  <TableRow className="bg-gray-50/50">
-                    <TableHead className="font-bold text-gray-900">Número</TableHead>
-                    <TableHead className="font-bold text-gray-900">Cliente</TableHead>
-                    <TableHead className="font-bold text-gray-900">Veículo</TableHead>
-                    <TableHead className="font-bold text-gray-900">Status</TableHead>
-                    <TableHead className="font-bold text-gray-900">Total</TableHead>
-                    <TableHead className="font-bold text-gray-900">Data</TableHead>
-                    <TableHead className="text-right font-bold text-gray-900">Ações</TableHead>
+                  <TableRow className="bg-gradient-to-r from-gray-50 to-purple-50/30 border-b-2 border-purple-100">
+                    <TableHead className="font-bold text-gray-900 text-base py-4">Número</TableHead>
+                    <TableHead className="font-bold text-gray-900 text-base py-4">Cliente</TableHead>
+                    <TableHead className="font-bold text-gray-900 text-base py-4">Veículo</TableHead>
+                    <TableHead className="font-bold text-gray-900 text-base py-4">Status</TableHead>
+                    <TableHead className="font-bold text-gray-900 text-base py-4">Total</TableHead>
+                    <TableHead className="font-bold text-gray-900 text-base py-4">Data</TableHead>
+                    <TableHead className="text-right font-bold text-gray-900 text-base py-4">Ações</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredOrders.map((order) => (
-                    <TableRow key={order.id} className="hover:bg-purple-50/30 transition-colors">
-                      <TableCell className="font-bold text-purple-600">{order.order_number}</TableCell>
-                      <TableCell>{order.client?.name || "-"}</TableCell>
-                      <TableCell>
+                  {filteredOrders.map((order, index) => (
+                    <TableRow 
+                      key={order.id} 
+                      className="group hover:bg-gradient-to-r hover:from-purple-50 hover:to-fuchsia-50/30 transition-all duration-300 border-b border-gray-100 hover:border-purple-200"
+                      style={{ animationDelay: `${index * 50}ms` }}
+                    >
+                      <TableCell className="font-black text-purple-700 py-4 text-base group-hover:text-purple-900 transition-colors">
+                        {order.order_number}
+                      </TableCell>
+                      <TableCell className="font-semibold text-gray-900 py-4 group-hover:text-purple-700 transition-colors">
+                        {order.client?.name || "-"}
+                      </TableCell>
+                      <TableCell className="text-gray-600 py-4 font-medium group-hover:text-gray-900 transition-colors">
                         {order.vehicle
                           ? `${order.vehicle.plate} - ${order.vehicle.brand} ${order.vehicle.model}`
                           : "-"}
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="py-4">
                         <select
                           value={order.status}
                           onChange={(e) => handleStatusChange(order.id, e.target.value)}
                           className={cn(
-                            "px-3 py-1 rounded-full text-xs font-medium border cursor-pointer",
+                            "px-4 py-2 rounded-xl text-sm font-bold border-2 cursor-pointer shadow-md hover:shadow-lg transition-all",
                             statusConfig[order.status as keyof typeof statusConfig].color
                           )}
                         >
@@ -400,19 +418,19 @@ function OrdensContent() {
                           ))}
                         </select>
                       </TableCell>
-                      <TableCell className="font-semibold">
+                      <TableCell className="font-bold text-green-600 py-4 text-base">
                         R$ {order.total.toFixed(2).replace(".", ",")}
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="text-gray-600 py-4 font-medium">
                         {new Date(order.created_at).toLocaleDateString("pt-BR")}
                       </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex justify-end gap-1">
+                      <TableCell className="text-right py-4">
+                        <div className="flex justify-end gap-2">
                           <Button
                             variant="ghost"
                             size="icon"
                             onClick={() => handleOpenDialog(order)}
-                            className="hover:bg-blue-100 hover:text-blue-700 transition-colors"
+                            className="hover:bg-blue-500 hover:text-white transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-blue-500/50"
                           >
                             <Pencil className="h-4 w-4" />
                           </Button>
@@ -420,7 +438,7 @@ function OrdensContent() {
                             variant="ghost"
                             size="icon"
                             onClick={() => handleDelete(order.id)}
-                            className="hover:bg-red-100 hover:text-red-700 transition-colors"
+                            className="hover:bg-red-500 hover:text-white transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-red-500/50"
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
