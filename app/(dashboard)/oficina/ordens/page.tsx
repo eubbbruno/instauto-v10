@@ -433,18 +433,18 @@ function OrdensContent() {
               </div>
             </Card>
           )}
+
+          {/* Dialog */}
+          <ServiceOrderDialog
+            open={dialogOpen}
+            onClose={handleCloseDialog}
+            order={editingOrder}
+            clients={clients}
+            workshopId={workshop?.id || null}
+            onSuccess={loadOrders}
+          />
         </div>
       </div>
-
-      {/* Dialog */}
-      <ServiceOrderDialog
-        open={dialogOpen}
-        onClose={handleCloseDialog}
-        order={editingOrder}
-        clients={clients}
-        workshopId={workshop?.id || null}
-        onSuccess={loadOrders}
-      />
     </div>
   );
 }

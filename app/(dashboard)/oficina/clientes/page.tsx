@@ -309,17 +309,16 @@ function ClientesContent() {
             </div>
           </Card>
         )}
-      </div>
-    </div>
 
-      {/* Dialog */}
-      <ClientDialog
-        open={dialogOpen}
-        onClose={handleCloseDialog}
-        client={editingClient}
-        workshopId={workshop?.id || null}
-        onSuccess={loadClients}
-      />
+        {/* Dialog */}
+        <ClientDialog
+          open={dialogOpen}
+          onClose={handleCloseDialog}
+          client={editingClient}
+          workshopId={workshop?.id || null}
+          onSuccess={loadClients}
+        />
+      </div>
     </div>
   );
 }
