@@ -176,46 +176,58 @@ export default function OrcamentosOficinaPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 via-blue-50/20 to-purple-50/20">
+        <div className="text-center">
+          <Loader2 className="h-16 w-16 animate-spin text-blue-600 mx-auto mb-4" />
+          <p className="text-gray-600 font-medium">Carregando orçamentos...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-20">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/20 to-purple-50/20 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 mb-6">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Orçamentos Recebidos</h1>
-              <p className="text-gray-600">Gerencie as solicitações de orçamento dos clientes</p>
+              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent mb-3">
+                Orçamentos Recebidos
+              </h1>
+              <p className="text-gray-600 text-lg">Gerencie as solicitações de orçamento dos clientes</p>
             </div>
             {pendingCount > 0 && (
-              <Badge className="bg-yellow-500 text-white text-lg px-4 py-2 w-fit">
+              <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white text-lg px-6 py-3 w-fit shadow-lg shadow-yellow-500/40 animate-pulse">
                 {pendingCount} {pendingCount === 1 ? "novo" : "novos"}
               </Badge>
             )}
           </div>
 
           {/* Filtros */}
-          <Card>
+          <Card className="border-2 shadow-lg">
+            <CardHeader className="border-b bg-gradient-to-r from-gray-50 to-blue-50/30">
+              <CardTitle className="flex items-center gap-2">
+                <Filter className="h-5 w-5 text-blue-600" />
+                Filtros de Busca
+              </CardTitle>
+            </CardHeader>
             <CardContent className="pt-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {/* Busca */}
-                <div className="md:col-span-2">
+                <div className="md:col-span-2 relative">
+                  <FileText className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                   <Input
                     placeholder="Buscar por cliente, serviço ou descrição..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full"
+                    className="pl-10 h-11 border-2 focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
 
                 {/* Status */}
                 <Select value={filterStatus} onValueChange={setFilterStatus}>
-                  <SelectTrigger>
+                  <SelectTrigger className="h-11 border-2">
                     <Filter className="h-4 w-4 mr-2" />
                     <SelectValue placeholder="Filtrar por status" />
                   </SelectTrigger>
@@ -234,16 +246,18 @@ export default function OrcamentosOficinaPage() {
 
         {/* Lista de Orçamentos */}
         {filteredQuotes.length === 0 ? (
-          <Card className="text-center py-12">
-            <CardContent className="pt-6">
-              <FileText className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+          <Card className="border-2 shadow-xl bg-gradient-to-br from-white to-gray-50">
+            <CardContent className="text-center py-16">
+              <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-100 to-purple-200 flex items-center justify-center">
+                <FileText className="h-10 w-10 text-blue-600" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">
                 {quotes.length === 0 
                   ? "Nenhum orçamento recebido ainda"
                   : "Nenhum orçamento encontrado"
                 }
               </h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 max-w-md mx-auto">
                 {quotes.length === 0
                   ? "Quando clientes solicitarem orçamentos, eles aparecerão aqui."
                   : "Tente ajustar os filtros de busca."}
@@ -253,7 +267,7 @@ export default function OrcamentosOficinaPage() {
         ) : (
           <div className="space-y-4">
             {filteredQuotes.map((quote) => (
-              <Card key={quote.id} className="hover:shadow-md transition-shadow">
+              <Card key={quote.id} className="border-2 hover:shadow-xl hover:border-blue-300 transition-all duration-300">
                 <CardHeader>
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                     <div className="flex-1">

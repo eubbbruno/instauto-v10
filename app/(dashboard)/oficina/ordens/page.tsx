@@ -26,8 +26,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Plus, Pencil, Trash2, Loader2, Search, FileText, AlertCircle, Crown } from "lucide-react";
+import { Plus, Pencil, Trash2, Loader2, Search, FileText, AlertCircle, Crown, Wrench } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
 import PlanGuard from "@/components/auth/PlanGuard";
 import { PageHeader } from "@/components/dashboard/PageHeader";
 
@@ -250,98 +251,133 @@ function OrdensContent() {
   const showLimitWarning = workshop?.plan_type === "free" && ordersThisMonth >= 25;
 
   return (
-    <div className="space-y-8">
-      <PageHeader
-        title="Ordens de Serviço"
-        description="Gerencie as ordens de serviço da oficina"
-        action={
-          <Button onClick={() => handleOpenDialog()} className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 font-bold shadow-lg shadow-blue-600/30">
-            <Plus className="mr-2 h-4 w-4" />
-            Nova OS
-          </Button>
-        }
-      />
-
-      {/* Alerta de limite próximo */}
-      {showLimitWarning && (
-        <Card className="border-yellow-200 bg-yellow-50">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-yellow-800">
-              <AlertCircle className="h-5 w-5" />
-              Limite próximo
-            </CardTitle>
-            <CardDescription className="text-yellow-700">
-              Você está próximo do limite de 30 OS por mês do plano FREE.
-              Faça upgrade para o plano PRO e tenha OS ilimitadas!
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button variant="default" className="bg-yellow-600 hover:bg-yellow-700">
-              <Crown className="mr-2 h-4 w-4" />
-              Fazer Upgrade para PRO
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/20 to-blue-50/20 pb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        <PageHeader
+          title="Ordens de Serviço"
+          description={
+            <div className="flex items-center gap-3">
+              <span className="text-gray-600">
+                Gerencie as ordens de serviço da oficina
+              </span>
+              {workshop?.plan_type === "free" && (
+                <Badge className="bg-purple-100 text-purple-800 border-purple-200 text-xs font-bold">
+                  {ordersThisMonth}/30 OS este mês
+                </Badge>
+              )}
+            </div>
+          }
+          action={
+            <Button onClick={() => handleOpenDialog()} className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 font-bold shadow-lg shadow-purple-600/30 hover:scale-105 transition-transform">
+              <Plus className="mr-2 h-4 w-4" />
+              Nova OS
             </Button>
+          }
+        />
+
+        {/* Alerta de limite próximo */}
+        {showLimitWarning && (
+          <Card className="border-2 border-yellow-200 bg-gradient-to-br from-yellow-50 to-orange-50 shadow-xl">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-yellow-900 font-bold text-lg">
+                <AlertCircle className="h-6 w-6 text-yellow-600" />
+                Limite Próximo - Ação Necessária
+              </CardTitle>
+              <CardDescription className="text-yellow-800 font-medium">
+                Você está próximo do limite de 30 OS por mês do plano FREE.
+                Faça upgrade para o plano PRO e tenha OS ilimitadas!
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-bold shadow-lg shadow-yellow-500/40 hover:scale-105 transition-transform">
+                <Crown className="mr-2 h-5 w-5" />
+                Fazer Upgrade para PRO
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Search Card */}
+        <Card className="border-2 shadow-lg">
+          <CardContent className="pt-6">
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+              <Input
+                placeholder="Buscar por número da OS, cliente ou placa..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-12 h-12 border-2 text-base focus:ring-2 focus:ring-purple-500"
+              />
+            </div>
           </CardContent>
         </Card>
-      )}
 
-      {/* Search */}
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-        <Input
-          placeholder="Buscar por número da OS, cliente ou placa..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="pl-10"
-        />
-      </div>
-
-      {/* Table */}
-      {loading ? (
-        <div className="flex items-center justify-center h-64">
-          <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
-        </div>
-      ) : filteredOrders.length === 0 ? (
-        <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
-          <FileText className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-          <p className="text-gray-600 mb-2">
-            {searchTerm
-              ? "Nenhuma ordem de serviço encontrada"
-              : "Nenhuma ordem de serviço cadastrada ainda"}
-          </p>
-          {!searchTerm && clients.length > 0 && (
-            <Button
-              onClick={() => handleOpenDialog()}
-              variant="outline"
-              className="mt-4"
-            >
-              <Plus className="mr-2 h-4 w-4" />
-              Criar Primeira OS
-            </Button>
-          )}
-          {!searchTerm && clients.length === 0 && (
-            <p className="text-sm text-gray-500 mt-2">
-              Cadastre um cliente e veículo primeiro
-            </p>
-          )}
-        </div>
-      ) : (
-        <div className="bg-white rounded-lg border border-gray-200">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Número</TableHead>
-                <TableHead>Cliente</TableHead>
-                <TableHead>Veículo</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Total</TableHead>
-                <TableHead>Data</TableHead>
-                <TableHead className="text-right">Ações</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {filteredOrders.map((order) => (
-                <TableRow key={order.id}>
-                  <TableCell className="font-medium">{order.order_number}</TableCell>
+        {/* Table */}
+        {loading ? (
+          <Card className="border-2 shadow-lg">
+            <CardContent className="flex flex-col items-center justify-center py-20">
+              <Loader2 className="h-16 w-16 animate-spin text-purple-600 mb-4" />
+              <p className="text-gray-600 font-medium">Carregando ordens de serviço...</p>
+            </CardContent>
+          </Card>
+        ) : filteredOrders.length === 0 ? (
+          <Card className="border-2 shadow-xl bg-gradient-to-br from-white to-gray-50">
+            <CardContent className="text-center py-16">
+              <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center">
+                <FileText className="h-10 w-10 text-purple-600" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">
+                {searchTerm
+                  ? "Nenhuma ordem de serviço encontrada"
+                  : "Nenhuma ordem de serviço cadastrada ainda"}
+              </h3>
+              <p className="text-gray-600 mb-6 max-w-md mx-auto">
+                {searchTerm
+                  ? "Tente ajustar sua busca ou limpar os filtros"
+                  : clients.length > 0 
+                    ? "Comece criando sua primeira ordem de serviço"
+                    : "Cadastre um cliente e veículo primeiro"}
+              </p>
+              {!searchTerm && clients.length > 0 && (
+                <Button
+                  onClick={() => handleOpenDialog()}
+                  className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 font-bold shadow-lg shadow-purple-600/30 hover:scale-105 transition-transform"
+                  size="lg"
+                >
+                  <Plus className="mr-2 h-5 w-5" />
+                  Criar Primeira OS
+                </Button>
+              )}
+            </CardContent>
+          </Card>
+        ) : (
+          <Card className="border-2 shadow-lg hover:shadow-xl transition-shadow">
+            <CardHeader className="border-b bg-gradient-to-r from-gray-50 to-purple-50/30">
+              <CardTitle className="flex items-center gap-2">
+                <Wrench className="h-5 w-5 text-purple-600" />
+                Lista de Ordens de Serviço
+                <Badge className="ml-auto bg-purple-100 text-purple-800 border-purple-200">
+                  {filteredOrders.length} {filteredOrders.length === 1 ? 'OS' : 'OS'}
+                </Badge>
+              </CardTitle>
+            </CardHeader>
+            <div className="overflow-x-auto">
+              <Table>
+                <TableHeader>
+                  <TableRow className="bg-gray-50/50">
+                    <TableHead className="font-bold text-gray-900">Número</TableHead>
+                    <TableHead className="font-bold text-gray-900">Cliente</TableHead>
+                    <TableHead className="font-bold text-gray-900">Veículo</TableHead>
+                    <TableHead className="font-bold text-gray-900">Status</TableHead>
+                    <TableHead className="font-bold text-gray-900">Total</TableHead>
+                    <TableHead className="font-bold text-gray-900">Data</TableHead>
+                    <TableHead className="text-right font-bold text-gray-900">Ações</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredOrders.map((order) => (
+                    <TableRow key={order.id} className="hover:bg-purple-50/30 transition-colors">
+                      <TableCell className="font-bold text-purple-600">{order.order_number}</TableCell>
                   <TableCell>{order.client?.name || "-"}</TableCell>
                   <TableCell>
                     {order.vehicle
@@ -370,28 +406,35 @@ function OrdensContent() {
                   <TableCell>
                     {new Date(order.created_at).toLocaleDateString("pt-BR")}
                   </TableCell>
-                  <TableCell className="text-right">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleOpenDialog(order)}
-                    >
-                      <Pencil className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleDelete(order.id)}
-                    >
-                      <Trash2 className="h-4 w-4 text-red-600" />
-                    </Button>
-                  </TableCell>
+                      <TableCell className="text-right">
+                        <div className="flex justify-end gap-1">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleOpenDialog(order)}
+                            className="hover:bg-blue-100 hover:text-blue-700 transition-colors"
+                          >
+                            <Pencil className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleDelete(order.id)}
+                            className="hover:bg-red-100 hover:text-red-700 transition-colors"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </TableCell>
                 </TableRow>
               ))}
-            </TableBody>
-          </Table>
+                  </TableBody>
+                </Table>
+              </div>
+            </Card>
+          )}
         </div>
-      )}
+      </div>
 
       {/* Dialog */}
       <ServiceOrderDialog
