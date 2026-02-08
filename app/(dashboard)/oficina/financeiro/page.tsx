@@ -107,51 +107,73 @@ export default function FinanceiroPage() {
 
   const supabase = createClient();
 
-  useEffect(() => {
-    if (profile?.id) {
-      loadWorkshopAndTransactions();
+  const loadWorkshopAndTransactions = async (signal?: AbortSignal) => {
+    try {
+      setLoading(true);
+
+      let query1 = supabase
+        .from("workshops")
+        .select("id")
+        .eq("profile_id", profile?.id);
+
+      if (signal) query1 = query1.abortSignal(signal);
+
+      const { data: workshop, error: workshopError } = await query1.single();
+
+      if (workshopError) throw workshopError;
+      setWorkshopId(workshop.id);
+
+      let query2 = supabase
+        .from("transactions")
+        .select("*")
+        .eq("workshop_id", workshop.id);
+
+      if (signal) query2 = query2.abortSignal(signal);
+
+      const { data: transactionsData, error: transactionsError } = await query2
+        .order("date", { ascending: false })
+        .order("created_at", { ascending: false });
+
+      if (transactionsError) throw transactionsError;
+      setTransactions(transactionsData || []);
+    } catch (error: any) {
+      if (error.name !== 'AbortError') {
+        console.error("Erro ao carregar transações:", error);
+        toast({
+          variant: "destructive",
+          title: "Erro",
+          description: "Não foi possível carregar as transações.",
+        });
+      }
+    } finally {
+      setLoading(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  };
+
+  useEffect(() => {
+    if (!profile?.id) return;
+
+    const abortController = new AbortController();
+    let mounted = true;
+
+    const load = async () => {
+      if (mounted) {
+        await loadWorkshopAndTransactions(abortController.signal);
+      }
+    };
+
+    load();
+
+    return () => {
+      mounted = false;
+      abortController.abort();
+    };
   }, [profile?.id]);
 
   useEffect(() => {
     filterTransactions();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterType, filterPeriod, filterCategory, customStartDate, customEndDate, transactions]);
-
-  const loadWorkshopAndTransactions = async () => {
-    try {
-      setLoading(true);
-
-      const { data: workshop, error: workshopError } = await supabase
-        .from("workshops")
-        .select("id")
-        .eq("profile_id", profile?.id)
-        .single();
-
-      if (workshopError) throw workshopError;
-      setWorkshopId(workshop.id);
-
-      const { data: transactionsData, error: transactionsError } = await supabase
-        .from("transactions")
-        .select("*")
-        .eq("workshop_id", workshop.id)
-        .order("date", { ascending: false })
-        .order("created_at", { ascending: false });
-
-      if (transactionsError) throw transactionsError;
-      setTransactions(transactionsData || []);
-    } catch (error) {
-      console.error("Erro ao carregar transações:", error);
-      toast({
-        variant: "destructive",
-        title: "Erro",
-        description: "Não foi possível carregar as transações.",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const filterTransactions = () => {
     let filtered = [...transactions];

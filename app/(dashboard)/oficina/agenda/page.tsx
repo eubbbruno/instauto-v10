@@ -99,52 +99,69 @@ export default function AgendaPage() {
   const supabase = createClient();
 
   useEffect(() => {
-    if (profile?.id) {
-      loadData();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (!profile?.id) return;
+
+    const abortController = new AbortController();
+    let mounted = true;
+
+    const loadData = async () => {
+      try {
+        setLoading(true);
+
+        const { data: workshop, error: workshopError } = await supabase
+          .from("workshops")
+          .select("id")
+          .eq("profile_id", profile.id)
+          .abortSignal(abortController.signal)
+          .single();
+
+        if (workshopError) throw workshopError;
+        if (!mounted) return;
+        
+        setWorkshopId(workshop.id);
+
+        // Carregar clientes
+        const { data: clientsData, error: clientsError } = await supabase
+          .from("clients")
+          .select("id, name")
+          .eq("workshop_id", workshop.id)
+          .abortSignal(abortController.signal)
+          .order("name");
+
+        if (clientsError) throw clientsError;
+        if (!mounted) return;
+        
+        setClients(clientsData || []);
+
+        // Carregar agendamentos
+        await loadAppointments(workshop.id, abortController.signal);
+      } catch (error: any) {
+        if (error.name !== 'AbortError' && mounted) {
+          console.error("Erro ao carregar dados:", error);
+          toast({
+            variant: "destructive",
+            title: "Erro",
+            description: "Não foi possível carregar os dados.",
+          });
+        }
+      } finally {
+        if (mounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    loadData();
+
+    return () => {
+      mounted = false;
+      abortController.abort();
+    };
   }, [profile?.id]);
 
-  const loadData = async () => {
+  const loadAppointments = async (wId: string, signal?: AbortSignal) => {
     try {
-      setLoading(true);
-
-      const { data: workshop, error: workshopError } = await supabase
-        .from("workshops")
-        .select("id")
-        .eq("profile_id", profile?.id)
-        .single();
-
-      if (workshopError) throw workshopError;
-      setWorkshopId(workshop.id);
-
-      // Carregar clientes
-      const { data: clientsData, error: clientsError } = await supabase
-        .from("clients")
-        .select("id, name")
-        .eq("workshop_id", workshop.id)
-        .order("name");
-
-      if (clientsError) throw clientsError;
-      setClients(clientsData || []);
-
-      // Carregar agendamentos
-      await loadAppointments(workshop.id);
-    } catch (error) {
-      console.error("Erro ao carregar dados:", error);
-      toast({
-        variant: "destructive",
-        title: "Erro",
-        description: "Não foi possível carregar os dados.",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const loadAppointments = async (wId: string) => {
-    try {
-      const { data, error } = await supabase
+      const query = supabase
         .from("appointments")
         .select(`
           *,
@@ -155,6 +172,12 @@ export default function AgendaPage() {
         .order("date", { ascending: false })
         .order("start_time", { ascending: true });
 
+      if (signal) {
+        query.abortSignal(signal);
+      }
+
+      const { data, error } = await query;
+
       if (error) throw error;
 
       const appointmentsWithRelations = (data || []).map((apt: any) => ({
@@ -164,8 +187,10 @@ export default function AgendaPage() {
       }));
 
       setAppointments(appointmentsWithRelations);
-    } catch (error) {
-      console.error("Erro ao carregar agendamentos:", error);
+    } catch (error: any) {
+      if (error.name !== 'AbortError') {
+        console.error("Erro ao carregar agendamentos:", error);
+      }
     }
   };
 

@@ -78,52 +78,112 @@ export default function EstoquePage() {
 
   const supabase = createClient();
 
-  useEffect(() => {
-    if (profile?.id) {
-      loadWorkshopAndItems();
+  const loadWorkshopAndItems = async (signal?: AbortSignal) => {
+    try {
+      setLoading(true);
+
+      // Buscar workshop
+      let query1 = supabase
+        .from("workshops")
+        .select("id")
+        .eq("profile_id", profile?.id);
+
+      if (signal) query1 = query1.abortSignal(signal);
+
+      const { data: workshop, error: workshopError } = await query1.single();
+
+      if (workshopError) throw workshopError;
+      setWorkshopId(workshop.id);
+
+      // Buscar itens do estoque
+      let query2 = supabase
+        .from("inventory")
+        .select("*")
+        .eq("workshop_id", workshop.id);
+
+      if (signal) query2 = query2.abortSignal(signal);
+
+      const { data: inventoryData, error: inventoryError } = await query2.order("name");
+
+      if (inventoryError) throw inventoryError;
+      setItems(inventoryData || []);
+    } catch (error: any) {
+      if (error.name !== 'AbortError') {
+        console.error("Erro ao carregar estoque:", error);
+        toast({
+          variant: "destructive",
+          title: "Erro",
+          description: "Não foi possível carregar o estoque.",
+        });
+      }
+    } finally {
+      setLoading(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  };
+
+  useEffect(() => {
+    if (!profile?.id) return;
+
+    const abortController = new AbortController();
+    let mounted = true;
+
+    const load = async () => {
+      try {
+        setLoading(true);
+
+        // Buscar workshop
+        const { data: workshop, error: workshopError } = await supabase
+          .from("workshops")
+          .select("id")
+          .eq("profile_id", profile.id)
+          .abortSignal(abortController.signal)
+          .single();
+
+        if (workshopError) throw workshopError;
+        if (!mounted) return;
+        
+        setWorkshopId(workshop.id);
+
+        // Buscar itens do estoque
+        const { data: inventoryData, error: inventoryError } = await supabase
+          .from("inventory")
+          .select("*")
+          .eq("workshop_id", workshop.id)
+          .abortSignal(abortController.signal)
+          .order("name");
+
+        if (inventoryError) throw inventoryError;
+        if (mounted) {
+          setItems(inventoryData || []);
+        }
+      } catch (error: any) {
+        if (error.name !== 'AbortError' && mounted) {
+          console.error("Erro ao carregar estoque:", error);
+          toast({
+            variant: "destructive",
+            title: "Erro",
+            description: "Não foi possível carregar o estoque.",
+          });
+        }
+      } finally {
+        if (mounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    loadWorkshopAndItems(abortController.signal);
+
+    return () => {
+      mounted = false;
+      abortController.abort();
+    };
   }, [profile?.id]);
 
   useEffect(() => {
     filterItems();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm, items]);
-
-  const loadWorkshopAndItems = async () => {
-    try {
-      setLoading(true);
-
-      // Buscar workshop
-      const { data: workshop, error: workshopError } = await supabase
-        .from("workshops")
-        .select("id")
-        .eq("profile_id", profile?.id)
-        .single();
-
-      if (workshopError) throw workshopError;
-      setWorkshopId(workshop.id);
-
-      // Buscar itens do estoque
-      const { data: inventoryData, error: inventoryError } = await supabase
-        .from("inventory")
-        .select("*")
-        .eq("workshop_id", workshop.id)
-        .order("name");
-
-      if (inventoryError) throw inventoryError;
-      setItems(inventoryData || []);
-    } catch (error) {
-      console.error("Erro ao carregar estoque:", error);
-      toast({
-        variant: "destructive",
-        title: "Erro",
-        description: "Não foi possível carregar o estoque.",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const filterItems = () => {
     if (!searchTerm.trim()) {

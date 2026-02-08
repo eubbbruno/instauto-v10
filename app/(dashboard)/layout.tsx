@@ -70,26 +70,38 @@ export default function DashboardLayout({
   }, [user, loading, router]);
 
   useEffect(() => {
-    if (profile?.id) {
-      loadWorkshop();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (!profile?.id) return;
+
+    const abortController = new AbortController();
+    let mounted = true;
+
+    const loadWorkshop = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("workshops")
+          .select("*")
+          .eq("profile_id", profile.id)
+          .abortSignal(abortController.signal)
+          .single();
+
+        if (error) throw error;
+        if (mounted) {
+          setWorkshop(data);
+        }
+      } catch (error: any) {
+        if (error.name !== 'AbortError' && mounted) {
+          console.error("Erro ao carregar oficina:", error);
+        }
+      }
+    };
+
+    loadWorkshop();
+
+    return () => {
+      mounted = false;
+      abortController.abort();
+    };
   }, [profile?.id]);
-
-  const loadWorkshop = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("workshops")
-        .select("*")
-        .eq("profile_id", profile?.id)
-        .single();
-
-      if (error) throw error;
-      setWorkshop(data);
-    } catch (error) {
-      console.error("Erro ao carregar oficina:", error);
-    }
-  };
 
   const handleSignOut = async () => {
     await signOut();
