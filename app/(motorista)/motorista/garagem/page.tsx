@@ -33,71 +33,103 @@ export default function GaragemPage() {
   const { toast } = useToast();
 
   useEffect(() => {
-    if (!authLoading) {
-      if (profile) {
-        loadVehicles();
-      } else {
-        setLoading(false);
+    if (authLoading || !profile?.id) return;
+
+    const abortController = new AbortController();
+    let mounted = true;
+
+    const loadVehicles = async () => {
+      console.log("🔄 Garagem: Carregando veículos para profile:", profile.id);
+
+      try {
+        setLoading(true);
+
+        // Buscar motorista
+        let query1 = supabase
+          .from("motorists")
+          .select("id")
+          .eq("profile_id", profile.id);
+
+        if (abortController.signal) query1 = query1.abortSignal(abortController.signal);
+
+        const { data: motorist, error: motoristError } = await query1.single();
+
+        if (motoristError) {
+          console.error("❌ Erro ao buscar motorista:", motoristError);
+          if (mounted) {
+            toast({
+              title: "Erro",
+              description: "Não foi possível carregar seus dados. Tente novamente.",
+              variant: "destructive",
+            });
+          }
+          return;
+        }
+
+        if (!mounted) return;
+
+        console.log("✅ Motorista encontrado:", motorist.id);
+        setMotoristId(motorist.id);
+
+        // Buscar veículos
+        let query2 = supabase
+          .from("motorist_vehicles")
+          .select("*")
+          .eq("motorist_id", motorist.id)
+          .eq("is_active", true);
+
+        if (abortController.signal) query2 = query2.abortSignal(abortController.signal);
+
+        const { data, error } = await query2.order("created_at", { ascending: false });
+
+        if (error) {
+          console.error("❌ Erro ao buscar veículos:", error);
+          throw error;
+        }
+
+        if (mounted) {
+          console.log("✅ Veículos carregados:", data?.length || 0);
+          setVehicles(data || []);
+        }
+      } catch (error: any) {
+        if (error.name !== 'AbortError' && mounted) {
+          console.error("❌ Erro ao carregar veículos:", error);
+          toast({
+            title: "Erro",
+            description: "Não foi possível carregar seus veículos. Tente novamente.",
+            variant: "destructive",
+          });
+        }
+      } finally {
+        if (mounted) {
+          console.log("✅ Garagem: Loading finalizado");
+          setLoading(false);
+        }
       }
-    }
-  }, [profile, authLoading]);
+    };
 
-  const loadVehicles = async () => {
-    if (!profile) {
-      console.log("❌ Garagem: Sem profile");
-      setLoading(false);
-      return;
-    }
+    loadVehicles();
 
-    console.log("🔄 Garagem: Carregando veículos para profile:", profile.id);
+    return () => {
+      mounted = false;
+      abortController.abort();
+    };
+  }, [profile?.id, authLoading]);
+
+  const reloadVehicles = async () => {
+    if (!profile?.id || !motoristId) return;
 
     try {
-      // Buscar motorista
-      const { data: motorist, error: motoristError } = await supabase
-        .from("motorists")
-        .select("id")
-        .eq("profile_id", profile.id)
-        .single();
-
-      if (motoristError) {
-        console.error("❌ Erro ao buscar motorista:", motoristError);
-        toast({
-          title: "Erro",
-          description: "Não foi possível carregar seus dados. Tente novamente.",
-          variant: "destructive",
-        });
-        setLoading(false);
-        return;
-      }
-
-      console.log("✅ Motorista encontrado:", motorist.id);
-      setMotoristId(motorist.id);
-
-      // Buscar veículos
-      const { data, error } = await supabase
+      let query = supabase
         .from("motorist_vehicles")
         .select("*")
-        .eq("motorist_id", motorist.id)
-        .eq("is_active", true)
-        .order("created_at", { ascending: false });
+        .eq("motorist_id", motoristId)
+        .eq("is_active", true);
 
-      if (error) {
-        console.error("❌ Erro ao buscar veículos:", error);
-        throw error;
-      }
-      
-      console.log("✅ Veículos carregados:", data?.length || 0);
+      const { data } = await query.order("created_at", { ascending: false });
       setVehicles(data || []);
     } catch (error) {
-      console.error("❌ Erro ao carregar veículos:", error);
-      toast({
-        title: "Erro",
-        description: "Não foi possível carregar seus veículos. Tente novamente.",
-        variant: "destructive",
-      });
-    } finally {
-      console.log("✅ Garagem: Loading finalizado");
-      setLoading(false);
+      console.error("Erro ao recarregar veículos:", error);
     }
   };
 
@@ -136,7 +168,7 @@ export default function GaragemPage() {
         });
       }
 
-      loadVehicles();
+      reloadVehicles();
       setSelectedVehicle(null);
     } catch (error) {
       console.error("Erro ao salvar veículo:", error);
@@ -171,7 +203,7 @@ export default function GaragemPage() {
         description: "Veículo removido com sucesso.",
       });
 
-      loadVehicles();
+      reloadVehicles();
       setDeleteDialogOpen(false);
       setVehicleToDelete(null);
     } catch (error) {
@@ -191,25 +223,31 @@ export default function GaragemPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-indigo-50/20 flex items-center justify-center pt-16">
+        <Card className="border-2 shadow-lg">
+          <CardContent className="flex flex-col items-center justify-center py-20">
+            <Loader2 className="h-16 w-16 animate-spin text-blue-600 mb-4" />
+            <p className="text-gray-600 font-medium">Carregando garagem...</p>
+          </CardContent>
+        </Card>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-16">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-indigo-50/20 pt-16 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-4">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Minha Garagem</h1>
-          <p className="text-gray-600">Gerencie seus veículos e histórico de manutenções</p>
-        </div>
-
-        {/* Botão Adicionar */}
-        <div className="mb-6">
+        {/* Header Premium */}
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-8">
+          <div className="space-y-3">
+            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-800 bg-clip-text text-transparent leading-tight">
+              Minha Garagem 🚗
+            </h1>
+            <p className="text-gray-600 text-lg">Gerencie seus veículos e histórico de manutenções</p>
+          </div>
           <Button 
-            className="bg-blue-600 hover:bg-blue-700"
+            className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 font-bold shadow-xl shadow-blue-600/40 hover:scale-105 transition-all duration-300 text-lg px-6 py-6"
+            size="lg"
             onClick={() => {
               setSelectedVehicle(null);
               setDialogOpen(true);
@@ -222,17 +260,20 @@ export default function GaragemPage() {
 
         {/* Lista de Veículos */}
         {vehicles.length === 0 ? (
-          <Card className="text-center py-12">
-            <CardContent className="pt-6">
-              <Car className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+          <Card className="border-2 shadow-xl bg-gradient-to-br from-white to-gray-50">
+            <CardContent className="text-center py-16">
+              <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-100 to-indigo-200 flex items-center justify-center">
+                <Car className="h-10 w-10 text-blue-600" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">
                 Nenhum veículo cadastrado
               </h3>
-              <p className="text-gray-600 mb-6">
-                Adicione seu primeiro veículo para começar a gerenciar manutenções
+              <p className="text-gray-600 mb-6 max-w-md mx-auto">
+                Adicione seu primeiro veículo para começar a gerenciar manutenções e solicitar orçamentos
               </p>
               <Button 
-                className="bg-blue-600 hover:bg-blue-700"
+                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 font-bold shadow-lg shadow-blue-600/30 hover:scale-105 transition-transform"
+                size="lg"
                 onClick={() => {
                   setSelectedVehicle(null);
                   setDialogOpen(true);

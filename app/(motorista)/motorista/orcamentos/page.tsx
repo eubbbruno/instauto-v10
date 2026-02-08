@@ -36,72 +36,90 @@ export default function OrcamentosMotoristPage() {
   const supabase = createClient();
 
   useEffect(() => {
-    if (authLoading) {
-      return;
-    }
+    if (authLoading) return;
     
-    if (!authLoading && !profile) {
+    if (!profile) {
       router.push("/login-motorista");
       return;
     }
-    
-    if (profile) {
-      loadQuotes();
-    }
-  }, [profile, authLoading, router]);
 
-  const loadQuotes = async () => {
-    try {
-      // Buscar motorista
-      const { data: motorist } = await supabase
-        .from("motorists")
-        .select("id")
-        .eq("profile_id", profile?.id)
-        .single();
+    const abortController = new AbortController();
+    let mounted = true;
 
-      if (!motorist) {
-        setLoading(false);
-        return;
+    const loadQuotes = async () => {
+      try {
+        setLoading(true);
+
+        // Buscar motorista
+        let query1 = supabase
+          .from("motorists")
+          .select("id")
+          .eq("profile_id", profile.id);
+
+        if (abortController.signal) query1 = query1.abortSignal(abortController.signal);
+
+        const { data: motorist } = await query1.single();
+
+        if (!motorist || !mounted) {
+          setLoading(false);
+          return;
+        }
+
+        // Buscar orçamentos com dados da oficina
+        let query2 = supabase
+          .from("quotes")
+          .select(`
+            *,
+            workshop:workshops(name, city, state)
+          `)
+          .eq("motorist_id", motorist.id);
+
+        if (abortController.signal) query2 = query2.abortSignal(abortController.signal);
+
+        const { data, error } = await query2.order("created_at", { ascending: false });
+
+        if (error) throw error;
+        if (mounted) {
+          setQuotes(data || []);
+        }
+      } catch (error: any) {
+        if (error.name !== 'AbortError' && mounted) {
+          console.error("Erro ao carregar orçamentos:", error);
+        }
+      } finally {
+        if (mounted) {
+          setLoading(false);
+        }
       }
+    };
 
-      // Buscar orçamentos com dados da oficina
-      const { data, error } = await supabase
-        .from("quotes")
-        .select(`
-          *,
-          workshop:workshops(name, city, state)
-        `)
-        .eq("motorist_id", motorist.id)
-        .order("created_at", { ascending: false });
+    loadQuotes();
 
-      if (error) throw error;
-      setQuotes(data || []);
-    } catch (error) {
-      console.error("Erro ao carregar orçamentos:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    return () => {
+      mounted = false;
+      abortController.abort();
+    };
+  }, [profile, authLoading, router]);
 
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "pending":
         return (
-          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-semibold bg-yellow-100 text-yellow-800">
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-yellow-400 to-orange-500 text-white shadow-lg shadow-yellow-500/40">
             <Clock className="h-4 w-4" />
             Aguardando
           </span>
         );
       case "responded":
         return (
-          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-800">
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg shadow-green-500/40">
             <CheckCircle2 className="h-4 w-4" />
             Respondido
           </span>
         );
       case "rejected":
         return (
-          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-semibold bg-red-100 text-red-800">
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-red-500 to-rose-600 text-white shadow-lg shadow-red-500/40">
             <XCircle className="h-4 w-4" />
             Recusado
           </span>
@@ -123,27 +141,27 @@ export default function OrcamentosMotoristPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-green-50/30 to-emerald-50/20 flex items-center justify-center pt-16">
+        <div className="animate-spin rounded-full h-16 w-16 border-4 border-t-transparent border-green-600"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-16">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-green-50/30 to-emerald-50/20 pt-16 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-4">
-        {/* Header */}
-        <div className="mb-8">
+        {/* Header Premium */}
+        <div className="mb-10">
           <Link href="/motorista">
-            <button className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4">
+            <button className="flex items-center gap-2 text-gray-600 hover:text-green-700 mb-6 font-medium hover:gap-3 transition-all">
               <ArrowLeft className="h-5 w-5" />
               Voltar ao Dashboard
             </button>
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Meus Orçamentos
+          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-green-600 via-emerald-600 to-green-800 bg-clip-text text-transparent leading-tight mb-3">
+            Meus Orçamentos 📋
           </h1>
-          <p className="text-gray-600">
+          <p className="text-gray-600 text-lg">
             Acompanhe todos os orçamentos solicitados
           </p>
         </div>

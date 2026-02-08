@@ -40,53 +40,69 @@ export default function HistoricoMotoristPage() {
   const supabase = createClient();
 
   useEffect(() => {
-    if (authLoading) {
-      return;
-    }
+    if (authLoading) return;
     
-    if (!authLoading && !profile) {
+    if (!profile) {
       router.push("/login-motorista");
       return;
     }
-    
-    if (profile) {
-      loadMaintenances();
-    }
-  }, [profile, authLoading, router]);
 
-  const loadMaintenances = async () => {
-    try {
-      // Buscar motorista
-      const { data: motorist } = await supabase
-        .from("motorists")
-        .select("id")
-        .eq("profile_id", profile?.id)
-        .single();
+    const abortController = new AbortController();
+    let mounted = true;
 
-      if (!motorist) {
-        setLoading(false);
-        return;
-      }
+    const loadMaintenances = async () => {
+      try {
+        setLoading(true);
 
-      // Buscar histórico de manutenções
-      const { data, error } = await supabase
-        .from("maintenance_history")
-        .select(`
-          *,
-          vehicle:motorist_vehicles(brand, model, year, plate),
-          workshop:workshops(name, city, state)
-        `)
-        .eq("motorist_id", motorist.id)
-        .order("service_date", { ascending: false });
+        let query1 = supabase
+          .from("motorists")
+          .select("id")
+          .eq("profile_id", profile.id);
+
+        if (abortController.signal) query1 = query1.abortSignal(abortController.signal);
+
+        const { data: motorist } = await query1.single();
+
+        if (!motorist || !mounted) {
+          setLoading(false);
+          return;
+        }
+
+        let query2 = supabase
+          .from("maintenance_history")
+          .select(`
+            *,
+            vehicle:motorist_vehicles(brand, model, year, plate),
+            workshop:workshops(name, city, state)
+          `)
+          .eq("motorist_id", motorist.id);
+
+        if (abortController.signal) query2 = query2.abortSignal(abortController.signal);
+
+        const { data, error } = await query2.order("service_date", { ascending: false });
 
       if (error) throw error;
-      setMaintenances(data || []);
-    } catch (error) {
-      console.error("Erro ao carregar histórico:", error);
+      if (mounted) {
+        setMaintenances(data || []);
+      }
+    } catch (error: any) {
+      if (error.name !== 'AbortError' && mounted) {
+        console.error("Erro ao carregar histórico:", error);
+      }
     } finally {
-      setLoading(false);
+      if (mounted) {
+        setLoading(false);
+      }
     }
   };
+
+  loadMaintenances();
+
+  return () => {
+    mounted = false;
+    abortController.abort();
+  };
+}, [profile, authLoading, router]);
 
   const getServiceTypeLabel = (type: string) => {
     const types: Record<string, string> = {
@@ -101,27 +117,27 @@ export default function HistoricoMotoristPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/30 to-violet-50/20 flex items-center justify-center pt-16">
+        <div className="animate-spin rounded-full h-16 w-16 border-4 border-t-transparent border-purple-600"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-16">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/30 to-violet-50/20 pt-16 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-4">
-        {/* Header */}
-        <div className="mb-8">
+        {/* Header Premium */}
+        <div className="mb-10">
           <Link href="/motorista">
-            <button className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4">
+            <button className="flex items-center gap-2 text-gray-600 hover:text-purple-700 mb-6 font-medium hover:gap-3 transition-all">
               <ArrowLeft className="h-5 w-5" />
               Voltar ao Dashboard
             </button>
           </Link>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Histórico de Manutenções
+          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 via-violet-600 to-purple-800 bg-clip-text text-transparent leading-tight mb-3">
+            Histórico de Manutenções 📜
           </h1>
-          <p className="text-gray-600">
+          <p className="text-gray-600 text-lg">
             Acompanhe todas as manutenções realizadas nos seus veículos
           </p>
         </div>
