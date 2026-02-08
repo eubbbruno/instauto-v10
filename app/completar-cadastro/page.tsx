@@ -15,7 +15,7 @@ import Footer from "@/components/layout/Footer";
 
 export default function CompletarCadastroOficinaPage() {
   const router = useRouter();
-  const { profile } = useAuth();
+  const { profile, loading: authLoading } = useAuth();
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -33,13 +33,22 @@ export default function CompletarCadastroOficinaPage() {
 
   useEffect(() => {
     checkIfNeedsCompletion();
-  }, [profile]);
+  }, [profile, authLoading]);
 
   const checkIfNeedsCompletion = async () => {
+    // ⚠️ AGUARDAR authLoading terminar antes de verificar profile
+    if (authLoading) {
+      console.log("⏳ Aguardando auth carregar...");
+      return;
+    }
+
     if (!profile) {
+      console.log("❌ Sem profile após auth carregar, redirecionando para login");
       router.push("/login-oficina");
       return;
     }
+
+    console.log("✅ Profile carregado:", profile.id, profile.type);
 
     try {
       // Verificar se já tem oficina cadastrada
@@ -180,7 +189,7 @@ export default function CompletarCadastroOficinaPage() {
     }
   };
 
-  if (loading) {
+  if (loading || authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-yellow-50 via-white to-yellow-50">
         <div className="text-center">
