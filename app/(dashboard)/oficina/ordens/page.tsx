@@ -378,34 +378,34 @@ function OrdensContent() {
                   {filteredOrders.map((order) => (
                     <TableRow key={order.id} className="hover:bg-purple-50/30 transition-colors">
                       <TableCell className="font-bold text-purple-600">{order.order_number}</TableCell>
-                  <TableCell>{order.client?.name || "-"}</TableCell>
-                  <TableCell>
-                    {order.vehicle
-                      ? `${order.vehicle.plate} - ${order.vehicle.brand} ${order.vehicle.model}`
-                      : "-"}
-                  </TableCell>
-                  <TableCell>
-                    <select
-                      value={order.status}
-                      onChange={(e) => handleStatusChange(order.id, e.target.value)}
-                      className={cn(
-                        "px-3 py-1 rounded-full text-xs font-medium border cursor-pointer",
-                        statusConfig[order.status as keyof typeof statusConfig].color
-                      )}
-                    >
-                      {Object.entries(statusConfig).map(([value, config]) => (
-                        <option key={value} value={value}>
-                          {config.label}
-                        </option>
-                      ))}
-                    </select>
-                  </TableCell>
-                  <TableCell className="font-semibold">
-                    R$ {order.total.toFixed(2).replace(".", ",")}
-                  </TableCell>
-                  <TableCell>
-                    {new Date(order.created_at).toLocaleDateString("pt-BR")}
-                  </TableCell>
+                      <TableCell>{order.client?.name || "-"}</TableCell>
+                      <TableCell>
+                        {order.vehicle
+                          ? `${order.vehicle.plate} - ${order.vehicle.brand} ${order.vehicle.model}`
+                          : "-"}
+                      </TableCell>
+                      <TableCell>
+                        <select
+                          value={order.status}
+                          onChange={(e) => handleStatusChange(order.id, e.target.value)}
+                          className={cn(
+                            "px-3 py-1 rounded-full text-xs font-medium border cursor-pointer",
+                            statusConfig[order.status as keyof typeof statusConfig].color
+                          )}
+                        >
+                          {Object.entries(statusConfig).map(([value, config]) => (
+                            <option key={value} value={value}>
+                              {config.label}
+                            </option>
+                          ))}
+                        </select>
+                      </TableCell>
+                      <TableCell className="font-semibold">
+                        R$ {order.total.toFixed(2).replace(".", ",")}
+                      </TableCell>
+                      <TableCell>
+                        {new Date(order.created_at).toLocaleDateString("pt-BR")}
+                      </TableCell>
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-1">
                           <Button
@@ -426,24 +426,23 @@ function OrdensContent() {
                           </Button>
                         </div>
                       </TableCell>
-                </TableRow>
-              ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </Card>
-          )}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </Card>
+        )}
 
-          {/* Dialog */}
-          <ServiceOrderDialog
-            open={dialogOpen}
-            onClose={handleCloseDialog}
-            order={editingOrder}
-            clients={clients}
-            workshopId={workshop?.id || null}
-            onSuccess={loadOrders}
-          />
-        </div>
+        {/* Dialog */}
+        <ServiceOrderDialog
+          open={dialogOpen}
+          onClose={handleCloseDialog}
+          order={editingOrder}
+          clients={clients}
+          workshopId={workshop?.id || null}
+          onSuccess={loadOrders}
+        />
       </div>
     </div>
   );
