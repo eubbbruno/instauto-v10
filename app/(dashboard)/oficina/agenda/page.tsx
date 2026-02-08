@@ -374,28 +374,37 @@ export default function AgendaPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-teal-50/30 to-cyan-50/20 flex items-center justify-center">
+        <Card className="border-2 shadow-lg">
+          <CardContent className="flex flex-col items-center justify-center py-20">
+            <Loader2 className="h-16 w-16 animate-spin text-teal-600 mb-4" />
+            <p className="text-gray-600 font-medium">Carregando agenda...</p>
+          </CardContent>
+        </Card>
       </div>
     );
   }
 
   return (
     <PlanGuard>
-      <div className="space-y-8">
-        <PageHeader
-          title="Agenda"
-          description="Gerencie os agendamentos da oficina"
-          action={
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-teal-50/30 to-cyan-50/20 pb-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-8">
+            <div className="space-y-3">
+              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-teal-600 via-cyan-600 to-teal-800 bg-clip-text text-transparent leading-tight">
+                Agenda 📅
+              </h1>
+              <p className="text-gray-600 text-lg">Gerencie os agendamentos da oficina</p>
+            </div>
             <div className="flex flex-wrap gap-2">
               <Button
                 variant={viewMode === "calendar" ? "default" : "outline"}
                 onClick={() => setViewMode("calendar")}
-                className={viewMode === "calendar" ? "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 font-bold shadow-lg shadow-blue-600/30" : "border-2 font-bold"}
+                className={viewMode === "calendar" ? "bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 font-bold shadow-lg shadow-teal-600/30" : "border-2 font-bold"}
               >
                 <CalendarIcon className="mr-2 h-4 w-4" />
-              Calendário
-            </Button>
+                Calendário
+              </Button>
             <Button
               variant={viewMode === "list" ? "default" : "outline"}
               onClick={() => setViewMode("list")}
@@ -409,8 +418,7 @@ export default function AgendaPage() {
                 Novo Agendamento
               </Button>
             </div>
-          }
-        />
+          </div>
 
         {/* Cards de Resumo */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -812,6 +820,7 @@ export default function AgendaPage() {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+      </div>
       </div>
     </PlanGuard>
   );

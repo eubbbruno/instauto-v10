@@ -53,6 +53,7 @@ import {
   ArrowDownCircle,
   Filter,
 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { format, startOfMonth, endOfMonth, startOfYear, endOfYear, subMonths } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -388,31 +389,55 @@ export default function FinanceiroPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-green-50/30 to-emerald-50/20 flex items-center justify-center">
+        <Card className="border-2 shadow-lg">
+          <CardContent className="flex flex-col items-center justify-center py-20">
+            <Loader2 className="h-16 w-16 animate-spin text-green-600 mb-4" />
+            <p className="text-gray-600 font-medium">Carregando financeiro...</p>
+          </CardContent>
+        </Card>
       </div>
     );
   }
 
   return (
     <PlanGuard>
-      <div className="space-y-8">
-        <PageHeader
-          title="Financeiro"
-          description="Gerencie receitas e despesas da oficina"
-          action={
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-green-50/30 to-emerald-50/20 pb-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+          {/* Header Customizado */}
+          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-8">
+            <div className="space-y-3">
+              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-green-600 via-emerald-600 to-green-800 bg-clip-text text-transparent leading-tight">
+                Financeiro 💰
+              </h1>
+              <div className="flex items-center gap-3 flex-wrap">
+                <p className="text-gray-600 text-lg">
+                  Gerencie receitas e despesas da oficina
+                </p>
+                <Badge className={`${balance >= 0 ? 'bg-green-100 text-green-800 border-green-200' : 'bg-red-100 text-red-800 border-red-200'} text-sm font-bold px-3 py-1`}>
+                  Saldo: {balance.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+                </Badge>
+              </div>
+            </div>
             <div className="flex flex-wrap gap-3">
-              <Button onClick={() => openCreateDialog("income")} className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 font-bold shadow-lg shadow-green-600/30">
-                <ArrowUpCircle className="mr-2 h-4 w-4" />
+              <Button 
+                onClick={() => openCreateDialog("income")} 
+                className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 font-bold shadow-xl shadow-green-600/40 hover:scale-105 transition-all duration-300 text-base px-5 py-5"
+                size="lg"
+              >
+                <ArrowUpCircle className="mr-2 h-5 w-5" />
                 Nova Receita
               </Button>
-              <Button onClick={() => openCreateDialog("expense")} className="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 font-bold shadow-lg shadow-red-600/30">
-                <ArrowDownCircle className="mr-2 h-4 w-4" />
+              <Button 
+                onClick={() => openCreateDialog("expense")} 
+                className="bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 font-bold shadow-xl shadow-red-600/40 hover:scale-105 transition-all duration-300 text-base px-5 py-5"
+                size="lg"
+              >
+                <ArrowDownCircle className="mr-2 h-5 w-5" />
                 Nova Despesa
               </Button>
             </div>
-          }
-        />
+          </div>
 
         {/* Cards de Resumo */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -477,12 +502,17 @@ export default function FinanceiroPage() {
           </Card>
         </div>
 
-        {/* Gráfico */}
-        <Card className="border-2">
-          <CardHeader>
-            <CardTitle className="text-xl font-bold">Receitas vs Despesas (Últimos 6 Meses)</CardTitle>
-          </CardHeader>
-          <CardContent>
+          {/* Gráfico Premium */}
+          <Card className="border-2 border-green-100 shadow-2xl hover:shadow-green-200/50 transition-all duration-300 overflow-hidden">
+            <CardHeader className="border-b-2 border-green-100 bg-gradient-to-r from-green-50 via-emerald-50 to-green-50/50 py-6">
+              <CardTitle className="flex items-center gap-3 text-2xl">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-green-500/30">
+                  <TrendingUp className="h-6 w-6 text-white" />
+                </div>
+                <span className="font-bold text-gray-900">Receitas vs Despesas (Últimos 6 Meses)</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-6">
             <ResponsiveContainer width="100%" height={300}>
               <BarChart data={getChartData()}>
                 <CartesianGrid strokeDasharray="3 3" />
@@ -504,15 +534,15 @@ export default function FinanceiroPage() {
           </CardContent>
         </Card>
 
-        {/* Filtros */}
-        <Card className="border-2">
-          <CardHeader>
-            <CardTitle className="text-xl font-bold flex items-center gap-2">
-              <Filter className="h-5 w-5" />
-              Filtros
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
+          {/* Filtros Premium */}
+          <Card className="border-2 shadow-lg">
+            <CardHeader className="border-b bg-gradient-to-r from-gray-50 to-green-50/30">
+              <CardTitle className="text-xl font-bold flex items-center gap-2">
+                <Filter className="h-5 w-5 text-green-600" />
+                Filtros
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-6">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
                 <Label>Tipo</Label>
@@ -585,96 +615,134 @@ export default function FinanceiroPage() {
           </CardContent>
         </Card>
 
-        {/* Tabela de Transações */}
-        <Card className="border-2">
-          <CardHeader>
-            <CardTitle className="text-xl font-bold">Transações</CardTitle>
-            <CardDescription>
-              {filteredTransactions.length} {filteredTransactions.length === 1 ? "transação encontrada" : "transações encontradas"}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {filteredTransactions.length === 0 ? (
-              <div className="text-center py-12">
-                <DollarSign className="mx-auto h-12 w-12 text-gray-400" />
-                <h3 className="mt-4 text-lg font-medium text-gray-900">
+          {/* Tabela de Transações Premium */}
+          {filteredTransactions.length === 0 ? (
+            <Card className="border-2 shadow-xl bg-gradient-to-br from-white to-gray-50">
+              <CardContent className="text-center py-16">
+                <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-green-100 to-emerald-200 flex items-center justify-center">
+                  <DollarSign className="h-10 w-10 text-green-600" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
                   Nenhuma transação encontrada
                 </h3>
-                <p className="mt-2 text-sm text-gray-600">
-                  Comece adicionando uma receita ou despesa.
+                <p className="text-gray-600 mb-6 max-w-md mx-auto">
+                  Comece adicionando uma receita ou despesa para controlar suas finanças
                 </p>
-              </div>
-            ) : (
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Data</TableHead>
-                      <TableHead>Tipo</TableHead>
-                      <TableHead>Categoria</TableHead>
-                      <TableHead>Descrição</TableHead>
-                      <TableHead>Método</TableHead>
-                      <TableHead className="text-right">Valor</TableHead>
-                      <TableHead className="text-right">Ações</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredTransactions.map((transaction) => (
-                      <TableRow key={transaction.id}>
-                        <TableCell>
-                          {format(new Date(transaction.date), "dd/MM/yyyy", { locale: ptBR })}
-                        </TableCell>
-                        <TableCell>
-                          {transaction.type === "income" ? (
-                            <span className="flex items-center gap-1 text-green-600">
-                              <ArrowUpCircle className="h-4 w-4" />
-                              Receita
-                            </span>
-                          ) : (
-                            <span className="flex items-center gap-1 text-red-600">
-                              <ArrowDownCircle className="h-4 w-4" />
-                              Despesa
-                            </span>
-                          )}
-                        </TableCell>
-                        <TableCell className="text-gray-600">{transaction.category}</TableCell>
-                        <TableCell className="font-medium">{transaction.description}</TableCell>
-                        <TableCell className="text-gray-600">
-                          {transaction.payment_method || "-"}
-                        </TableCell>
-                        <TableCell className={`text-right font-semibold ${transaction.type === "income" ? "text-green-600" : "text-red-600"}`}>
-                          {transaction.amount.toLocaleString("pt-BR", {
-                            style: "currency",
-                            currency: "BRL",
-                          })}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <div className="flex justify-end gap-2">
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => openEditDialog(transaction)}
-                            >
-                              <Edit className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => openDeleteDialog(transaction)}
-                              className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </TableCell>
+                <div className="flex gap-3 justify-center">
+                  <Button 
+                    onClick={() => openCreateDialog("income")}
+                    className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 font-bold shadow-lg shadow-green-600/30 hover:scale-105 transition-transform"
+                    size="lg"
+                  >
+                    <ArrowUpCircle className="mr-2 h-5 w-5" />
+                    Nova Receita
+                  </Button>
+                  <Button 
+                    onClick={() => openCreateDialog("expense")}
+                    className="bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 font-bold shadow-lg shadow-red-600/30 hover:scale-105 transition-transform"
+                    size="lg"
+                  >
+                    <ArrowDownCircle className="mr-2 h-5 w-5" />
+                    Nova Despesa
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ) : (
+            <Card className="border-2 border-green-100 shadow-2xl hover:shadow-green-200/50 transition-all duration-300 overflow-hidden">
+              <CardHeader className="border-b-2 border-green-100 bg-gradient-to-r from-green-50 via-emerald-50 to-green-50/50 py-6">
+                <CardTitle className="flex items-center gap-3 text-2xl">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-green-500/30">
+                    <DollarSign className="h-6 w-6 text-white" />
+                  </div>
+                  <span className="font-bold text-gray-900">Transações</span>
+                  <Badge className="ml-auto bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0 text-base px-4 py-2 shadow-lg">
+                    {filteredTransactions.length} {filteredTransactions.length === 1 ? "transação" : "transações"}
+                  </Badge>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="bg-gradient-to-r from-gray-50 to-green-50/30 border-b-2 border-green-100">
+                        <TableHead className="font-bold text-gray-900 text-base py-4">Data</TableHead>
+                        <TableHead className="font-bold text-gray-900 text-base py-4">Tipo</TableHead>
+                        <TableHead className="font-bold text-gray-900 text-base py-4">Categoria</TableHead>
+                        <TableHead className="font-bold text-gray-900 text-base py-4">Descrição</TableHead>
+                        <TableHead className="font-bold text-gray-900 text-base py-4">Método</TableHead>
+                        <TableHead className="text-right font-bold text-gray-900 text-base py-4">Valor</TableHead>
+                        <TableHead className="text-right font-bold text-gray-900 text-base py-4">Ações</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredTransactions.map((transaction, index) => (
+                        <TableRow 
+                          key={transaction.id}
+                          className="group hover:bg-gradient-to-r hover:from-green-50 hover:to-emerald-50/30 transition-all duration-300 border-b border-gray-100 hover:border-green-200"
+                          style={{ animationDelay: `${index * 50}ms` }}
+                        >
+                          <TableCell className="font-medium text-gray-900 py-4">
+                            {format(new Date(transaction.date), "dd/MM/yyyy", { locale: ptBR })}
+                          </TableCell>
+                          <TableCell className="py-4">
+                            {transaction.type === "income" ? (
+                              <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0 px-3 py-1.5 text-sm font-bold shadow-lg shadow-green-500/40">
+                                <ArrowUpCircle className="h-4 w-4 mr-1" />
+                                Receita
+                              </Badge>
+                            ) : (
+                              <Badge className="bg-gradient-to-r from-red-500 to-pink-500 text-white border-0 px-3 py-1.5 text-sm font-bold shadow-lg shadow-red-500/40">
+                                <ArrowDownCircle className="h-4 w-4 mr-1" />
+                                Despesa
+                              </Badge>
+                            )}
+                          </TableCell>
+                          <TableCell className="py-4">
+                            <Badge className="bg-gray-100 text-gray-800 border-gray-300 font-medium">
+                              {transaction.category}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="font-bold text-gray-900 py-4 group-hover:text-green-700 transition-colors">
+                            {transaction.description}
+                          </TableCell>
+                          <TableCell className="text-gray-600 py-4 font-medium group-hover:text-gray-900 transition-colors">
+                            {transaction.payment_method || "-"}
+                          </TableCell>
+                          <TableCell className={`text-right font-bold py-4 text-base ${transaction.type === "income" ? "text-green-600" : "text-red-600"}`}>
+                            {transaction.amount.toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}
+                          </TableCell>
+                          <TableCell className="text-right py-4">
+                            <div className="flex justify-end gap-2">
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => openEditDialog(transaction)}
+                                className="hover:bg-blue-500 hover:text-white transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-blue-500/50"
+                              >
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => openDeleteDialog(transaction)}
+                                className="hover:bg-red-500 hover:text-white transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-red-500/50"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
         {/* Dialog Criar/Editar */}
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -807,33 +875,34 @@ export default function FinanceiroPage() {
           </DialogContent>
         </Dialog>
 
-        {/* Dialog Deletar */}
-        <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Confirmar Exclusão</DialogTitle>
-              <DialogDescription>
-                Tem certeza que deseja remover a transação <strong>{deletingTransaction?.description}</strong>?
-                Esta ação não pode ser desfeita.
-              </DialogDescription>
-            </DialogHeader>
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)} disabled={saving}>
-                Cancelar
-              </Button>
-              <Button variant="destructive" onClick={handleDelete} disabled={saving}>
-                {saving ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Removendo...
-                  </>
-                ) : (
-                  "Remover"
-                )}
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+          {/* Dialog Deletar */}
+          <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Confirmar Exclusão</DialogTitle>
+                <DialogDescription>
+                  Tem certeza que deseja remover a transação <strong>{deletingTransaction?.description}</strong>?
+                  Esta ação não pode ser desfeita.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)} disabled={saving}>
+                  Cancelar
+                </Button>
+                <Button variant="destructive" onClick={handleDelete} disabled={saving}>
+                  {saving ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Removendo...
+                    </>
+                  ) : (
+                    "Remover"
+                  )}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
     </PlanGuard>
   );

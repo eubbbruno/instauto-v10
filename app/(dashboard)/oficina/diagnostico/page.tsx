@@ -244,11 +244,14 @@ function DiagnosticoContent() {
   };
 
   return (
-    <div className="space-y-8">
-      <PageHeader
-        title="Diagnóstico com IA"
-        description="Use inteligência artificial para diagnosticar problemas em veículos"
-      />
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/30 to-violet-50/20 pb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        <div className="mb-8">
+          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 via-violet-600 to-purple-800 bg-clip-text text-transparent leading-tight mb-3">
+            Diagnóstico com IA 🤖
+          </h1>
+          <p className="text-gray-600 text-lg">Use inteligência artificial para diagnosticar problemas em veículos</p>
+        </div>
 
       {/* Formulário de Diagnóstico */}
       <Card className="border-2">
@@ -526,6 +529,7 @@ Exemplo: 'O carro está fazendo um barulho de rangido ao frear, principalmente e
           )}
         </DialogContent>
       </Dialog>
+      </div>
     </div>
   );
 }

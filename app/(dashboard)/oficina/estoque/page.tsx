@@ -45,6 +45,7 @@ import {
   TrendingUp,
   DollarSign,
 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 export default function EstoquePage() {
   const { profile } = useAuth();
@@ -297,206 +298,265 @@ export default function EstoquePage() {
   const getStockBadge = (item: Inventory) => {
     if (item.quantity === 0) {
       return (
-        <span className="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
-          Zerado
-        </span>
+        <Badge className="bg-gradient-to-r from-red-500 to-pink-500 text-white border-0 px-3 py-1.5 text-sm font-bold shadow-lg shadow-red-500/40">
+          🚫 Zerado
+        </Badge>
       );
     }
     if (item.quantity <= item.min_quantity) {
       return (
-        <span className="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
-          Baixo ({item.quantity})
-        </span>
+        <Badge className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white border-0 px-3 py-1.5 text-sm font-bold shadow-lg shadow-yellow-500/40 animate-pulse">
+          ⚠️ Baixo ({item.quantity})
+        </Badge>
       );
     }
     return (
-      <span className="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-        OK ({item.quantity})
-      </span>
+      <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0 px-3 py-1.5 text-sm font-bold shadow-lg shadow-green-500/40">
+        ✅ OK ({item.quantity})
+      </Badge>
     );
   };
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-orange-50/30 to-amber-50/20 flex items-center justify-center">
+        <Card className="border-2 shadow-lg">
+          <CardContent className="flex flex-col items-center justify-center py-20">
+            <Loader2 className="h-16 w-16 animate-spin text-orange-600 mb-4" />
+            <p className="text-gray-600 font-medium">Carregando estoque...</p>
+          </CardContent>
+        </Card>
       </div>
     );
   }
 
   return (
     <PlanGuard>
-      <div className="space-y-8">
-        <PageHeader
-          title="Estoque de Peças"
-          description="Gerencie o inventário da sua oficina"
-          action={
-            <Button onClick={openCreateDialog} className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 font-bold shadow-lg shadow-blue-600/30">
-              <Plus className="mr-2 h-4 w-4" />
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-orange-50/30 to-amber-50/20 pb-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+          {/* Header Customizado */}
+          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-8">
+            <div className="space-y-3">
+              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-orange-600 via-amber-600 to-orange-800 bg-clip-text text-transparent leading-tight">
+                Estoque de Peças 📦
+              </h1>
+              <div className="flex items-center gap-3 flex-wrap">
+                <p className="text-gray-600 text-lg">
+                  Gerencie o inventário da sua oficina
+                </p>
+                <Badge className="bg-orange-100 text-orange-800 border-orange-200 text-sm font-bold px-3 py-1">
+                  {totalItems} itens
+                </Badge>
+                {lowStockItems > 0 && (
+                  <Badge className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white border-0 text-sm font-bold px-3 py-1 shadow-lg animate-pulse">
+                    ⚠️ {lowStockItems} baixo
+                  </Badge>
+                )}
+              </div>
+            </div>
+            <Button 
+              onClick={openCreateDialog} 
+              className="bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 font-bold shadow-xl shadow-orange-600/40 hover:scale-105 transition-all duration-300 text-lg px-6 py-6"
+              size="lg"
+            >
+              <Plus className="mr-2 h-5 w-5" />
               Nova Peça
             </Button>
-          }
-        />
+          </div>
 
-        {/* Cards de Resumo */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">
-                Total de Itens
-              </CardTitle>
-              <Package className="h-4 w-4 text-blue-600" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-gray-900">{totalItems}</div>
-              <p className="text-xs text-gray-600 mt-1">
-                Peças cadastradas
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">
-                Estoque Baixo
-              </CardTitle>
-              <AlertTriangle className="h-4 w-4 text-yellow-600" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-yellow-600">{lowStockItems}</div>
-              <p className="text-xs text-gray-600 mt-1">
-                Itens precisam reposição
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-gray-600">
-                Valor Total
-              </CardTitle>
-              <DollarSign className="h-4 w-4 text-green-600" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-green-600">
-                {totalValue.toLocaleString("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                })}
-              </div>
-              <p className="text-xs text-gray-600 mt-1">
-                Valor em estoque
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Busca */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Pesquisar Peças</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <Input
-                placeholder="Buscar por nome, código ou marca..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Tabela */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Itens do Estoque</CardTitle>
-            <CardDescription>
-              {filteredItems.length} {filteredItems.length === 1 ? "peça encontrada" : "peças encontradas"}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {filteredItems.length === 0 ? (
-              <div className="text-center py-12">
-                <Package className="mx-auto h-12 w-12 text-gray-400" />
-                <h3 className="mt-4 text-lg font-medium text-gray-900">
-                  Nenhuma peça cadastrada
-                </h3>
-                <p className="mt-2 text-sm text-gray-600">
-                  Comece adicionando a primeira peça ao estoque.
+          {/* Cards de Resumo Premium */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Card className="relative bg-white rounded-2xl p-6 border-2 border-orange-200 shadow-lg shadow-orange-500/20 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 overflow-hidden group">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-orange-400/20 to-amber-400/20 rounded-full blur-3xl -mr-16 -mt-16" />
+              <CardHeader className="flex flex-row items-center justify-between pb-2 relative">
+                <CardTitle className="text-sm font-bold text-gray-600 uppercase tracking-wide">
+                  Total de Itens
+                </CardTitle>
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center shadow-lg shadow-orange-500/30 group-hover:scale-110 transition-transform">
+                  <Package className="h-6 w-6 text-white" />
+                </div>
+              </CardHeader>
+              <CardContent className="relative">
+                <div className="text-4xl font-bold text-gray-900 tracking-tight">{totalItems}</div>
+                <p className="text-sm text-gray-600 mt-2 font-medium">
+                  Peças cadastradas
                 </p>
-                <Button onClick={openCreateDialog} className="mt-4">
-                  <Plus className="mr-2 h-4 w-4" />
-                  Cadastrar Primeira Peça
-                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="relative bg-white rounded-2xl p-6 border-2 border-yellow-200 shadow-lg shadow-yellow-500/20 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 overflow-hidden group">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-yellow-400/20 to-orange-400/20 rounded-full blur-3xl -mr-16 -mt-16" />
+              <CardHeader className="flex flex-row items-center justify-between pb-2 relative">
+                <CardTitle className="text-sm font-bold text-gray-600 uppercase tracking-wide">
+                  Estoque Baixo
+                </CardTitle>
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-500 to-orange-600 flex items-center justify-center shadow-lg shadow-yellow-500/30 group-hover:scale-110 transition-transform">
+                  <AlertTriangle className="h-6 w-6 text-white" />
+                </div>
+              </CardHeader>
+              <CardContent className="relative">
+                <div className="text-4xl font-bold text-yellow-600 tracking-tight">{lowStockItems}</div>
+                <p className="text-sm text-gray-600 mt-2 font-medium">
+                  Itens precisam reposição
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="relative bg-white rounded-2xl p-6 border-2 border-green-200 shadow-lg shadow-green-500/20 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 overflow-hidden group">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-400/20 to-emerald-400/20 rounded-full blur-3xl -mr-16 -mt-16" />
+              <CardHeader className="flex flex-row items-center justify-between pb-2 relative">
+                <CardTitle className="text-sm font-bold text-gray-600 uppercase tracking-wide">
+                  Valor Total
+                </CardTitle>
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-green-500/30 group-hover:scale-110 transition-transform">
+                  <DollarSign className="h-6 w-6 text-white" />
+                </div>
+              </CardHeader>
+              <CardContent className="relative">
+                <div className="text-4xl font-bold text-green-600 tracking-tight">
+                  {totalValue.toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}
+                </div>
+                <p className="text-sm text-gray-600 mt-2 font-medium">
+                  Valor em estoque
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Busca Premium */}
+          <Card className="border-2 shadow-lg">
+            <CardContent className="pt-6">
+              <div className="relative">
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                <Input
+                  placeholder="Buscar por nome, código ou categoria..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pl-12 h-12 border-2 text-base focus:ring-2 focus:ring-orange-500"
+                />
               </div>
-            ) : (
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Nome</TableHead>
-                      <TableHead>Código</TableHead>
-                      <TableHead>Categoria</TableHead>
-                      <TableHead>Estoque</TableHead>
-                      <TableHead>Localização</TableHead>
-                      <TableHead className="text-right">Preço Unitário</TableHead>
-                      <TableHead>Fornecedor</TableHead>
-                      <TableHead className="text-right">Ações</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredItems.map((item) => (
-                      <TableRow key={item.id}>
-                        <TableCell className="font-medium">{item.name}</TableCell>
-                        <TableCell className="text-gray-600">
-                          {item.code || "-"}
-                        </TableCell>
-                        <TableCell className="text-gray-600">
-                          {item.category || "-"}
-                        </TableCell>
-                        <TableCell>{getStockBadge(item)}</TableCell>
-                        <TableCell className="text-gray-600">
-                          {item.location || "-"}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          {(item.unit_price || 0).toLocaleString("pt-BR", {
-                            style: "currency",
-                            currency: "BRL",
-                          })}
-                        </TableCell>
-                        <TableCell className="text-gray-600">
-                          {item.supplier || "-"}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <div className="flex justify-end gap-2">
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => openEditDialog(item)}
-                            >
-                              <Edit className="h-4 w-4" />
-                            </Button>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => openDeleteDialog(item)}
-                              className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                            >
-                              <Trash2 className="h-4 w-4" />
-                            </Button>
-                          </div>
-                        </TableCell>
+            </CardContent>
+          </Card>
+
+          {/* Tabela Premium */}
+          {filteredItems.length === 0 ? (
+            <Card className="border-2 shadow-xl bg-gradient-to-br from-white to-gray-50">
+              <CardContent className="text-center py-16">
+                <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-orange-100 to-amber-200 flex items-center justify-center">
+                  <Package className="h-10 w-10 text-orange-600" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                  {searchTerm ? "Nenhuma peça encontrada" : "Nenhuma peça cadastrada"}
+                </h3>
+                <p className="text-gray-600 mb-6 max-w-md mx-auto">
+                  {searchTerm 
+                    ? "Tente ajustar sua busca ou limpar os filtros"
+                    : "Comece adicionando a primeira peça ao estoque"}
+                </p>
+                {!searchTerm && (
+                  <Button 
+                    onClick={openCreateDialog}
+                    className="bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 font-bold shadow-lg shadow-orange-600/30 hover:scale-105 transition-transform"
+                    size="lg"
+                  >
+                    <Plus className="mr-2 h-5 w-5" />
+                    Cadastrar Primeira Peça
+                  </Button>
+                )}
+              </CardContent>
+            </Card>
+          ) : (
+            <Card className="border-2 border-orange-100 shadow-2xl hover:shadow-orange-200/50 transition-all duration-300 overflow-hidden">
+              <CardHeader className="border-b-2 border-orange-100 bg-gradient-to-r from-orange-50 via-amber-50 to-orange-50/50 py-6">
+                <CardTitle className="flex items-center gap-3 text-2xl">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center shadow-lg shadow-orange-500/30">
+                    <Package className="h-6 w-6 text-white" />
+                  </div>
+                  <span className="font-bold text-gray-900">Itens do Estoque</span>
+                  <Badge className="ml-auto bg-gradient-to-r from-orange-500 to-amber-500 text-white border-0 text-base px-4 py-2 shadow-lg">
+                    {filteredItems.length} {filteredItems.length === 1 ? 'peça' : 'peças'}
+                  </Badge>
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-0">
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="bg-gradient-to-r from-gray-50 to-orange-50/30 border-b-2 border-orange-100">
+                        <TableHead className="font-bold text-gray-900 text-base py-4">Nome</TableHead>
+                        <TableHead className="font-bold text-gray-900 text-base py-4">Código</TableHead>
+                        <TableHead className="font-bold text-gray-900 text-base py-4">Categoria</TableHead>
+                        <TableHead className="font-bold text-gray-900 text-base py-4">Estoque</TableHead>
+                        <TableHead className="font-bold text-gray-900 text-base py-4">Localização</TableHead>
+                        <TableHead className="text-right font-bold text-gray-900 text-base py-4">Preço Unit.</TableHead>
+                        <TableHead className="font-bold text-gray-900 text-base py-4">Fornecedor</TableHead>
+                        <TableHead className="text-right font-bold text-gray-900 text-base py-4">Ações</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredItems.map((item, index) => (
+                        <TableRow 
+                          key={item.id}
+                          className="group hover:bg-gradient-to-r hover:from-orange-50 hover:to-amber-50/30 transition-all duration-300 border-b border-gray-100 hover:border-orange-200"
+                          style={{ animationDelay: `${index * 50}ms` }}
+                        >
+                          <TableCell className="font-bold text-gray-900 py-4 group-hover:text-orange-700 transition-colors">
+                            {item.name}
+                          </TableCell>
+                          <TableCell className="text-gray-600 py-4 font-medium group-hover:text-gray-900 transition-colors">
+                            {item.code || "-"}
+                          </TableCell>
+                          <TableCell className="py-4">
+                            {item.category ? (
+                              <Badge className="bg-orange-100 text-orange-800 border-orange-300 font-medium">
+                                {item.category}
+                              </Badge>
+                            ) : "-"}
+                          </TableCell>
+                          <TableCell className="py-4">{getStockBadge(item)}</TableCell>
+                          <TableCell className="text-gray-600 py-4 font-medium group-hover:text-gray-900 transition-colors">
+                            {item.location || "-"}
+                          </TableCell>
+                          <TableCell className="text-right font-bold text-green-600 py-4 text-base">
+                            {(item.unit_price || 0).toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}
+                          </TableCell>
+                          <TableCell className="text-gray-600 py-4 font-medium group-hover:text-gray-900 transition-colors">
+                            {item.supplier || "-"}
+                          </TableCell>
+                          <TableCell className="text-right py-4">
+                            <div className="flex justify-end gap-2">
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => openEditDialog(item)}
+                                className="hover:bg-blue-500 hover:text-white transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-blue-500/50"
+                              >
+                                <Edit className="h-4 w-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => openDeleteDialog(item)}
+                                className="hover:bg-red-500 hover:text-white transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-red-500/50"
+                              >
+                                <Trash2 className="h-4 w-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </CardContent>
+            </Card>
+          )}
 
         {/* Dialog Criar/Editar */}
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -654,41 +714,42 @@ export default function EstoquePage() {
           </DialogContent>
         </Dialog>
 
-        {/* Dialog Deletar */}
-        <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Confirmar Exclusão</DialogTitle>
-              <DialogDescription>
-                Tem certeza que deseja remover <strong>{deletingItem?.name}</strong> do
-                estoque? Esta ação não pode ser desfeita.
-              </DialogDescription>
-            </DialogHeader>
-            <DialogFooter>
-              <Button
-                variant="outline"
-                onClick={() => setIsDeleteDialogOpen(false)}
-                disabled={saving}
-              >
-                Cancelar
-              </Button>
-              <Button
-                variant="destructive"
-                onClick={handleDelete}
-                disabled={saving}
-              >
-                {saving ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Removendo...
-                  </>
-                ) : (
-                  "Remover"
-                )}
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
+          {/* Dialog Deletar */}
+          <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Confirmar Exclusão</DialogTitle>
+                <DialogDescription>
+                  Tem certeza que deseja remover <strong>{deletingItem?.name}</strong> do
+                  estoque? Esta ação não pode ser desfeita.
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <Button
+                  variant="outline"
+                  onClick={() => setIsDeleteDialogOpen(false)}
+                  disabled={saving}
+                >
+                  Cancelar
+                </Button>
+                <Button
+                  variant="destructive"
+                  onClick={handleDelete}
+                  disabled={saving}
+                >
+                  {saving ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Removendo...
+                    </>
+                  ) : (
+                    "Remover"
+                  )}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </div>
       </div>
     </PlanGuard>
   );
