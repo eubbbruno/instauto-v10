@@ -19,8 +19,10 @@ import {
   Fuel,
   DollarSign,
   Bell,
+  BellRing,
   MessageCircle,
   Users as UsersIcon,
+  Gift,
 } from "lucide-react";
 
 const menuItems = [
@@ -32,6 +34,9 @@ const menuItems = [
   { href: "/motorista/lembretes", label: "Lembretes", icon: Bell },
   { href: "/motorista/historico", label: "Histórico", icon: Clock },
   { href: "/motorista/oficinas", label: "Buscar Oficinas", icon: Search },
+  { href: "/motorista/promocoes", label: "Promoções", icon: Gift },
+  { href: "/motorista/notificacoes", label: "Notificações", icon: BellRing },
+  { href: "/motorista/configuracoes", label: "Configurações", icon: Settings },
 ];
 
 export default function MotoristaLayout({ children }: { children: React.ReactNode }) {

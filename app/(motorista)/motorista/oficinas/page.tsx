@@ -28,38 +28,55 @@ export default function OficinasPage() {
   const supabase = createClient();
 
   useEffect(() => {
-    if (!authLoading) {
-      loadWorkshops();
-    }
+    if (authLoading) return;
+
+    const abortController = new AbortController();
+    let mounted = true;
+
+    const loadWorkshops = async () => {
+      try {
+        setLoading(true);
+
+        let query = supabase
+          .from("workshops")
+          .select("*")
+          .eq("is_public", true);
+
+        query = query.abortSignal(abortController.signal);
+
+        if (selectedState) {
+          query = query.eq("state", selectedState);
+        }
+
+        if (selectedCity) {
+          query = query.ilike("city", `%${selectedCity}%`);
+        }
+
+        const { data, error } = await query.order("created_at", { ascending: false });
+
+        if (error) throw error;
+        
+        if (mounted) {
+          setWorkshops(data || []);
+        }
+      } catch (error: any) {
+        if (error.name !== 'AbortError' && mounted) {
+          console.error("Erro ao carregar oficinas:", error);
+        }
+      } finally {
+        if (mounted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    loadWorkshops();
+
+    return () => {
+      mounted = false;
+      abortController.abort();
+    };
   }, [authLoading, selectedState, selectedCity]);
-
-  const loadWorkshops = async () => {
-    setLoading(true);
-    try {
-      let query = supabase
-        .from("workshops")
-        .select("*")
-        .eq("is_public", true)
-        .order("created_at", { ascending: false });
-
-      if (selectedState) {
-        query = query.eq("state", selectedState);
-      }
-
-      if (selectedCity) {
-        query = query.ilike("city", `%${selectedCity}%`);
-      }
-
-      const { data, error } = await query;
-
-      if (error) throw error;
-      setWorkshops(data || []);
-    } catch (error) {
-      console.error("Erro ao carregar oficinas:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const filteredWorkshops = workshops.filter((workshop) => {
     if (!searchTerm) return true;

@@ -47,51 +47,135 @@ export default function AbastecimentoPage() {
   }, [user, authLoading, router]);
 
   useEffect(() => {
-    if (profile) {
-      fetchMotoristId();
-    }
-  }, [profile]);
+    if (!profile?.id) return;
+
+    const abortController = new AbortController();
+    let mounted = true;
+
+    const fetchMotoristId = async () => {
+      try {
+        let query = supabase
+          .from("motorists")
+          .select("id")
+          .eq("profile_id", profile.id);
+
+        query = query.abortSignal(abortController.signal);
+
+        const { data, error } = await query.single();
+
+        if (error) throw error;
+
+        if (mounted) {
+          setMotoristId(data.id);
+        }
+      } catch (error: any) {
+        if (error.name !== 'AbortError' && mounted) {
+          console.error("Erro ao buscar ID do motorista:", error);
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchMotoristId();
+
+    return () => {
+      mounted = false;
+      abortController.abort();
+    };
+  }, [profile?.id]);
 
   useEffect(() => {
-    if (motoristId) {
-      fetchVehicles();
-      fetchFuelings();
-    }
+    if (!motoristId) return;
+
+    const abortController = new AbortController();
+    let mounted = true;
+
+    const loadData = async () => {
+      try {
+        // Fetch vehicles
+        let query1 = supabase
+          .from("motorist_vehicles")
+          .select("*")
+          .eq("motorist_id", motoristId)
+          .eq("is_active", true);
+
+        query1 = query1.abortSignal(abortController.signal);
+
+        const { data: vehiclesData } = await query1.order("created_at", { ascending: false });
+
+        if (mounted) {
+          setVehicles(vehiclesData || []);
+        }
+
+        // Fetch fuelings
+        await fetchFuelings(abortController.signal);
+      } catch (error: any) {
+        if (error.name !== 'AbortError' && mounted) {
+          console.error("Erro ao carregar dados:", error);
+        }
+      }
+    };
+
+    loadData();
+
+    return () => {
+      mounted = false;
+      abortController.abort();
+    };
   }, [motoristId, selectedVehicle, searchTerm]);
 
-  const fetchMotoristId = async () => {
-    if (!profile) return;
-    const { data, error } = await supabase
-      .from("motorists")
-      .select("id")
-      .eq("profile_id", profile.id)
-      .single();
-
-    if (error) {
-      console.error("Erro ao buscar ID do motorista:", error);
-      setLoading(false);
-      return;
-    }
-    setMotoristId(data.id);
-  };
-
-  const fetchVehicles = async () => {
+  const fetchFuelings = async (signal?: AbortSignal) => {
     if (!motoristId) return;
-    const { data, error } = await supabase
-      .from("motorist_vehicles")
-      .select("*")
-      .eq("motorist_id", motoristId)
-      .eq("is_active", true)
-      .order("created_at", { ascending: false });
+    
+    try {
+      setLoading(true);
 
-    if (error) {
-      console.error("Erro ao buscar veículos:", error);
-    } else {
-      setVehicles(data || []);
+      let query = supabase
+        .from("motorist_fueling")
+        .select("*")
+        .eq("motorist_id", motoristId);
+
+      if (signal) {
+        query = query.abortSignal(signal);
+      }
+
+      if (selectedVehicle !== "all") {
+        query = query.eq("vehicle_id", selectedVehicle);
+      }
+
+      if (searchTerm) {
+        query = query.or(`gas_station.ilike.%${searchTerm}%,city.ilike.%${searchTerm}%`);
+      }
+
+      const { data, error } = await query.order("date", { ascending: false });
+
+      if (error) throw error;
+
+      setFuelings(data || []);
+
+      // Calculate stats
+      if (data && data.length > 0) {
+        const total = data.reduce((sum, f) => sum + Number(f.total_amount), 0);
+        const totalLiters = data.reduce((sum, f) => sum + Number(f.liters), 0);
+        const avgPrice = totalLiters > 0 ? total / totalLiters : 0;
+
+        setStats({
+          totalFuelings: data.length,
+          totalSpent: total,
+          avgConsumption: 0,
+          avgPricePerLiter: avgPrice,
+        });
+      }
+    } catch (error: any) {
+      if (error.name !== 'AbortError') {
+        console.error("Erro ao buscar abastecimentos:", error);
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
-  const fetchFuelings = async () => {
+  const reloadFuelings = async () => {
     if (!motoristId) return;
     setLoading(true);
 

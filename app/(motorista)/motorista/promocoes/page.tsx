@@ -38,28 +38,46 @@ export default function PromocoesPage() {
   }, [user, loading, router]);
 
   useEffect(() => {
+    const abortController = new AbortController();
+    let mounted = true;
+
+    const loadPromotions = async () => {
+      try {
+        let query = supabase
+          .from("promotions")
+          .select("*")
+          .eq("is_active", true)
+          .gte("valid_until", new Date().toISOString().split("T")[0]);
+
+        query = query.abortSignal(abortController.signal);
+
+        const { data, error } = await query
+          .order("featured", { ascending: false })
+          .order("created_at", { ascending: false });
+
+        if (error) throw error;
+
+        if (mounted) {
+          setPromotions(data || []);
+        }
+      } catch (error: any) {
+        if (error.name !== 'AbortError' && mounted) {
+          console.error("Erro ao carregar promoções:", error);
+        }
+      } finally {
+        if (mounted) {
+          setPromotionsLoading(false);
+        }
+      }
+    };
+
     loadPromotions();
+
+    return () => {
+      mounted = false;
+      abortController.abort();
+    };
   }, []);
-
-  const loadPromotions = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("promotions")
-        .select("*")
-        .eq("is_active", true)
-        .gte("valid_until", new Date().toISOString().split("T")[0])
-        .order("featured", { ascending: false })
-        .order("created_at", { ascending: false });
-
-      if (error) throw error;
-
-      setPromotions(data || []);
-    } catch (error) {
-      console.error("Erro ao carregar promoções:", error);
-    } finally {
-      setPromotionsLoading(false);
-    }
-  };
 
   if (loading || promotionsLoading) {
     return (

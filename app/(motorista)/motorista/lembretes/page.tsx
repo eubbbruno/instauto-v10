@@ -43,78 +43,119 @@ export default function LembretesPage() {
   }, [user, authLoading, router]);
 
   useEffect(() => {
-    if (profile) {
-      fetchMotoristId();
-    }
-  }, [profile]);
+    if (!profile?.id) return;
+
+    const abortController = new AbortController();
+    let mounted = true;
+
+    const fetchMotoristId = async () => {
+      try {
+        let query = supabase
+          .from("motorists")
+          .select("id")
+          .eq("profile_id", profile.id);
+
+        query = query.abortSignal(abortController.signal);
+
+        const { data, error } = await query.single();
+
+        if (error) throw error;
+
+        if (mounted) {
+          setMotoristId(data.id);
+        }
+      } catch (error: any) {
+        if (error.name !== 'AbortError' && mounted) {
+          console.error("Erro ao buscar ID do motorista:", error);
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchMotoristId();
+
+    return () => {
+      mounted = false;
+      abortController.abort();
+    };
+  }, [profile?.id]);
 
   useEffect(() => {
-    if (motoristId) {
-      fetchVehicles();
-      fetchReminders();
-    }
+    if (!motoristId) return;
+
+    const abortController = new AbortController();
+    let mounted = true;
+
+    const loadData = async () => {
+      try {
+        let query1 = supabase
+          .from("motorist_vehicles")
+          .select("*")
+          .eq("motorist_id", motoristId)
+          .eq("is_active", true);
+
+        query1 = query1.abortSignal(abortController.signal);
+
+        const { data: vehiclesData } = await query1.order("created_at", { ascending: false });
+
+        if (mounted) {
+          setVehicles(vehiclesData || []);
+        }
+
+        await fetchReminders(abortController.signal);
+      } catch (error: any) {
+        if (error.name !== 'AbortError' && mounted) {
+          console.error("Erro ao carregar dados:", error);
+        }
+      }
+    };
+
+    loadData();
+
+    return () => {
+      mounted = false;
+      abortController.abort();
+    };
   }, [motoristId, filterStatus, searchTerm]);
 
-  const fetchMotoristId = async () => {
-    if (!profile) return;
-    const { data, error } = await supabase
-      .from("motorists")
-      .select("id")
-      .eq("profile_id", profile.id)
-      .single();
-
-    if (error) {
-      console.error("Erro ao buscar ID do motorista:", error);
-      setLoading(false);
-      return;
-    }
-    setMotoristId(data.id);
-  };
-
-  const fetchVehicles = async () => {
+  const fetchReminders = async (signal?: AbortSignal) => {
     if (!motoristId) return;
-    const { data, error } = await supabase
-      .from("motorist_vehicles")
-      .select("*")
-      .eq("motorist_id", motoristId)
-      .eq("is_active", true)
-      .order("created_at", { ascending: false });
+    
+    try {
+      setLoading(true);
 
-    if (error) {
-      console.error("Erro ao buscar veículos:", error);
-    } else {
-      setVehicles(data || []);
-    }
-  };
+      let query = supabase
+        .from("motorist_reminders")
+        .select("*")
+        .eq("motorist_id", motoristId);
 
-  const fetchReminders = async () => {
-    if (!motoristId) return;
-    setLoading(true);
+      if (signal) {
+        query = query.abortSignal(signal);
+      }
 
-    let query = supabase
-      .from("motorist_reminders")
-      .select("*")
-      .eq("motorist_id", motoristId);
+      if (filterStatus === "pending") {
+        query = query.eq("is_completed", false);
+      } else if (filterStatus === "completed") {
+        query = query.eq("is_completed", true);
+      }
 
-    if (filterStatus === "pending") {
-      query = query.eq("is_completed", false);
-    } else if (filterStatus === "completed") {
-      query = query.eq("is_completed", true);
-    }
+      if (searchTerm) {
+        query = query.or(`title.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`);
+      }
 
-    if (searchTerm) {
-      query = query.or(`title.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`);
-    }
+      const { data, error } = await query.order("due_date", { ascending: true });
 
-    const { data, error } = await query.order("due_date", { ascending: true });
+      if (error) throw error;
 
-    if (error) {
-      console.error("Erro ao buscar lembretes:", error);
-    } else {
       setReminders(data || []);
       calculateStats(data || []);
+    } catch (error: any) {
+      if (error.name !== 'AbortError') {
+        console.error("Erro ao buscar lembretes:", error);
+      }
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const calculateStats = (data: MotoristReminder[]) => {
