@@ -243,8 +243,11 @@ export default function LembretesPage() {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <Loader2 className="h-10 w-10 animate-spin text-blue-600" />
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-teal-50/30 to-cyan-50/20 flex items-center justify-center pt-16">
+        <div className="text-center">
+          <Loader2 className="h-16 w-16 animate-spin text-teal-600 mx-auto mb-4" />
+          <p className="text-gray-600 font-medium">Carregando lembretes...</p>
+        </div>
       </div>
     );
   }
@@ -252,51 +255,54 @@ export default function LembretesPage() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-8 pb-16">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-              <Bell className="w-8 h-8 text-yellow-600" /> Lembretes de Manutenção
-            </h1>
-            <p className="text-gray-600 mt-1">
-              Nunca mais esqueça de pagar IPVA, renovar seguro ou fazer revisão
-            </p>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-teal-50/30 to-cyan-50/20 pt-16 pb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-4">
+        {/* Header Premium */}
+        <div className="mb-10">
+          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+            <div className="space-y-3">
+              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-teal-600 via-cyan-600 to-teal-800 bg-clip-text text-transparent leading-tight">
+                Lembretes 🔔
+              </h1>
+              <p className="text-gray-600 text-lg">
+                Nunca mais esqueça de pagar IPVA, renovar seguro ou fazer revisão
+              </p>
+            </div>
+            <Link href="/motorista/lembretes/novo">
+              <Button className="bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 font-bold shadow-lg hover:shadow-xl transition-all text-white border-0" size="lg">
+                <Plus className="w-5 h-5 mr-2" /> Adicionar Lembrete
+              </Button>
+            </Link>
           </div>
-          <Link href="/motorista/lembretes/novo">
-            <Button className="bg-yellow-600 hover:bg-yellow-700">
-              <Plus className="w-5 h-5 mr-2" /> Adicionar Lembrete
-            </Button>
-          </Link>
         </div>
 
-        {/* Stats Cards */}
+        {/* Stats Cards Premium */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+          <div className="bg-white rounded-2xl shadow-2xl p-6 border-2 border-teal-100 hover:shadow-teal-200/50 hover:scale-105 transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-500">Total de Lembretes</p>
-                <p className="text-3xl font-bold text-gray-900 mt-1">{stats.total}</p>
+                <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Total de Lembretes</p>
+                <p className="text-4xl font-extrabold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent mt-2">{stats.total}</p>
               </div>
-              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                <Bell className="w-6 h-6 text-blue-600" />
+              <div className="w-14 h-14 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <Bell className="w-7 h-7 text-white" />
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+          <div className="bg-white rounded-2xl shadow-2xl p-6 border-2 border-yellow-100 hover:shadow-yellow-200/50 hover:scale-105 transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-500">Pendentes</p>
-                <p className="text-3xl font-bold text-gray-900 mt-1">{stats.pending}</p>
+                <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Pendentes</p>
+                <p className="text-4xl font-extrabold bg-gradient-to-r from-yellow-600 to-amber-600 bg-clip-text text-transparent mt-2">{stats.pending}</p>
               </div>
-              <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
-                <Clock className="w-6 h-6 text-yellow-600" />
+              <div className="w-14 h-14 bg-gradient-to-br from-yellow-500 to-amber-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <Clock className="w-7 h-7 text-white" />
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+          <div className="bg-white rounded-2xl shadow-2xl p-6 border-2 border-green-100 hover:shadow-green-200/50 hover:scale-105 transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-500">Concluídos</p>

@@ -220,8 +220,11 @@ export default function DespesasPage() {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <Loader2 className="h-10 w-10 animate-spin text-blue-600" />
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-yellow-50/30 to-amber-50/20 flex items-center justify-center pt-16">
+        <div className="text-center">
+          <Loader2 className="h-16 w-16 animate-spin text-yellow-600 mx-auto mb-4" />
+          <p className="text-gray-600 font-medium">Carregando despesas...</p>
+        </div>
       </div>
     );
   }
@@ -229,62 +232,65 @@ export default function DespesasPage() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-8 pb-16">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-              <DollarSign className="w-8 h-8 text-green-600" /> Controle de Despesas
-            </h1>
-            <p className="text-gray-600 mt-1">
-              Gerencie todos os gastos dos seus veículos
-            </p>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-yellow-50/30 to-amber-50/20 pt-16 pb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-4">
+        {/* Header Premium */}
+        <div className="mb-10">
+          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+            <div className="space-y-3">
+              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-yellow-600 via-amber-600 to-yellow-800 bg-clip-text text-transparent leading-tight">
+                Despesas 💸
+              </h1>
+              <p className="text-gray-600 text-lg">
+                Gerencie todos os gastos dos seus veículos
+              </p>
+            </div>
+            <Link href="/motorista/despesas/nova">
+              <Button className="bg-gradient-to-r from-yellow-600 to-amber-600 hover:from-yellow-700 hover:to-amber-700 font-bold shadow-lg hover:shadow-xl transition-all text-white border-0" size="lg">
+                <Plus className="w-5 h-5 mr-2" /> Adicionar Despesa
+              </Button>
+            </Link>
           </div>
-          <Link href="/motorista/despesas/nova">
-            <Button className="bg-green-600 hover:bg-green-700">
-              <Plus className="w-5 h-5 mr-2" /> Adicionar Despesa
-            </Button>
-          </Link>
         </div>
 
-        {/* Stats Cards */}
+        {/* Stats Cards Premium */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+          <div className="bg-white rounded-2xl shadow-2xl p-6 border-2 border-yellow-100 hover:shadow-yellow-200/50 hover:scale-105 transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-500">Total de Despesas</p>
-                <p className="text-3xl font-bold text-gray-900 mt-1">{stats.totalExpenses}</p>
+                <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Total de Despesas</p>
+                <p className="text-4xl font-extrabold bg-gradient-to-r from-yellow-600 to-amber-600 bg-clip-text text-transparent mt-2">{stats.totalExpenses}</p>
               </div>
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                <PieChart className="w-6 h-6 text-green-600" />
+              <div className="w-14 h-14 bg-gradient-to-br from-yellow-500 to-amber-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <PieChart className="w-7 h-7 text-white" />
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+          <div className="bg-white rounded-2xl shadow-2xl p-6 border-2 border-green-100 hover:shadow-green-200/50 hover:scale-105 transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-500">Valor Total</p>
-                <p className="text-3xl font-bold text-gray-900 mt-1">
+                <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Valor Total</p>
+                <p className="text-4xl font-extrabold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent mt-2">
                   R$ {stats.totalAmount.toFixed(2)}
                 </p>
               </div>
-              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                <DollarSign className="w-6 h-6 text-blue-600" />
+              <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <DollarSign className="w-7 h-7 text-white" />
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+          <div className="bg-white rounded-2xl shadow-2xl p-6 border-2 border-orange-100 hover:shadow-orange-200/50 hover:scale-105 transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-500">Média por Despesa</p>
-                <p className="text-3xl font-bold text-gray-900 mt-1">
+                <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Média por Despesa</p>
+                <p className="text-4xl font-extrabold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent mt-2">
                   R$ {stats.avgExpense > 0 ? stats.avgExpense.toFixed(2) : "0.00"}
                 </p>
               </div>
-              <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
-                <TrendingUp className="w-6 h-6 text-yellow-600" />
+              <div className="w-14 h-14 bg-gradient-to-br from-orange-500 to-amber-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <TrendingUp className="w-7 h-7 text-white" />
               </div>
             </div>
           </div>
@@ -292,59 +298,61 @@ export default function DespesasPage() {
 
         {/* Despesas por Categoria */}
         {Object.keys(stats.byCategory).length > 0 && (
-          <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100 mb-8">
-            <h3 className="text-lg font-bold text-gray-900 mb-4">Despesas por Categoria</h3>
+          <div className="bg-white rounded-2xl shadow-2xl p-6 border-2 border-yellow-100 mb-8">
+            <h3 className="text-xl font-bold bg-gradient-to-r from-yellow-600 to-amber-600 bg-clip-text text-transparent mb-4">Despesas por Categoria</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {Object.entries(stats.byCategory).map(([category, amount]) => (
-                <div key={category} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <span className="text-sm font-medium text-gray-700">{getCategoryLabel(category)}</span>
-                  <span className="text-sm font-bold text-gray-900">R$ {amount.toFixed(2)}</span>
+                <div key={category} className="flex flex-col p-4 bg-gradient-to-br from-yellow-50 to-amber-50 rounded-xl border-2 border-yellow-200 hover:shadow-lg hover:scale-105 transition-all">
+                  <span className="text-sm font-semibold text-gray-700 mb-1">{getCategoryLabel(category)}</span>
+                  <span className="text-lg font-extrabold bg-gradient-to-r from-yellow-600 to-amber-600 bg-clip-text text-transparent">R$ {amount.toFixed(2)}</span>
                 </div>
               ))}
             </div>
           </div>
         )}
 
-        {/* Filtros */}
-        <div className="flex flex-col md:flex-row items-center gap-4 mb-6">
-          <div className="relative flex-grow w-full md:w-auto">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Buscar por descrição..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+        {/* Filtros Premium */}
+        <div className="bg-white rounded-2xl shadow-2xl p-6 border-2 border-gray-100 mb-6">
+          <div className="flex flex-col md:flex-row items-center gap-4">
+            <div className="relative flex-grow w-full md:w-auto">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Buscar por descrição..."
+                className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all font-medium"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            <select
+              className="px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all w-full md:w-auto font-medium"
+              value={selectedVehicle}
+              onChange={(e) => setSelectedVehicle(e.target.value)}
+            >
+              <option value="all">Todos os Veículos</option>
+              {vehicles.map((vehicle) => (
+                <option key={vehicle.id} value={vehicle.id}>
+                  {vehicle.make} {vehicle.model} - {vehicle.plate}
+                </option>
+              ))}
+            </select>
+            <select
+              className="px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 transition-all w-full md:w-auto font-medium"
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+            >
+              <option value="all">Todas as Categorias</option>
+              <option value="fuel">Combustível</option>
+              <option value="maintenance">Manutenção</option>
+              <option value="insurance">Seguro</option>
+              <option value="ipva">IPVA</option>
+              <option value="fine">Multa</option>
+              <option value="parking">Estacionamento</option>
+              <option value="toll">Pedágio</option>
+              <option value="wash">Lavagem</option>
+              <option value="other">Outro</option>
+            </select>
           </div>
-          <select
-            className="px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all w-full md:w-auto"
-            value={selectedVehicle}
-            onChange={(e) => setSelectedVehicle(e.target.value)}
-          >
-            <option value="all">Todos os Veículos</option>
-            {vehicles.map((vehicle) => (
-              <option key={vehicle.id} value={vehicle.id}>
-                {vehicle.make} {vehicle.model} - {vehicle.plate}
-              </option>
-            ))}
-          </select>
-          <select
-            className="px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all w-full md:w-auto"
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-          >
-            <option value="all">Todas as Categorias</option>
-            <option value="fuel">Combustível</option>
-            <option value="maintenance">Manutenção</option>
-            <option value="insurance">Seguro</option>
-            <option value="ipva">IPVA</option>
-            <option value="fine">Multa</option>
-            <option value="parking">Estacionamento</option>
-            <option value="toll">Pedágio</option>
-            <option value="wash">Lavagem</option>
-            <option value="other">Outro</option>
-          </select>
         </div>
 
         {/* Lista de Despesas */}

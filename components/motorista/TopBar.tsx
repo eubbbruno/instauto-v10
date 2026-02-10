@@ -93,20 +93,34 @@ export default function TopBar() {
     return profile.name[0].toUpperCase();
   };
 
+  const handleSignOut = async () => {
+    try {
+      await supabase.auth.signOut();
+      
+      // Limpar cookies manualmente
+      document.cookie.split(";").forEach((c) => {
+        const name = c.split("=")[0].trim();
+        if (name.startsWith("sb-")) {
+          document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+        }
+      });
+      
+      // Limpar storage
+      Object.keys(localStorage).filter(k => k.startsWith("sb-")).forEach(k => localStorage.removeItem(k));
+      Object.keys(sessionStorage).filter(k => k.startsWith("sb-")).forEach(k => sessionStorage.removeItem(k));
+      
+      // Forçar redirecionamento
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Erro ao sair:", error);
+      // Forçar redirecionamento mesmo com erro
+      window.location.href = "/";
+    }
+  };
+
   return (
     <header className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
-      <div className="flex items-center justify-between px-6 py-4">
-        {/* Logo */}
-        <Link href="/motorista" className="flex items-center">
-          <Image 
-            src="/images/logo-of-dark.svg" 
-            alt="Instauto" 
-            width={120} 
-            height={32}
-            className="h-8 w-auto"
-          />
-        </Link>
-
+      <div className="flex items-center justify-end px-6 py-4">
         {/* Right Section */}
         <div className="flex items-center gap-4">
           {/* Notifications */}
@@ -258,7 +272,7 @@ export default function TopBar() {
                     <button
                       onClick={() => {
                         setShowUserMenu(false);
-                        signOut();
+                        handleSignOut();
                       }}
                       className="flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 transition-colors w-full"
                     >
