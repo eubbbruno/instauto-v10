@@ -5,23 +5,17 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
+import TopBar from "@/components/motorista/TopBar";
 import {
   LayoutDashboard,
   Car,
   FileText,
   Clock,
   Search,
-  Settings,
-  LogOut,
   Menu,
-  X,
-  User,
   Fuel,
   DollarSign,
   Bell,
-  BellRing,
-  MessageCircle,
-  Users as UsersIcon,
   Gift,
 } from "lucide-react";
 
@@ -35,14 +29,12 @@ const menuItems = [
   { href: "/motorista/historico", label: "Histórico", icon: Clock },
   { href: "/motorista/oficinas", label: "Buscar Oficinas", icon: Search },
   { href: "/motorista/promocoes", label: "Promoções", icon: Gift },
-  { href: "/motorista/notificacoes", label: "Notificações", icon: BellRing },
-  { href: "/motorista/configuracoes", label: "Configurações", icon: Settings },
 ];
 
 export default function MotoristaLayout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const pathname = usePathname();
-  const { profile, signOut } = useAuth();
+  const { profile } = useAuth();
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -67,21 +59,8 @@ export default function MotoristaLayout({ children }: { children: React.ReactNod
           </Link>
         </div>
 
-        {/* User Info */}
-        <div className="p-4 border-b border-sky-500/30">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-sky-500 rounded-full flex items-center justify-center">
-              <User className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <p className="text-white font-medium text-sm">{profile?.name || "Motorista"}</p>
-              <p className="text-sky-200 text-xs">Conta Gratuita</p>
-            </div>
-          </div>
-        </div>
-
         {/* Menu */}
-        <nav className="p-4 space-y-1 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 240px)' }}>
+        <nav className="p-4 space-y-1 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 80px)' }}>
           {menuItems.map((item) => {
             const isActive = pathname === item.href;
             return (
@@ -103,21 +82,15 @@ export default function MotoristaLayout({ children }: { children: React.ReactNod
             );
           })}
         </nav>
-
-        {/* Logout */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-sky-500/30">
-          <button
-            onClick={signOut}
-            className="flex items-center gap-3 w-full px-4 py-3 text-sky-100 hover:bg-sky-500/50 rounded-xl transition-all text-sm"
-          >
-            <LogOut className="w-5 h-5" />
-            Sair da conta
-          </button>
-        </div>
       </aside>
 
       {/* Main Content */}
       <div className="lg:ml-64">
+        {/* Top Bar - Desktop */}
+        <div className="hidden lg:block">
+          <TopBar />
+        </div>
+
         {/* Top Bar Mobile */}
         <header className="lg:hidden sticky top-0 bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between z-30">
           <button onClick={() => setSidebarOpen(true)} className="p-2 text-gray-600">
