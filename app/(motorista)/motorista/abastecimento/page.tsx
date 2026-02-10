@@ -147,7 +147,9 @@ export default function AbastecimentoPage() {
         query = query.or(`gas_station.ilike.%${searchTerm}%,city.ilike.%${searchTerm}%`);
       }
 
-      const { data, error } = await query.order("date", { ascending: false });
+      const { data, error } = await query
+        .order("date", { ascending: false })
+        .limit(100);
 
       if (error) throw error;
 

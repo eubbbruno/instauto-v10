@@ -143,7 +143,9 @@ export default function LembretesPage() {
         query = query.or(`title.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`);
       }
 
-      const { data, error } = await query.order("due_date", { ascending: true });
+      const { data, error } = await query
+        .order("due_date", { ascending: true })
+        .limit(100);
 
       if (error) throw error;
 
@@ -305,60 +307,68 @@ export default function LembretesPage() {
           <div className="bg-white rounded-2xl shadow-2xl p-6 border-2 border-green-100 hover:shadow-green-200/50 hover:scale-105 transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-500">Concluídos</p>
-                <p className="text-3xl font-bold text-gray-900 mt-1">{stats.completed}</p>
+                <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Concluídos</p>
+                <p className="text-4xl font-extrabold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent mt-2">{stats.completed}</p>
               </div>
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                <CheckCircle className="w-6 h-6 text-green-600" />
+              <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <CheckCircle className="w-7 h-7 text-white" />
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-sm p-6 border border-gray-100">
+          <div className="bg-white rounded-2xl shadow-2xl p-6 border-2 border-red-100 hover:shadow-red-200/50 hover:scale-105 transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-500">Urgentes (7 dias)</p>
-                <p className="text-3xl font-bold text-gray-900 mt-1">{stats.urgent}</p>
+                <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Urgentes (7 dias)</p>
+                <p className="text-4xl font-extrabold bg-gradient-to-r from-red-600 to-rose-600 bg-clip-text text-transparent mt-2">{stats.urgent}</p>
               </div>
-              <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
-                <AlertTriangle className="w-6 h-6 text-red-600" />
+              <div className="w-14 h-14 bg-gradient-to-br from-red-500 to-rose-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <AlertTriangle className="w-7 h-7 text-white" />
               </div>
             </div>
           </div>
         </div>
 
-        {/* Filtros */}
-        <div className="flex flex-col md:flex-row items-center gap-4 mb-6">
-          <div className="relative flex-grow w-full md:w-auto">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Buscar lembretes..."
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+        {/* Filtros Premium */}
+        <div className="bg-white rounded-2xl shadow-2xl p-6 border-2 border-gray-100 mb-6">
+          <div className="flex flex-col md:flex-row items-center gap-4">
+            <div className="relative flex-grow w-full md:w-auto">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Buscar lembretes..."
+                className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all font-medium"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            <select
+              className="px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all w-full md:w-auto font-medium"
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+            >
+              <option value="all">Todos</option>
+              <option value="pending">Pendentes</option>
+              <option value="completed">Concluídos</option>
+            </select>
           </div>
-          <select
-            className="px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all w-full md:w-auto"
-            value={filterStatus}
-            onChange={(e) => setFilterStatus(e.target.value)}
-          >
-            <option value="all">Todos</option>
-            <option value="pending">Pendentes</option>
-            <option value="completed">Concluídos</option>
-          </select>
         </div>
 
-        {/* Lista de Lembretes */}
+        {/* Lista de Lembretes Premium */}
         <div className="space-y-4">
           {reminders.length === 0 ? (
-            <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-12 text-center text-gray-600">
-              <Bell className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <p className="text-lg font-semibold mb-2">Nenhum lembrete cadastrado</p>
-              <p className="mb-4">Crie lembretes para nunca mais esquecer obrigações importantes!</p>
+            <div className="bg-white rounded-2xl shadow-2xl border-2 border-teal-100 p-16 text-center">
+              <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-teal-100 to-cyan-200 flex items-center justify-center">
+                <Bell className="w-12 h-12 text-teal-600" />
+              </div>
+              <h3 className="text-2xl font-bold bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent mb-3">
+                Nenhum lembrete cadastrado
+              </h3>
+              <p className="text-gray-600 mb-6 max-w-md mx-auto">
+                Crie lembretes para nunca mais esquecer obrigações importantes como IPVA, seguro e revisões!
+              </p>
               <Link href="/motorista/lembretes/novo">
-                <Button className="bg-yellow-600 hover:bg-yellow-700">
+                <Button className="bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 font-bold shadow-lg hover:shadow-xl transition-all text-white border-0" size="lg">
                   <Plus className="w-5 h-5 mr-2" /> Criar Primeiro Lembrete
                 </Button>
               </Link>
@@ -374,7 +384,7 @@ export default function LembretesPage() {
               return (
                 <div
                   key={reminder.id}
-                  className={`bg-white rounded-2xl shadow-sm p-6 border transition-all hover:shadow-md ${
+                  className={`bg-white rounded-2xl shadow-2xl p-6 border-2 transition-all hover:shadow-teal-200/50 hover:scale-[1.02] ${
                     isOverdue
                       ? "border-red-300 bg-red-50"
                       : isUrgent
@@ -384,14 +394,18 @@ export default function LembretesPage() {
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-2">
-                        <h3 className="text-lg font-bold text-gray-900">{reminder.title}</h3>
-                        <Badge className={getPriorityColor(reminder.priority)}>
+                      <div className="flex items-center gap-3 mb-3">
+                        <h3 className={`text-xl font-bold ${reminder.is_completed ? 'text-gray-400 line-through' : 'bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent'}`}>
+                          {reminder.title}
+                        </h3>
+                        <Badge className={`${getPriorityColor(reminder.priority)} font-bold shadow-md`}>
                           {getPriorityLabel(reminder.priority)}
                         </Badge>
-                        <Badge variant="outline">{getReminderTypeLabel(reminder.type)}</Badge>
+                        <Badge className="bg-gradient-to-r from-teal-500 to-cyan-500 text-white font-bold border-0">
+                          {getReminderTypeLabel(reminder.type)}
+                        </Badge>
                         {reminder.is_completed && (
-                          <Badge className="bg-green-100 text-green-800">
+                          <Badge className="bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold border-0 shadow-md">
                             <CheckCircle className="w-3 h-3 mr-1" /> Concluído
                           </Badge>
                         )}

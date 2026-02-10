@@ -79,7 +79,9 @@ export default function HistoricoMotoristPage() {
 
         if (abortController.signal) query2 = query2.abortSignal(abortController.signal);
 
-        const { data, error } = await query2.order("service_date", { ascending: false });
+        const { data, error} = await query2
+          .order("service_date", { ascending: false })
+          .limit(100);
 
       if (error) throw error;
       if (mounted) {
@@ -142,80 +144,93 @@ export default function HistoricoMotoristPage() {
           </p>
         </div>
 
-        {/* Lista de Manutenções */}
+        {/* Lista de Manutenções Premium */}
         {maintenances.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-sm p-12 text-center">
-            <History className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-xl font-bold text-gray-900 mb-2">
+          <div className="bg-white rounded-2xl shadow-2xl border-2 border-purple-100 p-16 text-center">
+            <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-purple-100 to-violet-200 flex items-center justify-center">
+              <History className="w-12 h-12 text-purple-600" />
+            </div>
+            <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-violet-600 bg-clip-text text-transparent mb-3">
               Nenhuma manutenção registrada
             </h3>
-            <p className="text-gray-600 mb-6">
+            <p className="text-gray-600 mb-6 max-w-md mx-auto">
               Quando você realizar serviços em oficinas parceiras, eles aparecerão aqui
             </p>
-            <Link href="/buscar-oficinas">
-              <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all">
+            <Link href="/motorista/oficinas">
+              <button className="bg-gradient-to-r from-purple-600 to-violet-600 hover:from-purple-700 hover:to-violet-700 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transition-all">
                 Buscar Oficinas
               </button>
             </Link>
           </div>
         ) : (
-          <div className="space-y-4">
-            {maintenances.map((maintenance) => (
+          <div className="space-y-6">
+            {maintenances.map((maintenance, index) => (
               <div
                 key={maintenance.id}
-                className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow"
+                className="bg-white rounded-2xl shadow-2xl p-8 border-2 border-purple-100 hover:shadow-purple-200/50 hover:scale-[1.01] transition-all duration-300"
+                style={{ animationDelay: `${index * 50}ms` }}
               >
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-1">
+                <div className="flex flex-col md:flex-row md:justify-between md:items-start gap-4 mb-6">
+                  <div className="flex-1">
+                    <div className="inline-block px-4 py-2 bg-gradient-to-r from-purple-500 to-violet-600 text-white font-bold rounded-xl shadow-lg mb-3">
                       {getServiceTypeLabel(maintenance.service_type)}
-                    </h3>
-                    <p className="text-sm text-gray-600">
+                    </div>
+                    <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-violet-600 bg-clip-text text-transparent mb-2">
                       {maintenance.vehicle.brand} {maintenance.vehicle.model} ({maintenance.vehicle.year})
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      Placa: {maintenance.vehicle.plate}
+                    </h3>
+                    <p className="text-sm text-gray-500 font-medium">
+                      Placa: <span className="text-gray-700">{maintenance.vehicle.plate}</span>
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="text-2xl font-bold text-green-600">
+                    <p className="text-sm text-gray-500 uppercase tracking-wide font-semibold mb-1">Valor Total</p>
+                    <p className="text-4xl font-extrabold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
                       R$ {maintenance.cost.toFixed(2)}
                     </p>
                   </div>
                 </div>
 
-                <div className="border-t border-gray-200 pt-4 mb-4">
-                  <p className="text-sm text-gray-600 mb-2">Descrição do Serviço</p>
-                  <p className="text-gray-900">{maintenance.description}</p>
+                <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-xl p-6 mb-6 border-2 border-purple-100">
+                  <p className="text-sm font-semibold text-purple-700 mb-2 uppercase tracking-wide">Descrição do Serviço</p>
+                  <p className="text-gray-800 leading-relaxed">{maintenance.description}</p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                  <div className="flex items-center gap-2 text-sm">
-                    <Wrench className="h-4 w-4 text-gray-400" />
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                  <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-gray-50 to-purple-50 rounded-xl border-2 border-purple-100">
+                    <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-violet-600 rounded-xl flex items-center justify-center shadow-md">
+                      <Wrench className="w-6 h-6 text-white" />
+                    </div>
                     <div>
-                      <p className="text-gray-600">Oficina</p>
-                      <p className="font-semibold text-gray-900">
+                      <p className="text-xs text-gray-500 font-semibold uppercase">Oficina</p>
+                      <p className="font-bold text-gray-900 text-sm">
                         {maintenance.workshop.name}
+                      </p>
+                      <p className="text-xs text-gray-600">
+                        {maintenance.workshop.city}, {maintenance.workshop.state}
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2 text-sm">
-                    <Calendar className="h-4 w-4 text-gray-400" />
+                  <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl border-2 border-blue-100">
+                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-sky-600 rounded-xl flex items-center justify-center shadow-md">
+                      <Calendar className="w-6 h-6 text-white" />
+                    </div>
                     <div>
-                      <p className="text-gray-600">Data do Serviço</p>
-                      <p className="font-semibold text-gray-900">
+                      <p className="text-xs text-gray-500 font-semibold uppercase">Data do Serviço</p>
+                      <p className="font-bold text-gray-900">
                         {new Date(maintenance.service_date).toLocaleDateString("pt-BR")}
                       </p>
                     </div>
                   </div>
 
                   {maintenance.mileage && (
-                    <div className="flex items-center gap-2 text-sm">
-                      <DollarSign className="h-4 w-4 text-gray-400" />
+                    <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-gray-50 to-orange-50 rounded-xl border-2 border-orange-100">
+                      <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-amber-600 rounded-xl flex items-center justify-center shadow-md">
+                        <DollarSign className="w-6 h-6 text-white" />
+                      </div>
                       <div>
-                        <p className="text-gray-600">Quilometragem</p>
-                        <p className="font-semibold text-gray-900">
+                        <p className="text-xs text-gray-500 font-semibold uppercase">Quilometragem</p>
+                        <p className="font-bold text-gray-900">
                           {maintenance.mileage.toLocaleString()} km
                         </p>
                       </div>
@@ -223,9 +238,9 @@ export default function HistoricoMotoristPage() {
                   )}
                 </div>
 
-                <div className="bg-gray-50 rounded-lg p-3">
-                  <p className="text-xs text-gray-600">
-                    Registrado em {new Date(maintenance.created_at).toLocaleDateString("pt-BR")}
+                <div className="bg-gradient-to-r from-gray-100 to-purple-100 rounded-xl p-4 border-2 border-gray-200">
+                  <p className="text-xs text-gray-600 font-medium">
+                    📅 Registrado em {new Date(maintenance.created_at).toLocaleDateString("pt-BR")} às {new Date(maintenance.created_at).toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}
                   </p>
                 </div>
               </div>

@@ -146,7 +146,9 @@ export default function DespesasPage() {
         query = query.or(`description.ilike.%${searchTerm}%,notes.ilike.%${searchTerm}%`);
       }
 
-      const { data, error } = await query.order("date", { ascending: false });
+      const { data, error } = await query
+        .order("date", { ascending: false })
+        .limit(100);
 
       if (error) throw error;
 
