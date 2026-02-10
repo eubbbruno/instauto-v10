@@ -52,7 +52,9 @@ export default function OficinasPage() {
           query = query.ilike("city", `%${selectedCity}%`);
         }
 
-        const { data, error } = await query.order("created_at", { ascending: false });
+        const { data, error } = await query
+          .order("created_at", { ascending: false })
+          .limit(50);
 
         if (error) throw error;
         
@@ -61,7 +63,7 @@ export default function OficinasPage() {
         }
       } catch (error: any) {
         if (error.name !== 'AbortError' && mounted) {
-          console.error("Erro ao carregar oficinas:", error);
+          console.error("❌ [Oficinas] Erro ao carregar:", error);
         }
       } finally {
         if (mounted) {
@@ -70,9 +72,11 @@ export default function OficinasPage() {
       }
     };
 
+    console.log("🚀 [Oficinas] Iniciando fetch...");
     loadWorkshops();
 
     return () => {
+      console.log("🛑 [Oficinas] Cleanup - abortando fetch");
       mounted = false;
       abortController.abort();
     };
@@ -88,143 +92,165 @@ export default function OficinasPage() {
     );
   });
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-orange-50/30 to-amber-50/20 flex items-center justify-center pt-16">
+        <div className="text-center">
+          <Loader2 className="h-16 w-16 animate-spin text-orange-600 mx-auto mb-4" />
+          <p className="text-gray-600 font-medium">Buscando oficinas...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50 pt-16">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-orange-50/30 to-amber-50/20 pt-16 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-4">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Buscar Oficinas</h1>
-          <p className="text-gray-600">Encontre oficinas próximas e solicite orçamentos</p>
+        {/* Header Premium */}
+        <div className="mb-10">
+          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-orange-600 via-amber-600 to-orange-800 bg-clip-text text-transparent leading-tight mb-3">
+            Buscar Oficinas 🔍
+          </h1>
+          <p className="text-gray-600 text-lg">Encontre oficinas próximas e solicite orçamentos</p>
         </div>
 
-        {/* Filtros */}
-        <Card className="mb-8">
-          <CardContent className="pt-6">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              {/* Busca por nome */}
-              <div className="md:col-span-2">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                  <Input
-                    placeholder="Buscar por nome ou cidade..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10"
-                  />
-                </div>
-              </div>
-
-              {/* Estado */}
-              <div>
-                <Select value={selectedState} onValueChange={setSelectedState}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Estado" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">Todos os estados</SelectItem>
-                    {ESTADOS_BRASILEIROS.map((estado) => (
-                      <SelectItem key={estado} value={estado}>
-                        {estado}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Cidade */}
-              <div>
-                <Input
-                  placeholder="Cidade"
-                  value={selectedCity}
-                  onChange={(e) => setSelectedCity(e.target.value)}
-                />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Lista de Oficinas */}
-        {loading ? (
-          <div className="flex justify-center py-12">
-            <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+        {/* Campo de Busca Premium */}
+        <div className="bg-white rounded-2xl shadow-2xl p-8 border-2 border-orange-100 mb-8">
+          <div className="relative mb-6">
+            <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-6 h-6 text-orange-400" />
+            <input
+              type="text"
+              placeholder="Buscar por nome, cidade ou serviço..."
+              className="w-full h-14 pl-16 pr-6 text-lg border-2 border-orange-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all font-medium shadow-lg"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
           </div>
-        ) : filteredWorkshops.length === 0 ? (
-          <Card className="text-center py-12">
-            <CardContent className="pt-6">
-              <Building2 className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                Nenhuma oficina encontrada
-              </h3>
-              <p className="text-gray-600 mb-6">
-                Tente ajustar os filtros de busca ou remover alguns critérios.
-              </p>
-              <Button
-                onClick={() => {
-                  setSearchTerm("");
-                  setSelectedState("");
-                  setSelectedCity("");
-                }}
-                variant="outline"
-              >
-                Limpar Filtros
-              </Button>
-            </CardContent>
-          </Card>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Select value={selectedState} onValueChange={setSelectedState}>
+              <SelectTrigger className="h-12 border-2 border-orange-200 focus:border-orange-500 font-medium">
+                <SelectValue placeholder="Selecione o Estado" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">Todos os estados</SelectItem>
+                {ESTADOS_BRASILEIROS.map((estado) => (
+                  <SelectItem key={estado} value={estado}>
+                    {estado}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            <Input
+              placeholder="Digite a cidade..."
+              value={selectedCity}
+              onChange={(e) => setSelectedCity(e.target.value)}
+              className="h-12 border-2 border-orange-200 focus:border-orange-500 font-medium"
+            />
+          </div>
+        </div>
+
+        {/* Lista de Oficinas Premium */}
+        {filteredWorkshops.length === 0 ? (
+          <div className="bg-white rounded-2xl shadow-2xl border-2 border-orange-100 p-16 text-center">
+            <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-orange-100 to-amber-200 flex items-center justify-center">
+              <Building2 className="w-12 h-12 text-orange-600" />
+            </div>
+            <h3 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent mb-3">
+              Nenhuma oficina encontrada
+            </h3>
+            <p className="text-gray-600 mb-6 max-w-md mx-auto">
+              Tente ajustar os filtros de busca ou remover alguns critérios.
+            </p>
+            <Button
+              onClick={() => {
+                setSearchTerm("");
+                setSelectedState("");
+                setSelectedCity("");
+              }}
+              className="bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 font-bold shadow-lg"
+            >
+              Limpar Filtros
+            </Button>
+          </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredWorkshops.map((workshop) => (
-              <Card key={workshop.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
+            {filteredWorkshops.map((workshop, index) => (
+              <div
+                key={workshop.id}
+                className="bg-white rounded-2xl shadow-2xl border-2 border-orange-100 hover:shadow-orange-200/50 hover:scale-105 transition-all duration-300 overflow-hidden"
+                style={{ animationDelay: `${index * 50}ms` }}
+              >
+                {/* Header do Card */}
+                <div className="bg-gradient-to-r from-orange-500 to-amber-600 p-6 text-white relative">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <CardTitle className="text-xl mb-1">{workshop.name}</CardTitle>
+                      <h3 className="text-2xl font-bold mb-2">{workshop.name}</h3>
                       {workshop.city && workshop.state && (
-                        <CardDescription className="flex items-center gap-1">
+                        <div className="flex items-center gap-2 text-orange-50">
                           <MapPin className="h-4 w-4" />
-                          {workshop.city}, {workshop.state}
-                        </CardDescription>
+                          <span className="font-medium">{workshop.city}, {workshop.state}</span>
+                        </div>
                       )}
                     </div>
                     {workshop.plan_type === "pro" && (
-                      <Badge className="bg-yellow-500">PRO</Badge>
+                      <Badge className="bg-yellow-400 text-yellow-900 font-bold border-0">
+                        ⭐ PRO
+                      </Badge>
                     )}
                   </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
+                </div>
+
+                {/* Corpo do Card */}
+                <div className="p-6 space-y-4">
                   {/* Descrição */}
                   {workshop.description && (
-                    <p className="text-sm text-gray-600 line-clamp-2">
+                    <p className="text-gray-600 line-clamp-2 leading-relaxed">
                       {workshop.description}
                     </p>
                   )}
 
                   {/* Avaliação */}
                   {workshop.average_rating && (
-                    <div className="flex items-center gap-2">
-                      <div className="flex items-center">
-                        <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
-                        <span className="ml-1 font-semibold">
-                          {workshop.average_rating.toFixed(1)}
-                        </span>
+                    <div className="flex items-center gap-3 p-3 bg-gradient-to-br from-yellow-50 to-amber-50 rounded-xl border-2 border-yellow-200">
+                      <div className="flex items-center gap-1">
+                        {[...Array(5)].map((_, i) => (
+                          <Star
+                            key={i}
+                            className={`h-5 w-5 ${
+                              i < Math.floor(workshop.average_rating || 0)
+                                ? "text-yellow-500 fill-yellow-500"
+                                : "text-gray-300"
+                            }`}
+                          />
+                        ))}
                       </div>
-                      <span className="text-sm text-gray-500">
+                      <span className="font-bold text-gray-900">
+                        {workshop.average_rating.toFixed(1)}
+                      </span>
+                      <span className="text-sm text-gray-600">
                         ({workshop.total_reviews} avaliações)
                       </span>
                     </div>
                   )}
 
                   {/* Contato */}
-                  <div className="space-y-2 text-sm">
+                  <div className="space-y-3">
                     {workshop.phone && (
-                      <div className="flex items-center gap-2 text-gray-600">
-                        <Phone className="h-4 w-4" />
-                        <span>{workshop.phone}</span>
+                      <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+                        <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-amber-600 rounded-lg flex items-center justify-center">
+                          <Phone className="h-5 w-5 text-white" />
+                        </div>
+                        <span className="font-medium text-gray-700">{workshop.phone}</span>
                       </div>
                     )}
                     {workshop.email && (
-                      <div className="flex items-center gap-2 text-gray-600">
-                        <Mail className="h-4 w-4" />
-                        <span className="truncate">{workshop.email}</span>
+                      <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
+                        <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-sky-600 rounded-lg flex items-center justify-center">
+                          <Mail className="h-5 w-5 text-white" />
+                        </div>
+                        <span className="font-medium text-gray-700 truncate">{workshop.email}</span>
                       </div>
                     )}
                   </div>
@@ -233,28 +259,29 @@ export default function OficinasPage() {
                   {workshop.specialties && workshop.specialties.length > 0 && (
                     <div className="flex flex-wrap gap-2">
                       {workshop.specialties.slice(0, 3).map((specialty, index) => (
-                        <Badge key={index} variant="secondary" className="text-xs">
+                        <Badge key={index} className="bg-gradient-to-r from-orange-500 to-amber-600 text-white font-bold border-0">
                           {specialty}
                         </Badge>
                       ))}
                       {workshop.specialties.length > 3 && (
-                        <Badge variant="secondary" className="text-xs">
+                        <Badge className="bg-gray-600 text-white font-bold border-0">
                           +{workshop.specialties.length - 3}
                         </Badge>
                       )}
                     </div>
                   )}
 
-                  {/* Botões */}
-                  <div className="flex gap-2 pt-4 border-t">
+                  {/* Botões Premium */}
+                  {/* Botões Premium */}
+                  <div className="flex gap-3 pt-4">
                     <Link href={`/motorista/oficinas/${workshop.id}`} className="flex-1">
-                      <Button className="w-full" size="sm">
+                      <Button className="w-full bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 font-bold shadow-lg" size="lg">
                         Ver Detalhes
                       </Button>
                     </Link>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             ))}
           </div>
         )}

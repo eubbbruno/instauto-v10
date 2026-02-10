@@ -53,7 +53,8 @@ export default function PromocoesPage() {
 
         const { data, error } = await query
           .order("featured", { ascending: false })
-          .order("created_at", { ascending: false });
+          .order("created_at", { ascending: false })
+          .limit(50);
 
         if (error) throw error;
 
@@ -62,7 +63,7 @@ export default function PromocoesPage() {
         }
       } catch (error: any) {
         if (error.name !== 'AbortError' && mounted) {
-          console.error("Erro ao carregar promoções:", error);
+          console.error("❌ [Promoções] Erro ao carregar:", error);
         }
       } finally {
         if (mounted) {
@@ -71,9 +72,11 @@ export default function PromocoesPage() {
       }
     };
 
+    console.log("🚀 [Promoções] Iniciando fetch...");
     loadPromotions();
 
     return () => {
+      console.log("🛑 [Promoções] Cleanup - abortando fetch");
       mounted = false;
       abortController.abort();
     };
@@ -81,8 +84,11 @@ export default function PromocoesPage() {
 
   if (loading || promotionsLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600"></div>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-pink-50/30 to-fuchsia-50/20 flex items-center justify-center pt-16">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-t-transparent border-pink-600 mx-auto mb-4"></div>
+          <p className="text-gray-600 font-medium">Carregando promoções...</p>
+        </div>
       </div>
     );
   }
@@ -104,20 +110,20 @@ export default function PromocoesPage() {
   const regularPromotions = filteredPromotions.filter(p => !p.featured);
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-20">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-2">
-            <h1 className="text-3xl font-bold text-gray-900">
-              Promoções Exclusivas
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-pink-50/30 to-fuchsia-50/20 pt-16 pb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-4">
+        {/* Header Premium */}
+        <div className="mb-10">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-3">
+            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-pink-600 via-fuchsia-600 to-pink-800 bg-clip-text text-transparent leading-tight">
+              Promoções Exclusivas 🎁
             </h1>
-            <Badge className="bg-gradient-to-r from-pink-500 to-pink-600 text-white">
-              <Sparkles className="w-4 h-4 mr-1" />
-              {filteredPromotions.length} ofertas
+            <Badge className="bg-gradient-to-r from-pink-500 to-fuchsia-600 text-white font-bold text-lg px-4 py-2 shadow-lg border-0 w-fit">
+              <Sparkles className="w-5 h-5 mr-2" />
+              {filteredPromotions.length} ofertas ativas
             </Badge>
           </div>
-          <p className="text-gray-600">
+          <p className="text-gray-600 text-lg">
             Aproveite descontos exclusivos com nossos parceiros
           </p>
         </div>
