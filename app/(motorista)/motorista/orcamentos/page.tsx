@@ -50,41 +50,31 @@ export default function OrcamentosMotoristPage() {
       try {
         setLoading(true);
 
-        // Buscar motorista
-        let query1 = supabase
-          .from("motorists")
-          .select("id")
-          .eq("profile_id", profile.id);
-
-        if (abortController.signal) query1 = query1.abortSignal(abortController.signal);
-
-        const { data: motorist } = await query1.single();
-
-        if (!motorist || !mounted) {
-          setLoading(false);
-          return;
-        }
-
-        // Buscar orçamentos com dados da oficina
-        let query2 = supabase
+        // Buscar orçamentos usando email do profile
+        let query = supabase
           .from("quotes")
           .select(`
             *,
             workshop:workshops(name, city, state)
           `)
-          .eq("motorist_id", motorist.id);
+          .eq("motorist_email", profile.email);
 
-        if (abortController.signal) query2 = query2.abortSignal(abortController.signal);
+        if (abortController.signal) query = query.abortSignal(abortController.signal);
 
-        const { data, error } = await query2.order("created_at", { ascending: false });
+        const { data, error } = await query
+          .order("created_at", { ascending: false })
+          .limit(100);
 
         if (error) throw error;
+        
         if (mounted) {
           setQuotes(data || []);
         }
       } catch (error: any) {
         if (error.name !== 'AbortError' && mounted) {
-          console.error("Erro ao carregar orçamentos:", error);
+          console.error("❌ [Orçamentos] Erro ao carregar:", error);
+          // Em caso de erro, mostrar lista vazia ao invés de travar
+          setQuotes([]);
         }
       } finally {
         if (mounted) {

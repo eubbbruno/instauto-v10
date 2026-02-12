@@ -133,7 +133,7 @@ export default function OficinasPage() {
                 <SelectValue placeholder="Selecione o Estado" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Todos os estados</SelectItem>
+                <SelectItem value="all">Todos os estados</SelectItem>
                 {ESTADOS_BRASILEIROS.map((estado) => (
                   <SelectItem key={estado} value={estado}>
                     {estado}

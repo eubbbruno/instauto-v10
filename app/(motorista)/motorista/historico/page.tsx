@@ -19,7 +19,7 @@ interface Maintenance {
   service_date: string;
   created_at: string;
   vehicle: {
-    brand: string;
+    make: string;
     model: string;
     year: number;
     plate: string;
@@ -72,7 +72,7 @@ export default function HistoricoMotoristPage() {
           .from("maintenance_history")
           .select(`
             *,
-            vehicle:motorist_vehicles(brand, model, year, plate),
+            vehicle:motorist_vehicles(make, model, year, plate),
             workshop:workshops(name, city, state)
           `)
           .eq("motorist_id", motorist.id);
@@ -176,7 +176,7 @@ export default function HistoricoMotoristPage() {
                       {getServiceTypeLabel(maintenance.service_type)}
                     </div>
                     <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-violet-600 bg-clip-text text-transparent mb-2">
-                      {maintenance.vehicle.brand} {maintenance.vehicle.model} ({maintenance.vehicle.year})
+                      {maintenance.vehicle.make} {maintenance.vehicle.model} ({maintenance.vehicle.year})
                     </h3>
                     <p className="text-sm text-gray-500 font-medium">
                       Placa: <span className="text-gray-700">{maintenance.vehicle.plate}</span>
