@@ -78,10 +78,41 @@ export function QuoteRequestDialog({ open, onOpenChange, workshop, motoristId, o
     setLoading(true);
 
     try {
+      // Buscar dados do motorista
+      const { data: motorist, error: motoristError } = await supabase
+        .from("motorists")
+        .select("profile_id, profiles(name, email, phone)")
+        .eq("id", motoristId)
+        .single();
+
+      if (motoristError) throw motoristError;
+
+      const profile = motorist?.profiles as any;
+      
+      // Buscar dados do veículo se selecionado
+      let vehicleData = null;
+      if (formData.vehicle_id) {
+        const { data: vehicle, error: vehicleError } = await supabase
+          .from("motorist_vehicles")
+          .select("make, model, year, plate")
+          .eq("id", formData.vehicle_id)
+          .single();
+
+        if (vehicleError) throw vehicleError;
+        vehicleData = vehicle;
+      }
+
+      // Inserir orçamento com os dados corretos
       const { error } = await supabase.from("quotes").insert({
-        motorist_id: motoristId,
-        vehicle_id: formData.vehicle_id || null,
         workshop_id: workshop.id,
+        motorist_name: profile?.name || "Motorista",
+        motorist_email: profile?.email || "",
+        motorist_phone: profile?.phone || "",
+        vehicle_brand: vehicleData?.make || "Não informado",
+        vehicle_model: vehicleData?.model || "Não informado",
+        vehicle_year: vehicleData?.year || new Date().getFullYear(),
+        vehicle_plate: vehicleData?.plate || null,
+        vehicle_id: formData.vehicle_id || null,
         service_type: formData.service_type,
         description: formData.description,
         urgency: formData.urgency,

@@ -38,18 +38,11 @@ export default function DashboardHeader() {
 
     try {
       if (profile.type === "motorista") {
-        const { data: motorist } = await supabase
-          .from("motorists")
-          .select("id")
-          .eq("profile_id", profile.id)
-          .single();
-
-        if (!motorist) return;
-
+        // Contar orçamentos respondidos usando email
         const { count } = await supabase
           .from("quotes")
           .select("*", { count: "exact", head: true })
-          .eq("motorist_id", motorist.id)
+          .eq("motorist_email", profile.email)
           .eq("status", "responded");
 
         setNotifications(count || 0);
