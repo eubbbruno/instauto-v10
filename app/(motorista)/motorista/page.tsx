@@ -43,6 +43,9 @@ export default function MotoristaDashboard() {
 
     const loadStats = async () => {
       try {
+        console.log("🚀 [Dashboard] Iniciando fetch de stats...");
+
+        // Buscar motorist_id
         let query1 = supabase
           .from("motorists")
           .select("id")
@@ -57,6 +60,7 @@ export default function MotoristaDashboard() {
           return;
         }
 
+        // Contar veículos
         let query2 = supabase
           .from("motorist_vehicles")
           .select("*", { count: "exact", head: true })
@@ -67,10 +71,11 @@ export default function MotoristaDashboard() {
 
         const { count: vehiclesCount } = await query2;
 
+        // Contar orçamentos usando EMAIL ao invés de motorist_id
         let query3 = supabase
           .from("quotes")
           .select("*", { count: "exact", head: true })
-          .eq("motorist_id", motorist.id);
+          .eq("motorist_email", profile.email);
 
         if (abortController.signal) query3 = query3.abortSignal(abortController.signal);
 
@@ -82,10 +87,13 @@ export default function MotoristaDashboard() {
             quotes: quotesCount || 0,
             maintenances: 0,
           });
+          console.log("✅ [Dashboard] Stats carregadas:", { vehiclesCount, quotesCount });
         }
       } catch (error: any) {
         if (error.name !== 'AbortError' && mounted) {
-          console.error("Erro ao carregar stats:", error);
+          console.error("❌ [Dashboard] Erro ao carregar stats:", error);
+          // Em caso de erro, mostrar stats zerados
+          setStats({ vehicles: 0, quotes: 0, maintenances: 0 });
         }
       } finally {
         if (mounted) {
@@ -97,6 +105,7 @@ export default function MotoristaDashboard() {
     loadStats();
 
     return () => {
+      console.log("🛑 [Dashboard] Cleanup - abortando fetch");
       mounted = false;
       abortController.abort();
     };
