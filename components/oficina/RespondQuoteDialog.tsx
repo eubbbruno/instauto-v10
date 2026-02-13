@@ -51,6 +51,19 @@ export function RespondQuoteDialog({ open, onOpenChange, quote, workshopId, onSu
 
       if (error) throw error;
 
+      // Criar notificação para o motorista
+      if (quote.motorist?.profile_id) {
+        await supabase.from("notifications").insert({
+          user_id: quote.motorist.profile_id,
+          type: responseType === "accept" ? "quote_response" : "quote_rejected",
+          title: responseType === "accept" ? "Orçamento Respondido!" : "Orçamento Recusado",
+          message: responseType === "accept" 
+            ? `Sua solicitação de orçamento foi respondida. Valor estimado: R$ ${formData.estimated_price}`
+            : `Sua solicitação de orçamento foi recusada. Motivo: ${formData.workshop_response}`,
+          is_read: false,
+        });
+      }
+
       onSuccess();
       onOpenChange(false);
       

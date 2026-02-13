@@ -27,6 +27,7 @@ import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase";
 import { Workshop } from "@/types/database";
 import { DashboardStats } from "@/components/dashboard/DashboardStats";
+import TopBar from "@/components/oficina/TopBar";
 
 interface MenuItem {
   name: string;
@@ -47,8 +48,6 @@ const menuItems: MenuItem[] = [
   { name: "Diagnóstico IA", href: "/oficina/diagnostico", icon: <Stethoscope className="h-5 w-5" />, pro: true },
   { name: "Relatórios", href: "/oficina/relatorios", icon: <FileText className="h-5 w-5" />, pro: true },
   { name: "WhatsApp", href: "/oficina/whatsapp", icon: <MessageSquare className="h-5 w-5" />, pro: true },
-  { name: "Configurações", href: "/oficina/configuracoes", icon: <Settings className="h-5 w-5" />, pro: false },
-  { name: "Planos", href: "/oficina/planos", icon: <Crown className="h-5 w-5" />, pro: false },
 ];
 
 export default function DashboardLayout({
@@ -258,21 +257,6 @@ export default function DashboardLayout({
               </div>
             )}
 
-            {/* User Info */}
-            <div className="bg-blue-700/50 rounded-lg p-2 mb-2">
-              <p className="text-xs font-medium text-white truncate">{profile.name}</p>
-              <p className="text-[10px] text-blue-300 truncate">{profile.email}</p>
-            </div>
-
-            {/* Logout Button */}
-            <Button
-              variant="ghost"
-              className="w-full justify-start text-blue-100 hover:bg-blue-700 hover:text-white text-xs h-8"
-              onClick={handleSignOut}
-            >
-              <LogOut className="mr-2 h-3 w-3" />
-              Sair
-            </Button>
           </div>
         </div>
       </aside>
@@ -287,6 +271,10 @@ export default function DashboardLayout({
 
       {/* Main Content */}
       <main className="lg:ml-64 pt-16 lg:pt-0">
+        {/* TopBar - Desktop only */}
+        <div className="hidden lg:block">
+          <TopBar />
+        </div>
         <DashboardStats />
         <div className="p-4 md:p-8">{children}</div>
       </main>
