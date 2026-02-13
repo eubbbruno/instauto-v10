@@ -76,11 +76,10 @@ export default function OficinaDashboard() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       if ((authLoading || loading) && !forceLoaded) {
-        console.error("⚠️ Timeout: loading demorou mais de 10 segundos. Forçando carregamento.");
         setForceLoaded(true);
         setLoading(false);
       }
-    }, 10000); // 10 segundos
+    }, 10000);
 
     return () => clearTimeout(timeout);
   }, [authLoading, loading, forceLoaded]);

@@ -21,10 +21,9 @@ export default function MotoristaDashboard() {
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (loading && !forceLoaded) {
-        console.error("⚠️ Timeout: loading demorou mais de 10 segundos. Forçando carregamento.");
         setForceLoaded(true);
       }
-    }, 10000); // 10 segundos
+    }, 10000);
 
     return () => clearTimeout(timeout);
   }, [loading, forceLoaded]);

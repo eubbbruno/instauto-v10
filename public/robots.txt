@@ -1,0 +1,29 @@
+# Robots.txt for Instauto
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://www.instauto.com.br/sitemap.xml
+
+# Block dashboard pages
+Disallow: /motorista/
+Disallow: /oficina/
+Disallow: /auth/
+Disallow: /api/
+
+# Block admin pages
+Disallow: /completar-cadastro
+
+# Allow public pages
+Allow: /
+Allow: /para-oficinas
+Allow: /como-funciona
+Allow: /sobre
+Allow: /contato
+Allow: /planos
+Allow: /login-motorista
+Allow: /login-oficina
+Allow: /cadastro-motorista
+Allow: /cadastro-oficina
+Allow: /buscar-oficinas
+Allow: /solicitar-orcamento

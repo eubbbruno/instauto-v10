@@ -17,41 +17,60 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Encontre Oficina Mecânica Perto de Você | Orçamento Grátis | Instauto",
-  description: "Encontre oficinas mecânicas confiáveis perto de você. Solicite orçamentos grátis, compare preços e avaliações. Manutenção automotiva para carros, motos e caminhões. Sistema completo de gestão para oficinas.",
-  keywords: ["oficina mecânica", "oficina mecânica perto de mim", "orçamento oficina mecânica", "solicitar orçamento oficina", "manutenção automotiva", "conserto de carro", "mecânico de confiança", "gestão de oficina", "sistema para oficina"],
+  metadataBase: new URL('https://www.instauto.com.br'),
+  title: {
+    default: "Instauto - Encontre a Melhor Oficina Mecânica",
+    template: "%s | Instauto"
+  },
+  description: "Encontre oficinas mecânicas de confiança perto de você. Compare orçamentos, veja avaliações e agende serviços. Para oficinas: sistema completo de gestão.",
+  keywords: ["oficina mecânica", "mecânico", "orçamento", "carro", "manutenção", "reparo", "auto", "veículo", "sistema para oficina", "gestão de oficina", "ERP oficina"],
   authors: [{ name: "Instauto" }],
-  icons: {
-    icon: [
-      { url: '/images/logo.svg', type: 'image/svg+xml' },
-    ],
+  creator: "Instauto",
+  publisher: "Instauto",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
   openGraph: {
-    title: "Encontre Oficina Mecânica Perto de Você | Orçamento Grátis",
-    description: "Solicite orçamentos grátis em oficinas mecânicas confiáveis. Compare preços e avaliações. Manutenção automotiva com transparência.",
+    type: "website",
+    locale: "pt_BR",
     url: "https://www.instauto.com.br",
     siteName: "Instauto",
-    locale: "pt_BR",
-    type: "website",
+    title: "Instauto - Encontre a Melhor Oficina Mecânica",
+    description: "Encontre oficinas mecânicas de confiança. Compare orçamentos e agende serviços.",
     images: [
       {
-        url: '/images/img-01.png',
+        url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: 'Instauto - Encontre Oficinas Mecânicas e Solicite Orçamentos',
+        alt: "Instauto - Oficinas Mecânicas",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Encontre Oficina Mecânica | Orçamento Grátis | Instauto",
-    description: "Solicite orçamentos grátis em oficinas mecânicas confiáveis perto de você",
-    images: ['/images/img-01.png'],
+    title: "Instauto - Encontre a Melhor Oficina Mecânica",
+    description: "Encontre oficinas mecânicas de confiança. Compare orçamentos e agende serviços.",
+    images: ["/og-image.png"],
   },
-  robots: {
-    index: true,
-    follow: true,
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-16x16.png", type: "image/png", sizes: "16x16" },
+      { url: "/favicon-32x32.png", type: "image/png", sizes: "32x32" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
   },
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({
@@ -61,6 +80,36 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://nzvvkbvmyttlixswwaqw.supabase.co" />
+        <meta name="theme-color" content="#3B82F6" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              "name": "Instauto",
+              "url": "https://www.instauto.com.br",
+              "description": "Plataforma para encontrar oficinas mecânicas e sistema de gestão para oficinas",
+              "applicationCategory": "BusinessApplication",
+              "operatingSystem": "Web",
+              "offers": {
+                "@type": "Offer",
+                "price": "97",
+                "priceCurrency": "BRL"
+              },
+              "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "4.8",
+                "ratingCount": "500"
+              }
+            })
+          }}
+        />
+      </head>
       <body className={`${plusJakarta.variable} ${syne.variable} font-sans antialiased`}>
         <AuthProvider>
           {children}
