@@ -158,24 +158,24 @@ export default function MotoristaDashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-sky-50/30 to-blue-50/20 pt-20 pb-12">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-sky-50/30 to-blue-50/20 lg:pt-20 pb-12">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
         {/* Header Premium com Boas-vindas */}
-        <div className="mb-10">
-          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-            <div className="space-y-3">
-              <div className="flex items-center gap-4 flex-wrap">
-                <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-sky-600 via-blue-600 to-sky-800 bg-clip-text text-transparent leading-tight">
+        <div className="mb-6 sm:mb-10">
+          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 sm:gap-6">
+            <div className="space-y-2 sm:space-y-3">
+              <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-sky-600 via-blue-600 to-sky-800 bg-clip-text text-transparent leading-tight">
                   Olá, {firstName}! 👋
                 </h1>
                 {hasFleet && (
-                  <span className="px-4 py-2 bg-gradient-to-r from-purple-500 to-fuchsia-600 text-white text-sm font-bold rounded-full flex items-center gap-2 shadow-lg shadow-purple-500/40 animate-pulse">
-                    <Users className="w-4 h-4" />
+                  <span className="px-3 py-1.5 sm:px-4 sm:py-2 bg-gradient-to-r from-purple-500 to-fuchsia-600 text-white text-xs sm:text-sm font-bold rounded-full flex items-center gap-2 shadow-lg shadow-purple-500/40 animate-pulse">
+                    <Users className="w-3 h-3 sm:w-4 sm:h-4" />
                     Frota Ativa
                   </span>
                 )}
               </div>
-              <p className="text-gray-600 text-lg">
+              <p className="text-gray-600 text-sm sm:text-base md:text-lg">
                 Gerencie seus veículos e encontre as melhores oficinas
               </p>
             </div>
@@ -183,7 +183,7 @@ export default function MotoristaDashboard() {
         </div>
 
         {/* Cards de Estatísticas */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
           <StatCard
             title="Meus Veículos"
             value={stats.vehicles}
@@ -214,12 +214,12 @@ export default function MotoristaDashboard() {
         </div>
 
         {/* Ações Rápidas */}
-        <div className="mb-8">
-          <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+        <div className="mb-6 sm:mb-8">
+          <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4 flex items-center gap-2">
             <Zap className="w-5 h-5 text-yellow-500" />
             Ações Rápidas
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
             <Link
               href="/motorista/oficinas"
               className="bg-gradient-to-br from-blue-600 to-blue-500 rounded-xl shadow-md p-6 hover:shadow-xl transition-all hover:-translate-y-1 group"

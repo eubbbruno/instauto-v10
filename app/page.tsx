@@ -55,27 +55,27 @@ export default function HomePage() {
               </div>
 
               {/* Título */}
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-6">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-4 sm:mb-6">
                 Encontre a melhor{" "}
                 <span className="text-yellow-400">oficina mecânica</span>{" "}
                 perto de você
               </h1>
 
               {/* Subtítulo */}
-              <p className="text-lg md:text-xl text-blue-100 font-sans mb-8 max-w-xl">
+              <p className="text-base sm:text-lg md:text-xl text-blue-100 font-sans mb-6 sm:mb-8 max-w-xl">
                 Solicite orçamentos grátis, compare preços e avaliações de oficinas confiáveis na sua região.
               </p>
 
-              {/* CAMPO DE BUSCA - PRINCIPAL (mais largo, menos alto) */}
+              {/* CAMPO DE BUSCA - PRINCIPAL */}
               <div className="bg-white rounded-2xl shadow-2xl p-2 mb-6 max-w-2xl">
-                <form onSubmit={handleSearch} className="flex items-center gap-2">
-                  <div className="flex-1 flex items-center gap-3 px-4">
+                <form onSubmit={handleSearch} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                  <div className="flex-1 flex items-center gap-3 px-4 min-h-[48px]">
                     <MapPin className="w-5 h-5 text-gray-400 flex-shrink-0" />
                     <AddressAutocomplete onSelect={setSelectedLocation} />
                   </div>
                   <button
                     type="submit"
-                    className="flex items-center justify-center gap-2 px-6 py-3 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold rounded-xl transition-all whitespace-nowrap"
+                    className="flex items-center justify-center gap-2 px-6 py-3 sm:py-3 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold rounded-xl transition-all whitespace-nowrap min-h-[48px]"
                   >
                     Buscar
                     <ArrowRight className="w-5 h-5" />
@@ -84,17 +84,17 @@ export default function HomePage() {
               </div>
 
               {/* Badges de benefícios */}
-              <div className="flex flex-wrap gap-6 text-sm text-white/90 font-sans">
+              <div className="flex flex-wrap gap-4 sm:gap-6 text-sm text-white/90 font-sans">
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-green-400" />
+                  <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0" />
                   <span>100% Grátis</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-green-400" />
+                  <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0" />
                   <span>Sem compromisso</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-green-400" />
+                  <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0" />
                   <span>Orçamento em minutos</span>
                 </div>
               </div>
@@ -144,12 +144,12 @@ export default function HomePage() {
       </section>
 
       {/* Empresas Parceiras - Social Proof logo após Hero */}
-      <section className="py-16 bg-white">
+      <section className="py-12 sm:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-sm font-medium text-gray-500 uppercase tracking-wider mb-8">
+          <p className="text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider mb-6 sm:mb-8">
             Empresas que confiam em soluções automotivas
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12">
+          <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-8 md:gap-12">
             {[
               { src: "/images/uber-seeklogo.png", alt: "Uber" },
               { src: "/images/rappi-seeklogo.png", alt: "Rappi" },
