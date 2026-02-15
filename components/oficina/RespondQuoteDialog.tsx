@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Loader2, CheckCircle, XCircle } from "lucide-react";
 import { createClient } from "@/lib/supabase";
+import { useToast } from "@/components/ui/use-toast";
 
 interface RespondQuoteDialogProps {
   open: boolean;
@@ -22,6 +23,7 @@ export function RespondQuoteDialog({ open, onOpenChange, quote, workshopId, onSu
   const [loading, setLoading] = useState(false);
   const [responseType, setResponseType] = useState<"accept" | "reject">("accept");
   const supabase = createClient();
+  const { toast } = useToast();
 
   const [formData, setFormData] = useState({
     workshop_response: "",
@@ -51,10 +53,58 @@ export function RespondQuoteDialog({ open, onOpenChange, quote, workshopId, onSu
 
       if (error) throw error;
 
-      // TODO: Criar notificação para o motorista
-      // Nota: quotes não tem motorist_id/profile_id, apenas motorist_email
-      // Para criar notificação, precisaria buscar o profile_id pelo email primeiro
-      // Por enquanto, pular esta etapa
+      console.log("✅ Orçamento atualizado, criando notificação...");
+
+      // Criar notificação para o motorista
+      try {
+        // 1. Buscar profile_id do motorista pelo email
+        const { data: motoristProfile, error: profileError } = await supabase
+          .from("profiles")
+          .select("id, name")
+          .eq("email", quote.motorist_email)
+          .single();
+
+        if (profileError) {
+          console.error("❌ Erro ao buscar profile do motorista:", profileError);
+        } else if (motoristProfile) {
+          // 2. Buscar nome da oficina
+          const { data: workshop } = await supabase
+            .from("workshops")
+            .select("name")
+            .eq("id", workshopId)
+            .single();
+
+          const workshopName = workshop?.name || "Oficina";
+
+          // 3. Criar notificação
+          const { error: notifError } = await supabase.from("notifications").insert({
+            user_id: motoristProfile.id,
+            type: responseType === "accept" ? "quote_response" : "quote_rejected",
+            title: responseType === "accept" 
+              ? "Orçamento Respondido! 🎉" 
+              : "Orçamento Recusado",
+            message: responseType === "accept"
+              ? `A oficina ${workshopName} respondeu seu orçamento. Valor estimado: R$ ${parseFloat(formData.estimated_price).toFixed(2)}`
+              : `A oficina ${workshopName} não pôde atender seu orçamento no momento.`,
+            is_read: false,
+            data: {
+              quote_id: quote.id,
+              workshop_id: workshopId,
+              estimated_price: responseType === "accept" ? parseFloat(formData.estimated_price) : null,
+              response_type: responseType
+            }
+          });
+
+          if (notifError) {
+            console.error("❌ Erro ao criar notificação:", notifError);
+          } else {
+            console.log("✅ Notificação criada para motorista:", motoristProfile.id);
+          }
+        }
+      } catch (notifError) {
+        console.error("❌ Erro no processo de notificação:", notifError);
+        // Não falha a operação principal se notificação falhar
+      }
 
       onSuccess();
       onOpenChange(false);
@@ -65,9 +115,20 @@ export function RespondQuoteDialog({ open, onOpenChange, quote, workshopId, onSu
         estimated_price: "",
       });
       setResponseType("accept");
+
+      toast({
+        title: "Sucesso!",
+        description: responseType === "accept" 
+          ? "Orçamento enviado com sucesso. O motorista foi notificado."
+          : "Recusa enviada. O motorista foi notificado.",
+      });
     } catch (error) {
-      console.error("Erro ao responder orçamento:", error);
-      alert("Erro ao enviar resposta. Tente novamente.");
+      console.error("❌ Erro ao responder orçamento:", error);
+      toast({
+        title: "Erro",
+        description: "Não foi possível enviar a resposta. Tente novamente.",
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
