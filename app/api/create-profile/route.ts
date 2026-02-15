@@ -143,13 +143,16 @@ export async function POST(request: Request) {
         .single();
 
       if (!existingWorkshop) {
+        const trialEndsAt = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000); // 14 dias
+        
         const { error: workshopError } = await supabaseAdmin
           .from("workshops")
           .insert({
             profile_id: userId,
             name: userName,
             plan_type: "free",
-            trial_ends_at: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(), // 14 dias
+            subscription_status: "trial",
+            trial_ends_at: trialEndsAt.toISOString(),
           });
 
         if (workshopError) {
@@ -160,7 +163,7 @@ export async function POST(request: Request) {
           );
         }
         
-        console.log("Workshop created successfully for user:", userId);
+        console.log("✅ Workshop criado com trial de 14 dias:", userId);
       }
     }
 

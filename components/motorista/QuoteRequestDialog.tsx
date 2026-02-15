@@ -11,6 +11,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Loader2, AlertCircle } from "lucide-react";
 import { MotoristVehicle, Workshop } from "@/types/database";
 import { createClient } from "@/lib/supabase";
+import { useToast } from "@/components/ui/use-toast";
 
 interface QuoteRequestDialogProps {
   open: boolean;
@@ -40,6 +41,7 @@ export function QuoteRequestDialog({ open, onOpenChange, workshop, motoristId, o
   const [vehicles, setVehicles] = useState<MotoristVehicle[]>([]);
   const [loadingVehicles, setLoadingVehicles] = useState(true);
   const supabase = createClient();
+  const { toast } = useToast();
 
   const [formData, setFormData] = useState({
     vehicle_id: "",
@@ -119,7 +121,17 @@ export function QuoteRequestDialog({ open, onOpenChange, workshop, motoristId, o
         status: "pending",
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error("❌ Erro ao inserir orçamento:", error);
+        throw error;
+      }
+
+      console.log("✅ Orçamento enviado com sucesso");
+
+      toast({
+        title: "Orçamento enviado!",
+        description: "A oficina receberá sua solicitação e responderá em breve.",
+      });
 
       onSuccess();
       onOpenChange(false);
@@ -131,9 +143,24 @@ export function QuoteRequestDialog({ open, onOpenChange, workshop, motoristId, o
         description: "",
         urgency: "normal",
       });
-    } catch (error) {
-      console.error("Erro ao enviar orçamento:", error);
-      alert("Erro ao enviar orçamento. Tente novamente.");
+    } catch (error: any) {
+      console.error("❌ Erro ao enviar orçamento:", error);
+      
+      let errorMessage = "Erro ao enviar orçamento. Tente novamente.";
+      
+      if (error.message) {
+        errorMessage = error.message;
+      }
+      
+      if (error.code === "23505") {
+        errorMessage = "Você já enviou um orçamento para esta oficina recentemente.";
+      }
+      
+      toast({
+        title: "Erro ao enviar",
+        description: errorMessage,
+        variant: "destructive",
+      });
     } finally {
       setLoading(false);
     }
@@ -141,15 +168,18 @@ export function QuoteRequestDialog({ open, onOpenChange, workshop, motoristId, o
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>Solicitar Orçamento</DialogTitle>
-          <DialogDescription>
-            Envie uma solicitação de orçamento para <strong>{workshop.name}</strong>
-          </DialogDescription>
-        </DialogHeader>
+      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
+        {/* Header Premium com Gradiente */}
+        <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 -mx-4 sm:-mx-6 -mt-4 sm:-mt-6 px-4 sm:px-6 py-6 mb-6">
+          <DialogHeader>
+            <DialogTitle className="text-white text-2xl">Solicitar Orçamento</DialogTitle>
+            <DialogDescription className="text-blue-100 text-base">
+              Envie uma solicitação para <strong className="text-white">{workshop.name}</strong>
+            </DialogDescription>
+          </DialogHeader>
+        </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6 px-1">
           {/* Veículo */}
           <div>
             <Label htmlFor="vehicle_id">Veículo *</Label>
@@ -260,22 +290,23 @@ export function QuoteRequestDialog({ open, onOpenChange, workshop, motoristId, o
             </p>
           </div>
 
-          <DialogFooter className="gap-2 sm:gap-0">
+          <DialogFooter className="gap-2 sm:gap-0 pt-4">
             <Button
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
-              disabled={loading}
+              disabled={loading || vehicles.length === 0}
+              className="w-full sm:w-auto"
             >
               Cancelar
             </Button>
             <Button
               type="submit"
               disabled={loading || vehicles.length === 0}
-              className="bg-blue-600 hover:bg-blue-700"
+              className="w-full sm:w-auto bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg"
             >
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Enviar Solicitação
+              {loading ? "Enviando..." : "Enviar Solicitação"}
             </Button>
           </DialogFooter>
         </form>

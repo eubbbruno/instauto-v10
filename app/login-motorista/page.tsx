@@ -15,7 +15,7 @@ import Footer from "@/components/layout/Footer";
 
 export default function LoginMotoristaPage() {
   const router = useRouter();
-  const { signIn, signInWithGoogle } = useAuth();
+  const { signIn, signInWithGoogle, profile, loading: authLoading } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -30,23 +30,38 @@ export default function LoginMotoristaPage() {
     }
   }, []);
 
+  // Redirecionar se já estiver logado
+  useEffect(() => {
+    if (profile && !authLoading && profile.type === "motorista") {
+      console.log("✅ Já logado, redirecionando...");
+      router.push("/motorista");
+    }
+  }, [profile, authLoading, router]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
+    // Timeout de segurança
+    const timeout = setTimeout(() => {
+      setError("Login está demorando muito. Tente novamente.");
+      setLoading(false);
+    }, 15000);
+
     try {
       await signIn(email, password);
-      console.log("Login bem-sucedido, redirecionando...");
+      console.log("✅ Login bem-sucedido");
       
-      // Aguardar um pouco para garantir que o AuthContext carregou
+      // Aguardar profile carregar
       setTimeout(() => {
+        clearTimeout(timeout);
         router.push("/motorista");
-        setLoading(false);
-      }, 500);
+      }, 1000);
       
     } catch (err: any) {
-      console.error("Erro no login:", err);
+      clearTimeout(timeout);
+      console.error("❌ Erro no login:", err);
       setError(err.message || "Erro ao fazer login. Verifique suas credenciais.");
       setLoading(false);
     }

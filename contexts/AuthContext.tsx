@@ -23,44 +23,52 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
   const supabase = createClient();
 
+  // Timeout para evitar loading infinito
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (loading) {
+        console.warn("⚠️ Auth timeout - forçando fim do loading após 10s");
+        setLoading(false);
+      }
+    }, 10000);
+
+    return () => clearTimeout(timeout);
+  }, [loading]);
+
   // Inicialização SIMPLES
   useEffect(() => {
     let mounted = true;
 
     const init = async () => {
-      console.log("=== AUTH CONTEXT INIT ===");
+      console.log("🔐 [AuthContext] Inicializando...");
       try {
         const { data: { session } } = await supabase.auth.getSession();
-        console.log("Session user:", session?.user?.id);
         
         if (session?.user && mounted) {
+          console.log("✅ [AuthContext] Sessão encontrada:", session.user.email);
           setUser(session.user);
           
-          console.log("Loading profile for user:", session.user.id);
           const { data, error } = await supabase
             .from("profiles")
             .select("*")
             .eq("id", session.user.id)
             .single();
           
-          console.log("Profile data:", data?.id);
-          console.log("Profile error:", error?.code, error?.message);
-          
           if (data && mounted) {
             setProfile(data);
-            console.log("✅ Profile loaded:", data.type);
-          } else if (!data && !error) {
-            console.warn("⚠️ ATENÇÃO: Usuário sem profile! Pode ser login Google que falhou no callback.");
+            console.log("✅ [AuthContext] Profile carregado:", data.type);
+          } else if (error) {
+            console.error("❌ [AuthContext] Erro ao carregar profile:", error.message);
           }
         } else {
-          console.log("No session found");
+          console.log("ℹ️ [AuthContext] Nenhuma sessão ativa");
         }
       } catch (e) {
-        console.error("❌ Auth init error:", e);
+        console.error("❌ [AuthContext] Erro na inicialização:", e);
       } finally {
         if (mounted) {
           setLoading(false);
-          console.log("Auth init complete");
+          console.log("✅ [AuthContext] Inicialização completa");
         }
       }
     };
@@ -69,30 +77,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // Listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log("=== AUTH STATE CHANGE ===");
-      console.log("Event:", event);
-      console.log("User:", session?.user?.id);
+      console.log("🔄 [AuthContext] Estado mudou:", event);
       
       if (!mounted) return;
       
       setUser(session?.user || null);
       
       if (session?.user) {
-        console.log("Loading profile for user:", session.user.id);
-        const { data, error } = await supabase
+        const { data } = await supabase
           .from("profiles")
           .select("*")
           .eq("id", session.user.id)
           .single();
         
-        console.log("Profile data:", data?.id);
-        console.log("Profile error:", error?.code);
-        
         setProfile(data || null);
-        
-        if (!data) {
-          console.warn("⚠️ ATENÇÃO: Usuário autenticado mas sem profile!");
-        }
       } else {
         setProfile(null);
       }
