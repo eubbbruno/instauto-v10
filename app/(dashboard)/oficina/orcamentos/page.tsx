@@ -17,7 +17,13 @@ import { RespondQuoteDialog } from "@/components/oficina/RespondQuoteDialog";
 
 interface Quote {
   id: string;
-  motorist_id: string;
+  motorist_name: string;
+  motorist_email: string;
+  motorist_phone: string;
+  vehicle_brand: string;
+  vehicle_model: string;
+  vehicle_year: number;
+  vehicle_plate: string | null;
   vehicle_id: string | null;
   service_type: string;
   description: string;
@@ -25,16 +31,9 @@ interface Quote {
   status: string;
   workshop_response: string | null;
   estimated_price: number | null;
+  estimated_days: number | null;
   responded_at: string | null;
   created_at: string;
-  motorist: {
-    profile_id: string;
-    profiles: {
-      name: string;
-      email: string;
-      phone: string | null;
-    };
-  };
   vehicle: {
     make: string;
     model: string;
@@ -87,20 +86,19 @@ export default function OrcamentosOficinaPage() {
       setWorkshopId(workshop.id);
 
       // Buscar orçamentos
+      // NOTA: quotes usa motorist_email (text), não motorist_id (FK)
       const { data, error } = await supabase
         .from("quotes")
         .select(`
           *,
-          motorist:motorists!quotes_motorist_id_fkey(
-            profile_id,
-            profiles(name, email, phone)
-          ),
           vehicle:motorist_vehicles(make, model, year, plate)
         `)
         .eq("workshop_id", workshop.id)
         .order("created_at", { ascending: false });
 
       if (error) throw error;
+      
+      // Dados do motorista já vêm nos campos motorist_name, motorist_email, motorist_phone
       setQuotes(data || []);
     } catch (error) {
       console.error("Erro ao carregar orçamentos:", error);
@@ -160,7 +158,7 @@ export default function OrcamentosOficinaPage() {
     // Filtro de busca
     if (searchTerm) {
       const term = searchTerm.toLowerCase();
-      const motoristName = quote.motorist?.profiles?.name?.toLowerCase() || "";
+      const motoristName = quote.motorist_name?.toLowerCase() || "";
       const serviceType = quote.service_type.toLowerCase();
       const description = quote.description.toLowerCase();
       
@@ -285,7 +283,7 @@ export default function OrcamentosOficinaPage() {
                       <CardDescription className="flex flex-col gap-1">
                         <span className="flex items-center gap-1">
                           <User className="h-4 w-4" />
-                          {quote.motorist?.profiles?.name || "Cliente"}
+                          {quote.motorist_name}
                         </span>
                         <span className="flex items-center gap-1">
                           <Calendar className="h-4 w-4" />
@@ -357,16 +355,16 @@ export default function OrcamentosOficinaPage() {
 
                   {/* Contato do Cliente */}
                   <div className="flex flex-wrap gap-4 pt-5 border-t-2 border-gray-200">
-                    {quote.motorist?.profiles?.email && (
+                    {quote.motorist_email && (
                       <div className="flex items-center gap-2 bg-blue-50 px-4 py-2 rounded-lg border border-blue-200">
                         <span className="text-blue-600 font-medium">📧</span>
-                        <span className="text-gray-900 font-medium">{quote.motorist.profiles.email}</span>
+                        <span className="text-gray-900 font-medium">{quote.motorist_email}</span>
                       </div>
                     )}
-                    {quote.motorist?.profiles?.phone && (
+                    {quote.motorist_phone && (
                       <div className="flex items-center gap-2 bg-green-50 px-4 py-2 rounded-lg border border-green-200">
                         <span className="text-green-600 font-medium">📱</span>
-                        <span className="text-gray-900 font-medium">{quote.motorist.profiles.phone}</span>
+                        <span className="text-gray-900 font-medium">{quote.motorist_phone}</span>
                       </div>
                     )}
                   </div>
