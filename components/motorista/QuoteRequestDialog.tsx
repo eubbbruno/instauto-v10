@@ -104,8 +104,8 @@ export function QuoteRequestDialog({ open, onOpenChange, workshop, motoristId, o
         vehicleData = vehicle;
       }
 
-      // Inserir orçamento com os dados corretos
-      const { error } = await supabase.from("quotes").insert({
+      // Preparar dados do orçamento
+      const quoteData = {
         workshop_id: workshop.id,
         motorist_name: profile?.name || "Motorista",
         motorist_email: profile?.email || "",
@@ -119,14 +119,32 @@ export function QuoteRequestDialog({ open, onOpenChange, workshop, motoristId, o
         description: formData.description,
         urgency: formData.urgency,
         status: "pending",
-      });
+      };
+
+      console.log("=== CRIANDO ORÇAMENTO ===");
+      console.log("Workshop ID:", workshop.id);
+      console.log("Motorist Email:", profile?.email);
+      console.log("Motorist Name:", profile?.name);
+      console.log("Vehicle ID:", formData.vehicle_id);
+      console.log("Dados completos:", quoteData);
+
+      // Inserir orçamento
+      const { data: insertedQuote, error } = await supabase
+        .from("quotes")
+        .insert(quoteData)
+        .select()
+        .single();
 
       if (error) {
-        console.error("❌ Erro ao inserir orçamento:", error);
+        console.error("❌ ERRO ao inserir orçamento:");
+        console.error("Código:", error.code);
+        console.error("Mensagem:", error.message);
+        console.error("Detalhes:", error.details);
+        console.error("Hint:", error.hint);
         throw error;
       }
 
-      console.log("✅ Orçamento enviado com sucesso");
+      console.log("✅ Orçamento criado com sucesso:", insertedQuote);
 
       toast({
         title: "Orçamento enviado!",
