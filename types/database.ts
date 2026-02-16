@@ -116,7 +116,8 @@ export interface Transaction {
   updated_at?: string;
 }
 
-export type AppointmentStatus = "scheduled" | "confirmed" | "in_progress" | "completed" | "cancelled";
+export type AppointmentStatus = "scheduled" | "confirmed" | "in_progress" | "completed" | "cancelled" | "no_show";
+export type AppointmentType = "service" | "quote" | "delivery" | "other";
 
 export interface Appointment {
   id: string;
@@ -129,6 +130,7 @@ export interface Appointment {
   start_time: string;
   end_time?: string;
   status: AppointmentStatus;
+  type?: AppointmentType;
   notes?: string;
   created_at: string;
   updated_at?: string;
@@ -305,6 +307,16 @@ export interface MotoristExpense {
 
 export type ReminderType = "ipva" | "insurance" | "revision" | "licensing" | "tire_rotation" | "oil_change" | "inspection" | "other";
 export type ReminderPriority = "low" | "medium" | "high";
+
+// Tipos para mensagens
+export type MessageType = "text" | "image" | "file";
+export type SenderType = "motorist" | "workshop";
+
+// Tipos para notificações
+export type NotificationType = "quote_response" | "message" | "maintenance" | "alert" | "promotion";
+
+// Tipos para assinaturas
+export type SubscriptionStatus = "none" | "pending" | "active" | "cancelled" | "paused";
 
 export interface MotoristReminder {
   id: string;
