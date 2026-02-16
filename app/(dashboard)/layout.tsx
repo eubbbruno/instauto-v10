@@ -20,13 +20,14 @@ import {
   X,
   Stethoscope,
   MessageSquare,
-  Receipt
+  Receipt,
+  Wrench,
+  MoreVertical
 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase";
 import { Workshop } from "@/types/database";
-import { DashboardStats } from "@/components/dashboard/DashboardStats";
 import TopBar from "@/components/oficina/TopBar";
 
 interface MenuItem {
@@ -124,11 +125,13 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
       {/* Mobile Header */}
       <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Car className="h-6 w-6 text-blue-600" />
+          <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center">
+            <Wrench className="w-4 h-4 text-white" />
+          </div>
           <span className="text-lg font-bold text-gray-900">Instauto</span>
         </div>
         <Button
@@ -140,123 +143,113 @@ export default function DashboardLayout({
         </Button>
       </div>
 
-      {/* Sidebar */}
+      {/* SIDEBAR PREMIUM */}
       <aside
-        className={`fixed inset-y-0 left-0 z-40 w-64 bg-gradient-to-b from-blue-900 to-blue-800 text-white transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+        className={`fixed inset-y-0 left-0 z-40 w-64 bg-gradient-to-b from-blue-50 via-white to-blue-50/50 border-r border-blue-100 flex flex-col transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex flex-col h-full">
-          {/* Logo */}
-          <div className="p-4 border-b border-blue-700">
-            <Link href="/oficina" className="flex items-center gap-2">
-              <div className="p-1.5 bg-blue-700 rounded-lg">
-                <Car className="h-5 w-5 text-white" />
-              </div>
-              <div>
-                <span className="text-lg font-bold">Instauto</span>
-                <p className="text-[10px] text-blue-200 mt-0.5 truncate max-w-[150px]">
-                  {workshop?.name || profile.name}
-                </p>
-              </div>
-            </Link>
-          </div>
+        {/* Logo no topo */}
+        <div className="p-6 border-b border-blue-100">
+          <Link href="/oficina" className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-lg">
+              <Wrench className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <span className="font-bold text-gray-900 text-lg">Instauto</span>
+              <span className="ml-2 px-2 py-0.5 bg-yellow-400 text-yellow-900 text-xs font-bold rounded-full">
+                {isPro ? 'PRO' : 'FREE'}
+              </span>
+            </div>
+          </Link>
+        </div>
 
-          {/* Navigation */}
-          <nav className="flex-1 p-3 space-y-0.5 overflow-y-auto">
-            {menuItems.map((item) => {
-              const isActive = pathname === item.href;
-              const needsPro = item.pro && !hasProAccess;
+        {/* Menu Principal */}
+        <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4 px-3">
+            Menu
+          </p>
+          
+          {menuItems.map((item) => {
+            const isActive = pathname === item.href;
+            const needsPro = item.pro && !hasProAccess;
 
-              // Se precisa PRO e não tem acesso, redireciona para planos
-              if (needsPro) {
-                return (
-                  <button
-                    key={item.href}
-                    onClick={() => {
-                      setSidebarOpen(false);
-                      router.push("/oficina/planos");
-                    }}
-                    className="w-full flex items-center justify-between px-3 py-2 rounded-lg transition-all text-sm text-blue-200/50 hover:bg-blue-700/30 hover:text-blue-100 cursor-not-allowed opacity-60"
-                  >
-                    <div className="flex items-center gap-2">
-                      {item.icon}
-                      <span className="font-medium">{item.name}</span>
-                    </div>
-                    <span className="px-1.5 py-0.5 text-[9px] font-bold bg-yellow-400 text-blue-900 rounded-full">
-                      PRO
-                    </span>
-                  </button>
-                );
-              }
-
+            if (needsPro) {
               return (
-                <Link
+                <button
                   key={item.href}
-                  href={item.href}
-                  onClick={() => setSidebarOpen(false)}
-                  className={`flex items-center justify-between px-3 py-2 rounded-lg transition-all text-sm ${
-                    isActive
-                      ? "bg-blue-700 text-white shadow-lg"
-                      : "text-blue-100 hover:bg-blue-700/50 hover:text-white"
-                  }`}
+                  onClick={() => {
+                    setSidebarOpen(false);
+                    router.push("/oficina/planos");
+                  }}
+                  className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200 text-gray-400 hover:bg-gray-50"
                 >
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-3">
                     {item.icon}
                     <span className="font-medium">{item.name}</span>
                   </div>
-                </Link>
+                  <span className="px-2 py-0.5 bg-yellow-400 text-yellow-900 text-xs font-bold rounded-full">
+                    PRO
+                  </span>
+                </button>
               );
-            })}
-          </nav>
+            }
 
-          {/* Plan Badge */}
-          <div className="p-3 border-t border-blue-700">
-            {isPro ? (
-              <div className="bg-gradient-to-r from-yellow-400 to-yellow-500 rounded-lg p-2 mb-2">
-                <div className="flex items-center gap-2">
-                  <Crown className="h-4 w-4 text-blue-900" />
-                  <div>
-                    <p className="text-xs font-bold text-blue-900">Plano PRO</p>
-                    <p className="text-[10px] text-blue-800">Assinatura ativa</p>
-                  </div>
-                </div>
-              </div>
-            ) : isTrialActive ? (
-              <div className="bg-blue-500 rounded-lg p-2 mb-2">
-                <div className="flex items-center gap-2">
-                  <Crown className="h-4 w-4 text-white" />
-                  <div>
-                    <p className="text-xs font-bold text-white">Trial PRO</p>
-                    <p className="text-[10px] text-blue-100">
-                      {Math.ceil(
-                        (new Date(workshop?.trial_ends_at || "").getTime() - new Date().getTime()) /
-                          (1000 * 60 * 60 * 24)
-                      )}{" "}
-                      dias
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="bg-blue-700 rounded-lg p-2 mb-2">
-                <div className="flex items-center gap-2">
-                  <Crown className="h-4 w-4 text-blue-300" />
-                  <div className="flex-1">
-                    <p className="text-xs font-bold text-white">Plano FREE</p>
-                    <p className="text-[10px] text-blue-300">Limitado</p>
-                  </div>
-                </div>
-                <Button
-                  onClick={() => router.push("/oficina/planos")}
-                  className="w-full mt-1.5 bg-gradient-to-r from-yellow-400 to-yellow-500 text-blue-900 hover:from-yellow-500 hover:to-yellow-600 font-bold text-xs h-7"
-                  size="sm"
-                >
-                  Upgrade
-                </Button>
-              </div>
-            )}
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setSidebarOpen(false)}
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
+                  isActive
+                    ? "bg-blue-600 text-white shadow-lg shadow-blue-600/30"
+                    : "text-gray-600 hover:bg-blue-50 hover:text-blue-600"
+                }`}
+              >
+                {item.icon}
+                <span className="font-medium">{item.name}</span>
+              </Link>
+            );
+          })}
+          
+          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mt-8 mb-4 px-3">
+            Outros
+          </p>
+          
+          <Link
+            href="/oficina/configuracoes"
+            className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-all"
+            onClick={() => setSidebarOpen(false)}
+          >
+            <Settings className="w-5 h-5" />
+            <span className="font-medium">Configurações</span>
+          </Link>
+          
+          <Link
+            href="/oficina/planos"
+            className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-all"
+            onClick={() => setSidebarOpen(false)}
+          >
+            <Crown className="w-5 h-5" />
+            <span className="font-medium">Planos</span>
+          </Link>
+        </nav>
 
+        {/* Oficina no rodapé */}
+        <div className="p-4 border-t border-blue-100">
+          <div className="flex items-center gap-3 p-3 rounded-xl hover:bg-blue-50 cursor-pointer transition-colors">
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center text-white font-bold shadow-md">
+              {workshop?.name?.charAt(0)?.toUpperCase() || 'O'}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-medium text-gray-900 truncate text-sm">
+                {workshop?.name || 'Oficina'}
+              </p>
+              <p className="text-xs text-gray-500 truncate">
+                {workshop?.city}, {workshop?.state}
+              </p>
+            </div>
+            <MoreVertical className="w-5 h-5 text-gray-400" />
           </div>
         </div>
       </aside>
@@ -275,8 +268,7 @@ export default function DashboardLayout({
         <div className="hidden lg:block">
           <TopBar />
         </div>
-        <DashboardStats />
-        <div className="p-4 md:p-8">{children}</div>
+        {children}
       </main>
     </div>
   );

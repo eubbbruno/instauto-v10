@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useAuth } from "@/contexts/AuthContext";
 import { createClient } from "@/lib/supabase";
-import { Bell, User, Settings, LogOut, ChevronDown, Crown, Wrench } from "lucide-react";
+import { Bell, User, Settings, LogOut, ChevronDown, Crown, Wrench, Search, Sun } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
@@ -140,9 +140,29 @@ export default function TopBar() {
   const isPro = workshop?.plan_type === "pro" && workshop?.subscription_status === "active";
 
   return (
-    <header className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
-      <div className="flex items-center justify-end px-6 py-4">
-        <div className="flex items-center gap-4">
+    <header className="sticky top-0 z-40 h-16 bg-white/80 backdrop-blur-xl border-b border-gray-100 flex items-center justify-between px-6">
+      
+      {/* Busca central */}
+      <div className="flex-1 max-w-md">
+        <div className="relative">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <input 
+            type="text"
+            placeholder="Buscar..."
+            className="w-full pl-12 pr-16 py-2.5 bg-gray-50 border-0 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all"
+          />
+          <kbd className="absolute right-4 top-1/2 -translate-y-1/2 px-2 py-0.5 bg-gray-200 text-gray-500 text-xs rounded font-medium">
+            ⌘K
+          </kbd>
+        </div>
+      </div>
+
+      {/* Ações à direita */}
+      <div className="flex items-center gap-2">
+          {/* Botão tema */}
+          <button className="p-2.5 rounded-xl hover:bg-gray-100 transition-colors">
+            <Sun className="w-5 h-5 text-gray-600" />
+          </button>
           {/* Notifications */}
           <div className="relative">
             <button
@@ -303,7 +323,6 @@ export default function TopBar() {
             )}
           </div>
         </div>
-      </div>
     </header>
   );
 }

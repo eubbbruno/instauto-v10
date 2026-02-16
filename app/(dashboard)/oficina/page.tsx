@@ -20,7 +20,8 @@ import {
   CheckCircle2,
   Crown,
   ArrowRight,
-  Sparkles
+  Sparkles,
+  Loader2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -355,11 +356,8 @@ export default function OficinaDashboard() {
 
   if ((authLoading || loading) && !forceLoaded) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-blue-50">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent mx-auto mb-4"></div>
-          <p className="text-gray-600 font-medium">Carregando seu dashboard...</p>
-        </div>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 flex items-center justify-center">
+        <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
       </div>
     );
   }
@@ -420,16 +418,14 @@ export default function OficinaDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-purple-50/20 pb-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
+      <div className="p-8">
+        {/* Header padrão */}
         <div className="mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent mb-3">
-            Olá, {workshop?.name || 'Oficina'}! 👋
+          <p className="text-sm text-gray-500 mb-1">Dashboard</p>
+          <h1 className="text-3xl font-bold text-gray-900">
+            Bem-vindo de volta, {workshop?.name || 'Oficina'}! 👋
           </h1>
-          <p className="text-gray-600 text-lg">
-            Aqui está um resumo do que está acontecendo na sua oficina
-          </p>
         </div>
 
         {/* Stats Cards */}
