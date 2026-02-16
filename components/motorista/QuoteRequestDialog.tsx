@@ -47,7 +47,7 @@ export function QuoteRequestDialog({ open, onOpenChange, workshop, motoristId, o
     vehicle_id: "",
     service_type: "",
     description: "",
-    urgency: "normal" as "low" | "normal" | "high",
+    urgency: "medium" as "low" | "medium" | "high",
   });
 
   useEffect(() => {
@@ -80,18 +80,46 @@ export function QuoteRequestDialog({ open, onOpenChange, workshop, motoristId, o
     setLoading(true);
 
     try {
-      // Buscar dados do motorista
+      console.log("=== 🚀 INÍCIO DO PROCESSO DE CRIAÇÃO DE ORÇAMENTO ===");
+      
+      // PASSO 1: Verificar sessão do usuário
+      const { data: { session } } = await supabase.auth.getSession();
+      console.log("1️⃣ SESSÃO DO USUÁRIO:");
+      console.log("   - Autenticado:", !!session);
+      console.log("   - User ID:", session?.user?.id);
+      console.log("   - User Email:", session?.user?.email);
+      console.log("   - Session válida:", !!session?.access_token);
+      
+      if (!session) {
+        throw new Error("❌ USUÁRIO NÃO ESTÁ AUTENTICADO!");
+      }
+
+      // PASSO 2: Buscar dados do motorista
+      console.log("\n2️⃣ BUSCANDO DADOS DO MOTORISTA:");
+      console.log("   - Motorist ID recebido:", motoristId);
+      
       const { data: motorist, error: motoristError } = await supabase
         .from("motorists")
         .select("profile_id, profiles(name, email, phone)")
         .eq("id", motoristId)
         .single();
 
-      if (motoristError) throw motoristError;
+      if (motoristError) {
+        console.error("   ❌ Erro ao buscar motorista:", motoristError);
+        throw motoristError;
+      }
 
       const profile = motorist?.profiles as any;
+      console.log("   ✅ Motorista encontrado:");
+      console.log("   - Profile ID:", motorist?.profile_id);
+      console.log("   - Nome:", profile?.name);
+      console.log("   - Email:", profile?.email);
+      console.log("   - Telefone:", profile?.phone);
       
-      // Buscar dados do veículo se selecionado
+      // PASSO 3: Buscar dados do veículo
+      console.log("\n3️⃣ BUSCANDO DADOS DO VEÍCULO:");
+      console.log("   - Vehicle ID selecionado:", formData.vehicle_id);
+      
       let vehicleData = null;
       if (formData.vehicle_id) {
         const { data: vehicle, error: vehicleError } = await supabase
@@ -100,11 +128,23 @@ export function QuoteRequestDialog({ open, onOpenChange, workshop, motoristId, o
           .eq("id", formData.vehicle_id)
           .single();
 
-        if (vehicleError) throw vehicleError;
+        if (vehicleError) {
+          console.error("   ❌ Erro ao buscar veículo:", vehicleError);
+          throw vehicleError;
+        }
+        
         vehicleData = vehicle;
+        console.log("   ✅ Veículo encontrado:");
+        console.log("   - Marca:", vehicle?.make);
+        console.log("   - Modelo:", vehicle?.model);
+        console.log("   - Ano:", vehicle?.year);
+        console.log("   - Placa:", vehicle?.plate);
+      } else {
+        console.log("   ⚠️ Nenhum veículo selecionado");
       }
 
-      // Preparar dados do orçamento
+      // PASSO 4: Preparar dados do orçamento
+      console.log("\n4️⃣ PREPARANDO DADOS DO ORÇAMENTO:");
       const quoteData = {
         workshop_id: workshop.id,
         motorist_name: profile?.name || "Motorista",
@@ -121,14 +161,39 @@ export function QuoteRequestDialog({ open, onOpenChange, workshop, motoristId, o
         status: "pending",
       };
 
-      console.log("=== CRIANDO ORÇAMENTO ===");
-      console.log("Workshop ID:", workshop.id);
-      console.log("Motorist Email:", profile?.email);
-      console.log("Motorist Name:", profile?.name);
-      console.log("Vehicle ID:", formData.vehicle_id);
-      console.log("Dados completos:", quoteData);
+      console.log("   📋 Dados completos do orçamento:");
+      console.log(JSON.stringify(quoteData, null, 2));
+      
+      // Validar campos obrigatórios
+      console.log("\n5️⃣ VALIDANDO CAMPOS OBRIGATÓRIOS:");
+      const camposObrigatorios = {
+        'workshop_id': quoteData.workshop_id,
+        'motorist_email': quoteData.motorist_email,
+        'status': quoteData.status,
+        'service_type': quoteData.service_type,
+        'description': quoteData.description
+      };
+      
+      let temErro = false;
+      for (const [campo, valor] of Object.entries(camposObrigatorios)) {
+        if (!valor) {
+          console.error(`   ❌ CAMPO OBRIGATÓRIO VAZIO: ${campo}`);
+          temErro = true;
+        } else {
+          console.log(`   ✅ ${campo}: ${valor}`);
+        }
+      }
+      
+      if (temErro) {
+        throw new Error("Campos obrigatórios estão vazios!");
+      }
 
-      // Inserir orçamento
+      // PASSO 5: Inserir orçamento
+      console.log("\n6️⃣ INSERINDO ORÇAMENTO NO BANCO:");
+      console.log("   - Tabela: quotes");
+      console.log("   - Operação: INSERT");
+      console.log("   - RLS: Habilitado (esperado)");
+      
       const { data: insertedQuote, error } = await supabase
         .from("quotes")
         .insert(quoteData)
@@ -136,15 +201,34 @@ export function QuoteRequestDialog({ open, onOpenChange, workshop, motoristId, o
         .single();
 
       if (error) {
-        console.error("❌ ERRO ao inserir orçamento:");
-        console.error("Código:", error.code);
-        console.error("Mensagem:", error.message);
-        console.error("Detalhes:", error.details);
-        console.error("Hint:", error.hint);
+        console.error("\n❌❌❌ ERRO AO INSERIR ORÇAMENTO ❌❌❌");
+        console.error("   - Código:", error.code);
+        console.error("   - Mensagem:", error.message);
+        console.error("   - Detalhes:", error.details);
+        console.error("   - Hint:", error.hint);
+        console.error("   - Status HTTP:", (error as any).status);
+        
+        // Diagnóstico específico para erro 42501 (RLS)
+        if (error.code === "42501") {
+          console.error("\n🔍 DIAGNÓSTICO DO ERRO RLS:");
+          console.error("   Este é um erro de Row Level Security!");
+          console.error("   Possíveis causas:");
+          console.error("   1. Policy de INSERT não existe ou está incorreta");
+          console.error("   2. Policy WITH CHECK está bloqueando");
+          console.error("   3. Usuário não tem permissão 'authenticated'");
+          console.error("\n   📝 PRÓXIMOS PASSOS:");
+          console.error("   - Execute o script DIAGNOSTICO-RLS-PASSO-1.sql");
+          console.error("   - Desabilite RLS temporariamente para testar");
+        }
+        
         throw error;
       }
 
-      console.log("✅ Orçamento criado com sucesso:", insertedQuote);
+      console.log("\n✅✅✅ ORÇAMENTO CRIADO COM SUCESSO! ✅✅✅");
+      console.log("   - ID do orçamento:", insertedQuote?.id);
+      console.log("   - Status:", insertedQuote?.status);
+      console.log("   - Criado em:", insertedQuote?.created_at);
+      console.log("=== FIM DO PROCESSO ===\n");
 
       toast({
         title: "Orçamento enviado!",
@@ -159,7 +243,7 @@ export function QuoteRequestDialog({ open, onOpenChange, workshop, motoristId, o
         vehicle_id: "",
         service_type: "",
         description: "",
-        urgency: "normal",
+        urgency: "medium",
       });
     } catch (error: any) {
       console.error("❌ Erro ao enviar orçamento:", error);
@@ -265,7 +349,7 @@ export function QuoteRequestDialog({ open, onOpenChange, workshop, motoristId, o
             <Label>Urgência *</Label>
             <RadioGroup
               value={formData.urgency}
-              onValueChange={(value: "low" | "normal" | "high") =>
+              onValueChange={(value: "low" | "medium" | "high") =>
                 setFormData({ ...formData, urgency: value })
               }
               className="flex gap-4 mt-2"
@@ -277,8 +361,8 @@ export function QuoteRequestDialog({ open, onOpenChange, workshop, motoristId, o
                 </Label>
               </div>
               <div className="flex items-center space-x-2">
-                <RadioGroupItem value="normal" id="normal" />
-                <Label htmlFor="normal" className="font-normal cursor-pointer">
+                <RadioGroupItem value="medium" id="medium" />
+                <Label htmlFor="medium" className="font-normal cursor-pointer">
                   Normal
                 </Label>
               </div>
