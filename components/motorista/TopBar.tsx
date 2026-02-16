@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "@/contexts/AuthContext";
 import { createClient } from "@/lib/supabase";
-import { Bell, User, Settings, LogOut, ChevronDown } from "lucide-react";
+import { Bell, User, Settings, LogOut, ChevronDown, Search, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
@@ -119,10 +119,30 @@ export default function TopBar() {
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
-      <div className="flex items-center justify-end px-6 py-4">
-        {/* Right Section */}
-        <div className="flex items-center gap-4">
+    <header className="sticky top-0 z-40 h-16 bg-white/80 backdrop-blur-xl border-b border-gray-100 flex items-center justify-between px-6">
+      
+      {/* Busca central */}
+      <div className="flex-1 max-w-md">
+        <div className="relative">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <input 
+            type="text"
+            placeholder="Buscar..."
+            className="w-full pl-12 pr-16 py-2.5 bg-gray-50 border-0 rounded-xl text-sm focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all"
+          />
+          <kbd className="absolute right-4 top-1/2 -translate-y-1/2 px-2 py-0.5 bg-gray-200 text-gray-500 text-xs rounded font-medium">
+            ⌘K
+          </kbd>
+        </div>
+      </div>
+
+      {/* Ações à direita */}
+      <div className="flex items-center gap-2">
+          {/* Botão tema */}
+          <button className="p-2.5 rounded-xl hover:bg-gray-100 transition-colors">
+            <Sun className="w-5 h-5 text-gray-600" />
+          </button>
+          
           {/* Notifications */}
           <div className="relative">
             <button
@@ -130,13 +150,11 @@ export default function TopBar() {
                 setShowNotifications(!showNotifications);
                 setShowUserMenu(false);
               }}
-              className="relative p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
+              className="relative p-2.5 rounded-xl hover:bg-gray-100 transition-colors"
             >
-              <Bell className="w-6 h-6" />
+              <Bell className="w-5 h-5 text-gray-600" />
               {unreadCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow-lg">
-                  {unreadCount > 9 ? "9+" : unreadCount}
-                </span>
+                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
               )}
             </button>
 
@@ -211,25 +229,16 @@ export default function TopBar() {
             )}
           </div>
 
-          {/* User Menu */}
+          {/* User Avatar */}
           <div className="relative">
             <button
               onClick={() => {
                 setShowUserMenu(!showUserMenu);
                 setShowNotifications(false);
               }}
-              className="flex items-center gap-3 p-2 pr-3 hover:bg-gray-50 rounded-lg transition-all"
+              className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center text-white font-bold ml-2 hover:shadow-lg transition-all"
             >
-              <div className="w-9 h-9 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold text-sm shadow-md">
-                {getUserInitials()}
-              </div>
-              <div className="hidden md:block text-left">
-                <p className="text-sm font-semibold text-gray-900 leading-tight">
-                  {profile?.name || "Motorista"}
-                </p>
-                <p className="text-xs text-gray-500">Conta Gratuita</p>
-              </div>
-              <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${showUserMenu ? 'rotate-180' : ''}`} />
+              {getUserInitials()}
             </button>
 
             {/* User Dropdown */}
@@ -285,7 +294,6 @@ export default function TopBar() {
             )}
           </div>
         </div>
-      </div>
     </header>
   );
 }

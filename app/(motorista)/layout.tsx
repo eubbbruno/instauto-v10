@@ -17,6 +17,9 @@ import {
   DollarSign,
   Bell,
   Gift,
+  Settings,
+  LogOut,
+  MoreVertical,
 } from "lucide-react";
 
 const menuItems = [
@@ -37,7 +40,7 @@ export default function MotoristaLayout({ children }: { children: React.ReactNod
   const { profile } = useAuth();
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
       {/* Sidebar Mobile Overlay */}
       {sidebarOpen && (
         <div 
@@ -46,21 +49,33 @@ export default function MotoristaLayout({ children }: { children: React.ReactNod
         />
       )}
 
-      {/* Sidebar */}
+      {/* SIDEBAR PREMIUM */}
       <aside className={`
-        fixed top-0 left-0 h-full w-64 bg-gradient-to-b from-sky-600 to-sky-700 z-50
+        fixed top-0 left-0 h-screen w-64 bg-gradient-to-b from-blue-50 via-white to-blue-50/50 border-r border-blue-100 z-50 flex flex-col
         transform transition-transform duration-300 lg:translate-x-0
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
       `}>
-        {/* Logo */}
-        <div className="p-6 border-b border-sky-500/30">
+        {/* Logo no topo */}
+        <div className="p-6 border-b border-blue-100">
           <Link href="/motorista" className="flex items-center gap-3">
-            <Image src="/images/logo.svg" alt="Instauto" width={120} height={32} />
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-lg">
+              <Car className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <span className="font-bold text-gray-900 text-lg">Instauto</span>
+              <span className="ml-2 px-2 py-0.5 bg-yellow-400 text-yellow-900 text-xs font-bold rounded-full">
+                @ Motorista
+              </span>
+            </div>
           </Link>
         </div>
 
-        {/* Menu */}
-        <nav className="p-4 space-y-1 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 80px)' }}>
+        {/* Menu Principal */}
+        <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
+          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4 px-3">
+            Menu
+          </p>
+          
           {menuItems.map((item) => {
             const isActive = pathname === item.href;
             return (
@@ -68,20 +83,51 @@ export default function MotoristaLayout({ children }: { children: React.ReactNod
                 key={item.href}
                 href={item.href}
                 className={`
-                  flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-sm
+                  flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200
                   ${isActive 
-                    ? 'bg-white text-sky-700 font-semibold shadow-lg' 
-                    : 'text-sky-100 hover:bg-sky-500/50'
+                    ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30' 
+                    : 'text-gray-600 hover:bg-blue-50 hover:text-blue-600'
                   }
                 `}
                 onClick={() => setSidebarOpen(false)}
               >
                 <item.icon className="w-5 h-5" />
-                {item.label}
+                <span className="font-medium">{item.label}</span>
               </Link>
             );
           })}
+          
+          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mt-8 mb-4 px-3">
+            Outros
+          </p>
+          
+          <Link
+            href="/motorista/configuracoes"
+            className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-all"
+            onClick={() => setSidebarOpen(false)}
+          >
+            <Settings className="w-5 h-5" />
+            <span className="font-medium">Configurações</span>
+          </Link>
         </nav>
+
+        {/* Usuário no rodapé */}
+        <div className="p-4 border-t border-blue-100">
+          <div className="flex items-center gap-3 p-3 rounded-xl hover:bg-blue-50 cursor-pointer transition-colors">
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center text-white font-bold shadow-md">
+              {profile?.name?.charAt(0)?.toUpperCase() || 'U'}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-medium text-gray-900 truncate text-sm">
+                {profile?.name || 'Usuário'}
+              </p>
+              <p className="text-xs text-gray-500 truncate">
+                {profile?.email || ''}
+              </p>
+            </div>
+            <MoreVertical className="w-5 h-5 text-gray-400" />
+          </div>
+        </div>
       </aside>
 
       {/* Main Content */}

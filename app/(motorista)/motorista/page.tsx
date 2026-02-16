@@ -3,7 +3,7 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Car, FileText, Clock, Search, Plus, TrendingUp, Sparkles, Users, Tag, Gift, Star, MapPin, Wrench, ChevronRight, Zap } from "lucide-react";
+import { Car, FileText, Clock, Search, Plus, TrendingUp, Sparkles, Users, Tag, Gift, Star, MapPin, Wrench, ChevronRight, Zap, ArrowUp, MoreHorizontal, Download, Fuel, AlertCircle } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase";
 import Image from "next/image";
@@ -164,204 +164,258 @@ export default function MotoristaDashboard() {
     day: 'numeric' 
   });
 
+  // Dados para o gráfico de barras
+  const chartData = [
+    { name: 'Jan', value: 450 },
+    { name: 'Fev', value: 380 },
+    { name: 'Mar', value: 520 },
+    { name: 'Abr', value: 680 },
+    { name: 'Mai', value: 890 },
+    { name: 'Jun', value: 750 },
+    { name: 'Jul', value: 620 },
+  ];
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-yellow-50 lg:pt-20 pb-12">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
-        {/* Header GRANDE e VISÍVEL */}
-        <div className="mb-10">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div className="space-y-3">
-              <h1 className="text-5xl font-bold text-gray-900">
-                Bem-vindo de volta, {firstName}! 👋
-              </h1>
-              <p className="text-gray-600 text-lg capitalize font-medium">
-                {currentDate}
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
+      <div className="p-8">
+        {/* Header com breadcrumb */}
+        <div className="mb-8">
+          <p className="text-sm text-gray-500 mb-1">Dashboard</p>
+          <h1 className="text-3xl font-bold text-gray-900">
+            Bem-vindo de volta, {firstName}! 👋
+          </h1>
+        </div>
+
+        {/* Grid principal - 12 colunas */}
+        <div className="grid grid-cols-12 gap-6 mb-8">
+          
+          {/* Card grande - Visão Geral (8 colunas) */}
+          <div className="col-span-12 lg:col-span-8 bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+                  <TrendingUp className="w-5 h-5 text-blue-600" />
+                </div>
+                <h2 className="text-lg font-semibold text-gray-900">Visão Geral de Gastos</h2>
+              </div>
+              <div className="flex items-center gap-2">
+                <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                  <MoreHorizontal className="w-5 h-5 text-gray-400" />
+                </button>
+              </div>
+            </div>
+            
+            {/* Valor total */}
+            <div className="mb-6">
+              <p className="text-4xl font-bold text-gray-900">R$ 0,00</p>
+              <p className="text-sm text-green-600 flex items-center gap-1 mt-1 font-medium">
+                <ArrowUp className="w-4 h-4" />
+                +R$ 0,00 comparado ao mês anterior
               </p>
             </div>
-            {hasFleet && (
-              <span className="px-6 py-3 bg-gradient-to-r from-purple-500 to-fuchsia-600 text-white text-base font-bold rounded-full flex items-center gap-2 shadow-xl w-fit">
-                <Users className="w-5 h-5" />
-                Frota Ativa
-              </span>
-            )}
+            
+            {/* Gráfico de barras simples */}
+            <div className="h-64 flex items-end justify-between gap-4">
+              {chartData.map((item, index) => (
+                <div key={index} className="flex-1 flex flex-col items-center gap-2">
+                  <div 
+                    className="w-full bg-gradient-to-t from-blue-600 to-blue-500 rounded-t-xl hover:from-blue-500 hover:to-blue-400 transition-all cursor-pointer"
+                    style={{ height: `${(item.value / 900) * 100}%` }}
+                  />
+                  <span className="text-xs text-gray-500 font-medium">{item.name}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Card lateral - Economia (4 colunas) */}
+          <div className="col-span-12 lg:col-span-4 bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-semibold text-gray-900">Economia</h2>
+              <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+                <MoreHorizontal className="w-5 h-5 text-gray-400" />
+              </button>
+            </div>
+            
+            {/* Gauge circular */}
+            <div className="flex flex-col items-center mb-6">
+              <div className="relative w-40 h-40">
+                <svg className="w-full h-full transform -rotate-90">
+                  <circle cx="80" cy="80" r="70" stroke="#E5E7EB" strokeWidth="12" fill="none" />
+                  <circle cx="80" cy="80" r="70" stroke="#3B82F6" strokeWidth="12" fill="none" 
+                    strokeDasharray="330 440" strokeLinecap="round" />
+                </svg>
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <span className="text-4xl font-bold text-gray-900">75%</span>
+                  <span className="text-sm text-gray-500">da meta</span>
+                </div>
+              </div>
+            </div>
+            
+            {/* Stats */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="text-center p-4 bg-blue-50 rounded-2xl">
+                <p className="text-xs text-gray-500 mb-1">Veículos</p>
+                <p className="text-2xl font-bold text-gray-900">{stats.vehicles}</p>
+                <span className="text-xs text-green-600 font-medium">+{stats.vehicles}</span>
+              </div>
+              <div className="text-center p-4 bg-yellow-50 rounded-2xl">
+                <p className="text-xs text-gray-500 mb-1">Orçamentos</p>
+                <p className="text-2xl font-bold text-gray-900">{stats.quotes}</p>
+                <span className="text-xs text-blue-600 font-medium">Este mês</span>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* CARDS GRANDES E VISÍVEIS */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-          {/* Card 1 - Veículos */}
-          <div className="bg-white rounded-3xl shadow-lg hover:shadow-xl transition-all p-8 border-2 border-blue-200">
-            <div className="flex flex-col items-center text-center">
-              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center mb-6 shadow-lg">
-                <Car className="w-10 h-10 text-white" />
+        {/* Grid principal - 12 colunas */}
+        <div className="grid grid-cols-12 gap-6 mb-8">
+          
+          {/* Tabela de atividades (8 colunas) */}
+          <div className="col-span-12 lg:col-span-8 bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="p-6 border-b border-gray-100">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-yellow-100 rounded-xl flex items-center justify-center">
+                    <Clock className="w-5 h-5 text-yellow-600" />
+                  </div>
+                  <h2 className="text-lg font-semibold text-gray-900">Atividade Recente</h2>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button className="px-4 py-2 bg-gray-50 rounded-xl text-sm hover:bg-gray-100 transition-colors font-medium">
+                    Filtrar
+                  </button>
+                  <button className="px-4 py-2 bg-blue-600 text-white rounded-xl text-sm hover:bg-blue-700 flex items-center gap-2 transition-colors font-medium">
+                    <Download className="w-4 h-4" />
+                    Exportar
+                  </button>
+                </div>
               </div>
-              <h3 className="text-gray-600 text-base font-semibold mb-3 uppercase tracking-wide">Meus Veículos</h3>
-              <p className="text-5xl font-bold text-gray-900 mb-2">
-                {statsLoading ? "..." : stats.vehicles}
-              </p>
-              <p className="text-sm text-gray-500 font-medium">
-                {stats.vehicles === 0 ? "Nenhum cadastrado" : 
-                 stats.vehicles === 1 ? "veículo ativo" : "veículos ativos"}
-              </p>
+            </div>
+            
+            {/* Tabela */}
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="text-left text-sm text-gray-500 bg-gray-50">
+                    <th className="px-6 py-4 font-medium">Tipo</th>
+                    <th className="px-6 py-4 font-medium">Descrição</th>
+                    <th className="px-6 py-4 font-medium">Data</th>
+                    <th className="px-6 py-4 font-medium">Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {stats.vehicles > 0 ? (
+                    <>
+                      <tr className="hover:bg-gray-50/50 transition-colors">
+                        <td className="px-6 py-4">
+                          <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+                            <Car className="w-5 h-5 text-blue-600" />
+                          </div>
+                        </td>
+                        <td className="px-6 py-4">
+                          <p className="font-medium text-gray-900">Veículo cadastrado</p>
+                          <p className="text-sm text-gray-500">Adicionado à garagem</p>
+                        </td>
+                        <td className="px-6 py-4 text-gray-600">Há 2 dias</td>
+                        <td className="px-6 py-4">
+                          <span className="px-3 py-1 bg-green-100 text-green-700 text-sm font-medium rounded-full">
+                            Concluído
+                          </span>
+                        </td>
+                      </tr>
+                      {stats.quotes > 0 && (
+                        <tr className="hover:bg-gray-50/50 transition-colors">
+                          <td className="px-6 py-4">
+                            <div className="w-10 h-10 bg-yellow-100 rounded-xl flex items-center justify-center">
+                              <FileText className="w-5 h-5 text-yellow-600" />
+                            </div>
+                          </td>
+                          <td className="px-6 py-4">
+                            <p className="font-medium text-gray-900">Orçamento solicitado</p>
+                            <p className="text-sm text-gray-500">Aguardando resposta</p>
+                          </td>
+                          <td className="px-6 py-4 text-gray-600">Há 1 hora</td>
+                          <td className="px-6 py-4">
+                            <span className="px-3 py-1 bg-yellow-100 text-yellow-700 text-sm font-medium rounded-full">
+                              Pendente
+                            </span>
+                          </td>
+                        </tr>
+                      )}
+                    </>
+                  ) : (
+                    <tr>
+                      <td colSpan={4} className="px-6 py-12 text-center">
+                        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                          <Clock className="w-8 h-8 text-gray-400" />
+                        </div>
+                        <p className="text-sm text-gray-500">Nenhuma atividade ainda</p>
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
             </div>
           </div>
 
-          {/* Card 2 - Orçamentos */}
-          <div className="bg-white rounded-3xl shadow-lg hover:shadow-xl transition-all p-8 border-2 border-yellow-200">
-            <div className="flex flex-col items-center text-center">
-              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-500 flex items-center justify-center mb-6 shadow-lg">
-                <FileText className="w-10 h-10 text-white" />
+          {/* Cards laterais (4 colunas) */}
+          <div className="col-span-12 lg:col-span-4 space-y-6">
+            
+            {/* Próximo Lembrete */}
+            <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-3xl p-6 text-white shadow-sm">
+              <h3 className="font-semibold mb-4 text-lg">Próximo Lembrete</h3>
+              <div className="flex items-center gap-4 mb-4">
+                <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center">
+                  <AlertCircle className="w-7 h-7" />
+                </div>
+                <div>
+                  <p className="font-medium">Troca de óleo</p>
+                  <p className="text-blue-200 text-sm">Em 5 dias</p>
+                </div>
               </div>
-              <h3 className="text-gray-600 text-base font-semibold mb-3 uppercase tracking-wide">Orçamentos</h3>
-              <p className="text-5xl font-bold text-gray-900 mb-2">
-                {statsLoading ? "..." : stats.quotes}
-              </p>
-              <p className="text-sm text-gray-500 font-medium">
-                {stats.quotes === 0 ? "Nenhum solicitado" : "solicitações ativas"}
-              </p>
+              <Link
+                href="/motorista/lembretes"
+                className="block w-full py-3 bg-yellow-400 text-yellow-900 font-semibold rounded-xl hover:bg-yellow-300 transition-colors text-center"
+              >
+                Ver todos
+              </Link>
             </div>
-          </div>
 
-          {/* Card 3 - Manutenções */}
-          <div className="bg-white rounded-3xl shadow-lg hover:shadow-xl transition-all p-8 border-2 border-green-200">
-            <div className="flex flex-col items-center text-center">
-              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center mb-6 shadow-lg">
-                <Wrench className="w-10 h-10 text-white" />
-              </div>
-              <h3 className="text-gray-600 text-base font-semibold mb-3 uppercase tracking-wide">Manutenções</h3>
-              <p className="text-5xl font-bold text-gray-900 mb-2">
-                {statsLoading ? "..." : stats.maintenances}
-              </p>
-              <p className="text-sm text-gray-500 font-medium">
-                {stats.maintenances === 0 ? "Nenhuma registrada" : "serviços realizados"}
-              </p>
-            </div>
-          </div>
-
-          {/* Card 4 - Economia */}
-          <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-3xl shadow-lg hover:shadow-xl transition-all p-8 border-2 border-blue-400">
-            <div className="flex flex-col items-center text-center">
-              <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mb-6 shadow-lg">
-                <TrendingUp className="w-10 h-10 text-white" />
-              </div>
-              <h3 className="text-blue-100 text-base font-semibold mb-3 uppercase tracking-wide">Economia</h3>
-              <p className="text-5xl font-bold text-white mb-2">R$ 0</p>
-              <p className="text-sm text-blue-200 font-medium">em descontos este mês</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Grid Principal - 2 Colunas */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          {/* Coluna Esquerda - Ações Rápidas */}
-          <div className="lg:col-span-2">
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-gray-900">Ações Rápidas</h2>
-                <Zap className="w-5 h-5 text-yellow-500" />
-              </div>
-              
-              <div className="grid grid-cols-2 gap-6">
+            {/* Ações Rápidas */}
+            <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+              <h3 className="font-semibold text-gray-900 mb-4 text-lg">Ações Rápidas</h3>
+              <div className="space-y-3">
                 <Link
                   href="/motorista/oficinas"
-                  className="group bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-8 px-8 text-xl rounded-xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 flex flex-col items-center justify-center text-center"
+                  className="flex items-center gap-3 p-4 bg-yellow-400 hover:bg-yellow-500 rounded-2xl transition-all group"
                 >
-                  <div className="w-16 h-16 bg-black/10 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-4">
-                    <Search className="w-8 h-8 text-black" />
+                  <div className="w-12 h-12 bg-black/10 rounded-xl flex items-center justify-center">
+                    <Search className="w-6 h-6 text-black" />
                   </div>
-                  <h3 className="font-bold mb-2">Buscar Oficinas</h3>
-                  <p className="text-sm font-medium opacity-80">Encontre as melhores</p>
+                  <div className="flex-1">
+                    <p className="font-bold text-black">Buscar Oficinas</p>
+                    <p className="text-sm text-black/70">Encontre as melhores</p>
+                  </div>
+                  <ChevronRight className="w-5 h-5 text-black group-hover:translate-x-1 transition-transform" />
                 </Link>
-
+                
                 <Link
                   href="/motorista/garagem"
-                  className="group bg-white rounded-xl border-2 border-gray-200 p-6 hover:shadow-lg hover:border-blue-300 transition-all hover:-translate-y-1"
+                  className="flex items-center gap-3 p-4 bg-blue-50 hover:bg-blue-100 rounded-2xl transition-all group"
                 >
-                  <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-blue-200 transition-colors">
-                    <Car className="w-6 h-6 text-blue-600" />
+                  <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center">
+                    <Car className="w-6 h-6 text-white" />
                   </div>
-                  <h3 className="font-bold text-gray-900 mb-1 text-lg">Minha Garagem</h3>
-                  <p className="text-sm text-gray-500">Gerencie veículos</p>
-                </Link>
-
-                <Link
-                  href="/motorista/orcamentos"
-                  className="group bg-white rounded-xl border-2 border-gray-200 p-6 hover:shadow-lg hover:border-green-300 transition-all hover:-translate-y-1"
-                >
-                  <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-green-200 transition-colors">
-                    <FileText className="w-6 h-6 text-green-600" />
+                  <div className="flex-1">
+                    <p className="font-bold text-gray-900">Minha Garagem</p>
+                    <p className="text-sm text-gray-600">{stats.vehicles} veículos</p>
                   </div>
-                  <h3 className="font-bold text-gray-900 mb-1 text-lg">Orçamentos</h3>
-                  <p className="text-sm text-gray-500">Suas solicitações</p>
-                </Link>
-
-                <Link
-                  href="/motorista/historico"
-                  className="group bg-white rounded-xl border-2 border-gray-200 p-6 hover:shadow-lg hover:border-purple-300 transition-all hover:-translate-y-1"
-                >
-                  <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-4 group-hover:bg-purple-200 transition-colors">
-                    <Clock className="w-6 h-6 text-purple-600" />
-                  </div>
-                  <h3 className="font-bold text-gray-900 mb-1 text-lg">Histórico</h3>
-                  <p className="text-sm text-gray-500">Manutenções</p>
+                  <ChevronRight className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
             </div>
-          </div>
-
-          {/* Coluna Direita - Atividade Recente */}
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-gray-900">Atividade</h2>
-                <Clock className="w-5 h-5 text-gray-400" />
-              </div>
-              
-              <div className="space-y-2">
-                {stats.vehicles > 0 ? (
-                  <>
-                    <div className="flex items-start gap-4 p-4 rounded-xl hover:bg-blue-50 transition-colors cursor-pointer odd:bg-gray-50">
-                      <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0 shadow-md">
-                        <Car className="w-6 h-6 text-white" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-base font-bold text-gray-900">Veículo cadastrado</p>
-                        <p className="text-sm text-gray-600 font-medium">Há 2 dias</p>
-                      </div>
-                    </div>
-                    
-                    {stats.quotes > 0 && (
-                      <div className="flex items-start gap-4 p-4 rounded-xl hover:bg-yellow-50 transition-colors cursor-pointer odd:bg-gray-50">
-                        <div className="w-12 h-12 rounded-full bg-yellow-400 flex items-center justify-center flex-shrink-0 shadow-md">
-                          <FileText className="w-6 h-6 text-black" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-base font-bold text-gray-900">Orçamento solicitado</p>
-                          <p className="text-sm text-gray-600 font-medium">Há 1 hora</p>
-                        </div>
-                      </div>
-                    )}
-                    
-                    <div className="flex items-start gap-4 p-4 rounded-xl hover:bg-green-50 transition-colors cursor-pointer odd:bg-gray-50">
-                      <div className="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0 shadow-md">
-                        <Wrench className="w-6 h-6 text-white" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-base font-bold text-gray-900">Manutenção agendada</p>
-                        <p className="text-sm text-gray-600 font-medium">Há 5 dias</p>
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  <div className="text-center py-10">
-                    <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Clock className="w-10 h-10 text-gray-400" />
-                    </div>
-                    <p className="text-base font-semibold text-gray-500">Nenhuma atividade ainda</p>
-                  </div>
-                )}
-              </div>
-            </div>
+            
           </div>
         </div>
 
@@ -381,7 +435,7 @@ export default function MotoristaDashboard() {
             {promotions.map((promo) => (
               <div
                 key={promo.id}
-                className={`bg-gradient-to-br ${promo.color} rounded-2xl shadow-sm hover:shadow-md p-6 text-white transition-all cursor-pointer`}
+                className={`bg-gradient-to-br ${promo.color} rounded-3xl shadow-sm hover:shadow-md p-6 text-white transition-all cursor-pointer`}
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="text-4xl">{promo.icon}</div>
@@ -402,50 +456,25 @@ export default function MotoristaDashboard() {
           </div>
         </div>
 
-        {/* Banner CTA */}
-        <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-8 text-white shadow-sm mb-8 overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-32 -mt-32" />
-          <div className="relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-            <div>
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center">
-                  <Sparkles className="w-5 h-5" />
-                </div>
-                <h3 className="text-2xl font-bold">Conta 100% Gratuita!</h3>
-              </div>
-              <p className="text-blue-100 text-base">
-                Busque oficinas, solicite orçamentos e gerencie seus veículos sem pagar nada.
-              </p>
-            </div>
-            <Link
-              href="/motorista/oficinas"
-              className="bg-yellow-400 text-gray-900 px-6 py-3 rounded-xl font-bold hover:bg-yellow-300 transition-all whitespace-nowrap shadow-lg flex items-center gap-2"
-            >
-              Buscar Oficinas
-              <ChevronRight className="w-5 h-5" />
-            </Link>
-          </div>
-        </div>
-
         {/* Dica para Novos Usuários */}
         {stats.vehicles === 0 && (
-          <div className="bg-white border-2 border-yellow-200 rounded-2xl p-6 shadow-sm">
-            <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                <Wrench className="w-6 h-6 text-yellow-600" />
+          <div className="bg-gradient-to-r from-yellow-50 to-yellow-100/50 border-2 border-yellow-300 rounded-3xl p-8 shadow-sm">
+            <div className="flex items-start gap-6">
+              <div className="w-16 h-16 bg-yellow-400 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                <Wrench className="w-8 h-8 text-yellow-900" />
               </div>
               <div className="flex-1">
-                <h3 className="text-lg font-bold text-gray-900 mb-2">
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">
                   Comece agora!
                 </h3>
-                <p className="text-gray-600 mb-4">
+                <p className="text-gray-700 mb-6 text-base">
                   Adicione seu primeiro veículo para começar a solicitar orçamentos e acompanhar manutenções.
                 </p>
                 <Link
                   href="/motorista/garagem"
-                  className="inline-flex items-center gap-2 bg-yellow-400 text-gray-900 px-5 py-3 rounded-xl font-bold hover:bg-yellow-300 transition-colors shadow-sm"
+                  className="inline-flex items-center gap-2 bg-yellow-400 hover:bg-yellow-500 text-black px-6 py-4 rounded-xl font-bold transition-all shadow-lg text-lg"
                 >
-                  <Plus className="w-5 h-5" />
+                  <Plus className="w-6 h-6" />
                   Adicionar Veículo
                 </Link>
               </div>

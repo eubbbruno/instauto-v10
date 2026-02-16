@@ -95,22 +95,19 @@ export default function OrcamentosMotoristPage() {
     switch (status) {
       case "pending":
         return (
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-yellow-400 to-orange-500 text-white shadow-lg shadow-yellow-500/40">
-            <Clock className="h-4 w-4" />
+          <span className="px-3 py-1 bg-yellow-100 text-yellow-700 text-sm font-medium rounded-full">
             Aguardando
           </span>
         );
       case "responded":
         return (
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg shadow-green-500/40">
-            <CheckCircle2 className="h-4 w-4" />
+          <span className="px-3 py-1 bg-green-100 text-green-700 text-sm font-medium rounded-full">
             Respondido
           </span>
         );
       case "rejected":
         return (
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-bold bg-gradient-to-r from-red-500 to-rose-600 text-white shadow-lg shadow-red-500/40">
-            <XCircle className="h-4 w-4" />
+          <span className="px-3 py-1 bg-red-100 text-red-700 text-sm font-medium rounded-full">
             Recusado
           </span>
         );
@@ -131,88 +128,88 @@ export default function OrcamentosMotoristPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-green-50/30 to-emerald-50/20 flex items-center justify-center pt-16">
-        <div className="animate-spin rounded-full h-16 w-16 border-4 border-t-transparent border-green-600"></div>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-t-transparent border-blue-600"></div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-green-50/30 to-emerald-50/20 pt-16 pb-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-4">
-        {/* Header Premium */}
-        <div className="mb-10">
-          <Link href="/motorista">
-            <button className="flex items-center gap-2 text-gray-600 hover:text-green-700 mb-6 font-medium hover:gap-3 transition-all">
-              <ArrowLeft className="h-5 w-5" />
-              Voltar ao Dashboard
-            </button>
-          </Link>
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-green-600 via-emerald-600 to-green-800 bg-clip-text text-transparent leading-tight mb-3">
-            Meus Orçamentos 📋
-          </h1>
-          <p className="text-gray-600 text-lg">
-            Acompanhe todos os orçamentos solicitados
-          </p>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
+      <div className="p-8">
+        {/* Header padrão */}
+        <div className="mb-8">
+          <p className="text-sm text-gray-500 mb-1">Dashboard / Orçamentos</p>
+          <div className="flex items-center justify-between">
+            <h1 className="text-3xl font-bold text-gray-900">Meus Orçamentos</h1>
+            <Link href="/motorista/oficinas">
+              <button className="px-6 py-3 bg-yellow-400 text-yellow-900 font-semibold rounded-xl hover:bg-yellow-300 shadow-lg shadow-yellow-400/30 flex items-center gap-2 transition-all">
+                <FileText className="w-5 h-5" />
+                Solicitar Novo
+              </button>
+            </Link>
+          </div>
         </div>
 
         {/* Lista de Orçamentos */}
         {quotes.length === 0 ? (
-          <div className="bg-white rounded-lg shadow-sm p-12 text-center">
-            <FileText className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+          <div className="bg-white rounded-3xl p-12 shadow-sm border border-gray-100 text-center">
+            <div className="w-20 h-20 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <FileText className="h-10 w-10 text-gray-400" />
+            </div>
             <h3 className="text-xl font-bold text-gray-900 mb-2">
               Nenhum orçamento ainda
             </h3>
             <p className="text-gray-600 mb-6">
               Comece buscando oficinas e solicitando orçamentos
             </p>
-            <Link href="/buscar-oficinas">
-              <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all">
+            <Link href="/motorista/oficinas">
+              <button className="px-6 py-3 bg-yellow-400 hover:bg-yellow-500 text-black font-semibold rounded-xl shadow-lg transition-all">
                 Buscar Oficinas
               </button>
             </Link>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-6">
             {quotes.map((quote) => (
               <div
                 key={quote.id}
-                className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow"
+                className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow"
               >
-                <div className="flex justify-between items-start mb-4">
+                <div className="flex justify-between items-start mb-6">
                   <div>
-                    <h3 className="text-lg font-bold text-gray-900">
+                    <h3 className="text-lg font-bold text-gray-900 mb-1">
                       {quote.workshop.name}
                     </h3>
-                    <p className="text-sm text-gray-600">
+                    <p className="text-sm text-gray-500">
                       {quote.workshop.city}, {quote.workshop.state}
                     </p>
                   </div>
                   {getStatusBadge(quote.status)}
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 p-4 bg-gray-50 rounded-2xl">
                   <div>
-                    <p className="text-sm text-gray-600">Veículo</p>
+                    <p className="text-xs text-gray-500 mb-1">Veículo</p>
                     <p className="font-semibold text-gray-900">
                       {quote.vehicle_brand} {quote.vehicle_model} ({quote.vehicle_year})
                     </p>
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Tipo de Serviço</p>
+                    <p className="text-xs text-gray-500 mb-1">Tipo de Serviço</p>
                     <p className="font-semibold text-gray-900">
                       {getServiceTypeLabel(quote.service_type)}
                     </p>
                   </div>
                 </div>
 
-                <div className="mb-4">
-                  <p className="text-sm text-gray-600 mb-1">Descrição</p>
+                <div className="mb-6">
+                  <p className="text-xs text-gray-500 mb-2">Descrição</p>
                   <p className="text-gray-900">{quote.description}</p>
                 </div>
 
                 {quote.status === "responded" && quote.response_message && (
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
+                  <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-4 mb-4">
                     <p className="text-sm font-semibold text-green-900 mb-2">
                       Resposta da Oficina:
                     </p>
@@ -226,7 +223,7 @@ export default function OrcamentosMotoristPage() {
                 )}
 
                 {quote.status === "rejected" && quote.response_message && (
-                  <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+                  <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-4 mb-4">
                     <p className="text-sm font-semibold text-red-900 mb-2">
                       Motivo da Recusa:
                     </p>
@@ -234,7 +231,7 @@ export default function OrcamentosMotoristPage() {
                   </div>
                 )}
 
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-gray-400 pt-4 border-t border-gray-100">
                   Solicitado em {new Date(quote.created_at).toLocaleDateString("pt-BR")}
                 </p>
               </div>

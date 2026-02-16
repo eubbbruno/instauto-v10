@@ -194,13 +194,8 @@ export default function NotificacoesPage() {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-indigo-50/20 flex items-center justify-center pt-16">
-        <Card className="border-2 shadow-lg">
-          <CardContent className="flex flex-col items-center justify-center py-20">
-            <Loader2 className="h-16 w-16 animate-spin text-blue-600 mb-4" />
-            <p className="text-gray-600 font-medium">Carregando notificações...</p>
-          </CardContent>
-        </Card>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 flex items-center justify-center">
+        <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
       </div>
     );
   }
@@ -214,28 +209,26 @@ export default function NotificacoesPage() {
   const unreadCount = notifications.filter(n => !n.is_read).length;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-indigo-50/20 pt-16 pb-12">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-4">
-        {/* Header Premium */}
-        <div className="mb-10">
-          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-            <div className="space-y-3">
-              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-800 bg-clip-text text-transparent leading-tight">
-                Notificações 🔔
-              </h1>
-              <p className="text-gray-600 text-lg">
-                {unreadCount > 0 ? `${unreadCount} ${unreadCount === 1 ? 'notificação não lida' : 'notificações não lidas'}` : 'Você está em dia!'}
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
+      <div className="p-8">
+        {/* Header padrão */}
+        <div className="mb-8">
+          <p className="text-sm text-gray-500 mb-1">Dashboard / Notificações</p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Notificações</h1>
+              <p className="text-gray-600 text-sm mt-1">
+                {unreadCount > 0 ? `${unreadCount} ${unreadCount === 1 ? 'não lida' : 'não lidas'}` : 'Você está em dia!'}
               </p>
             </div>
             {unreadCount > 0 && (
-              <Button
+              <button
                 onClick={handleMarkAllAsRead}
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 font-bold shadow-lg"
-                size="lg"
+                className="px-6 py-3 bg-yellow-400 text-yellow-900 font-semibold rounded-xl hover:bg-yellow-300 shadow-lg shadow-yellow-400/30 flex items-center gap-2 transition-all"
               >
-                <CheckCircle className="mr-2 h-4 w-4" />
+                <CheckCircle className="w-5 h-5" />
                 Marcar todas como lidas
-              </Button>
+              </button>
             )}
           </div>
         </div>

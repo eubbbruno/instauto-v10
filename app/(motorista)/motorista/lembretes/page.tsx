@@ -245,11 +245,8 @@ export default function LembretesPage() {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-teal-50/30 to-cyan-50/20 flex items-center justify-center pt-16">
-        <div className="text-center">
-          <Loader2 className="h-16 w-16 animate-spin text-teal-600 mx-auto mb-4" />
-          <p className="text-gray-600 font-medium">Carregando lembretes...</p>
-        </div>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 flex items-center justify-center">
+        <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
       </div>
     );
   }
@@ -257,23 +254,18 @@ export default function LembretesPage() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-teal-50/30 to-cyan-50/20 pt-16 pb-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-4">
-        {/* Header Premium */}
-        <div className="mb-10">
-          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
-            <div className="space-y-3">
-              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-teal-600 via-cyan-600 to-teal-800 bg-clip-text text-transparent leading-tight">
-                Lembretes 🔔
-              </h1>
-              <p className="text-gray-600 text-lg">
-                Nunca mais esqueça de pagar IPVA, renovar seguro ou fazer revisão
-              </p>
-            </div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
+      <div className="p-8">
+        {/* Header padrão */}
+        <div className="mb-8">
+          <p className="text-sm text-gray-500 mb-1">Dashboard / Lembretes</p>
+          <div className="flex items-center justify-between">
+            <h1 className="text-3xl font-bold text-gray-900">Lembretes</h1>
             <Link href="/motorista/lembretes/novo">
-              <Button className="bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 font-bold shadow-lg hover:shadow-xl transition-all text-white border-0" size="lg">
-                <Plus className="w-5 h-5 mr-2" /> Adicionar Lembrete
-              </Button>
+              <button className="px-6 py-3 bg-yellow-400 text-yellow-900 font-semibold rounded-xl hover:bg-yellow-300 shadow-lg shadow-yellow-400/30 flex items-center gap-2 transition-all">
+                <Plus className="w-5 h-5" />
+                Adicionar Lembrete
+              </button>
             </Link>
           </div>
         </div>

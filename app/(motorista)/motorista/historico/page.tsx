@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { createClient } from "@/lib/supabase";
-import { History, ArrowLeft, Calendar, DollarSign, Wrench } from "lucide-react";
+import { History, ArrowLeft, Calendar, DollarSign, Wrench, Loader2 } from "lucide-react";
 import Link from "next/link";
 
 interface Maintenance {
@@ -119,29 +119,19 @@ export default function HistoricoMotoristPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/30 to-violet-50/20 flex items-center justify-center pt-16">
-        <div className="animate-spin rounded-full h-16 w-16 border-4 border-t-transparent border-purple-600"></div>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 flex items-center justify-center">
+        <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/30 to-violet-50/20 pt-16 pb-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-4">
-        {/* Header Premium */}
-        <div className="mb-10">
-          <Link href="/motorista">
-            <button className="flex items-center gap-2 text-gray-600 hover:text-purple-700 mb-6 font-medium hover:gap-3 transition-all">
-              <ArrowLeft className="h-5 w-5" />
-              Voltar ao Dashboard
-            </button>
-          </Link>
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 via-violet-600 to-purple-800 bg-clip-text text-transparent leading-tight mb-3">
-            Histórico de Manutenções 📜
-          </h1>
-          <p className="text-gray-600 text-lg">
-            Acompanhe todas as manutenções realizadas nos seus veículos
-          </p>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
+      <div className="p-8">
+        {/* Header padrão */}
+        <div className="mb-8">
+          <p className="text-sm text-gray-500 mb-1">Dashboard / Histórico</p>
+          <h1 className="text-3xl font-bold text-gray-900">Histórico de Manutenções</h1>
         </div>
 
         {/* Lista de Manutenções Premium */}

@@ -246,13 +246,8 @@ export default function ConfiguracoesPage() {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-slate-50/30 to-gray-100/20 flex items-center justify-center pt-16">
-        <Card className="border-2 shadow-lg">
-          <CardContent className="flex flex-col items-center justify-center py-20">
-            <Loader2 className="h-16 w-16 animate-spin text-gray-600 mb-4" />
-            <p className="text-gray-600 font-medium">Carregando configurações...</p>
-          </CardContent>
-        </Card>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 flex items-center justify-center">
+        <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
       </div>
     );
   }
@@ -262,14 +257,10 @@ export default function ConfiguracoesPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-slate-50/30 to-gray-100/20 pt-16 pb-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-4">
-        {/* Header Premium */}
-        <div className="mb-10">
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-gray-600 via-slate-600 to-gray-800 bg-clip-text text-transparent leading-tight mb-3">
-            Configurações ⚙️
-          </h1>
-          <p className="text-gray-600 text-lg">
-            Gerencie suas preferências e informações da conta
-          </p>
+        {/* Header padrão */}
+        <div className="mb-8">
+          <p className="text-sm text-gray-500 mb-1">Dashboard / Configurações</p>
+          <h1 className="text-3xl font-bold text-gray-900">Configurações</h1>
         </div>
 
         {/* Cards de Configurações */}

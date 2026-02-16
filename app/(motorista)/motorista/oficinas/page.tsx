@@ -94,24 +94,19 @@ export default function OficinasPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-orange-50/30 to-amber-50/20 flex items-center justify-center pt-16">
-        <div className="text-center">
-          <Loader2 className="h-16 w-16 animate-spin text-orange-600 mx-auto mb-4" />
-          <p className="text-gray-600 font-medium">Buscando oficinas...</p>
-        </div>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 flex items-center justify-center">
+        <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-orange-50/30 to-amber-50/20 pt-16 pb-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-4">
-        {/* Header Premium */}
-        <div className="mb-10">
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-orange-600 via-amber-600 to-orange-800 bg-clip-text text-transparent leading-tight mb-3">
-            Buscar Oficinas 🔍
-          </h1>
-          <p className="text-gray-600 text-lg">Encontre oficinas próximas e solicite orçamentos</p>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
+      <div className="p-8">
+        {/* Header padrão */}
+        <div className="mb-8">
+          <p className="text-sm text-gray-500 mb-1">Dashboard / Buscar Oficinas</p>
+          <h1 className="text-3xl font-bold text-gray-900">Buscar Oficinas</h1>
         </div>
 
         {/* Campo de Busca Premium */}

@@ -223,131 +223,118 @@ export default function GaragemPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-indigo-50/20 flex items-center justify-center pt-16">
-        <Card className="border-2 shadow-lg">
-          <CardContent className="flex flex-col items-center justify-center py-20">
-            <Loader2 className="h-16 w-16 animate-spin text-blue-600 mb-4" />
-            <p className="text-gray-600 font-medium">Carregando garagem...</p>
-          </CardContent>
-        </Card>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 flex items-center justify-center">
+        <div className="flex flex-col items-center">
+          <Loader2 className="h-12 w-12 animate-spin text-blue-600 mb-4" />
+          <p className="text-gray-600 font-medium">Carregando garagem...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-indigo-50/20 pt-16 pb-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-4">
-        {/* Header Premium */}
-        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-8">
-          <div className="space-y-3">
-            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-800 bg-clip-text text-transparent leading-tight">
-              Minha Garagem 🚗
-            </h1>
-            <p className="text-gray-600 text-lg">Gerencie seus veículos e histórico de manutenções</p>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
+      <div className="p-8">
+        {/* Header padrão */}
+        <div className="mb-8">
+          <p className="text-sm text-gray-500 mb-1">Dashboard / Garagem</p>
+          <div className="flex items-center justify-between">
+            <h1 className="text-3xl font-bold text-gray-900">Minha Garagem</h1>
+            <button 
+              className="px-6 py-3 bg-yellow-400 text-yellow-900 font-semibold rounded-xl hover:bg-yellow-300 shadow-lg shadow-yellow-400/30 flex items-center gap-2 transition-all"
+              onClick={() => {
+                setSelectedVehicle(null);
+                setDialogOpen(true);
+              }}
+            >
+              <Plus className="w-5 h-5" />
+              Adicionar Veículo
+            </button>
           </div>
-          <Button 
-            className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 font-bold shadow-xl shadow-blue-600/40 hover:scale-105 transition-all duration-300 text-lg px-6 py-6"
-            size="lg"
-            onClick={() => {
-              setSelectedVehicle(null);
-              setDialogOpen(true);
-            }}
-          >
-            <Plus className="h-5 w-5 mr-2" />
-            Adicionar Veículo
-          </Button>
         </div>
 
         {/* Lista de Veículos */}
         {vehicles.length === 0 ? (
-          <Card className="border-2 shadow-xl bg-gradient-to-br from-white to-gray-50">
-            <CardContent className="text-center py-16">
-              <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-100 to-indigo-200 flex items-center justify-center">
-                <Car className="h-10 w-10 text-blue-600" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">
-                Nenhum veículo cadastrado
-              </h3>
-              <p className="text-gray-600 mb-6 max-w-md mx-auto">
-                Adicione seu primeiro veículo para começar a gerenciar manutenções e solicitar orçamentos
-              </p>
-              <Button 
-                className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 font-bold shadow-lg shadow-blue-600/30 hover:scale-105 transition-transform"
-                size="lg"
-                onClick={() => {
-                  setSelectedVehicle(null);
-                  setDialogOpen(true);
-                }}
-              >
-                <Plus className="h-5 w-5 mr-2" />
-                Adicionar Primeiro Veículo
-              </Button>
-            </CardContent>
-          </Card>
+          <div className="bg-white rounded-3xl p-12 shadow-sm border border-gray-100 text-center">
+            <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-blue-100 flex items-center justify-center">
+              <Car className="h-10 w-10 text-blue-600" />
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">
+              Nenhum veículo cadastrado
+            </h3>
+            <p className="text-gray-600 mb-6 max-w-md mx-auto">
+              Adicione seu primeiro veículo para começar a gerenciar manutenções e solicitar orçamentos
+            </p>
+            <button 
+              className="px-6 py-3 bg-yellow-400 hover:bg-yellow-500 text-black font-semibold rounded-xl shadow-lg transition-all inline-flex items-center gap-2"
+              onClick={() => {
+                setSelectedVehicle(null);
+                setDialogOpen(true);
+              }}
+            >
+              <Plus className="h-5 w-5" />
+              Adicionar Primeiro Veículo
+            </button>
+          </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {vehicles.map((vehicle) => (
-              <Card key={vehicle.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <CardTitle className="text-xl">
-                        {vehicle.nickname || `${vehicle.make} ${vehicle.model}`}
-                      </CardTitle>
-                      <CardDescription>
-                        {vehicle.year} • {vehicle.plate || "Sem placa"}
-                      </CardDescription>
-                    </div>
-                    <Car className="h-8 w-8 text-blue-600 flex-shrink-0" />
+              <div key={vehicle.id} className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-gray-900 mb-1">
+                      {vehicle.nickname || `${vehicle.make} ${vehicle.model}`}
+                    </h3>
+                    <p className="text-sm text-gray-500">
+                      {vehicle.year} • {vehicle.plate || "Sem placa"}
+                    </p>
                   </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Marca/Modelo:</span>
-                      <span className="font-medium">{vehicle.make} {vehicle.model}</span>
-                    </div>
-                    {vehicle.color && (
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Cor:</span>
-                        <span className="font-medium">{vehicle.color}</span>
-                      </div>
-                    )}
-                    {vehicle.mileage !== null && vehicle.mileage !== undefined && vehicle.mileage > 0 && (
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Quilometragem:</span>
-                        <span className="font-medium">{vehicle.mileage.toLocaleString()} km</span>
-                      </div>
-                    )}
-                    {vehicle.fuel_type && (
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Combustível:</span>
-                        <span className="font-medium">{vehicle.fuel_type}</span>
-                      </div>
-                    )}
+                  <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <Car className="h-6 w-6 text-blue-600" />
                   </div>
+                </div>
+                
+                <div className="space-y-3 mb-6">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-gray-600">Marca/Modelo:</span>
+                    <span className="font-medium text-gray-900">{vehicle.make} {vehicle.model}</span>
+                  </div>
+                  {vehicle.color && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Cor:</span>
+                      <span className="font-medium text-gray-900">{vehicle.color}</span>
+                    </div>
+                  )}
+                  {vehicle.mileage !== null && vehicle.mileage !== undefined && vehicle.mileage > 0 && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Quilometragem:</span>
+                      <span className="font-medium text-gray-900">{vehicle.mileage.toLocaleString()} km</span>
+                    </div>
+                  )}
+                  {vehicle.fuel_type && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Combustível:</span>
+                      <span className="font-medium text-gray-900">{vehicle.fuel_type}</span>
+                    </div>
+                  )}
+                </div>
 
-                  <div className="flex gap-2 pt-4 border-t">
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="flex-1"
-                      onClick={() => handleEditVehicle(vehicle)}
-                    >
-                      <Pencil className="h-4 w-4 mr-1" />
-                      Editar
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      size="sm"
-                      onClick={() => openDeleteDialog(vehicle)}
-                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+                <div className="flex gap-2 pt-4 border-t border-gray-100">
+                  <button 
+                    className="flex-1 px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-600 font-medium rounded-xl transition-colors text-sm flex items-center justify-center gap-2"
+                    onClick={() => handleEditVehicle(vehicle)}
+                  >
+                    <Pencil className="h-4 w-4" />
+                    Editar
+                  </button>
+                  <button 
+                    className="px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-xl transition-colors"
+                    onClick={() => openDeleteDialog(vehicle)}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
             ))}
           </div>
         )}
