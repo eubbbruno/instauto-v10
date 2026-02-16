@@ -165,101 +165,89 @@ export default function MotoristaDashboard() {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50/30 lg:pt-20 pb-12">
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-white to-yellow-50 lg:pt-20 pb-12">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
-        {/* Header Premium com Boas-vindas */}
-        <div className="mb-8">
+        {/* Header GRANDE e VISÍVEL */}
+        <div className="mb-10">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div className="space-y-2">
-              <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">
+            <div className="space-y-3">
+              <h1 className="text-5xl font-bold text-gray-900">
                 Bem-vindo de volta, {firstName}! 👋
               </h1>
-              <p className="text-gray-500 text-sm capitalize">
+              <p className="text-gray-600 text-lg capitalize font-medium">
                 {currentDate}
               </p>
             </div>
             {hasFleet && (
-              <span className="px-4 py-2 bg-gradient-to-r from-purple-500 to-fuchsia-600 text-white text-sm font-semibold rounded-full flex items-center gap-2 shadow-lg w-fit">
-                <Users className="w-4 h-4" />
+              <span className="px-6 py-3 bg-gradient-to-r from-purple-500 to-fuchsia-600 text-white text-base font-bold rounded-full flex items-center gap-2 shadow-xl w-fit">
+                <Users className="w-5 h-5" />
                 Frota Ativa
               </span>
             )}
           </div>
         </div>
 
-        {/* Cards de Estatísticas Premium */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {/* CARDS GRANDES E VISÍVEIS */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {/* Card 1 - Veículos */}
-          <div className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-all p-6 border border-gray-100">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
-                <Car className="w-6 h-6 text-blue-600" />
+          <div className="bg-white rounded-3xl shadow-lg hover:shadow-xl transition-all p-8 border-2 border-blue-200">
+            <div className="flex flex-col items-center text-center">
+              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center mb-6 shadow-lg">
+                <Car className="w-10 h-10 text-white" />
               </div>
-              <span className="text-xs font-semibold text-green-600 bg-green-50 px-2 py-1 rounded-full">
-                +{stats.vehicles} total
-              </span>
+              <h3 className="text-gray-600 text-base font-semibold mb-3 uppercase tracking-wide">Meus Veículos</h3>
+              <p className="text-5xl font-bold text-gray-900 mb-2">
+                {statsLoading ? "..." : stats.vehicles}
+              </p>
+              <p className="text-sm text-gray-500 font-medium">
+                {stats.vehicles === 0 ? "Nenhum cadastrado" : 
+                 stats.vehicles === 1 ? "veículo ativo" : "veículos ativos"}
+              </p>
             </div>
-            <h3 className="text-gray-500 text-sm font-medium mb-1">Meus Veículos</h3>
-            <p className="text-3xl font-bold text-gray-900 mb-1">
-              {statsLoading ? "..." : stats.vehicles}
-            </p>
-            <p className="text-xs text-gray-400">
-              {stats.vehicles === 0 ? "Nenhum cadastrado" : 
-               stats.vehicles === 1 ? "veículo ativo" : "veículos ativos"}
-            </p>
           </div>
 
           {/* Card 2 - Orçamentos */}
-          <div className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-all p-6 border border-gray-100">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center">
-                <FileText className="w-6 h-6 text-yellow-600" />
+          <div className="bg-white rounded-3xl shadow-lg hover:shadow-xl transition-all p-8 border-2 border-yellow-200">
+            <div className="flex flex-col items-center text-center">
+              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-500 flex items-center justify-center mb-6 shadow-lg">
+                <FileText className="w-10 h-10 text-white" />
               </div>
-              <span className="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-1 rounded-full">
-                Este mês
-              </span>
+              <h3 className="text-gray-600 text-base font-semibold mb-3 uppercase tracking-wide">Orçamentos</h3>
+              <p className="text-5xl font-bold text-gray-900 mb-2">
+                {statsLoading ? "..." : stats.quotes}
+              </p>
+              <p className="text-sm text-gray-500 font-medium">
+                {stats.quotes === 0 ? "Nenhum solicitado" : "solicitações ativas"}
+              </p>
             </div>
-            <h3 className="text-gray-500 text-sm font-medium mb-1">Orçamentos</h3>
-            <p className="text-3xl font-bold text-gray-900 mb-1">
-              {statsLoading ? "..." : stats.quotes}
-            </p>
-            <p className="text-xs text-gray-400">
-              {stats.quotes === 0 ? "Nenhum solicitado" : "solicitações ativas"}
-            </p>
           </div>
 
           {/* Card 3 - Manutenções */}
-          <div className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-all p-6 border border-gray-100">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
-                <Wrench className="w-6 h-6 text-green-600" />
+          <div className="bg-white rounded-3xl shadow-lg hover:shadow-xl transition-all p-8 border-2 border-green-200">
+            <div className="flex flex-col items-center text-center">
+              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center mb-6 shadow-lg">
+                <Wrench className="w-10 h-10 text-white" />
               </div>
-              <span className="text-xs font-semibold text-purple-600 bg-purple-50 px-2 py-1 rounded-full">
-                Histórico
-              </span>
+              <h3 className="text-gray-600 text-base font-semibold mb-3 uppercase tracking-wide">Manutenções</h3>
+              <p className="text-5xl font-bold text-gray-900 mb-2">
+                {statsLoading ? "..." : stats.maintenances}
+              </p>
+              <p className="text-sm text-gray-500 font-medium">
+                {stats.maintenances === 0 ? "Nenhuma registrada" : "serviços realizados"}
+              </p>
             </div>
-            <h3 className="text-gray-500 text-sm font-medium mb-1">Manutenções</h3>
-            <p className="text-3xl font-bold text-gray-900 mb-1">
-              {statsLoading ? "..." : stats.maintenances}
-            </p>
-            <p className="text-xs text-gray-400">
-              {stats.maintenances === 0 ? "Nenhuma registrada" : "serviços realizados"}
-            </p>
           </div>
 
           {/* Card 4 - Economia */}
-          <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl shadow-sm hover:shadow-md transition-all p-6 text-white">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
-                <TrendingUp className="w-6 h-6 text-white" />
+          <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-3xl shadow-lg hover:shadow-xl transition-all p-8 border-2 border-blue-400">
+            <div className="flex flex-col items-center text-center">
+              <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mb-6 shadow-lg">
+                <TrendingUp className="w-10 h-10 text-white" />
               </div>
-              <span className="text-xs font-semibold bg-white/20 px-2 py-1 rounded-full">
-                +12%
-              </span>
+              <h3 className="text-blue-100 text-base font-semibold mb-3 uppercase tracking-wide">Economia</h3>
+              <p className="text-5xl font-bold text-white mb-2">R$ 0</p>
+              <p className="text-sm text-blue-200 font-medium">em descontos este mês</p>
             </div>
-            <h3 className="text-blue-100 text-sm font-medium mb-1">Economia</h3>
-            <p className="text-3xl font-bold mb-1">R$ 0</p>
-            <p className="text-xs text-blue-200">em descontos este mês</p>
           </div>
         </div>
 
@@ -273,16 +261,16 @@ export default function MotoristaDashboard() {
                 <Zap className="w-5 h-5 text-yellow-500" />
               </div>
               
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-6">
                 <Link
                   href="/motorista/oficinas"
-                  className="group bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-xl p-6 hover:shadow-lg transition-all hover:-translate-y-1"
+                  className="group bg-yellow-400 hover:bg-yellow-500 text-black font-bold py-8 px-8 text-xl rounded-xl shadow-lg hover:shadow-2xl transition-all hover:-translate-y-2 flex flex-col items-center justify-center text-center"
                 >
-                  <div className="w-12 h-12 bg-white/30 backdrop-blur-sm rounded-xl flex items-center justify-center mb-4">
-                    <Search className="w-6 h-6 text-white" />
+                  <div className="w-16 h-16 bg-black/10 backdrop-blur-sm rounded-2xl flex items-center justify-center mb-4">
+                    <Search className="w-8 h-8 text-black" />
                   </div>
-                  <h3 className="font-bold text-white mb-1 text-lg">Buscar Oficinas</h3>
-                  <p className="text-sm text-yellow-50">Encontre as melhores</p>
+                  <h3 className="font-bold mb-2">Buscar Oficinas</h3>
+                  <p className="text-sm font-medium opacity-80">Encontre as melhores</p>
                 </Link>
 
                 <Link
@@ -329,37 +317,47 @@ export default function MotoristaDashboard() {
                 <Clock className="w-5 h-5 text-gray-400" />
               </div>
               
-              <div className="space-y-4">
+              <div className="space-y-2">
                 {stats.vehicles > 0 ? (
                   <>
-                    <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
-                      <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
-                        <Car className="w-5 h-5 text-blue-600" />
+                    <div className="flex items-start gap-4 p-4 rounded-xl hover:bg-blue-50 transition-colors cursor-pointer odd:bg-gray-50">
+                      <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0 shadow-md">
+                        <Car className="w-6 h-6 text-white" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-semibold text-gray-900">Veículo cadastrado</p>
-                        <p className="text-xs text-gray-500">Há 2 dias</p>
+                        <p className="text-base font-bold text-gray-900">Veículo cadastrado</p>
+                        <p className="text-sm text-gray-600 font-medium">Há 2 dias</p>
                       </div>
                     </div>
                     
                     {stats.quotes > 0 && (
-                      <div className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
-                        <div className="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center flex-shrink-0">
-                          <FileText className="w-5 h-5 text-yellow-600" />
+                      <div className="flex items-start gap-4 p-4 rounded-xl hover:bg-yellow-50 transition-colors cursor-pointer odd:bg-gray-50">
+                        <div className="w-12 h-12 rounded-full bg-yellow-400 flex items-center justify-center flex-shrink-0 shadow-md">
+                          <FileText className="w-6 h-6 text-black" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-semibold text-gray-900">Orçamento solicitado</p>
-                          <p className="text-xs text-gray-500">Há 1 hora</p>
+                          <p className="text-base font-bold text-gray-900">Orçamento solicitado</p>
+                          <p className="text-sm text-gray-600 font-medium">Há 1 hora</p>
                         </div>
                       </div>
                     )}
+                    
+                    <div className="flex items-start gap-4 p-4 rounded-xl hover:bg-green-50 transition-colors cursor-pointer odd:bg-gray-50">
+                      <div className="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0 shadow-md">
+                        <Wrench className="w-6 h-6 text-white" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-base font-bold text-gray-900">Manutenção agendada</p>
+                        <p className="text-sm text-gray-600 font-medium">Há 5 dias</p>
+                      </div>
+                    </div>
                   </>
                 ) : (
-                  <div className="text-center py-8">
-                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                      <Clock className="w-8 h-8 text-gray-400" />
+                  <div className="text-center py-10">
+                    <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Clock className="w-10 h-10 text-gray-400" />
                     </div>
-                    <p className="text-sm text-gray-500">Nenhuma atividade ainda</p>
+                    <p className="text-base font-semibold text-gray-500">Nenhuma atividade ainda</p>
                   </div>
                 )}
               </div>
