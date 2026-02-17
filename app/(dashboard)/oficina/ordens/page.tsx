@@ -26,11 +26,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Plus, Pencil, Trash2, Loader2, Search, FileText, AlertCircle, Crown, Wrench } from "lucide-react";
+import { Plus, Pencil, Trash2, Loader2, Search, FileText, AlertCircle, Crown, Wrench, FileDown, Printer } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import PlanGuard from "@/components/auth/PlanGuard";
 import { PageHeader } from "@/components/dashboard/PageHeader";
+import { downloadOSPdf, printOSPdf } from "@/lib/services/pdf-generator";
 
 interface ClientOption {
   id: string;
@@ -247,6 +248,89 @@ function OrdensContent() {
       order.vehicle?.plate.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Função para preparar dados da OS para PDF
+  const prepareOSData = (order: ServiceOrderWithRelations) => {
+    // Parse dos serviços (assumindo que está em JSON string)
+    let services: any[] = [];
+    let parts: any[] = [];
+    
+    try {
+      if (order.services) {
+        const parsed = JSON.parse(order.services);
+        if (Array.isArray(parsed)) {
+          services = parsed.map((s: any) => ({
+            description: s.description || s.name || "Serviço",
+            quantity: s.quantity || 1,
+            unitPrice: s.price || s.unitPrice || 0,
+            total: (s.quantity || 1) * (s.price || s.unitPrice || 0)
+          }));
+        }
+      }
+    } catch (e) {
+      // Se não for JSON, criar um serviço genérico
+      services = [{
+        description: order.services || "Serviço",
+        quantity: 1,
+        unitPrice: order.labor_cost || 0,
+        total: order.labor_cost || 0
+      }];
+    }
+
+    return {
+      // Oficina
+      workshopName: workshop?.name || "Oficina",
+      workshopAddress: workshop?.address,
+      workshopCity: workshop?.city,
+      workshopState: workshop?.state,
+      workshopPhone: workshop?.phone,
+      workshopEmail: workshop?.email,
+      workshopCNPJ: workshop?.cnpj,
+      
+      // OS
+      osNumber: order.order_number,
+      osDate: new Date(order.created_at).toLocaleDateString('pt-BR'),
+      osStatus: statusConfig[order.status as keyof typeof statusConfig]?.label || order.status,
+      
+      // Cliente
+      clientName: order.client?.name || "Cliente",
+      clientPhone: undefined,
+      clientEmail: undefined,
+      clientCPF: undefined,
+      
+      // Veículo
+      vehicleBrand: order.vehicle?.brand || "",
+      vehicleModel: order.vehicle?.model || "",
+      vehicleYear: 0,
+      vehiclePlate: order.vehicle?.plate || "",
+      vehicleColor: undefined,
+      vehicleMileage: undefined,
+      
+      // Serviços e Peças
+      services: services,
+      parts: parts,
+      
+      // Valores
+      laborTotal: order.labor_cost || 0,
+      partsTotal: order.parts_cost || 0,
+      discount: 0,
+      total: order.total || 0,
+      
+      // Observações
+      observations: order.notes,
+      warranty: "90 dias para serviços realizados"
+    };
+  };
+
+  const handleDownloadPdf = (order: ServiceOrderWithRelations) => {
+    const osData = prepareOSData(order);
+    downloadOSPdf(osData);
+  };
+
+  const handlePrintPdf = (order: ServiceOrderWithRelations) => {
+    const osData = prepareOSData(order);
+    printOSPdf(osData);
+  };
+
   // Mostrar alerta de limite próximo
   const showLimitWarning = workshop?.plan_type === "free" && ordersThisMonth >= 25;
 
@@ -426,6 +510,24 @@ function OrdensContent() {
                       </TableCell>
                       <TableCell className="text-right py-4">
                         <div className="flex justify-end gap-2">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handleDownloadPdf(order)}
+                            className="hover:bg-green-500 hover:text-white transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-green-500/50"
+                            title="Baixar PDF"
+                          >
+                            <FileDown className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => handlePrintPdf(order)}
+                            className="hover:bg-purple-500 hover:text-white transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-purple-500/50"
+                            title="Imprimir"
+                          >
+                            <Printer className="h-4 w-4" />
+                          </Button>
                           <Button
                             variant="ghost"
                             size="icon"
