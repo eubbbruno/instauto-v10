@@ -55,13 +55,18 @@ export function PlateSearchInput({ onVehicleFound, onPlateChange }: PlateSearchI
       
       if (response.ok) {
         const data = await response.json();
-        setFound(true);
-        onVehicleFound(data);
+        if (data && data.marca) {
+          setFound(true);
+          onVehicleFound(data);
+        } else {
+          setError("Veículo não encontrado. Preencha os dados manualmente.");
+        }
       } else {
-        setError("Veículo não encontrado");
+        setError("Veículo não encontrado. Preencha os dados manualmente.");
       }
     } catch (err) {
-      setError("Erro ao buscar. Tente novamente.");
+      console.error("Erro na busca por placa:", err);
+      setError("Serviço temporariamente indisponível. Preencha os dados manualmente.");
     } finally {
       setLoading(false);
     }

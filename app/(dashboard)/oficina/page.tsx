@@ -21,7 +21,9 @@ import {
   Crown,
   ArrowRight,
   Sparkles,
-  Loader2
+  Loader2,
+  Building2,
+  ClipboardList
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -30,6 +32,7 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Badge } from "@/components/ui/badge";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { OnboardingModal } from "@/components/ui/OnboardingModal";
 
 interface RecentActivity {
   id: string;
@@ -409,6 +412,35 @@ export default function OficinaDashboard() {
     }
   };
 
+  // Onboarding steps
+  const oficinaSteps = [
+    {
+      title: "Bem-vindo ao Instauto!",
+      description: "Vamos te mostrar como usar a plataforma para gerenciar sua oficina e atrair mais clientes.",
+      icon: <Wrench className="w-10 h-10 text-blue-600" />
+    },
+    {
+      title: "Complete seu Perfil",
+      description: "Adicione logo, endereço e especialidades da sua oficina para atrair mais clientes.",
+      icon: <Building2 className="w-10 h-10 text-blue-600" />
+    },
+    {
+      title: "Cadastre Clientes",
+      description: "Organize seus clientes e mantenha histórico completo de todos os serviços realizados.",
+      icon: <Users className="w-10 h-10 text-blue-600" />
+    },
+    {
+      title: "Receba Orçamentos",
+      description: "Motoristas vão solicitar orçamentos. Responda rápido para fechar mais serviços!",
+      icon: <FileText className="w-10 h-10 text-blue-600" />
+    },
+    {
+      title: "Crie Ordens de Serviço",
+      description: "Registre serviços, gere PDFs profissionais e mantenha tudo organizado.",
+      icon: <ClipboardList className="w-10 h-10 text-blue-600" />
+    }
+  ];
+
   const getAlertColor = (type: string) => {
     switch (type) {
       case 'warning': return 'border-yellow-200 bg-yellow-50';
@@ -418,13 +450,17 @@ export default function OficinaDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
-      <div className="p-8">
-        {/* Header padrão */}
-        <div className="mb-8">
-          <p className="text-sm text-gray-500 mb-1">Dashboard</p>
-          <h1 className="text-3xl font-bold text-gray-900">
-            Bem-vindo de volta, {workshop?.name || 'Oficina'}! 👋
+    <>
+      {/* Onboarding Modal */}
+      <OnboardingModal steps={oficinaSteps} storageKey="onboarding_oficina_done" />
+      
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
+        <div className="p-8">
+          {/* Header padrão */}
+          <div className="mb-8">
+            <p className="text-sm text-gray-500 mb-1">Dashboard</p>
+            <h1 className="text-3xl font-bold text-gray-900">
+              Bem-vindo de volta, {workshop?.name || 'Oficina'}! 👋
           </h1>
         </div>
 
@@ -709,5 +745,6 @@ export default function OficinaDashboard() {
         </div>
       </div>
     </div>
+    </>
   );
 }

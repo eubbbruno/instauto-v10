@@ -3,12 +3,13 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Car, FileText, Clock, Search, Plus, TrendingUp, Sparkles, Users, Tag, Gift, Star, MapPin, Wrench, ChevronRight, Zap, ArrowUp, MoreHorizontal, Download, Fuel, AlertCircle } from "lucide-react";
+import { Car, FileText, Clock, Search, Plus, TrendingUp, Sparkles, Users, Tag, Gift, Star, MapPin, Wrench, ChevronRight, Zap, ArrowUp, MoreHorizontal, Download, Fuel, AlertCircle, Bell } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase";
 import Image from "next/image";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { FipeConsult } from "@/components/motorista/FipeConsult";
+import { OnboardingModal } from "@/components/ui/OnboardingModal";
 
 export default function MotoristaDashboard() {
   const { user, profile, loading } = useAuth();
@@ -127,6 +128,35 @@ export default function MotoristaDashboard() {
   const firstName = profile?.name?.split(" ")[0] || "Motorista";
   const hasFleet = stats.vehicles >= 5;
 
+  // Onboarding steps
+  const motoristaSteps = [
+    {
+      title: "Bem-vindo ao Instauto!",
+      description: "Vamos te mostrar como usar a plataforma para encontrar as melhores oficinas e gerenciar seus veículos.",
+      icon: <Car className="w-10 h-10 text-blue-600" />
+    },
+    {
+      title: "Cadastre seus Veículos",
+      description: "Adicione seus veículos na Garagem para solicitar orçamentos mais rápido e manter histórico de manutenções.",
+      icon: <Car className="w-10 h-10 text-blue-600" />
+    },
+    {
+      title: "Busque Oficinas",
+      description: "Encontre oficinas perto de você, veja avaliações de outros motoristas e compare especialidades.",
+      icon: <Search className="w-10 h-10 text-blue-600" />
+    },
+    {
+      title: "Solicite Orçamentos",
+      description: "Peça orçamentos para várias oficinas de uma vez e compare preços antes de decidir.",
+      icon: <FileText className="w-10 h-10 text-blue-600" />
+    },
+    {
+      title: "Pronto para começar!",
+      description: "Você receberá notificações quando as oficinas responderem seus orçamentos. Boa sorte!",
+      icon: <Bell className="w-10 h-10 text-blue-600" />
+    }
+  ];
+
   // Promoções fictícias (depois conectar com banco)
   const promotions = [
     {
@@ -177,15 +207,19 @@ export default function MotoristaDashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
-      <div className="p-8">
-        {/* Header com breadcrumb */}
-        <div className="mb-8">
-          <p className="text-sm text-gray-500 mb-1">Dashboard</p>
-          <h1 className="text-3xl font-bold text-gray-900">
-            Bem-vindo de volta, {firstName}! 👋
-          </h1>
-        </div>
+    <>
+      {/* Onboarding Modal */}
+      <OnboardingModal steps={motoristaSteps} storageKey="onboarding_motorista_done" />
+      
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
+        <div className="p-8">
+          {/* Header com breadcrumb */}
+          <div className="mb-8">
+            <p className="text-sm text-gray-500 mb-1">Dashboard</p>
+            <h1 className="text-3xl font-bold text-gray-900">
+              Bem-vindo de volta, {firstName}! 👋
+            </h1>
+          </div>
 
         {/* Grid principal - 12 colunas */}
         <div className="grid grid-cols-12 gap-6 mb-8">
@@ -487,5 +521,6 @@ export default function MotoristaDashboard() {
         )}
       </div>
     </div>
+    </>
   );
 }
