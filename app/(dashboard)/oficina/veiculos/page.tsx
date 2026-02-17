@@ -199,31 +199,29 @@ function VeiculosContent() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-cyan-50/20 pb-12">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-        {/* Header Customizado com Gradiente */}
-        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-8">
-          <div className="space-y-3">
-            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 via-cyan-600 to-blue-800 bg-clip-text text-transparent leading-tight">
-              Veículos 🚗
-            </h1>
-            <div className="flex items-center gap-3 flex-wrap">
-              <p className="text-gray-600 text-lg">
-                Gerencie os veículos dos seus clientes
-              </p>
-              <Badge className="bg-blue-100 text-blue-800 border-blue-200 text-sm font-bold px-3 py-1">
-                {vehicles.length} total
-              </Badge>
+        {/* Header Premium */}
+        <div className="mb-8">
+          <p className="text-sm text-gray-500 mb-1">Dashboard / Veículos</p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Veículos</h1>
+              <div className="flex items-center gap-3">
+                <p className="text-gray-600">Gerencie os veículos dos seus clientes</p>
+                <Badge className="bg-blue-100 text-blue-700 text-sm font-medium px-3 py-1 rounded-full">
+                  {vehicles.length} total
+                </Badge>
+              </div>
             </div>
+            <button
+              onClick={() => handleOpenDialog()}
+              className="px-6 py-3 bg-yellow-400 text-yellow-900 font-semibold rounded-xl hover:bg-yellow-300 shadow-lg shadow-yellow-400/30 flex items-center gap-2 transition-all"
+            >
+              <Plus className="w-5 h-5" />
+              Novo Veículo
+            </button>
           </div>
-          <Button 
-            onClick={() => handleOpenDialog()} 
-            className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 font-bold shadow-xl shadow-blue-600/40 hover:scale-105 transition-all duration-300 text-lg px-6 py-6"
-            size="lg"
-          >
-            <Plus className="mr-2 h-5 w-5" />
-            Novo Veículo
-          </Button>
         </div>
 
         {/* Search Card */}
@@ -243,42 +241,30 @@ function VeiculosContent() {
 
         {/* Table */}
         {loading ? (
-          <Card className="border-2 shadow-lg">
-            <CardContent className="flex flex-col items-center justify-center py-20">
-              <Loader2 className="h-16 w-16 animate-spin text-blue-600 mb-4" />
-              <p className="text-gray-600 font-medium">Carregando veículos...</p>
-            </CardContent>
-          </Card>
+          <div className="bg-white rounded-3xl p-12 shadow-sm border border-gray-100 flex items-center justify-center">
+            <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
+          </div>
         ) : filteredVehicles.length === 0 ? (
-          <Card className="border-2 shadow-xl bg-gradient-to-br from-white to-gray-50">
-            <CardContent className="text-center py-16">
-              <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-100 to-cyan-200 flex items-center justify-center">
-                <CarIcon className="h-10 w-10 text-blue-600" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">
-                {searchTerm
-                  ? "Nenhum veículo encontrado"
-                  : "Nenhum veículo cadastrado ainda"}
-              </h3>
-              <p className="text-gray-600 mb-6 max-w-md mx-auto">
-                {searchTerm
-                  ? "Tente ajustar sua busca ou limpar os filtros"
-                  : clients.length > 0
-                    ? "Comece adicionando o primeiro veículo para gerenciar melhor sua oficina"
-                    : "Cadastre um cliente primeiro para adicionar veículos"}
-              </p>
-              {!searchTerm && clients.length > 0 && (
-                <Button
-                  onClick={() => handleOpenDialog()}
-                  className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 font-bold shadow-lg shadow-blue-600/30 hover:scale-105 transition-transform"
-                  size="lg"
-                >
-                  <Plus className="mr-2 h-5 w-5" />
-                  Adicionar Primeiro Veículo
-                </Button>
-              )}
-            </CardContent>
-          </Card>
+          <div className="bg-white rounded-3xl p-12 shadow-sm border border-gray-100 text-center">
+            <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <CarIcon className="w-8 h-8 text-gray-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">
+              {searchTerm ? "Nenhum veículo encontrado" : "Nenhum veículo cadastrado"}
+            </h3>
+            <p className="text-gray-500 mb-6">
+              {searchTerm ? "Tente ajustar sua busca" : clients.length > 0 ? "Comece adicionando seu primeiro veículo" : "Cadastre um cliente primeiro"}
+            </p>
+            {!searchTerm && clients.length > 0 && (
+              <button
+                onClick={() => handleOpenDialog()}
+                className="px-6 py-3 bg-yellow-400 text-yellow-900 font-semibold rounded-xl hover:bg-yellow-300 inline-flex items-center gap-2"
+              >
+                <Plus className="w-5 h-5" />
+                Adicionar Veículo
+              </button>
+            )}
+          </div>
         ) : (
           <Card className="border-2 border-blue-100 shadow-2xl hover:shadow-blue-200/50 transition-all duration-300 overflow-hidden">
             <CardHeader className="border-b-2 border-blue-100 bg-gradient-to-r from-blue-50 via-cyan-50 to-blue-50/50 py-6">

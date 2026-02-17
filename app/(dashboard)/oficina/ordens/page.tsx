@@ -335,36 +335,34 @@ function OrdensContent() {
   const showLimitWarning = workshop?.plan_type === "free" && ordersThisMonth >= 25;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/30 to-blue-50/20 pb-12">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-        {/* Header Customizado com Gradiente */}
-        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-8">
-          <div className="space-y-3">
-            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 via-fuchsia-600 to-purple-800 bg-clip-text text-transparent leading-tight">
-              Ordens de Serviço 🔧
-            </h1>
-            <div className="flex items-center gap-3 flex-wrap">
-              <p className="text-gray-600 text-lg">
-                Gerencie as ordens de serviço da oficina
-              </p>
-              {workshop?.plan_type === "free" && (
-                <Badge className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white border-0 text-sm font-bold px-3 py-1 shadow-lg animate-pulse">
-                  {ordersThisMonth}/30 OS este mês
+        {/* Header Premium */}
+        <div className="mb-8">
+          <p className="text-sm text-gray-500 mb-1">Dashboard / Ordens de Serviço</p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Ordens de Serviço</h1>
+              <div className="flex items-center gap-3">
+                <p className="text-gray-600">Gerencie as ordens de serviço da oficina</p>
+                {workshop?.plan_type === "free" && (
+                  <Badge className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white border-0 text-sm font-bold px-3 py-1 shadow-lg animate-pulse">
+                    {ordersThisMonth}/30 OS este mês
+                  </Badge>
+                )}
+                <Badge className="bg-blue-100 text-blue-700 text-sm font-medium px-3 py-1 rounded-full">
+                  {orders.length} total
                 </Badge>
-              )}
-              <Badge className="bg-purple-100 text-purple-800 border-purple-200 text-sm font-bold px-3 py-1">
-                {orders.length} total
-              </Badge>
+              </div>
             </div>
+            <button
+              onClick={() => handleOpenDialog()}
+              className="px-6 py-3 bg-yellow-400 text-yellow-900 font-semibold rounded-xl hover:bg-yellow-300 shadow-lg shadow-yellow-400/30 flex items-center gap-2 transition-all"
+            >
+              <Plus className="w-5 h-5" />
+              Nova OS
+            </button>
           </div>
-          <Button 
-            onClick={() => handleOpenDialog()} 
-            className="bg-gradient-to-r from-purple-600 to-fuchsia-600 hover:from-purple-700 hover:to-fuchsia-700 font-bold shadow-xl shadow-purple-600/40 hover:scale-105 transition-all duration-300 text-lg px-6 py-6"
-            size="lg"
-          >
-            <Plus className="mr-2 h-5 w-5" />
-            Nova OS
-          </Button>
         </div>
 
         {/* Alerta de limite próximo */}
