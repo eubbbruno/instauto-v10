@@ -400,49 +400,47 @@ export default function AgendaPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-teal-50/30 to-cyan-50/20 flex items-center justify-center">
-        <Card className="border-2 shadow-lg">
-          <CardContent className="flex flex-col items-center justify-center py-20">
-            <Loader2 className="h-16 w-16 animate-spin text-teal-600 mb-4" />
-            <p className="text-gray-600 font-medium">Carregando agenda...</p>
-          </CardContent>
-        </Card>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 flex items-center justify-center">
+        <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
       </div>
     );
   }
 
   return (
     <PlanGuard>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-teal-50/30 to-cyan-50/20 pb-12">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-8">
-            <div className="space-y-3">
-              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-teal-600 via-cyan-600 to-teal-800 bg-clip-text text-transparent leading-tight">
-                Agenda 📅
-              </h1>
-              <p className="text-gray-600 text-lg">Gerencie os agendamentos da oficina</p>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              <Button
-                variant={viewMode === "calendar" ? "default" : "outline"}
-                onClick={() => setViewMode("calendar")}
-                className={viewMode === "calendar" ? "bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 font-bold shadow-lg shadow-teal-600/30" : "border-2 font-bold"}
-              >
-                <CalendarIcon className="mr-2 h-4 w-4" />
-                Calendário
-              </Button>
-            <Button
-              variant={viewMode === "list" ? "default" : "outline"}
-              onClick={() => setViewMode("list")}
-              className={viewMode === "list" ? "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 font-bold shadow-lg shadow-blue-600/30" : "border-2 font-bold"}
-            >
-              <Clock className="mr-2 h-4 w-4" />
-              Lista
-            </Button>
-              <Button onClick={() => openCreateDialog()} className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 font-bold shadow-lg shadow-yellow-500/30">
-                <Plus className="mr-2 h-4 w-4" />
-                Novo Agendamento
-              </Button>
+          {/* Header Premium */}
+          <div className="mb-8">
+            <p className="text-sm text-gray-500 mb-1">Dashboard / Agenda</p>
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900">Agenda</h1>
+                <p className="text-gray-600">Gerencie os agendamentos da oficina</p>
+              </div>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => setViewMode("calendar")}
+                  className={`px-4 py-2 rounded-xl font-medium transition-all ${viewMode === "calendar" ? "bg-blue-600 text-white" : "bg-white text-gray-600 hover:bg-gray-50"}`}
+                >
+                  <CalendarIcon className="w-4 h-4 inline mr-2" />
+                  Calendário
+                </button>
+                <button
+                  onClick={() => setViewMode("list")}
+                  className={`px-4 py-2 rounded-xl font-medium transition-all ${viewMode === "list" ? "bg-blue-600 text-white" : "bg-white text-gray-600 hover:bg-gray-50"}`}
+                >
+                  <Clock className="w-4 h-4 inline mr-2" />
+                  Lista
+                </button>
+                <button
+                  onClick={() => openCreateDialog()}
+                  className="px-6 py-3 bg-yellow-400 text-yellow-900 font-semibold rounded-xl hover:bg-yellow-300 shadow-lg shadow-yellow-400/30 flex items-center gap-2 transition-all"
+                >
+                  <Plus className="w-5 h-5" />
+                  Novo
+                </button>
+              </div>
             </div>
           </div>
 

@@ -411,53 +411,45 @@ export default function FinanceiroPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-green-50/30 to-emerald-50/20 flex items-center justify-center">
-        <Card className="border-2 shadow-lg">
-          <CardContent className="flex flex-col items-center justify-center py-20">
-            <Loader2 className="h-16 w-16 animate-spin text-green-600 mb-4" />
-            <p className="text-gray-600 font-medium">Carregando financeiro...</p>
-          </CardContent>
-        </Card>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 flex items-center justify-center">
+        <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
       </div>
     );
   }
 
   return (
     <PlanGuard>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-green-50/30 to-emerald-50/20 pb-12">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-          {/* Header Customizado */}
-          <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-8">
-            <div className="space-y-3">
-              <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-green-600 via-emerald-600 to-green-800 bg-clip-text text-transparent leading-tight">
-                Financeiro 💰
-              </h1>
-              <div className="flex items-center gap-3 flex-wrap">
-                <p className="text-gray-600 text-lg">
-                  Gerencie receitas e despesas da oficina
-                </p>
-                <Badge className={`${balance >= 0 ? 'bg-green-100 text-green-800 border-green-200' : 'bg-red-100 text-red-800 border-red-200'} text-sm font-bold px-3 py-1`}>
-                  Saldo: {balance.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
-                </Badge>
+          {/* Header Premium */}
+          <div className="mb-8">
+            <p className="text-sm text-gray-500 mb-1">Dashboard / Financeiro</p>
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">Financeiro</h1>
+                <div className="flex items-center gap-3">
+                  <p className="text-gray-600">Gerencie receitas e despesas da oficina</p>
+                  <Badge className={`${balance >= 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'} text-sm font-medium px-3 py-1 rounded-full`}>
+                    Saldo: {balance.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+                  </Badge>
+                </div>
               </div>
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <Button 
-                onClick={() => openCreateDialog("income")} 
-                className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 font-bold shadow-xl shadow-green-600/40 hover:scale-105 transition-all duration-300 text-base px-5 py-5"
-                size="lg"
-              >
-                <ArrowUpCircle className="mr-2 h-5 w-5" />
-                Nova Receita
-              </Button>
-              <Button 
-                onClick={() => openCreateDialog("expense")} 
-                className="bg-gradient-to-r from-red-600 to-pink-600 hover:from-red-700 hover:to-pink-700 font-bold shadow-xl shadow-red-600/40 hover:scale-105 transition-all duration-300 text-base px-5 py-5"
-                size="lg"
-              >
-                <ArrowDownCircle className="mr-2 h-5 w-5" />
-                Nova Despesa
-              </Button>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => openCreateDialog("income")}
+                  className="px-4 py-2 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 flex items-center gap-2 transition-all"
+                >
+                  <ArrowUpCircle className="w-5 h-5" />
+                  Receita
+                </button>
+                <button
+                  onClick={() => openCreateDialog("expense")}
+                  className="px-4 py-2 bg-red-600 text-white font-semibold rounded-xl hover:bg-red-700 flex items-center gap-2 transition-all"
+                >
+                  <ArrowDownCircle className="w-5 h-5" />
+                  Despesa
+                </button>
+              </div>
             </div>
           </div>
 

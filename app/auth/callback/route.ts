@@ -93,6 +93,24 @@ export async function GET(request: Request) {
         } else {
           console.log("✅ Motorist criado com sucesso!");
         }
+      } else if (userType === "oficina") {
+        // Se oficina, criar registro em workshops
+        console.log("🔨 Criando workshop...");
+        const { error: workshopError } = await supabase.from("workshops").insert({
+          profile_id: user.id,
+          name: name || "Minha Oficina",
+          plan_type: "free",
+          subscription_status: "trial",
+          trial_ends_at: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
+          is_public: true,
+          accepts_quotes: true,
+        });
+        
+        if (workshopError) {
+          console.error("❌ Erro ao criar workshop:", workshopError);
+        } else {
+          console.log("✅ Workshop criado com sucesso!");
+        }
       }
     }
   } else {

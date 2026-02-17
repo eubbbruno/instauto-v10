@@ -72,8 +72,13 @@ export default function LoginMotoristaPage() {
     setLoading(true);
 
     try {
+      // Salvar tipo no localStorage para usar após callback
+      localStorage.setItem('google_login_type', 'motorista');
+      console.log("🔵 [Login Motorista] Salvando tipo no localStorage: motorista");
+      
       await signInWithGoogle('motorista');
     } catch (err: any) {
+      console.error("❌ [Login Motorista] Erro no Google Login:", err);
       setError(err.message || "Erro ao fazer login com Google.");
       setLoading(false);
     }

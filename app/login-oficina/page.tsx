@@ -63,8 +63,13 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
+      // Salvar tipo no localStorage para usar após callback
+      localStorage.setItem('google_login_type', 'oficina');
+      console.log("🔵 [Login Oficina] Salvando tipo no localStorage: oficina");
+      
       await signInWithGoogle('oficina');
     } catch (err: any) {
+      console.error("❌ [Login Oficina] Erro no Google Login:", err);
       setError(err.message || "Erro ao fazer login com Google.");
       setLoading(false);
     }

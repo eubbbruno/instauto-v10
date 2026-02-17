@@ -84,13 +84,69 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(session?.user || null);
       
       if (session?.user) {
-        const { data } = await supabase
+        console.log("👤 [AuthContext] Carregando profile para:", session.user.email);
+        
+        const { data, error } = await supabase
           .from("profiles")
           .select("*")
           .eq("id", session.user.id)
           .single();
         
-        setProfile(data || null);
+        if (data) {
+          console.log("✅ [AuthContext] Profile encontrado:", data.type);
+          setProfile(data);
+        } else if (error) {
+          console.error("❌ [AuthContext] Erro ao carregar profile:", error.message);
+          
+          // Se não encontrou profile, tentar criar (caso do Google Login)
+          const loginType = localStorage.getItem('google_login_type') || 'motorista';
+          console.log("🔨 [AuthContext] Tentando criar profile para tipo:", loginType);
+          
+          const name = session.user.user_metadata?.name || 
+                       session.user.user_metadata?.full_name || 
+                       session.user.email?.split("@")[0] || 
+                       "Usuário";
+          
+          const profileType = loginType === 'oficina' ? 'oficina' : 'motorista';
+          
+          const { data: newProfile, error: createError } = await supabase
+            .from("profiles")
+            .insert({
+              id: session.user.id,
+              email: session.user.email,
+              name,
+              type: profileType,
+            })
+            .select()
+            .single();
+          
+          if (newProfile && !createError) {
+            console.log("✅ [AuthContext] Profile criado com sucesso!");
+            setProfile(newProfile);
+            
+            // Criar registro específico
+            if (profileType === 'oficina') {
+              console.log("🔨 [AuthContext] Criando workshop...");
+              await supabase.from("workshops").insert({
+                profile_id: newProfile.id,
+                name: name || "Minha Oficina",
+                plan_type: "free",
+                subscription_status: "trial",
+                trial_ends_at: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
+                is_public: true,
+                accepts_quotes: true,
+              });
+            } else {
+              console.log("🔨 [AuthContext] Criando motorist...");
+              await supabase.from("motorists").insert({
+                profile_id: newProfile.id,
+              });
+            }
+          } else {
+            console.error("❌ [AuthContext] Erro ao criar profile:", createError);
+            setProfile(null);
+          }
+        }
       } else {
         setProfile(null);
       }
