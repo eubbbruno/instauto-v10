@@ -30,6 +30,7 @@ import PlanGuard from "@/components/auth/PlanGuard";
 import { PageHeader } from "@/components/dashboard/PageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { PlateSearchInput } from "@/components/ui/PlateSearchInput";
 
 interface ClientOption {
   id: string;
@@ -511,6 +512,25 @@ function VehicleDialog({
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className="space-y-4 py-4">
+            {/* Busca por Placa */}
+            {!vehicle && (
+              <div className="p-4 bg-blue-50 rounded-xl border border-blue-100 col-span-2">
+                <PlateSearchInput 
+                  onVehicleFound={(data) => {
+                    // Preencher campos automaticamente
+                    if (data.marca) setFormData(prev => ({ ...prev, brand: data.marca }));
+                    if (data.modelo) setFormData(prev => ({ ...prev, model: data.modelo }));
+                    if (data.anoModelo) setFormData(prev => ({ ...prev, year: data.anoModelo.toString() }));
+                    if (data.cor) setFormData(prev => ({ ...prev, color: data.cor }));
+                  }}
+                  onPlateChange={(plate) => setFormData(prev => ({ ...prev, plate }))}
+                />
+                <p className="text-xs text-gray-600 mt-2">
+                  💡 Digite a placa para preencher os dados automaticamente, ou preencha manualmente abaixo.
+                </p>
+              </div>
+            )}
+
             <div className="grid grid-cols-2 gap-4">
               {/* Cliente */}
               <div className="space-y-2 col-span-2">

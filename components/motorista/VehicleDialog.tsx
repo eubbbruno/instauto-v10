@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Loader2 } from "lucide-react";
 import { MotoristVehicle } from "@/types/database";
+import { PlateSearchInput } from "@/components/ui/PlateSearchInput";
 
 interface VehicleDialogProps {
   open: boolean;
@@ -102,6 +103,40 @@ export function VehicleDialog({ open, onOpenChange, vehicle, onSave }: VehicleDi
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Busca por Placa */}
+          {!vehicle && (
+            <div className="p-4 bg-blue-50 rounded-xl border border-blue-100">
+              <PlateSearchInput 
+                onVehicleFound={(data) => {
+                  // Preencher campos automaticamente
+                  if (data.marca) setFormData(prev => ({ ...prev, make: data.marca }));
+                  if (data.modelo) setFormData(prev => ({ ...prev, model: data.modelo }));
+                  if (data.anoModelo) setFormData(prev => ({ ...prev, year: data.anoModelo }));
+                  if (data.cor) setFormData(prev => ({ ...prev, color: data.cor }));
+                  
+                  // Mapear combustível
+                  if (data.combustivel) {
+                    const fuelMap: Record<string, string> = {
+                      'GASOLINA': 'Gasolina',
+                      'ETANOL': 'Etanol', 
+                      'FLEX': 'Flex',
+                      'DIESEL': 'Diesel',
+                      'GNV': 'Gasolina',
+                      'ELETRICO': 'Elétrico',
+                      'HIBRIDO': 'Híbrido'
+                    };
+                    const fuelType = fuelMap[data.combustivel.toUpperCase()] || 'Gasolina';
+                    setFormData(prev => ({ ...prev, fuel_type: fuelType }));
+                  }
+                }}
+                onPlateChange={(plate) => setFormData(prev => ({ ...prev, plate }))}
+              />
+              <p className="text-xs text-gray-600 mt-2">
+                💡 Digite a placa para preencher os dados automaticamente, ou preencha manualmente abaixo.
+              </p>
+            </div>
+          )}
+
           {/* Apelido (opcional) */}
           <div>
             <Label htmlFor="nickname">Apelido (opcional)</Label>
