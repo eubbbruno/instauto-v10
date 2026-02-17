@@ -8,6 +8,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase";
 import Image from "next/image";
 import { StatCard } from "@/components/dashboard/StatCard";
+import { FipeConsult } from "@/components/motorista/FipeConsult";
 
 export default function MotoristaDashboard() {
   const { user, profile, loading } = useAuth();
@@ -415,6 +416,9 @@ export default function MotoristaDashboard() {
                 </Link>
               </div>
             </div>
+
+            {/* Consulta FIPE */}
+            <FipeConsult />
             
           </div>
         </div>
