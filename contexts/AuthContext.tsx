@@ -36,6 +36,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Carregar profile com retry
   const loadProfile = async (userId: string, retries = 5): Promise<Profile | null> => {
     console.log(`🔄 [Auth] Carregando profile (tentativa ${6 - retries}/5)...`);
+    console.log(`🔄 [Auth] userId: ${userId}`);
 
     const { data, error } = await supabase
       .from("profiles")
@@ -43,18 +44,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .eq("id", userId)
       .single();
 
+    // MOSTRAR RESULTADO COMPLETO
+    console.log("🔄 [Auth] Resultado da query:");
+    console.log("🔄 [Auth] - data:", data);
+    console.log("🔄 [Auth] - error:", error);
+
     if (data) {
       console.log("✅ [Auth] Profile carregado:", data.type);
+      setProfile(data);
+      setLoading(false);
       return data;
     }
 
+    if (error) {
+      console.error("❌ [Auth] Erro na query:", error.message, error.code, error.details);
+    }
+
     if (retries > 0) {
-      console.log("⏳ [Auth] Profile não encontrado, aguardando...");
+      console.log(`⏳ [Auth] Aguardando 1s para retry... (${retries} restantes)`);
       await new Promise((r) => setTimeout(r, 1000));
       return loadProfile(userId, retries - 1);
     }
 
     console.log("❌ [Auth] Profile não encontrado após 5 tentativas");
+    setLoading(false);
     return null;
   };
 

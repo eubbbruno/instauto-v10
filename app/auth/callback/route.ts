@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import { supabaseAdmin } from "@/lib/supabase-admin";
 
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
@@ -67,8 +68,9 @@ export async function GET(request: Request) {
                     data.user.email?.split("@")[0] ||
                     "Usuário";
 
-    // Criar profile
-    const { error: profileError } = await supabase.from("profiles").insert({
+    // Criar profile usando supabaseAdmin (bypassa RLS)
+    console.log("🔨 [Callback] Usando supabaseAdmin para criar profile...");
+    const { error: profileError } = await supabaseAdmin.from("profiles").insert({
       id: data.user.id,
       email: data.user.email,
       name: userName,
@@ -82,10 +84,10 @@ export async function GET(request: Request) {
 
     console.log("✅ [Callback] Profile criado:", userType);
 
-    // 4. Criar workshop ou motorist
+    // 4. Criar workshop ou motorist usando supabaseAdmin
     if (userType === "workshop") {
-      console.log("🔨 [Callback] Criando workshop...");
-      const { error: workshopError } = await supabase.from("workshops").insert({
+      console.log("🔨 [Callback] Criando workshop com supabaseAdmin...");
+      const { error: workshopError } = await supabaseAdmin.from("workshops").insert({
         profile_id: data.user.id,
         name: userName,
         plan_type: "free",
@@ -103,8 +105,8 @@ export async function GET(request: Request) {
 
       return NextResponse.redirect(new URL("/oficina", requestUrl.origin));
     } else {
-      console.log("🔨 [Callback] Criando motorist...");
-      const { error: motoristError } = await supabase.from("motorists").insert({
+      console.log("🔨 [Callback] Criando motorist com supabaseAdmin...");
+      const { error: motoristError } = await supabaseAdmin.from("motorists").insert({
         profile_id: data.user.id,
       });
 
