@@ -35,6 +35,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => clearTimeout(timeout);
   }, [loading]);
 
+  // Função para carregar profile com retries
+  const loadProfileWithRetries = async (userId: string, retries = 3): Promise<any> => {
+    console.log(`🔄 [AuthContext] Carregando profile (tentativa ${4 - retries}/3)...`);
+    
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", userId)
+      .single();
+
+    if (data) {
+      console.log("✅ [AuthContext] Profile encontrado:", data.type);
+      return data;
+    }
+
+    if (error && retries > 0) {
+      console.log("⏳ [AuthContext] Profile não encontrado, aguardando callback criar...");
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      return loadProfileWithRetries(userId, retries - 1);
+    }
+
+    console.log("❌ [AuthContext] Profile não encontrado após 3 tentativas");
+    return null;
+  };
+
   // Inicialização SIMPLES
   useEffect(() => {
     let mounted = true;
@@ -48,17 +73,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           console.log("✅ [AuthContext] Sessão encontrada:", session.user.email);
           setUser(session.user);
           
-          const { data, error } = await supabase
-            .from("profiles")
-            .select("*")
-            .eq("id", session.user.id)
-            .single();
+          // Usar função com retries
+          const profileData = await loadProfileWithRetries(session.user.id);
           
-          if (data && mounted) {
-            setProfile(data);
-            console.log("✅ [AuthContext] Profile carregado:", data.type);
-          } else if (error) {
-            console.error("❌ [AuthContext] Erro ao carregar profile:", error.message);
+          if (profileData && mounted) {
+            setProfile(profileData);
           }
         } else {
           console.log("ℹ️ [AuthContext] Nenhuma sessão ativa");
@@ -86,66 +105,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (session?.user) {
         console.log("👤 [AuthContext] Carregando profile para:", session.user.email);
         
-        const { data, error } = await supabase
-          .from("profiles")
-          .select("*")
-          .eq("id", session.user.id)
-          .single();
+        // Usar função com retries para aguardar callback criar profile
+        const profileData = await loadProfileWithRetries(session.user.id);
         
-        if (data) {
-          console.log("✅ [AuthContext] Profile encontrado:", data.type);
-          setProfile(data);
-        } else if (error) {
-          console.error("❌ [AuthContext] Erro ao carregar profile:", error.message);
-          
-          // Se não encontrou profile, tentar criar (caso do Google Login)
-          const loginType = localStorage.getItem('google_login_type') || 'motorista';
-          console.log("🔨 [AuthContext] Tentando criar profile para tipo:", loginType);
-          
-          const name = session.user.user_metadata?.name || 
-                       session.user.user_metadata?.full_name || 
-                       session.user.email?.split("@")[0] || 
-                       "Usuário";
-          
-          const profileType = loginType === 'oficina' ? 'oficina' : 'motorista';
-          
-          const { data: newProfile, error: createError } = await supabase
-            .from("profiles")
-            .insert({
-              id: session.user.id,
-              email: session.user.email,
-              name,
-              type: profileType,
-            })
-            .select()
-            .single();
-          
-          if (newProfile && !createError) {
-            console.log("✅ [AuthContext] Profile criado com sucesso!");
-            setProfile(newProfile);
-            
-            // Criar registro específico
-            if (profileType === 'oficina') {
-              console.log("🔨 [AuthContext] Criando workshop...");
-              await supabase.from("workshops").insert({
-                profile_id: newProfile.id,
-                name: name || "Minha Oficina",
-                plan_type: "free",
-                subscription_status: "trial",
-                trial_ends_at: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
-                is_public: true,
-                accepts_quotes: true,
-              });
-            } else {
-              console.log("🔨 [AuthContext] Criando motorist...");
-              await supabase.from("motorists").insert({
-                profile_id: newProfile.id,
-              });
-            }
-          } else {
-            console.error("❌ [AuthContext] Erro ao criar profile:", createError);
-            setProfile(null);
-          }
+        if (profileData && mounted) {
+          setProfile(profileData);
+        } else if (mounted) {
+          console.log("❌ [AuthContext] Profile não encontrado após retries");
+          setProfile(null);
         }
       } else {
         setProfile(null);

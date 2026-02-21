@@ -212,20 +212,20 @@ export default function MotoristaDashboard() {
       <OnboardingModal steps={motoristaSteps} storageKey="onboarding_motorista_done" />
       
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
-        <div className="p-8">
+        <div className="p-4 sm:p-6 lg:p-8">
           {/* Header com breadcrumb */}
-          <div className="mb-8">
-            <p className="text-sm text-gray-500 mb-1">Dashboard</p>
-            <h1 className="text-3xl font-bold text-gray-900">
+          <div className="mb-6 sm:mb-8">
+            <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard</p>
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
               Bem-vindo de volta, {firstName}! 👋
             </h1>
           </div>
 
         {/* Grid principal - 12 colunas */}
-        <div className="grid grid-cols-12 gap-6 mb-8">
+        <div className="grid grid-cols-12 gap-4 sm:gap-6 mb-6 sm:mb-8">
           
           {/* Card grande - Visão Geral (8 colunas) */}
-          <div className="col-span-12 lg:col-span-8 bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+          <div className="col-span-12 lg:col-span-8 bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm border border-gray-100">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">

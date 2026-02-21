@@ -455,17 +455,17 @@ export default function OficinaDashboard() {
       <OnboardingModal steps={oficinaSteps} storageKey="onboarding_oficina_done" />
       
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
-        <div className="p-8">
+        <div className="p-4 sm:p-6 lg:p-8">
           {/* Header padrão */}
-          <div className="mb-8">
-            <p className="text-sm text-gray-500 mb-1">Dashboard</p>
-            <h1 className="text-3xl font-bold text-gray-900">
+          <div className="mb-6 sm:mb-8">
+            <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard</p>
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
               Bem-vindo de volta, {workshop?.name || 'Oficina'}! 👋
           </h1>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
           <StatCard
             title="Orçamentos Pendentes"
             value={stats.quotes}
