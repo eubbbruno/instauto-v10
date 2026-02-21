@@ -155,7 +155,7 @@ export default function SobrePage() {
                 Encontre oficinas próximas, compare preços e agende serviços sem sair de casa.
               </p>
               <Link
-                href="/cadastro-motorista"
+                href="/login"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-all"
               >
                 Cadastrar como Motorista
@@ -174,7 +174,7 @@ export default function SobrePage() {
                 e coloca sua oficina no mapa para milhares de motoristas. Aumente seu faturamento.
               </p>
               <Link
-                href="/cadastro-oficina"
+                href="/login"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-semibold rounded-xl transition-all"
               >
                 Cadastrar Minha Oficina

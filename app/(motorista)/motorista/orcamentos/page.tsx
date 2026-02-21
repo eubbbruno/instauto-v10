@@ -39,7 +39,7 @@ export default function OrcamentosMotoristPage() {
     if (authLoading) return;
     
     if (!profile) {
-      router.push("/login-motorista");
+      router.push("/login");
       return;
     }
 

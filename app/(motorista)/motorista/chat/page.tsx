@@ -37,7 +37,7 @@ export default function ChatPage() {
 
   useEffect(() => {
     if (!loading && !user) {
-      router.push("/login-motorista");
+      router.push("/login");
     }
   }, [user, loading, router]);
 

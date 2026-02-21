@@ -1,41 +1,67 @@
 import { createServerClient } from "@supabase/ssr";
-import { NextResponse, type NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-export async function middleware(request: NextRequest) {
-  const response = NextResponse.next();
-  const { pathname } = request.nextUrl;
-
-  // Ignorar arquivos estáticos
-  if (pathname.startsWith("/_next") || pathname.startsWith("/images") || pathname.includes(".")) {
-    return response;
-  }
+export async function middleware(req: NextRequest) {
+  const res = NextResponse.next();
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
       cookies: {
-        getAll: () => request.cookies.getAll(),
-        setAll: (cookies) => cookies.forEach(({ name, value, options }) => {
-          response.cookies.set(name, value, options);
-        }),
+        getAll: () => req.cookies.getAll().map(c => ({ name: c.name, value: c.value })),
+        setAll: (cookies) => {
+          cookies.forEach(({ name, value, options }) => {
+            res.cookies.set(name, value, options);
+          });
+        },
       },
     }
   );
 
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { session } } = await supabase.auth.getSession();
 
-  // Rotas protegidas
-  const protectedRoutes = ["/motorista", "/oficina", "/completar-cadastro"];
-  const isProtected = protectedRoutes.some(r => pathname.startsWith(r));
+  const pathname = req.nextUrl.pathname;
 
-  if (isProtected && !user) {
-    return NextResponse.redirect(new URL("/", request.url));
+  // Rotas públicas - não precisa de auth
+  const publicRoutes = [
+    "/",
+    "/login",
+    "/auth/callback",
+    "/para-oficinas",
+    "/sobre",
+    "/contato",
+    "/como-funciona",
+    "/planos",
+    "/termos",
+    "/privacidade",
+    "/politica-privacidade",
+    "/termos-uso",
+    "/buscar-oficinas",
+    "/motoristas",
+  ];
+
+  const isPublicRoute = publicRoutes.some(route => pathname === route) || 
+                       pathname.startsWith("/api/") ||
+                       pathname.startsWith("/_next/") ||
+                       pathname.includes(".");
+
+  if (isPublicRoute) {
+    return res;
   }
 
-  return response;
+  // Rotas protegidas - precisa de auth
+  if (!session) {
+    const loginUrl = new URL("/login", req.url);
+    return NextResponse.redirect(loginUrl);
+  }
+
+  return res;
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|images|api).*)"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.png$|.*\\.jpg$|.*\\.svg$|.*\\.ico$|.*\\.webp$).*)",
+  ],
 };

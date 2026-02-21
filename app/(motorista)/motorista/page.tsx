@@ -32,7 +32,7 @@ export default function MotoristaDashboard() {
 
   useEffect(() => {
     if (!loading && !user) {
-      router.push("/login-motorista");
+      router.push("/login");
     }
   }, [user, loading, router]);
 

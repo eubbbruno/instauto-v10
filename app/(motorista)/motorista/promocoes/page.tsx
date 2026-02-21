@@ -33,7 +33,7 @@ export default function PromocoesPage() {
 
   useEffect(() => {
     if (!loading && !user) {
-      router.push("/login-motorista");
+      router.push("/login");
     }
   }, [user, loading, router]);
 

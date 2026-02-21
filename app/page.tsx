@@ -503,7 +503,7 @@ export default function HomePage() {
                   Conhecer Sistema
                 </Link>
                 <Link
-                  href="/cadastro-oficina"
+                  href="/login"
                   className="inline-flex items-center justify-center gap-2 px-6 py-4 bg-yellow-400 text-gray-900 font-semibold rounded-xl hover:bg-yellow-300 transition-all"
                 >
                   Começar Teste Grátis (14 dias)

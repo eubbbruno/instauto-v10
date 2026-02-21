@@ -138,7 +138,7 @@ export default function ComoFuncionaPage() {
 
           <div className="text-center mt-12">
             <Link
-              href="/cadastro-oficina"
+              href="/login"
               className="inline-flex items-center gap-2 px-8 py-4 bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-bold rounded-xl transition-all shadow-lg"
             >
               Cadastrar Minha Oficina Grátis
@@ -220,14 +220,14 @@ export default function ComoFuncionaPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="/cadastro-motorista"
+              href="/login"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-blue-600 font-bold rounded-xl hover:bg-gray-100 transition-all"
             >
               Sou Motorista
               <ArrowRight className="w-5 h-5" />
             </Link>
             <Link
-              href="/cadastro-oficina"
+              href="/login"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-yellow-400 text-gray-900 font-bold rounded-xl hover:bg-yellow-300 transition-all"
             >
               Sou Oficina

@@ -65,7 +65,7 @@ export default function DashboardLayout({
 
   useEffect(() => {
     if (!loading && !user) {
-      router.push("/login-oficina");
+      router.push("/login");
     }
   }, [user, loading, router]);
 

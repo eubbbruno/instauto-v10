@@ -36,7 +36,7 @@ export default function NovoLembretePage() {
 
   useEffect(() => {
     if (!authLoading && !user) {
-      router.push("/login-motorista");
+      router.push("/login");
     }
   }, [user, authLoading, router]);
 

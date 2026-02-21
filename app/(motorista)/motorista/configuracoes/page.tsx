@@ -52,7 +52,7 @@ export default function ConfiguracoesPage() {
 
   useEffect(() => {
     if (!authLoading && !user) {
-      router.push("/login-motorista");
+      router.push("/login");
       return;
     }
 
@@ -204,7 +204,7 @@ export default function ConfiguracoesPage() {
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    router.push("/login-motorista");
+    router.push("/login");
   };
 
   const handleDeleteAccount = async () => {

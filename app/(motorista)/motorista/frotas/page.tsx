@@ -31,7 +31,7 @@ export default function FrotasPage() {
 
   useEffect(() => {
     if (!loading && !user) {
-      router.push("/login-motorista");
+      router.push("/login");
     }
   }, [user, loading, router]);
 

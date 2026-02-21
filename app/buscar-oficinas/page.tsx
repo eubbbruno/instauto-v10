@@ -145,12 +145,12 @@ export default function BuscarOficinasPage() {
               Para ver todas as oficinas, solicitar orçamentos e comparar preços, você precisa criar uma conta gratuita.
             </p>
             <div className="space-y-3">
-              <Link href="/cadastro-motorista">
+              <Link href="/login">
                 <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-xl transition-all shadow-lg hover:shadow-xl">
                   Criar Conta Grátis
                 </button>
               </Link>
-              <Link href="/login-motorista">
+              <Link href="/login">
                 <button className="w-full bg-gray-100 hover:bg-gray-200 text-gray-900 font-bold py-4 px-6 rounded-xl transition-all">
                   Já tenho conta
                 </button>

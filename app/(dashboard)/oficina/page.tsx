@@ -90,7 +90,7 @@ export default function OficinaDashboard() {
 
   useEffect(() => {
     if (!authLoading && !user) {
-      router.push("/login-oficina");
+      router.push("/login");
       return;
     }
 

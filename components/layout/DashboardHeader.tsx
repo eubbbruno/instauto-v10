@@ -37,7 +37,7 @@ export default function DashboardHeader() {
     if (!profile) return;
 
     try {
-      if (profile.type === "motorista") {
+      if (profile.type === "motorist") {
         // Contar orçamentos respondidos usando email
         const { count } = await supabase
           .from("quotes")
@@ -46,7 +46,7 @@ export default function DashboardHeader() {
           .eq("status", "responded");
 
         setNotifications(count || 0);
-      } else if (profile.type === "oficina") {
+      } else if (profile.type === "workshop") {
         const { data: workshop } = await supabase
           .from("workshops")
           .select("id")
@@ -74,10 +74,10 @@ export default function DashboardHeader() {
   };
 
   const firstName = profile?.name?.split(" ")[0] || "Usuário";
-  const dashboardPath = profile?.type === "motorista" ? "/motorista" : "/oficina";
+  const dashboardPath = profile?.type === "motorist" ? "/motorista" : "/oficina";
 
   // Links do menu baseado no tipo de usuário
-  const menuLinks = profile?.type === "motorista" ? [
+  const menuLinks = profile?.type === "motorist" ? [
     { href: "/motorista", label: "Dashboard", icon: Car },
     { href: "/motorista/garagem", label: "Garagem", icon: Car },
     { href: "/motorista/oficinas", label: "Oficinas", icon: Search },
@@ -181,7 +181,7 @@ export default function DashboardHeader() {
               <div className="border-t border-gray-200 my-3"></div>
               
               <Link
-                href={profile?.type === "motorista" ? "/motorista/orcamentos" : "/oficina/orcamentos"}
+                href={profile?.type === "motorist" ? "/motorista/orcamentos" : "/oficina/orcamentos"}
                 className="flex items-center gap-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-sans font-semibold py-3 px-4 rounded-lg transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >

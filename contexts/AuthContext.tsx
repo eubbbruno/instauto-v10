@@ -1,44 +1,42 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { User } from "@supabase/supabase-js";
+import { User, Session } from "@supabase/supabase-js";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase";
-import { Profile } from "@/types/database";
+
+interface Profile {
+  id: string;
+  email: string;
+  name: string | null;
+  phone: string | null;
+  avatar_url: string | null;
+  type: "motorist" | "workshop";
+}
 
 interface AuthContextType {
   user: User | null;
   profile: Profile | null;
+  session: Session | null;
   loading: boolean;
-  signUp: (email: string, password: string, name: string, userType: "motorista" | "oficina") => Promise<void>;
-  signIn: (email: string, password: string) => Promise<void>;
-  signInWithGoogle: (userType: "motorista" | "oficina") => Promise<void>;
   signOut: () => Promise<void>;
 }
 
-const AuthContext = createContext<AuthContextType | null>(null);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+
   const supabase = createClient();
+  const router = useRouter();
 
-  // Timeout para evitar loading infinito
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (loading) {
-        console.warn("⚠️ Auth timeout - forçando fim do loading após 10s");
-        setLoading(false);
-      }
-    }, 10000);
+  // Carregar profile com retry
+  const loadProfile = async (userId: string, retries = 5): Promise<Profile | null> => {
+    console.log(`🔄 [Auth] Carregando profile (tentativa ${6 - retries}/5)...`);
 
-    return () => clearTimeout(timeout);
-  }, [loading]);
-
-  // Função para carregar profile com retries
-  const loadProfileWithRetries = async (userId: string, retries = 3): Promise<any> => {
-    console.log(`🔄 [AuthContext] Carregando profile (tentativa ${4 - retries}/3)...`);
-    
     const { data, error } = await supabase
       .from("profiles")
       .select("*")
@@ -46,148 +44,94 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       .single();
 
     if (data) {
-      console.log("✅ [AuthContext] Profile encontrado:", data.type);
+      console.log("✅ [Auth] Profile carregado:", data.type);
       return data;
     }
 
-    if (error && retries > 0) {
-      console.log("⏳ [AuthContext] Profile não encontrado, aguardando callback criar...");
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      return loadProfileWithRetries(userId, retries - 1);
+    if (retries > 0) {
+      console.log("⏳ [Auth] Profile não encontrado, aguardando...");
+      await new Promise((r) => setTimeout(r, 1000));
+      return loadProfile(userId, retries - 1);
     }
 
-    console.log("❌ [AuthContext] Profile não encontrado após 3 tentativas");
+    console.log("❌ [Auth] Profile não encontrado após 5 tentativas");
     return null;
   };
 
-  // Inicialização SIMPLES
   useEffect(() => {
-    let mounted = true;
+    // Pegar sessão inicial
+    const initAuth = async () => {
+      console.log("🔐 [Auth] Inicializando...");
 
-    const init = async () => {
-      console.log("🔐 [AuthContext] Inicializando...");
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        
-        if (session?.user && mounted) {
-          console.log("✅ [AuthContext] Sessão encontrada:", session.user.email);
-          setUser(session.user);
-          
-          // Usar função com retries
-          const profileData = await loadProfileWithRetries(session.user.id);
-          
-          if (profileData && mounted) {
-            setProfile(profileData);
-          }
-        } else {
-          console.log("ℹ️ [AuthContext] Nenhuma sessão ativa");
-        }
-      } catch (e) {
-        console.error("❌ [AuthContext] Erro na inicialização:", e);
-      } finally {
-        if (mounted) {
-          setLoading(false);
-          console.log("✅ [AuthContext] Inicialização completa");
-        }
-      }
-    };
+      const { data: { session } } = await supabase.auth.getSession();
 
-    init();
-
-    // Listener
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log("🔄 [AuthContext] Estado mudou:", event);
-      
-      if (!mounted) return;
-      
-      setUser(session?.user || null);
-      
       if (session?.user) {
-        console.log("👤 [AuthContext] Carregando profile para:", session.user.email);
-        
-        // Usar função com retries para aguardar callback criar profile
-        const profileData = await loadProfileWithRetries(session.user.id);
-        
-        if (profileData && mounted) {
-          setProfile(profileData);
-        } else if (mounted) {
-          console.log("❌ [AuthContext] Profile não encontrado após retries");
-          setProfile(null);
+        console.log("👤 [Auth] Usuário encontrado:", session.user.email);
+        setUser(session.user);
+        setSession(session);
+
+        const profile = await loadProfile(session.user.id);
+        if (profile) {
+          setProfile(profile);
         }
       } else {
-        setProfile(null);
+        console.log("👤 [Auth] Nenhum usuário logado");
       }
-      
-      setLoading(false);
-    });
 
-    return () => {
-      mounted = false;
-      subscription.unsubscribe();
+      setLoading(false);
     };
+
+    initAuth();
+
+    // Listener de mudanças
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        console.log("🔄 [Auth] Evento:", event);
+
+        if (event === "SIGNED_IN" && session?.user) {
+          console.log("✅ [Auth] Usuário logado:", session.user.email);
+          setUser(session.user);
+          setSession(session);
+
+          const profile = await loadProfile(session.user.id);
+          if (profile) {
+            setProfile(profile);
+          }
+          setLoading(false);
+        } else if (event === "SIGNED_OUT") {
+          console.log("🔴 [Auth] Usuário deslogado");
+          setUser(null);
+          setProfile(null);
+          setSession(null);
+          setLoading(false);
+          router.push("/login");
+        }
+      }
+    );
+
+    return () => subscription.unsubscribe();
   }, []);
 
-  // CADASTRO
-  const signUp = async (email: string, password: string, name: string, userType: "motorista" | "oficina") => {
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback?type=${userType}`,
-        data: { name, user_type: userType },
-      },
-    });
-    if (error) throw error;
-  };
-
-  // LOGIN
-  const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) throw error;
-  };
-
-  // GOOGLE
-  const signInWithGoogle = async (userType: "motorista" | "oficina") => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback?type=${userType}`,
-      },
-    });
-    if (error) throw error;
-  };
-
-  // LOGOUT - SIMPLES E DIRETO
   const signOut = async () => {
+    console.log("🔴 [Auth] Fazendo logout...");
     await supabase.auth.signOut();
     setUser(null);
     setProfile(null);
-    
-    // Limpar cookies
-    document.cookie.split(";").forEach((c) => {
-      const name = c.split("=")[0].trim();
-      if (name.startsWith("sb-")) {
-        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
-      }
-    });
-    
-    // Limpar storage
-    Object.keys(localStorage).filter(k => k.startsWith("sb-")).forEach(k => localStorage.removeItem(k));
-    Object.keys(sessionStorage).filter(k => k.startsWith("sb-")).forEach(k => sessionStorage.removeItem(k));
-    
-    // Redirect
-    window.location.href = "/";
+    setSession(null);
+    router.push("/login");
   };
 
   return (
-    <AuthContext.Provider value={{ user, profile, loading, signUp, signIn, signInWithGoogle, signOut }}>
+    <AuthContext.Provider value={{ user, profile, session, loading, signOut }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
-export const useAuth = () => {
+export function useAuth() {
   const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuth must be used within AuthProvider");
+  if (context === undefined) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
   return context;
-};
+}

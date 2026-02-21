@@ -160,7 +160,7 @@ export default function Footer() {
             <ul className="space-y-3 font-sans text-[15px]">
               <li>
                 <Link
-                  href="/cadastro-oficina"
+                  href="/login"
                   className="hover:text-yellow-400 transition-colors hover:translate-x-1 inline-block"
                 >
                   Cadastrar Oficina
@@ -168,7 +168,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/cadastro-motorista"
+                  href="/login"
                   className="hover:text-yellow-400 transition-colors hover:translate-x-1 inline-block"
                 >
                   Cadastrar Motorista
@@ -176,7 +176,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/login-oficina"
+                  href="/login"
                   className="hover:text-yellow-400 transition-colors hover:translate-x-1 inline-block"
                 >
                   Login Oficina
@@ -184,7 +184,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/login-motorista"
+                  href="/login"
                   className="hover:text-yellow-400 transition-colors hover:translate-x-1 inline-block"
                 >
                   Login Motorista

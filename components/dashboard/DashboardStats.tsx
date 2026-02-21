@@ -18,7 +18,7 @@ export function DashboardStats() {
   const today = format(new Date(), "EEEE, dd 'de' MMMM", { locale: ptBR });
 
   useEffect(() => {
-    if (profile && profile.type === "oficina") {
+    if (profile && profile.type === "workshop") {
       loadPendingQuotes();
       
       // Atualizar a cada 30 segundos
@@ -67,7 +67,7 @@ export function DashboardStats() {
 
         {/* Notificações */}
         <div className="flex items-center gap-2">
-          {profile?.type === "oficina" && pendingQuotes > 0 && (
+          {profile?.type === "workshop" && pendingQuotes > 0 && (
             <Button
               variant="outline"
               size="sm"
@@ -87,7 +87,7 @@ export function DashboardStats() {
             size="icon" 
             className="relative"
             onClick={() => {
-              if (profile?.type === "oficina") {
+              if (profile?.type === "workshop") {
                 router.push("/oficina/orcamentos");
               }
             }}
