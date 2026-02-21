@@ -63,22 +63,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const initAuth = async () => {
       console.log("🔐 [Auth] Inicializando...");
 
-      const { data: { session } } = await supabase.auth.getSession();
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
 
-      if (session?.user) {
-        console.log("👤 [Auth] Usuário encontrado:", session.user.email);
-        setUser(session.user);
-        setSession(session);
+        if (session?.user) {
+          console.log("👤 [Auth] Usuário encontrado:", session.user.email);
+          setUser(session.user);
+          setSession(session);
 
-        const profile = await loadProfile(session.user.id);
-        if (profile) {
-          setProfile(profile);
+          const profile = await loadProfile(session.user.id);
+          if (profile) {
+            setProfile(profile);
+          } else {
+            console.log("❌ [Auth] Profile não encontrado após retries");
+          }
+        } else {
+          console.log("👤 [Auth] Nenhum usuário logado");
         }
-      } else {
-        console.log("👤 [Auth] Nenhum usuário logado");
+      } catch (error) {
+        console.error("❌ [Auth] Erro na inicialização:", error);
+      } finally {
+        console.log("✅ [Auth] Finalizando inicialização, setando loading = false");
+        setLoading(false);
       }
-
-      setLoading(false);
     };
 
     initAuth();
@@ -88,23 +95,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       async (event, session) => {
         console.log("🔄 [Auth] Evento:", event);
 
-        if (event === "SIGNED_IN" && session?.user) {
-          console.log("✅ [Auth] Usuário logado:", session.user.email);
-          setUser(session.user);
-          setSession(session);
+        try {
+          if (event === "SIGNED_IN" && session?.user) {
+            console.log("✅ [Auth] Usuário logado:", session.user.email);
+            setUser(session.user);
+            setSession(session);
 
-          const profile = await loadProfile(session.user.id);
-          if (profile) {
-            setProfile(profile);
+            const profile = await loadProfile(session.user.id);
+            if (profile) {
+              setProfile(profile);
+            } else {
+              console.log("❌ [Auth] Profile não encontrado no SIGNED_IN");
+            }
+          } else if (event === "SIGNED_OUT") {
+            console.log("🔴 [Auth] Usuário deslogado");
+            setUser(null);
+            setProfile(null);
+            setSession(null);
+            router.push("/login");
           }
+        } catch (error) {
+          console.error("❌ [Auth] Erro no listener:", error);
+        } finally {
+          console.log("✅ [Auth] Finalizando evento, setando loading = false");
           setLoading(false);
-        } else if (event === "SIGNED_OUT") {
-          console.log("🔴 [Auth] Usuário deslogado");
-          setUser(null);
-          setProfile(null);
-          setSession(null);
-          setLoading(false);
-          router.push("/login");
         }
       }
     );

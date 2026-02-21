@@ -61,21 +61,59 @@ export default function DashboardLayout({
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [workshop, setWorkshop] = useState<Workshop | null>(null);
+  const [loadingWorkshop, setLoadingWorkshop] = useState(true);
   const supabase = createClient();
 
+  console.log("🏠 [Layout Oficina] Renderizando...");
+  console.log("🏠 [Layout Oficina] authLoading:", loading);
+  console.log("🏠 [Layout Oficina] user:", user?.email);
+  console.log("🏠 [Layout Oficina] profile:", profile?.type);
+  console.log("🏠 [Layout Oficina] loadingWorkshop:", loadingWorkshop);
+
+  // Timeout de segurança
   useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (loadingWorkshop) {
+        console.log("⏰ [Layout Oficina] TIMEOUT - forçando fim do loading");
+        setLoadingWorkshop(false);
+      }
+    }, 5000);
+
+    return () => clearTimeout(timeout);
+  }, [loadingWorkshop]);
+
+  // Redirecionar se não autenticado
+  useEffect(() => {
+    console.log("🏠 [Layout Oficina] useEffect auth check");
     if (!loading && !user) {
+      console.log("🏠 [Layout Oficina] Sem user, redirecionando para /login");
       router.push("/login");
     }
   }, [user, loading, router]);
 
+  // Carregar workshop
   useEffect(() => {
-    if (!profile?.id) return;
+    console.log("🏠 [Layout Oficina] useEffect loadWorkshop disparado");
+    console.log("🏠 [Layout Oficina] profile?.id:", profile?.id);
+    console.log("🏠 [Layout Oficina] profile?.type:", profile?.type);
+
+    if (!profile?.id) {
+      console.log("🏠 [Layout Oficina] Sem profile.id, abortando loadWorkshop");
+      return;
+    }
+
+    if (profile.type !== "workshop") {
+      console.log("🏠 [Layout Oficina] Tipo não é workshop:", profile.type, "- redirecionando");
+      router.push("/motorista");
+      return;
+    }
 
     const abortController = new AbortController();
     let mounted = true;
 
     const loadWorkshop = async () => {
+      console.log("🏠 [Layout Oficina] Iniciando loadWorkshop...");
+      
       try {
         const { data, error } = await supabase
           .from("workshops")
@@ -84,13 +122,19 @@ export default function DashboardLayout({
           .abortSignal(abortController.signal)
           .single();
 
+        console.log("🏠 [Layout Oficina] Resultado query:", { data: !!data, error: error?.message });
+
         if (error) throw error;
+        
         if (mounted) {
+          console.log("✅ [Layout Oficina] Workshop carregado:", data?.name);
           setWorkshop(data);
+          setLoadingWorkshop(false);
         }
       } catch (error: any) {
         if (error.name !== 'AbortError' && mounted) {
-          console.error("Erro ao carregar oficina:", error);
+          console.error("❌ [Layout Oficina] Erro ao carregar workshop:", error);
+          setLoadingWorkshop(false);
         }
       }
     };
@@ -101,9 +145,10 @@ export default function DashboardLayout({
       mounted = false;
       abortController.abort();
     };
-  }, [profile?.id]);
+  }, [profile?.id, profile?.type, router, supabase]);
 
   const handleSignOut = async () => {
+    console.log("🔴 [Layout Oficina] Fazendo logout...");
     await signOut();
     router.push("/");
   };
@@ -112,13 +157,33 @@ export default function DashboardLayout({
   const isTrialActive = workshop?.trial_ends_at && new Date(workshop.trial_ends_at) > new Date();
   const hasProAccess = isPro || isTrialActive;
 
+  // Loading do auth
   if (loading) {
+    console.log("🏠 [Layout Oficina] Mostrando loading do auth");
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+        <div className="text-center">
+          <Loader2 className="h-12 w-12 animate-spin text-blue-600 mx-auto mb-4" />
+          <p className="text-gray-500">Carregando autenticação...</p>
+        </div>
       </div>
     );
   }
+
+  // Loading do workshop
+  if (loadingWorkshop) {
+    console.log("🏠 [Layout Oficina] Mostrando loading do workshop");
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="h-12 w-12 animate-spin text-blue-600 mx-auto mb-4" />
+          <p className="text-gray-500">Carregando sua oficina...</p>
+        </div>
+      </div>
+    );
+  }
+
+  console.log("🏠 [Layout Oficina] Renderizando layout completo");
 
   if (!user || !profile) {
     return null;
