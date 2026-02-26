@@ -33,40 +33,58 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
+    console.log("🔐 [Auth] Inicializando...");
+    let initialized = false;
+
     // Pegar sessão inicial
     supabase.auth.getSession().then(async ({ data: { session } }) => {
+      console.log("🔐 [Auth] getSession result:", session?.user?.email);
       setSession(session);
       setUser(session?.user ?? null);
       
       // Carregar profile se tiver user
       if (session?.user) {
+        console.log("🔐 [Auth] Carregando profile...");
         const { data } = await supabase
           .from("profiles")
           .select("*")
           .eq("id", session.user.id)
           .single();
         
+        console.log("🔐 [Auth] Profile result:", data?.type);
         if (data) {
           setProfile(data);
         }
       }
       
+      console.log("✅ [Auth] Setando loading = false (getSession)");
+      initialized = true;
       setLoading(false);
     });
 
     // Listener
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log("🔄 [Auth] onAuthStateChange:", event, session?.user?.email);
+      
+      // Só processar se já inicializou
+      if (!initialized) {
+        console.log("⏭️ [Auth] Pulando evento (ainda inicializando)");
+        return;
+      }
+      
       setSession(session);
       setUser(session?.user ?? null);
       
       // Carregar profile se tiver user
       if (session?.user) {
+        console.log("🔐 [Auth] Carregando profile (listener)...");
         const { data } = await supabase
           .from("profiles")
           .select("*")
           .eq("id", session.user.id)
           .single();
         
+        console.log("🔐 [Auth] Profile result (listener):", data?.type);
         if (data) {
           setProfile(data);
         }
@@ -74,6 +92,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setProfile(null);
       }
       
+      console.log("✅ [Auth] Setando loading = false (listener)");
       setLoading(false);
     });
 
