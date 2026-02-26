@@ -1,7 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { supabaseAdmin } from "@/lib/supabase-admin";
 
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
@@ -9,12 +8,7 @@ export async function GET(request: Request) {
 
   console.log("🔵 [Callback] Iniciando...");
 
-  if (!code) {
-    console.error("❌ [Callback] Sem código");
-    return NextResponse.redirect(new URL("/login?error=no_code", requestUrl.origin));
-  }
-
-  try {
+  if (code) {
     const cookieStore = await cookies();
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -29,97 +23,73 @@ export async function GET(request: Request) {
       }
     );
 
-    // 1. Trocar código por sessão
-    console.log("🔄 [Callback] Trocando código por sessão...");
-    const { data, error: sessionError } = await supabase.auth.exchangeCodeForSession(code);
+    try {
+      const { data: { session }, error } = await supabase.auth.exchangeCodeForSession(code);
 
-    if (sessionError || !data?.user) {
-      console.error("❌ [Callback] Erro na sessão:", sessionError);
-      return NextResponse.redirect(new URL("/login?error=session", requestUrl.origin));
-    }
+      if (error || !session?.user) {
+        console.error("❌ [Callback] Erro sessão:", error);
+        return NextResponse.redirect(new URL("/login?error=session", requestUrl.origin));
+      }
 
-    console.log("✅ [Callback] Sessão criada para:", data.user.email);
+      console.log("✅ [Callback] Usuário:", session.user.email);
 
-    // 2. Verificar se profile existe
-    const { data: existingProfile } = await supabase
-      .from("profiles")
-      .select("*")
-      .eq("id", data.user.id)
-      .maybeSingle();
+      // Verificar se profile existe
+      const { data: existingProfile } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", session.user.id)
+        .single();
 
-    if (existingProfile) {
-      // Profile já existe, redirecionar baseado no tipo
-      console.log("✅ [Callback] Profile existente:", existingProfile.type);
-      const redirectUrl = existingProfile.type === "workshop" ? "/oficina" : "/motorista";
-      return NextResponse.redirect(new URL(redirectUrl, requestUrl.origin));
-    }
+      if (existingProfile) {
+        console.log("✅ [Callback] Profile existe:", existingProfile.type);
+        const redirectUrl = existingProfile.type === "workshop" ? "/oficina" : "/motorista";
+        return NextResponse.redirect(new URL(redirectUrl, requestUrl.origin));
+      }
 
-    // 3. Profile não existe, criar novo
-    console.log("🔨 [Callback] Criando novo profile...");
+      // Criar novo profile
+      console.log("🔨 [Callback] Criando profile...");
+      
+      const userTypeCookie = cookieStore.get("instauto_user_type");
+      const userType = userTypeCookie?.value === "oficina" ? "workshop" : "motorist";
+      const userName = session.user.user_metadata?.full_name || session.user.email?.split("@")[0] || "Usuário";
 
-    // Pegar tipo do cookie (salvo antes do redirect)
-    const userTypeCookie = cookieStore.get("instauto_user_type");
-    const userType = userTypeCookie?.value === "oficina" ? "workshop" : "motorist";
-    
-    console.log("📝 [Callback] Tipo do usuário:", userType);
-
-    const userName = data.user.user_metadata?.full_name ||
-                    data.user.user_metadata?.name ||
-                    data.user.email?.split("@")[0] ||
-                    "Usuário";
-
-    // Criar profile usando supabaseAdmin (bypassa RLS)
-    console.log("🔨 [Callback] Usando supabaseAdmin para criar profile...");
-    const { error: profileError } = await supabaseAdmin.from("profiles").insert({
-      id: data.user.id,
-      email: data.user.email,
-      name: userName,
-      type: userType,
-    });
-
-    if (profileError) {
-      console.error("❌ [Callback] Erro ao criar profile:", profileError);
-      return NextResponse.redirect(new URL("/login?error=profile", requestUrl.origin));
-    }
-
-    console.log("✅ [Callback] Profile criado:", userType);
-
-    // 4. Criar workshop ou motorist usando supabaseAdmin
-    if (userType === "workshop") {
-      console.log("🔨 [Callback] Criando workshop com supabaseAdmin...");
-      const { error: workshopError } = await supabaseAdmin.from("workshops").insert({
-        profile_id: data.user.id,
+      const { error: profileError } = await supabase.from("profiles").insert({
+        id: session.user.id,
+        email: session.user.email,
         name: userName,
-        plan_type: "free",
-        subscription_status: "trial",
-        trial_ends_at: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
-        is_public: true,
-        accepts_quotes: true,
+        type: userType,
       });
 
-      if (workshopError) {
-        console.error("❌ [Callback] Erro ao criar workshop:", workshopError);
-      } else {
-        console.log("✅ [Callback] Workshop criado!");
+      if (profileError) {
+        console.error("❌ [Callback] Erro profile:", profileError);
+        return NextResponse.redirect(new URL("/login?error=profile", requestUrl.origin));
       }
 
-      return NextResponse.redirect(new URL("/oficina", requestUrl.origin));
-    } else {
-      console.log("🔨 [Callback] Criando motorist com supabaseAdmin...");
-      const { error: motoristError } = await supabaseAdmin.from("motorists").insert({
-        profile_id: data.user.id,
-      });
-
-      if (motoristError) {
-        console.error("❌ [Callback] Erro ao criar motorist:", motoristError);
+      // Criar workshop ou motorist
+      if (userType === "workshop") {
+        await supabase.from("workshops").insert({
+          profile_id: session.user.id,
+          name: userName,
+          plan_type: "free",
+          subscription_status: "trial",
+          is_public: true,
+          accepts_quotes: true,
+        });
+        console.log("✅ [Callback] Workshop criado");
+        return NextResponse.redirect(new URL("/oficina", requestUrl.origin));
       } else {
-        console.log("✅ [Callback] Motorist criado!");
+        await supabase.from("motorists").insert({
+          profile_id: session.user.id,
+        });
+        console.log("✅ [Callback] Motorist criado");
+        return NextResponse.redirect(new URL("/motorista", requestUrl.origin));
       }
 
-      return NextResponse.redirect(new URL("/motorista", requestUrl.origin));
+    } catch (error) {
+      console.error("❌ [Callback] Erro:", error);
+      return NextResponse.redirect(new URL("/login?error=unknown", requestUrl.origin));
     }
-  } catch (error) {
-    console.error("❌ [Callback] Erro geral:", error);
-    return NextResponse.redirect(new URL("/login?error=unknown", requestUrl.origin));
   }
+
+  return NextResponse.redirect(new URL("/login", requestUrl.origin));
 }
