@@ -1,0 +1,33 @@
+-- ================================================
+-- DESABILITAR RLS TEMPORARIAMENTE PARA TESTE
+-- ================================================
+
+-- Verificar tabelas existentes
+SELECT table_name FROM information_schema.tables WHERE table_schema = 'public' ORDER BY table_name;
+
+-- Desabilitar RLS nas tabelas principais
+ALTER TABLE IF EXISTS profiles DISABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS workshops DISABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS motorists DISABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS motorist_vehicles DISABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS clients DISABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS vehicles DISABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS quotes DISABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS service_orders DISABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS inventory DISABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS transactions DISABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS appointments DISABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS notifications DISABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS promotions DISABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS motorist_fueling DISABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS motorist_expenses DISABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS motorist_reminders DISABLE ROW LEVEL SECURITY;
+
+-- Verificar dados
+SELECT 'Profiles:' as tabela, COUNT(*) as total FROM profiles
+UNION ALL
+SELECT 'Workshops:', COUNT(*) FROM workshops
+UNION ALL
+SELECT 'Motorists:', COUNT(*) FROM motorists;
+
+SELECT 'RLS desabilitado para teste!' as status;

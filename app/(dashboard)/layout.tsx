@@ -1,340 +1,286 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
-import { 
-  LayoutDashboard, 
-  Users, 
-  Car, 
-  ClipboardList, 
-  Calendar, 
-  Package, 
-  DollarSign, 
-  FileText, 
-  Settings, 
-  Crown, 
-  LogOut, 
-  Loader2,
-  Menu,
-  X,
-  Stethoscope,
-  MessageSquare,
-  Receipt,
-  Wrench,
-  MoreVertical
-} from "lucide-react";
+import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase";
-import { Workshop } from "@/types/database";
-import TopBar from "@/components/oficina/TopBar";
+import {
+  LayoutDashboard, Users, Car, FileText, Package, DollarSign,
+  Calendar, MessageSquare, Settings, CreditCard, Wrench, Menu,
+  X, LogOut, Bell, ChevronDown, Loader2, ClipboardList, Receipt,
+  Stethoscope
+} from "lucide-react";
 
-interface MenuItem {
-  name: string;
-  href: string;
-  icon: React.ReactNode;
-  pro: boolean;
+interface Profile {
+  id: string;
+  email: string;
+  name: string | null;
+  type: string;
 }
 
-const menuItems: MenuItem[] = [
-  { name: "Dashboard", href: "/oficina", icon: <LayoutDashboard className="h-5 w-5" />, pro: false },
-  { name: "Clientes", href: "/oficina/clientes", icon: <Users className="h-5 w-5" />, pro: true },
-  { name: "Veículos", href: "/oficina/veiculos", icon: <Car className="h-5 w-5" />, pro: true },
-  { name: "Ordens de Serviço", href: "/oficina/ordens", icon: <ClipboardList className="h-5 w-5" />, pro: true },
-  { name: "Orçamentos", href: "/oficina/orcamentos", icon: <Receipt className="h-5 w-5" />, pro: true },
-  { name: "Agenda", href: "/oficina/agenda", icon: <Calendar className="h-5 w-5" />, pro: true },
-  { name: "Estoque", href: "/oficina/estoque", icon: <Package className="h-5 w-5" />, pro: true },
-  { name: "Financeiro", href: "/oficina/financeiro", icon: <DollarSign className="h-5 w-5" />, pro: true },
-  { name: "Diagnóstico IA", href: "/oficina/diagnostico", icon: <Stethoscope className="h-5 w-5" />, pro: true },
-  { name: "Relatórios", href: "/oficina/relatorios", icon: <FileText className="h-5 w-5" />, pro: true },
-  { name: "WhatsApp", href: "/oficina/whatsapp", icon: <MessageSquare className="h-5 w-5" />, pro: true },
+interface Workshop {
+  id: string;
+  name: string;
+  plan_type: string;
+  city?: string;
+  state?: string;
+}
+
+const menuItems = [
+  { href: "/oficina", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/oficina/clientes", label: "Clientes", icon: Users },
+  { href: "/oficina/veiculos", label: "Veículos", icon: Car },
+  { href: "/oficina/ordens", label: "Ordens de Serviço", icon: ClipboardList },
+  { href: "/oficina/orcamentos", label: "Orçamentos", icon: Receipt },
+  { href: "/oficina/estoque", label: "Estoque", icon: Package },
+  { href: "/oficina/financeiro", label: "Financeiro", icon: DollarSign },
+  { href: "/oficina/agenda", label: "Agenda", icon: Calendar },
+  { href: "/oficina/diagnostico", label: "Diagnóstico IA", icon: Stethoscope },
+  { href: "/oficina/relatorios", label: "Relatórios", icon: FileText },
+  { href: "/oficina/whatsapp", label: "WhatsApp", icon: MessageSquare },
+  { href: "/oficina/configuracoes", label: "Configurações", icon: Settings },
+  { href: "/oficina/planos", label: "Planos", icon: CreditCard },
 ];
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const { user, profile, loading, signOut } = useAuth();
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const { user, loading: authLoading, signOut } = useAuth();
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [workshop, setWorkshop] = useState<Workshop | null>(null);
+  const [dataLoading, setDataLoading] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  
   const router = useRouter();
   const pathname = usePathname();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [workshop, setWorkshop] = useState<Workshop | null>(null);
-  const [loadingWorkshop, setLoadingWorkshop] = useState(true);
   const supabase = createClient();
 
-  console.log("🏠 [Layout Oficina] Renderizando...");
-  console.log("🏠 [Layout Oficina] authLoading:", loading);
-  console.log("🏠 [Layout Oficina] user:", user?.email);
-  console.log("🏠 [Layout Oficina] profile:", profile?.type);
-  console.log("🏠 [Layout Oficina] loadingWorkshop:", loadingWorkshop);
-
-  // Timeout de segurança
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (loadingWorkshop) {
-        console.log("⏰ [Layout Oficina] TIMEOUT - forçando fim do loading");
-        setLoadingWorkshop(false);
-      }
-    }, 5000);
-
-    return () => clearTimeout(timeout);
-  }, [loadingWorkshop]);
-
-  // Redirecionar se não autenticado
-  useEffect(() => {
-    console.log("🏠 [Layout Oficina] useEffect auth check");
-    if (!loading && !user) {
-      console.log("🏠 [Layout Oficina] Sem user, redirecionando para /login");
-      router.push("/login");
-    }
-  }, [user, loading, router]);
-
-  // Carregar workshop
-  useEffect(() => {
-    console.log("🏠 [Layout Oficina] useEffect loadWorkshop disparado");
-    console.log("🏠 [Layout Oficina] profile?.id:", profile?.id);
-    console.log("🏠 [Layout Oficina] profile?.type:", profile?.type);
-
-    if (!profile?.id) {
-      console.log("🏠 [Layout Oficina] Sem profile.id, abortando loadWorkshop");
-      return;
-    }
-
-    if (profile.type !== "workshop") {
-      console.log("🏠 [Layout Oficina] Tipo não é workshop:", profile.type, "- redirecionando");
-      router.push("/motorista");
-      return;
-    }
-
-    const abortController = new AbortController();
-    let mounted = true;
-
-    const loadWorkshop = async () => {
-      console.log("🏠 [Layout Oficina] Iniciando loadWorkshop...");
+    const loadData = async () => {
+      console.log("🏠 [Layout] Iniciando loadData...");
+      console.log("🏠 [Layout] authLoading:", authLoading);
+      console.log("🏠 [Layout] user:", user?.email);
       
+      // Se auth ainda carregando, esperar
+      if (authLoading) {
+        console.log("🏠 [Layout] Auth ainda carregando, aguardando...");
+        return;
+      }
+      
+      // Se não tem user, redirecionar
+      if (!user) {
+        console.log("🏠 [Layout] Sem user, redirecionando para /login");
+        router.push("/login");
+        return;
+      }
+
       try {
-        const { data, error } = await supabase
-          .from("workshops")
+        console.log("🏠 [Layout] Carregando profile...");
+        // Carregar profile
+        const { data: profileData, error: profileError } = await supabase
+          .from("profiles")
           .select("*")
-          .eq("profile_id", profile.id)
-          .abortSignal(abortController.signal)
+          .eq("id", user.id)
           .single();
 
-        console.log("🏠 [Layout Oficina] Resultado query:", { data: !!data, error: error?.message });
+        console.log("🏠 [Layout] Profile result:", { profileData, profileError });
 
-        if (error) throw error;
-        
-        if (mounted) {
-          console.log("✅ [Layout Oficina] Workshop carregado:", data?.name);
-          setWorkshop(data);
-          setLoadingWorkshop(false);
+        if (!profileData) {
+          console.log("❌ Profile não encontrado, criando...");
+          // Criar profile se não existir
+          const { data: newProfile } = await supabase
+            .from("profiles")
+            .insert({
+              id: user.id,
+              email: user.email,
+              name: user.user_metadata?.full_name || user.email?.split("@")[0],
+              type: "workshop"
+            })
+            .select()
+            .single();
+          
+          if (newProfile) {
+            console.log("✅ Profile criado:", newProfile);
+            setProfile(newProfile);
+          }
+        } else {
+          console.log("✅ Profile encontrado:", profileData.type);
+          setProfile(profileData);
+          
+          // Verificar se é workshop
+          if (profileData.type !== "workshop") {
+            console.log("⚠️ Tipo não é workshop, redirecionando...");
+            router.push("/motorista");
+            return;
+          }
         }
-      } catch (error: any) {
-        if (error.name !== 'AbortError' && mounted) {
-          console.error("❌ [Layout Oficina] Erro ao carregar workshop:", error);
-          setLoadingWorkshop(false);
+
+        console.log("🏠 [Layout] Carregando workshop...");
+        // Carregar workshop
+        const { data: workshopData, error: workshopError } = await supabase
+          .from("workshops")
+          .select("*")
+          .eq("profile_id", user.id)
+          .single();
+
+        console.log("🏠 [Layout] Workshop result:", { workshopData, workshopError });
+
+        if (!workshopData) {
+          console.log("❌ Workshop não encontrado, criando...");
+          // Criar workshop se não existir
+          const { data: newWorkshop } = await supabase
+            .from("workshops")
+            .insert({
+              profile_id: user.id,
+              name: user.user_metadata?.full_name || "Minha Oficina",
+              plan_type: "free",
+              is_public: true,
+              accepts_quotes: true
+            })
+            .select()
+            .single();
+          
+          if (newWorkshop) {
+            console.log("✅ Workshop criado:", newWorkshop);
+            setWorkshop(newWorkshop);
+          }
+        } else {
+          console.log("✅ Workshop encontrado:", workshopData.name);
+          setWorkshop(workshopData);
         }
+
+      } catch (error) {
+        console.error("❌ Erro ao carregar dados:", error);
+      } finally {
+        console.log("✅ Finalizando loadData");
+        setDataLoading(false);
       }
     };
 
-    loadWorkshop();
+    loadData();
+  }, [user, authLoading, router, supabase]);
 
-    return () => {
-      mounted = false;
-      abortController.abort();
-    };
-  }, [profile?.id, profile?.type, router, supabase]);
-
-  const handleSignOut = async () => {
-    console.log("🔴 [Layout Oficina] Fazendo logout...");
-    await signOut();
-    router.push("/");
-  };
-
-  const isPro = workshop?.plan_type === "pro" && workshop?.subscription_status === "active";
-  const isTrialActive = workshop?.trial_ends_at && new Date(workshop.trial_ends_at) > new Date();
-  const hasProAccess = isPro || isTrialActive;
-
-  // Loading do auth
-  if (loading) {
-    console.log("🏠 [Layout Oficina] Mostrando loading do auth");
+  // Loading
+  if (authLoading || dataLoading) {
+    console.log("🏠 [Layout] Mostrando loading...", { authLoading, dataLoading });
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 flex items-center justify-center">
         <div className="text-center">
           <Loader2 className="h-12 w-12 animate-spin text-blue-600 mx-auto mb-4" />
-          <p className="text-gray-500">Carregando autenticação...</p>
+          <p className="text-gray-500">Carregando...</p>
         </div>
       </div>
     );
   }
 
-  // Loading do workshop
-  if (loadingWorkshop) {
-    console.log("🏠 [Layout Oficina] Mostrando loading do workshop");
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <Loader2 className="h-12 w-12 animate-spin text-blue-600 mx-auto mb-4" />
-          <p className="text-gray-500">Carregando sua oficina...</p>
-        </div>
-      </div>
-    );
-  }
-
-  console.log("🏠 [Layout Oficina] Renderizando layout completo");
-
-  if (!user || !profile) {
+  // Sem user
+  if (!user) {
+    console.log("🏠 [Layout] Sem user após loading");
     return null;
   }
 
+  console.log("🏠 [Layout] Renderizando layout completo");
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
-      {/* Mobile Header */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center">
-            <Wrench className="w-4 h-4 text-white" />
-          </div>
-          <span className="text-lg font-bold text-gray-900">Instauto</span>
-        </div>
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => setSidebarOpen(!sidebarOpen)}
-        >
-          {sidebarOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </Button>
-      </div>
+      {/* Sidebar Mobile Overlay */}
+      {sidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
 
-      {/* SIDEBAR PREMIUM */}
-      <aside
-        className={`fixed inset-y-0 left-0 z-40 w-64 bg-gradient-to-b from-blue-50 via-white to-blue-50/50 border-r border-blue-100 flex flex-col transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
-        {/* Logo no topo */}
+      {/* Sidebar */}
+      <aside className={`
+        fixed inset-y-0 left-0 z-50 w-64 bg-gradient-to-b from-blue-50 via-white to-blue-50/50 
+        border-r border-blue-100 transform transition-transform duration-300 lg:translate-x-0
+        ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+      `}>
+        {/* Logo */}
         <div className="p-6 border-b border-blue-100">
           <Link href="/oficina" className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center shadow-lg">
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center">
               <Wrench className="w-6 h-6 text-white" />
             </div>
-            <div>
-              <span className="font-bold text-gray-900 text-lg">Instauto</span>
-              <span className="ml-2 px-2 py-0.5 bg-yellow-400 text-yellow-900 text-xs font-bold rounded-full">
-                {isPro ? 'PRO' : 'FREE'}
+            <div className="flex items-center">
+              <span className="font-bold text-gray-900 text-xl">Instauto</span>
+              <span className={`ml-2 px-2 py-0.5 text-xs font-semibold rounded-full ${
+                workshop?.plan_type === "pro" 
+                  ? "bg-yellow-400 text-yellow-900" 
+                  : "bg-gray-100 text-gray-600"
+              }`}>
+                {workshop?.plan_type === "pro" ? "PRO" : "FREE"}
               </span>
             </div>
           </Link>
         </div>
 
-        {/* Menu Principal */}
-        <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4 px-3">
-            Menu
-          </p>
-          
+        {/* Menu */}
+        <nav className="flex-1 p-4 space-y-1 overflow-y-auto max-h-[calc(100vh-200px)]">
           {menuItems.map((item) => {
             const isActive = pathname === item.href;
-            const needsPro = item.pro && !hasProAccess;
-
-            if (needsPro) {
-              return (
-                <button
-                  key={item.href}
-                  onClick={() => {
-                    setSidebarOpen(false);
-                    router.push("/oficina/planos");
-                  }}
-                  className="w-full flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-200 text-gray-400 hover:bg-gray-50"
-                >
-                  <div className="flex items-center gap-3">
-                    {item.icon}
-                    <span className="font-medium">{item.name}</span>
-                  </div>
-                  <span className="px-2 py-0.5 bg-yellow-400 text-yellow-900 text-xs font-bold rounded-full">
-                    PRO
-                  </span>
-                </button>
-              );
-            }
-
             return (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setSidebarOpen(false)}
-                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
-                  isActive
-                    ? "bg-blue-600 text-white shadow-lg shadow-blue-600/30"
+                className={`
+                  flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200
+                  ${isActive 
+                    ? "bg-blue-600 text-white shadow-lg shadow-blue-600/30" 
                     : "text-gray-600 hover:bg-blue-50 hover:text-blue-600"
-                }`}
+                  }
+                `}
               >
-                {item.icon}
-                <span className="font-medium">{item.name}</span>
+                <item.icon className="w-5 h-5" />
+                <span className="font-medium">{item.label}</span>
               </Link>
             );
           })}
-          
-          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mt-8 mb-4 px-3">
-            Outros
-          </p>
-          
-          <Link
-            href="/oficina/configuracoes"
-            className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-all"
-            onClick={() => setSidebarOpen(false)}
-          >
-            <Settings className="w-5 h-5" />
-            <span className="font-medium">Configurações</span>
-          </Link>
-          
-          <Link
-            href="/oficina/planos"
-            className="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-600 hover:bg-blue-50 hover:text-blue-600 transition-all"
-            onClick={() => setSidebarOpen(false)}
-          >
-            <Crown className="w-5 h-5" />
-            <span className="font-medium">Planos</span>
-          </Link>
         </nav>
 
-        {/* Oficina no rodapé */}
+        {/* User */}
         <div className="p-4 border-t border-blue-100">
-          <div className="flex items-center gap-3 p-3 rounded-xl hover:bg-blue-50 cursor-pointer transition-colors">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center text-white font-bold shadow-md">
-              {workshop?.name?.charAt(0)?.toUpperCase() || 'O'}
+          <div className="flex items-center gap-3 p-3 rounded-xl">
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center text-white font-bold">
+              {workshop?.name?.charAt(0) || "O"}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="font-medium text-gray-900 truncate text-sm">
-                {workshop?.name || 'Oficina'}
-              </p>
-              <p className="text-xs text-gray-500 truncate">
-                {workshop?.city}, {workshop?.state}
-              </p>
+              <p className="font-medium text-gray-900 truncate">{workshop?.name || "Oficina"}</p>
+              <p className="text-sm text-gray-500 truncate">{user.email}</p>
             </div>
-            <MoreVertical className="w-5 h-5 text-gray-400" />
           </div>
+          <button
+            onClick={signOut}
+            className="w-full mt-2 flex items-center justify-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+          >
+            <LogOut className="w-4 h-4" />
+            <span>Sair</span>
+          </button>
         </div>
       </aside>
 
-      {/* Overlay for mobile */}
-      {sidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 z-30 lg:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
-
       {/* Main Content */}
-      <main className="lg:ml-64 pt-16 lg:pt-0">
-        {/* TopBar - Desktop only */}
-        <div className="hidden lg:block">
-          <TopBar />
+      <div className="lg:pl-64">
+        {/* Mobile Header */}
+        <div className="lg:hidden sticky top-0 z-30 bg-white/80 backdrop-blur-xl border-b border-gray-100 px-4 py-3">
+          <div className="flex items-center justify-between">
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="p-2 hover:bg-gray-100 rounded-xl"
+            >
+              <Menu className="w-6 h-6" />
+            </button>
+            <span className="font-bold text-gray-900">Instauto</span>
+            <div className="w-10" />
+          </div>
         </div>
-        {children}
-      </main>
+
+        {/* Page Content */}
+        <main>
+          {children}
+        </main>
+      </div>
     </div>
   );
 }

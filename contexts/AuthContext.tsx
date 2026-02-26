@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { User } from "@supabase/supabase-js";
+import { User, Session } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase";
 
@@ -11,11 +11,12 @@ interface Profile {
   name: string | null;
   phone: string | null;
   avatar_url: string | null;
-  type: "motorist" | "workshop";
+  type: string;
 }
 
 interface AuthContextType {
   user: User | null;
+  session: Session | null;
   profile: Profile | null;
   loading: boolean;
   signOut: () => Promise<void>;
@@ -25,67 +26,55 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const supabase = createClient();
   const router = useRouter();
 
   useEffect(() => {
-    const init = async () => {
-      console.log("🔐 [Auth] Inicializando...");
+    // Pegar sessão inicial
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      setSession(session);
+      setUser(session?.user ?? null);
       
-      try {
-        const { data: { session } } = await supabase.auth.getSession();
-        
-        if (session?.user) {
-          console.log("✅ [Auth] Sessão encontrada:", session.user.email);
-          setUser(session.user);
-          
-          const { data: profileData, error } = await supabase
-            .from("profiles")
-            .select("*")
-            .eq("id", session.user.id)
-            .single();
-          
-          if (profileData) {
-            console.log("✅ [Auth] Profile carregado:", profileData.type);
-            setProfile(profileData);
-          } else {
-            console.log("⚠️ [Auth] Profile não encontrado:", error?.message);
-          }
-        } else {
-          console.log("👤 [Auth] Sem sessão");
-        }
-      } catch (error) {
-        console.error("❌ [Auth] Erro:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    init();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log("🔄 [Auth] Evento:", event);
-      
-      if (event === "SIGNED_IN" && session?.user) {
-        setUser(session.user);
-        
-        const { data: profileData } = await supabase
+      // Carregar profile se tiver user
+      if (session?.user) {
+        const { data } = await supabase
           .from("profiles")
           .select("*")
           .eq("id", session.user.id)
           .single();
         
-        if (profileData) {
-          setProfile(profileData);
+        if (data) {
+          setProfile(data);
         }
-        setLoading(false);
-      } else if (event === "SIGNED_OUT") {
-        setUser(null);
-        setProfile(null);
-        setLoading(false);
       }
+      
+      setLoading(false);
+    });
+
+    // Listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      setSession(session);
+      setUser(session?.user ?? null);
+      
+      // Carregar profile se tiver user
+      if (session?.user) {
+        const { data } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", session.user.id)
+          .single();
+        
+        if (data) {
+          setProfile(data);
+        }
+      } else {
+        setProfile(null);
+      }
+      
+      setLoading(false);
     });
 
     return () => subscription.unsubscribe();
@@ -93,13 +82,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signOut = async () => {
     await supabase.auth.signOut();
-    setUser(null);
-    setProfile(null);
     router.push("/login");
   };
 
   return (
-    <AuthContext.Provider value={{ user, profile, loading, signOut }}>
+    <AuthContext.Provider value={{ user, session, profile, loading, signOut }}>
       {children}
     </AuthContext.Provider>
   );
