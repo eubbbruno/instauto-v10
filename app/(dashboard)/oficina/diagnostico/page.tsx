@@ -244,13 +244,14 @@ function DiagnosticoContent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50/30 to-violet-50/20 pb-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-        <div className="mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 via-violet-600 to-purple-800 bg-clip-text text-transparent leading-tight mb-3">
+    <div className="p-4 sm:p-6 lg:p-8">
+      <div className="space-y-6 sm:space-y-8">
+        <div className="mb-6 sm:mb-8">
+          <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Diagnóstico</p>
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
             Diagnóstico com IA 🤖
           </h1>
-          <p className="text-gray-600 text-lg">Use inteligência artificial para diagnosticar problemas em veículos</p>
+          <p className="text-gray-600">Use inteligência artificial para diagnosticar problemas em veículos</p>
         </div>
 
       {/* Formulário de Diagnóstico */}
