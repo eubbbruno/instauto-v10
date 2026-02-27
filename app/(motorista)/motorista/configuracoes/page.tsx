@@ -246,8 +246,8 @@ export default function ConfiguracoesPage() {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 flex items-center justify-center">
-        <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
       </div>
     );
   }
@@ -255,12 +255,12 @@ export default function ConfiguracoesPage() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-slate-50/30 to-gray-100/20 pt-16 pb-12">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-4">
+    <div className="p-4 sm:p-6 lg:p-8">
+      <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8">
         {/* Header padrão */}
-        <div className="mb-8">
-          <p className="text-sm text-gray-500 mb-1">Dashboard / Configurações</p>
-          <h1 className="text-3xl font-bold text-gray-900">Configurações</h1>
+        <div className="mb-6 sm:mb-8">
+          <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Configurações</p>
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">Configurações</h1>
         </div>
 
         {/* Cards de Configurações */}

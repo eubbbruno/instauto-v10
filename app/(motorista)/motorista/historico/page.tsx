@@ -119,19 +119,19 @@ export default function HistoricoMotoristPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 flex items-center justify-center">
-        <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
-      <div className="p-8">
+    <div className="p-4 sm:p-6 lg:p-8">
+      <div className="space-y-6 sm:space-y-8">
         {/* Header padrão */}
-        <div className="mb-8">
-          <p className="text-sm text-gray-500 mb-1">Dashboard / Histórico</p>
-          <h1 className="text-3xl font-bold text-gray-900">Histórico de Manutenções</h1>
+        <div className="mb-6 sm:mb-8">
+          <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Histórico</p>
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">Histórico de Manutenções</h1>
         </div>
 
         {/* Lista de Manutenções Premium */}

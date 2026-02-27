@@ -222,8 +222,8 @@ export default function DespesasPage() {
 
   if (authLoading || loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 flex items-center justify-center">
-        <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
       </div>
     );
   }
@@ -231,15 +231,15 @@ export default function DespesasPage() {
   if (!user) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
-      <div className="p-8">
+    <div className="p-4 sm:p-6 lg:p-8">
+      <div className="space-y-6 sm:space-y-8">
         {/* Header padrão */}
-        <div className="mb-8">
-          <p className="text-sm text-gray-500 mb-1">Dashboard / Despesas</p>
-          <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-bold text-gray-900">Despesas</h1>
+        <div className="mb-6 sm:mb-8">
+          <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Despesas</p>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">Despesas</h1>
             <Link href="/motorista/despesas/nova">
-              <button className="px-6 py-3 bg-yellow-400 text-yellow-900 font-semibold rounded-xl hover:bg-yellow-300 shadow-lg shadow-yellow-400/30 flex items-center gap-2 transition-all">
+              <button className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-semibold rounded-xl shadow-lg shadow-yellow-400/30 flex items-center justify-center gap-2 transition-all">
                 <Plus className="w-5 h-5" />
                 Adicionar Despesa
               </button>

@@ -84,8 +84,8 @@ export default function PromocoesPage() {
 
   if (loading || promotionsLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 flex items-center justify-center">
-        <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
       </div>
     );
   }
@@ -107,14 +107,14 @@ export default function PromocoesPage() {
   const regularPromotions = filteredPromotions.filter(p => !p.featured);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
-      <div className="p-8">
+    <div className="p-4 sm:p-6 lg:p-8">
+      <div className="space-y-6 sm:space-y-8">
         {/* Header padrão */}
-        <div className="mb-8">
-          <p className="text-sm text-gray-500 mb-1">Dashboard / Promoções</p>
-          <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-bold text-gray-900">Promoções Exclusivas</h1>
-            <span className="px-3 py-1 bg-blue-100 text-blue-700 text-sm font-medium rounded-full">
+        <div className="mb-6 sm:mb-8">
+          <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Promoções</p>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">Promoções Exclusivas</h1>
+            <span className="px-3 py-1 bg-blue-100 text-blue-700 text-sm font-medium rounded-full w-fit">
               {filteredPromotions.length} ofertas ativas
             </span>
           </div>
