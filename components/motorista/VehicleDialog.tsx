@@ -44,7 +44,6 @@ export function VehicleDialog({ open, onOpenChange, vehicle, onSave }: VehicleDi
     color: "",
     mileage: 0,
     fuel_type: "",
-    notes: "",
   });
 
   useEffect(() => {
@@ -58,7 +57,6 @@ export function VehicleDialog({ open, onOpenChange, vehicle, onSave }: VehicleDi
         color: vehicle.color || "",
         mileage: vehicle.mileage || 0,
         fuel_type: vehicle.fuel_type || "",
-        notes: vehicle.notes || "",
       });
     } else {
       setFormData({
@@ -70,7 +68,6 @@ export function VehicleDialog({ open, onOpenChange, vehicle, onSave }: VehicleDi
         color: "",
         mileage: 0,
         fuel_type: "",
-        notes: "",
       });
     }
   }, [vehicle, open]);
@@ -267,18 +264,6 @@ export function VehicleDialog({ open, onOpenChange, vehicle, onSave }: VehicleDi
               value={formData.mileage || ""}
               onChange={(e) => setFormData({ ...formData, mileage: parseInt(e.target.value) || 0 })}
               min={0}
-            />
-          </div>
-
-          {/* Observações */}
-          <div>
-            <Label htmlFor="notes">Observações</Label>
-            <Textarea
-              id="notes"
-              placeholder="Informações adicionais sobre o veículo..."
-              value={formData.notes}
-              onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-              rows={3}
             />
           </div>
 

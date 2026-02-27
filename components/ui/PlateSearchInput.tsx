@@ -59,15 +59,14 @@ export function PlateSearchInput({ onVehicleFound, onPlateChange }: PlateSearchI
           setFound(true);
           onVehicleFound(data);
         } else {
-          setError("💡 Não encontrado automaticamente. Preencha os dados abaixo.");
+          setError("💡 Busca automática indisponível. Preencha os dados abaixo.");
         }
       } else {
-        const errorData = await response.json();
-        setError(errorData.error || "💡 Não encontrado automaticamente. Preencha os dados abaixo.");
+        setError("💡 Busca automática indisponível. Preencha os dados abaixo.");
       }
     } catch (err) {
       console.error("Erro na busca por placa:", err);
-      setError("⚠️ Busca indisponível no momento. Preencha os dados abaixo.");
+      setError("💡 Busca automática indisponível. Preencha os dados abaixo.");
     } finally {
       setLoading(false);
     }
