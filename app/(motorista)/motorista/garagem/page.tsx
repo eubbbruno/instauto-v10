@@ -134,47 +134,75 @@ export default function GaragemPage() {
   };
 
   const handleSaveVehicle = async (data: Partial<MotoristVehicle>) => {
-    if (!motoristId) return;
+    console.log("💾 [Garagem] Salvando veículo...");
+    console.log("💾 [Garagem] motoristId:", motoristId);
+    console.log("💾 [Garagem] data:", data);
+
+    if (!motoristId) {
+      console.error("❌ [Garagem] motoristId não encontrado!");
+      toast({
+        title: "Erro",
+        description: "Dados do motorista não carregados. Recarregue a página.",
+        variant: "destructive",
+      });
+      return;
+    }
 
     try {
       if (selectedVehicle) {
         // Atualizar veículo existente
+        console.log("📝 [Garagem] Atualizando veículo:", selectedVehicle.id);
         const { error } = await supabase
           .from("motorist_vehicles")
           .update(data)
           .eq("id", selectedVehicle.id);
 
-        if (error) throw error;
+        if (error) {
+          console.error("❌ [Garagem] Erro ao atualizar:", error);
+          throw error;
+        }
 
+        console.log("✅ [Garagem] Veículo atualizado!");
         toast({
           title: "Sucesso!",
           description: "Veículo atualizado com sucesso.",
         });
       } else {
         // Criar novo veículo
-        const { error } = await supabase
+        console.log("➕ [Garagem] Criando novo veículo...");
+        const insertData = {
+          ...data,
+          motorist_id: motoristId,
+          is_active: true,
+        };
+        console.log("➕ [Garagem] Dados para inserir:", insertData);
+
+        const { error, data: insertedData } = await supabase
           .from("motorist_vehicles")
-          .insert({
-            ...data,
-            motorist_id: motoristId,
-            is_active: true,
-          });
+          .insert(insertData)
+          .select()
+          .single();
 
-        if (error) throw error;
+        if (error) {
+          console.error("❌ [Garagem] Erro ao inserir:", error);
+          console.error("❌ [Garagem] Detalhes do erro:", JSON.stringify(error, null, 2));
+          throw error;
+        }
 
+        console.log("✅ [Garagem] Veículo criado:", insertedData);
         toast({
           title: "Sucesso!",
           description: "Veículo adicionado com sucesso.",
         });
       }
 
-      reloadVehicles();
+      await reloadVehicles();
       setSelectedVehicle(null);
-    } catch (error) {
-      console.error("Erro ao salvar veículo:", error);
+    } catch (error: any) {
+      console.error("❌ [Garagem] Erro ao salvar veículo:", error);
       toast({
-        title: "Erro",
-        description: "Não foi possível salvar o veículo. Tente novamente.",
+        title: "Erro ao salvar",
+        description: error.message || "Não foi possível salvar o veículo. Verifique os dados e tente novamente.",
         variant: "destructive",
       });
       throw error;

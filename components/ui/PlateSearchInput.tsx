@@ -59,14 +59,15 @@ export function PlateSearchInput({ onVehicleFound, onPlateChange }: PlateSearchI
           setFound(true);
           onVehicleFound(data);
         } else {
-          setError("Veículo não encontrado. Preencha os dados manualmente.");
+          setError("💡 Não encontrado automaticamente. Preencha os dados abaixo.");
         }
       } else {
-        setError("Veículo não encontrado. Preencha os dados manualmente.");
+        const errorData = await response.json();
+        setError(errorData.error || "💡 Não encontrado automaticamente. Preencha os dados abaixo.");
       }
     } catch (err) {
       console.error("Erro na busca por placa:", err);
-      setError("Serviço temporariamente indisponível. Preencha os dados manualmente.");
+      setError("⚠️ Busca indisponível no momento. Preencha os dados abaixo.");
     } finally {
       setLoading(false);
     }
@@ -100,9 +101,13 @@ export function PlateSearchInput({ onVehicleFound, onPlateChange }: PlateSearchI
           )}
         </Button>
       </div>
-      {error && <p className="text-sm text-red-500">{error}</p>}
+      {error && (
+        <p className="text-sm text-yellow-700 bg-yellow-50 border border-yellow-200 rounded-lg px-3 py-2">
+          {error}
+        </p>
+      )}
       {found && (
-        <p className="text-sm text-green-600 flex items-center gap-1">
+        <p className="text-sm text-green-600 bg-green-50 border border-green-200 rounded-lg px-3 py-2 flex items-center gap-1">
           <CheckCircle className="w-4 h-4" />
           Veículo encontrado! Dados preenchidos automaticamente.
         </p>
