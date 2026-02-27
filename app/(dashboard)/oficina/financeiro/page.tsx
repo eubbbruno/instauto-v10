@@ -411,23 +411,23 @@ export default function FinanceiroPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 flex items-center justify-center">
-        <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
+      <div className="flex items-center justify-center py-12">
+        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
       </div>
     );
   }
 
   return (
     <PlanGuard>
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 pb-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      <div className="p-4 sm:p-6 lg:p-8">
+        <div className="space-y-6 sm:space-y-8">
           {/* Header Premium */}
-          <div className="mb-8">
-            <p className="text-sm text-gray-500 mb-1">Dashboard / Financeiro</p>
-            <div className="flex items-center justify-between">
+          <div className="mb-6 sm:mb-8">
+            <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Financeiro</p>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">Financeiro</h1>
-                <div className="flex items-center gap-3">
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">Financeiro</h1>
+                <div className="flex items-center gap-3 flex-wrap">
                   <p className="text-gray-600">Gerencie receitas e despesas da oficina</p>
                   <Badge className={`${balance >= 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'} text-sm font-medium px-3 py-1 rounded-full`}>
                     Saldo: {balance.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
@@ -437,14 +437,14 @@ export default function FinanceiroPage() {
               <div className="flex gap-3">
                 <button
                   onClick={() => openCreateDialog("income")}
-                  className="px-4 py-2 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 flex items-center gap-2 transition-all"
+                  className="flex-1 sm:flex-none px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-xl flex items-center justify-center gap-2 transition-all"
                 >
                   <ArrowUpCircle className="w-5 h-5" />
                   Receita
                 </button>
                 <button
                   onClick={() => openCreateDialog("expense")}
-                  className="px-4 py-2 bg-red-600 text-white font-semibold rounded-xl hover:bg-red-700 flex items-center gap-2 transition-all"
+                  className="flex-1 sm:flex-none px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl flex items-center justify-center gap-2 transition-all"
                 >
                   <ArrowDownCircle className="w-5 h-5" />
                   Despesa

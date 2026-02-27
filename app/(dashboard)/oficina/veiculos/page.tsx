@@ -199,15 +199,15 @@ function VeiculosContent() {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 pb-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="p-4 sm:p-6 lg:p-8">
+      <div className="space-y-6 sm:space-y-8">
         {/* Header Premium */}
-        <div className="mb-8">
-          <p className="text-sm text-gray-500 mb-1">Dashboard / Veículos</p>
-          <div className="flex items-center justify-between">
+        <div className="mb-6 sm:mb-8">
+          <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Veículos</p>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Veículos</h1>
-              <div className="flex items-center gap-3">
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">Veículos</h1>
+              <div className="flex items-center gap-3 flex-wrap">
                 <p className="text-gray-600">Gerencie os veículos dos seus clientes</p>
                 <Badge className="bg-blue-100 text-blue-700 text-sm font-medium px-3 py-1 rounded-full">
                   {vehicles.length} total
@@ -216,7 +216,7 @@ function VeiculosContent() {
             </div>
             <button
               onClick={() => handleOpenDialog()}
-              className="px-6 py-3 bg-yellow-400 text-yellow-900 font-semibold rounded-xl hover:bg-yellow-300 shadow-lg shadow-yellow-400/30 flex items-center gap-2 transition-all"
+              className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-semibold rounded-xl shadow-lg shadow-yellow-400/30 flex items-center justify-center gap-2 transition-all"
             >
               <Plus className="w-5 h-5" />
               Novo Veículo
@@ -241,11 +241,11 @@ function VeiculosContent() {
 
         {/* Table */}
         {loading ? (
-          <div className="bg-white rounded-3xl p-12 shadow-sm border border-gray-100 flex items-center justify-center">
-            <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
           </div>
         ) : filteredVehicles.length === 0 ? (
-          <div className="bg-white rounded-3xl p-12 shadow-sm border border-gray-100 text-center">
+          <div className="bg-white rounded-2xl sm:rounded-3xl p-8 sm:p-12 shadow-sm border border-gray-100 text-center">
             <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <CarIcon className="w-8 h-8 text-gray-400" />
             </div>
@@ -258,7 +258,7 @@ function VeiculosContent() {
             {!searchTerm && clients.length > 0 && (
               <button
                 onClick={() => handleOpenDialog()}
-                className="px-6 py-3 bg-yellow-400 text-yellow-900 font-semibold rounded-xl hover:bg-yellow-300 inline-flex items-center gap-2"
+                className="px-6 py-3 bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-semibold rounded-xl inline-flex items-center gap-2 transition-all"
               >
                 <Plus className="w-5 h-5" />
                 Adicionar Veículo
@@ -266,91 +266,73 @@ function VeiculosContent() {
             )}
           </div>
         ) : (
-          <Card className="border-2 border-blue-100 shadow-2xl hover:shadow-blue-200/50 transition-all duration-300 overflow-hidden">
-            <CardHeader className="border-b-2 border-blue-100 bg-gradient-to-r from-blue-50 via-cyan-50 to-blue-50/50 py-6">
-              <CardTitle className="flex items-center gap-3 text-2xl">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
-                  <CarIcon className="h-6 w-6 text-white" />
-                </div>
-                <span className="font-bold text-gray-900">Lista de Veículos</span>
-                <Badge className="ml-auto bg-gradient-to-r from-blue-500 to-cyan-500 text-white border-0 text-base px-4 py-2 shadow-lg">
-                  {filteredVehicles.length} {filteredVehicles.length === 1 ? 'veículo' : 'veículos'}
-                </Badge>
-              </CardTitle>
-            </CardHeader>
+          <div className="bg-white rounded-2xl sm:rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
             <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow className="bg-gradient-to-r from-gray-50 to-blue-50/30 border-b-2 border-blue-100">
-                    <TableHead className="font-bold text-gray-900 text-base py-4">Placa</TableHead>
-                    <TableHead className="font-bold text-gray-900 text-base py-4">Veículo</TableHead>
-                    <TableHead className="font-bold text-gray-900 text-base py-4 hidden md:table-cell">Cliente</TableHead>
-                    <TableHead className="font-bold text-gray-900 text-base py-4 hidden lg:table-cell">Ano</TableHead>
-                    <TableHead className="font-bold text-gray-900 text-base py-4 hidden lg:table-cell">Cor</TableHead>
-                    <TableHead className="font-bold text-gray-900 text-base py-4 hidden xl:table-cell">KM</TableHead>
-                    <TableHead className="text-right font-bold text-gray-900 text-base py-4">Ações</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredVehicles.map((vehicle, index) => (
-                    <TableRow 
+              <table className="w-full min-w-[600px]">
+                <thead className="bg-gray-50">
+                  <tr className="text-left text-xs sm:text-sm text-gray-500">
+                    <th className="px-4 sm:px-6 py-3 sm:py-4 font-medium">Placa</th>
+                    <th className="px-4 sm:px-6 py-3 sm:py-4 font-medium">Veículo</th>
+                    <th className="px-4 sm:px-6 py-3 sm:py-4 font-medium hidden md:table-cell">Cliente</th>
+                    <th className="px-4 sm:px-6 py-3 sm:py-4 font-medium hidden lg:table-cell">Ano</th>
+                    <th className="px-4 sm:px-6 py-3 sm:py-4 font-medium hidden lg:table-cell">Cor</th>
+                    <th className="px-4 sm:px-6 py-3 sm:py-4 font-medium text-right">Ações</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {filteredVehicles.map((vehicle) => (
+                    <tr 
                       key={vehicle.id}
-                      className="group hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50/30 transition-all duration-300 border-b border-gray-100 hover:border-blue-200"
-                      style={{ animationDelay: `${index * 50}ms` }}
+                      className="hover:bg-gray-50/50 transition-colors"
                     >
-                      <TableCell className="font-black text-blue-700 py-4 text-base group-hover:text-blue-900 transition-colors">
+                      <td className="px-4 sm:px-6 py-3 sm:py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-400 to-cyan-500 flex items-center justify-center text-white font-bold shadow-md group-hover:scale-110 transition-transform">
+                          <div className="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold">
                             🚗
                           </div>
-                          {vehicle.plate}
+                          <span className="font-bold text-sm text-blue-700">{vehicle.plate}</span>
                         </div>
-                      </TableCell>
-                      <TableCell className="font-bold text-gray-900 py-4 group-hover:text-blue-700 transition-colors">
+                      </td>
+                      <td className="px-4 sm:px-6 py-3 sm:py-4 text-sm font-medium text-gray-900">
                         {vehicle.brand} {vehicle.model}
-                      </TableCell>
-                      <TableCell className="hidden md:table-cell text-gray-600 py-4 font-medium group-hover:text-gray-900 transition-colors">
+                      </td>
+                      <td className="px-4 sm:px-6 py-3 sm:py-4 text-sm text-gray-600 hidden md:table-cell">
                         {vehicle.client?.name || "-"}
-                      </TableCell>
-                      <TableCell className="hidden lg:table-cell text-gray-600 py-4 group-hover:text-gray-900 transition-colors">
+                      </td>
+                      <td className="px-4 sm:px-6 py-3 sm:py-4 text-sm text-gray-600 hidden lg:table-cell">
                         {vehicle.year || "-"}
-                      </TableCell>
-                      <TableCell className="hidden lg:table-cell py-4">
+                      </td>
+                      <td className="px-4 sm:px-6 py-3 sm:py-4 hidden lg:table-cell">
                         {vehicle.color ? (
-                          <Badge className="bg-gray-100 text-gray-800 border-gray-300 font-medium">
+                          <span className="px-2.5 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded-full">
                             {vehicle.color}
-                          </Badge>
+                          </span>
                         ) : "-"}
-                      </TableCell>
-                      <TableCell className="hidden xl:table-cell text-gray-600 py-4 font-medium group-hover:text-gray-900 transition-colors">
-                        {vehicle.km ? `${vehicle.km.toLocaleString()} km` : "-"}
-                      </TableCell>
-                      <TableCell className="text-right py-4">
+                      </td>
+                      <td className="px-4 sm:px-6 py-3 sm:py-4 text-right">
                         <div className="flex justify-end gap-2">
-                          <Button
-                            variant="ghost"
-                            size="icon"
+                          <button
                             onClick={() => handleOpenDialog(vehicle)}
-                            className="hover:bg-blue-500 hover:text-white transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-blue-500/50"
+                            className="p-2 hover:bg-blue-50 rounded-lg transition-colors"
+                            title="Editar"
                           >
-                            <Pencil className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon"
+                            <Pencil className="h-4 w-4 text-gray-600" />
+                          </button>
+                          <button
                             onClick={() => handleDelete(vehicle.id)}
-                            className="hover:bg-red-500 hover:text-white transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-red-500/50"
+                            className="p-2 hover:bg-red-50 rounded-lg transition-colors"
+                            title="Excluir"
                           >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
+                            <Trash2 className="h-4 w-4 text-gray-600" />
+                          </button>
                         </div>
-                      </TableCell>
-                    </TableRow>
+                      </td>
+                    </tr>
                   ))}
-                </TableBody>
-              </Table>
+                </tbody>
+              </table>
             </div>
-          </Card>
+          </div>
         )}
 
         {/* Dialog */}

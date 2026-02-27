@@ -156,14 +156,14 @@ function ClientesContent() {
   const showLimitWarning = workshop?.plan_type === "free" && clients.length >= 8;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 pb-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="p-4 sm:p-6 lg:p-8">
+      <div className="space-y-6 sm:space-y-8">
         {/* Header Premium */}
-        <div className="mb-8">
-          <p className="text-sm text-gray-500 mb-1">Dashboard / Clientes</p>
-          <div className="flex items-center justify-between">
+        <div className="mb-6 sm:mb-8">
+          <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Clientes</p>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">Clientes</h1>
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">Clientes</h1>
               <div className="flex items-center gap-3 flex-wrap">
                 <p className="text-gray-600">
                   Gerencie sua base de clientes
@@ -180,7 +180,7 @@ function ClientesContent() {
             </div>
             <button
               onClick={() => handleOpenDialog()}
-              className="px-6 py-3 bg-yellow-400 text-yellow-900 font-semibold rounded-xl hover:bg-yellow-300 shadow-lg shadow-yellow-400/30 flex items-center gap-2 transition-all"
+              className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-semibold rounded-xl shadow-lg shadow-yellow-400/30 flex items-center justify-center gap-2 transition-all"
             >
               <Plus className="w-5 h-5" />
               Novo Cliente
@@ -227,11 +227,11 @@ function ClientesContent() {
 
         {/* Table */}
         {loading ? (
-          <div className="bg-white rounded-3xl p-12 shadow-sm border border-gray-100 flex items-center justify-center">
-            <Loader2 className="h-12 w-12 animate-spin text-blue-600" />
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
           </div>
         ) : filteredClients.length === 0 ? (
-          <div className="bg-white rounded-3xl p-12 shadow-sm border border-gray-100 text-center">
+          <div className="bg-white rounded-2xl sm:rounded-3xl p-8 sm:p-12 shadow-sm border border-gray-100 text-center">
             <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <Users className="w-8 h-8 text-gray-400" />
             </div>
@@ -244,7 +244,7 @@ function ClientesContent() {
             {!searchTerm && (
               <button
                 onClick={() => handleOpenDialog()}
-                className="px-6 py-3 bg-yellow-400 text-yellow-900 font-semibold rounded-xl hover:bg-yellow-300 inline-flex items-center gap-2"
+                className="px-6 py-3 bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-semibold rounded-xl inline-flex items-center gap-2 transition-all"
               >
                 <Plus className="w-5 h-5" />
                 Adicionar Cliente
@@ -252,32 +252,33 @@ function ClientesContent() {
             )}
           </div>
         ) : (
-          <div className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-            <table className="w-full">
-              <thead className="bg-gray-50">
-                <tr className="text-left text-sm text-gray-500">
-                  <th className="px-6 py-4 font-medium">Nome</th>
-                  <th className="px-6 py-4 font-medium hidden md:table-cell">Email</th>
-                  <th className="px-6 py-4 font-medium">Telefone</th>
-                  <th className="px-6 py-4 font-medium hidden lg:table-cell">CPF</th>
-                  <th className="px-6 py-4 font-medium text-right">Ações</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {filteredClients.map((client) => (
-                  <tr key={client.id} className="hover:bg-gray-50/50 transition-colors">
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-semibold">
-                          {client.name.charAt(0).toUpperCase()}
+          <div className="bg-white rounded-2xl sm:rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[600px]">
+                <thead className="bg-gray-50">
+                  <tr className="text-left text-xs sm:text-sm text-gray-500">
+                    <th className="px-4 sm:px-6 py-3 sm:py-4 font-medium">Nome</th>
+                    <th className="px-4 sm:px-6 py-3 sm:py-4 font-medium hidden md:table-cell">Email</th>
+                    <th className="px-4 sm:px-6 py-3 sm:py-4 font-medium">Telefone</th>
+                    <th className="px-4 sm:px-6 py-3 sm:py-4 font-medium hidden lg:table-cell">CPF</th>
+                    <th className="px-4 sm:px-6 py-3 sm:py-4 font-medium text-right">Ações</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {filteredClients.map((client) => (
+                    <tr key={client.id} className="hover:bg-gray-50/50 transition-colors">
+                      <td className="px-4 sm:px-6 py-3 sm:py-4">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-semibold">
+                            {client.name.charAt(0).toUpperCase()}
+                          </div>
+                          <span className="font-medium text-sm text-gray-900">{client.name}</span>
                         </div>
-                        <span className="font-medium text-gray-900">{client.name}</span>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-gray-600 hidden md:table-cell">{client.email || "-"}</td>
-                    <td className="px-6 py-4 text-gray-600">{client.phone || "-"}</td>
-                    <td className="px-6 py-4 text-gray-600 hidden lg:table-cell">{client.cpf || "-"}</td>
-                    <td className="px-6 py-4 text-right">
+                      </td>
+                      <td className="px-4 sm:px-6 py-3 sm:py-4 text-sm text-gray-600 hidden md:table-cell">{client.email || "-"}</td>
+                      <td className="px-4 sm:px-6 py-3 sm:py-4 text-sm text-gray-600">{client.phone || "-"}</td>
+                      <td className="px-4 sm:px-6 py-3 sm:py-4 text-sm text-gray-600 hidden lg:table-cell">{client.cpf || "-"}</td>
+                      <td className="px-4 sm:px-6 py-3 sm:py-4 text-right">
                       <div className="flex justify-end gap-2">
                         <button
                           onClick={() => handleOpenDialog(client)}
@@ -295,10 +296,11 @@ function ClientesContent() {
                         </button>
                       </div>
                     </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
 
