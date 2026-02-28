@@ -4,24 +4,31 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { createClient } from "@/lib/supabase";
-import { FileText, Clock, CheckCircle2, XCircle, ArrowLeft } from "lucide-react";
+import { FileText, Clock, CheckCircle2, XCircle, MessageSquare, DollarSign, Calendar, Loader2, Plus } from "lucide-react";
 import Link from "next/link";
 
 interface Quote {
   id: string;
   workshop_id: string;
-  motorist_id: string;
+  motorist_name: string;
+  motorist_email: string;
+  motorist_phone: string;
   vehicle_brand: string;
   vehicle_model: string;
   vehicle_year: number;
+  vehicle_plate: string | null;
   service_type: string;
   description: string;
+  urgency: string;
   status: string;
-  response_message: string | null;
+  workshop_response: string | null;
   estimated_price: number | null;
+  estimated_days: number | null;
+  responded_at: string | null;
   created_at: string;
   workshop: {
     name: string;
+    phone: string | null;
     city: string;
     state: string;
   };
@@ -50,12 +57,14 @@ export default function OrcamentosMotoristPage() {
       try {
         setLoading(true);
 
+        console.log("🔍 [Orçamentos Motorista] Buscando orçamentos para:", profile.email);
+
         // Buscar orçamentos usando email do profile
         let query = supabase
           .from("quotes")
           .select(`
             *,
-            workshop:workshops(name, city, state)
+            workshop:workshops(name, phone, city, state)
           `)
           .eq("motorist_email", profile.email);
 
@@ -64,6 +73,8 @@ export default function OrcamentosMotoristPage() {
         const { data, error } = await query
           .order("created_at", { ascending: false })
           .limit(100);
+
+        console.log("🔍 [Orçamentos Motorista] Resultado:", { count: data?.length, error });
 
         if (error) throw error;
         
@@ -128,8 +139,10 @@ export default function OrcamentosMotoristPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-12">
-        <div className="animate-spin rounded-full h-8 w-8 border-4 border-t-transparent border-blue-600"></div>
+      <div className="p-4 sm:p-6 lg:p-8">
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+        </div>
       </div>
     );
   }
@@ -142,11 +155,12 @@ export default function OrcamentosMotoristPage() {
           <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Orçamentos</p>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">Meus Orçamentos</h1>
-            <Link href="/motorista/oficinas">
-              <button className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-semibold rounded-xl shadow-lg shadow-yellow-400/30 flex items-center justify-center gap-2 transition-all">
-                <FileText className="w-5 h-5" />
-                Solicitar Novo
-              </button>
+            <Link
+              href="/motorista/oficinas"
+              className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-semibold rounded-xl shadow-lg shadow-yellow-400/30 flex items-center justify-center gap-2 transition-all"
+            >
+              <Plus className="w-5 h-5" />
+              Solicitar Novo
             </Link>
           </div>
         </div>
@@ -208,26 +222,64 @@ export default function OrcamentosMotoristPage() {
                   <p className="text-gray-900">{quote.description}</p>
                 </div>
 
-                {quote.status === "responded" && quote.response_message && (
+                {quote.status === "responded" && quote.workshop_response && (
                   <div className="bg-green-50 border-2 border-green-200 rounded-2xl p-4 mb-4">
-                    <p className="text-sm font-semibold text-green-900 mb-2">
-                      Resposta da Oficina:
-                    </p>
-                    <p className="text-green-800">{quote.response_message}</p>
-                    {quote.estimated_price && (
-                      <p className="text-lg font-bold text-green-900 mt-3">
-                        Valor Estimado: R$ {quote.estimated_price.toFixed(2)}
+                    <div className="flex items-center gap-2 mb-3">
+                      <MessageSquare className="w-5 h-5 text-green-600" />
+                      <p className="text-sm font-semibold text-green-900">
+                        Resposta da Oficina
                       </p>
+                    </div>
+                    <p className="text-green-800 mb-3">{quote.workshop_response}</p>
+                    
+                    <div className="flex flex-wrap gap-4 mb-3">
+                      {quote.estimated_price && (
+                        <div className="flex items-center gap-2">
+                          <DollarSign className="w-5 h-5 text-green-600" />
+                          <span className="text-lg font-bold text-green-900">
+                            R$ {quote.estimated_price.toFixed(2)}
+                          </span>
+                        </div>
+                      )}
+                      {quote.estimated_days && (
+                        <div className="flex items-center gap-2">
+                          <Calendar className="w-5 h-5 text-green-600" />
+                          <span className="text-sm text-green-700">
+                            {quote.estimated_days} {quote.estimated_days === 1 ? "dia" : "dias"}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+
+                    {quote.responded_at && (
+                      <p className="text-xs text-green-600 mb-3">
+                        Respondido em {new Date(quote.responded_at).toLocaleDateString("pt-BR")}
+                      </p>
+                    )}
+
+                    {quote.workshop?.phone && (
+                      <a
+                        href={`https://wa.me/55${quote.workshop.phone.replace(/\D/g, "")}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white text-sm font-medium rounded-lg transition-colors"
+                      >
+                        <MessageSquare className="w-4 h-4" />
+                        Falar no WhatsApp
+                      </a>
                     )}
                   </div>
                 )}
 
-                {quote.status === "rejected" && quote.response_message && (
+                {quote.status === "rejected" && quote.workshop_response && (
                   <div className="bg-red-50 border-2 border-red-200 rounded-2xl p-4 mb-4">
-                    <p className="text-sm font-semibold text-red-900 mb-2">
-                      Motivo da Recusa:
-                    </p>
-                    <p className="text-red-800">{quote.response_message}</p>
+                    <div className="flex items-center gap-2 mb-2">
+                      <XCircle className="w-5 h-5 text-red-600" />
+                      <p className="text-sm font-semibold text-red-900">
+                        Orçamento Recusado
+                      </p>
+                    </div>
+                    <p className="text-red-800">{quote.workshop_response}</p>
                   </div>
                 )}
 
