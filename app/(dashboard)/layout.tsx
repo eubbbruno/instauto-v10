@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { createClient } from "@/lib/supabase";
 import {
   LayoutDashboard, Users, Car, FileText, Package, DollarSign,
@@ -197,21 +198,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
       `}>
         {/* Logo */}
-        <div className="p-6 border-b border-blue-100">
-          <Link href="/oficina" className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center">
-              <Wrench className="w-6 h-6 text-white" />
-            </div>
-            <div className="flex items-center">
-              <span className="font-bold text-gray-900 text-xl">Instauto</span>
-              <span className={`ml-2 px-2 py-0.5 text-xs font-semibold rounded-full ${
-                workshop?.plan_type === "pro" 
-                  ? "bg-yellow-400 text-yellow-900" 
-                  : "bg-gray-100 text-gray-600"
-              }`}>
-                {workshop?.plan_type === "pro" ? "PRO" : "FREE"}
-              </span>
-            </div>
+        <div className="p-6 border-b border-gray-100">
+          <Link href="/oficina">
+            <Image 
+              src="/images/logo-of-dark.svg" 
+              alt="Instauto" 
+              width={140} 
+              height={40}
+              className="h-10 w-auto"
+            />
           </Link>
         </div>
 
@@ -240,22 +235,28 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </nav>
 
         {/* User */}
-        <div className="p-4 border-t border-blue-100">
-          <div className="flex items-center gap-3 p-3 rounded-xl">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center text-white font-bold">
+        <div className="p-4 border-t border-gray-100 mt-auto">
+          <div className="flex items-center gap-3 p-3 rounded-xl bg-gray-50">
+            <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">
               {workshop?.name?.charAt(0) || "O"}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="font-medium text-gray-900 truncate">{workshop?.name || "Oficina"}</p>
-              <p className="text-sm text-gray-500 truncate">{user.email}</p>
+              <p className="font-medium text-gray-900 truncate text-sm">{workshop?.name || "Oficina"}</p>
+              <span className={`text-xs px-2 py-0.5 rounded-full ${
+                workshop?.plan_type === "pro" 
+                  ? "bg-yellow-100 text-yellow-700" 
+                  : "bg-gray-100 text-gray-600"
+              }`}>
+                {workshop?.plan_type === "pro" ? "PRO" : "FREE"}
+              </span>
             </div>
           </div>
           <button
             onClick={signOut}
-            className="w-full mt-2 flex items-center justify-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+            className="w-full mt-3 flex items-center justify-center gap-2 px-4 py-2 text-red-600 hover:bg-red-50 rounded-xl transition-colors text-sm"
           >
             <LogOut className="w-4 h-4" />
-            <span>Sair</span>
+            Sair
           </button>
         </div>
       </aside>

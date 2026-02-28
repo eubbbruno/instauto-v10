@@ -25,7 +25,13 @@ const MARCAS = [
 ];
 
 const COMBUSTIVEIS = [
-  "Gasolina", "Etanol", "Flex", "Diesel", "Elétrico", "Híbrido"
+  { value: "flex", label: "Flex" },
+  { value: "gasoline", label: "Gasolina" },
+  { value: "ethanol", label: "Etanol" },
+  { value: "diesel", label: "Diesel" },
+  { value: "gnv", label: "GNV" },
+  { value: "electric", label: "Elétrico" },
+  { value: "hybrid", label: "Híbrido" },
 ];
 
 const CORES = [
@@ -43,7 +49,7 @@ export function VehicleDialog({ open, onOpenChange, vehicle, onSave }: VehicleDi
     plate: "",
     color: "",
     mileage: 0,
-    fuel_type: "",
+    fuel_type: "flex",
   });
 
   useEffect(() => {
@@ -56,7 +62,7 @@ export function VehicleDialog({ open, onOpenChange, vehicle, onSave }: VehicleDi
         plate: vehicle.plate || "",
         color: vehicle.color || "",
         mileage: vehicle.mileage || 0,
-        fuel_type: vehicle.fuel_type || "",
+        fuel_type: vehicle.fuel_type || "flex",
       });
     } else {
       setFormData({
@@ -67,7 +73,7 @@ export function VehicleDialog({ open, onOpenChange, vehicle, onSave }: VehicleDi
         plate: "",
         color: "",
         mileage: 0,
-        fuel_type: "",
+        fuel_type: "flex",
       });
     }
   }, [vehicle, open]);
@@ -245,8 +251,8 @@ export function VehicleDialog({ open, onOpenChange, vehicle, onSave }: VehicleDi
                 </SelectTrigger>
                 <SelectContent>
                   {COMBUSTIVEIS.map((combustivel) => (
-                    <SelectItem key={combustivel} value={combustivel}>
-                      {combustivel}
+                    <SelectItem key={combustivel.value} value={combustivel.value}>
+                      {combustivel.label}
                     </SelectItem>
                   ))}
                 </SelectContent>
