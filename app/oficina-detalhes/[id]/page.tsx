@@ -50,7 +50,8 @@ export default function OficinaDetalhesPage() {
       setReviews(reviewsData || []);
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
-      router.push("/buscar-oficinas");
+      // NÃO redirecionar - apenas mostrar erro
+      setWorkshop(null);
     } finally {
       setLoading(false);
     }
