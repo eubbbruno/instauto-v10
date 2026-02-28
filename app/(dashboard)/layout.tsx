@@ -6,6 +6,7 @@ import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase";
+import { TopBar } from "@/components/layout/TopBar";
 import {
   LayoutDashboard, Users, Car, FileText, Package, DollarSign,
   Calendar, MessageSquare, Settings, CreditCard, Wrench, Menu,
@@ -276,29 +277,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
       {/* Main Content */}
       <div className="lg:pl-64">
-        {/* Mobile Header */}
-        <div className="lg:hidden sticky top-0 z-30 bg-white/80 backdrop-blur-xl border-b border-gray-100 px-4 py-3">
-          <div className="flex items-center justify-between">
-            <button
-              onClick={() => setSidebarOpen(true)}
-              className="p-2 hover:bg-gray-100 rounded-xl"
-            >
-              <Menu className="w-6 h-6" />
-            </button>
-            <span className="font-bold text-gray-900">Instauto</span>
-            <button
-              onClick={() => router.push("/oficina/orcamentos")}
-              className="relative p-2 hover:bg-gray-100 rounded-xl"
-            >
-              <Bell className="w-6 h-6 text-gray-600" />
-              {unreadCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center animate-pulse">
-                  {unreadCount}
-                </span>
-              )}
-            </button>
-          </div>
-        </div>
+        {/* TopBar */}
+        <TopBar
+          user={user}
+          userType="workshop"
+          userName={workshop?.name}
+          onMenuClick={() => setSidebarOpen(true)}
+          onSignOut={signOut}
+        />
 
         {/* Page Content */}
         <main>
