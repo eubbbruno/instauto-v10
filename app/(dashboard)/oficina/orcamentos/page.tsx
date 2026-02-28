@@ -34,12 +34,6 @@ interface Quote {
   estimated_days: number | null;
   responded_at: string | null;
   created_at: string;
-  vehicle: {
-    make: string;
-    model: string;
-    year: number;
-    plate: string | null;
-  } | null;
 }
 
 export default function OrcamentosOficinaPage() {
@@ -96,13 +90,10 @@ export default function OrcamentosOficinaPage() {
       console.log("🔍 [Orçamentos] Workshop ID:", workshop.id);
 
       // Buscar orçamentos
-      // NOTA: quotes usa motorist_email (text), não motorist_id (FK)
+      // NOTA: quotes já tem os dados do veículo (vehicle_brand, vehicle_model, vehicle_year, vehicle_plate)
       const { data, error } = await supabase
         .from("quotes")
-        .select(`
-          *,
-          vehicle:motorist_vehicles(make, model, year, plate)
-        `)
+        .select("*")
         .eq("workshop_id", workshop.id)
         .order("created_at", { ascending: false });
 
@@ -327,7 +318,7 @@ export default function OrcamentosOficinaPage() {
                 </CardHeader>
                 <CardContent className="space-y-5 pt-6">
                   {/* Veículo */}
-                  {quote.vehicle && (
+                  {(quote.vehicle_brand || quote.vehicle_model) && (
                     <div className="bg-gradient-to-r from-blue-50 to-cyan-50 border-2 border-blue-200 rounded-xl p-5 shadow-md hover:shadow-lg transition-shadow">
                       <div className="flex items-center gap-3 mb-3">
                         <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-lg">
@@ -336,8 +327,8 @@ export default function OrcamentosOficinaPage() {
                         <span className="font-bold text-gray-900 text-lg">Veículo</span>
                       </div>
                       <p className="text-gray-900 font-semibold text-base">
-                        {quote.vehicle.make} {quote.vehicle.model} - {quote.vehicle.year}
-                        {quote.vehicle.plate && ` • Placa: ${quote.vehicle.plate}`}
+                        {quote.vehicle_brand} {quote.vehicle_model} - {quote.vehicle_year}
+                        {quote.vehicle_plate && ` • Placa: ${quote.vehicle_plate}`}
                       </p>
                     </div>
                   )}
