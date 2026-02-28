@@ -3,165 +3,148 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase";
+import { StarRating } from "@/components/ui/StarRating";
 import { Workshop } from "@/types/database";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { Search, MapPin, Star, Phone, Mail, Clock, CheckCircle2, MessageSquare, Lock } from "lucide-react";
+import { Search, MapPin, Star, Loader2, Wrench, Heart, MessageSquare, Eye } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
+
+const ESTADOS_BRASILEIROS = [
+  "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA",
+  "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN",
+  "RS", "RO", "RR", "SC", "SP", "SE", "TO"
+];
+
+const ESPECIALIDADES = [
+  "Freios",
+  "Motor",
+  "Suspensão",
+  "Elétrica",
+  "Ar Condicionado",
+  "Alinhamento",
+  "Balanceamento",
+  "Troca de Óleo",
+  "Revisão",
+  "Funilaria",
+  "Pintura",
+  "Injeção Eletrônica"
+];
 
 export default function BuscarOficinasPage() {
   const router = useRouter();
   const [workshops, setWorkshops] = useState<Workshop[]>([]);
-  const [filteredWorkshops, setFilteredWorkshops] = useState<Workshop[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [cityFilter, setCityFilter] = useState("");
-  const [stateFilter, setStateFilter] = useState("");
-  const [serviceFilter, setServiceFilter] = useState("");
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(5);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
+  const [selectedState, setSelectedState] = useState<string>("");
+  const [selectedSpecialty, setSelectedSpecialty] = useState<string>("");
+  const [onlyWithReviews, setOnlyWithReviews] = useState(false);
+  const [sortBy, setSortBy] = useState<"rating" | "reviews" | "name">("rating");
+  const [user, setUser] = useState<any>(null);
   const supabase = createClient();
 
   useEffect(() => {
-    loadWorkshops();
     checkAuth();
+    loadWorkshops();
   }, []);
 
   useEffect(() => {
-    filterWorkshops();
-  }, [searchTerm, cityFilter, stateFilter, serviceFilter, workshops]);
-
-  // Timer de 5 segundos
-  useEffect(() => {
-    if (!isAuthenticated && !showLoginModal) {
-      const timer = setInterval(() => {
-        setTimeLeft((prev) => {
-          if (prev <= 1) {
-            clearInterval(timer);
-            setShowLoginModal(true);
-            return 0;
-          }
-          return prev - 1;
-        });
-      }, 1000);
-
-      return () => clearInterval(timer);
-    }
-  }, [isAuthenticated, showLoginModal]);
+    loadWorkshops();
+  }, [selectedState]);
 
   const checkAuth = async () => {
     const { data: { session } } = await supabase.auth.getSession();
-    setIsAuthenticated(!!session);
+    setUser(session?.user || null);
   };
 
   const loadWorkshops = async () => {
     try {
-      const { data, error } = await supabase
+      setLoading(true);
+
+      let query = supabase
         .from("workshops")
         .select("*")
-        .eq("is_public", true)
-        .order("average_rating", { ascending: false });
+        .eq("is_public", true);
+
+      if (selectedState) {
+        query = query.eq("state", selectedState);
+      }
+
+      const { data, error } = await query.limit(100);
 
       if (error) throw error;
+      
       setWorkshops(data || []);
-      setFilteredWorkshops(data || []);
-    } catch (error) {
-      console.error("Erro ao carregar oficinas:", error);
+    } catch (error: any) {
+      console.error("❌ [Oficinas] Erro ao carregar:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  const filterWorkshops = () => {
-    let filtered = workshops;
+  const filteredWorkshops = workshops
+    .filter((workshop) => {
+      // Filtro de busca por texto
+      if (searchTerm) {
+        const term = searchTerm.toLowerCase();
+        const matchesSearch = 
+          workshop.name.toLowerCase().includes(term) ||
+          workshop.city?.toLowerCase().includes(term) ||
+          workshop.description?.toLowerCase().includes(term);
+        if (!matchesSearch) return false;
+      }
 
-    if (searchTerm) {
-      filtered = filtered.filter(
-        (w) =>
-          w.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          w.city?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          w.description?.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
+      // Filtro de especialidade
+      if (selectedSpecialty && workshop.specialties) {
+        const hasSpecialty = workshop.specialties.some(
+          (spec: string) => spec.toLowerCase() === selectedSpecialty.toLowerCase()
+        );
+        if (!hasSpecialty) return false;
+      }
 
-    if (cityFilter) {
-      filtered = filtered.filter((w) =>
-        w.city?.toLowerCase().includes(cityFilter.toLowerCase())
-      );
-    }
+      // Filtro de "só com avaliações"
+      if (onlyWithReviews && (!workshop.rating || workshop.rating === 0)) {
+        return false;
+      }
 
-    if (stateFilter) {
-      filtered = filtered.filter((w) => w.state === stateFilter);
-    }
+      return true;
+    })
+    .sort((a, b) => {
+      // Ordenação
+      switch (sortBy) {
+        case "rating":
+          return (b.rating || 0) - (a.rating || 0);
+        case "reviews":
+          return (b.reviews_count || 0) - (a.reviews_count || 0);
+        case "name":
+          return a.name.localeCompare(b.name);
+        default:
+          return 0;
+      }
+    });
 
-    if (serviceFilter) {
-      filtered = filtered.filter((w) =>
-        w.services?.includes(serviceFilter)
-      );
-    }
-
-    setFilteredWorkshops(filtered);
+  const clearFilters = () => {
+    setSearchTerm("");
+    setSelectedState("");
+    setSelectedSpecialty("");
+    setOnlyWithReviews(false);
+    setSortBy("rating");
   };
 
-  const uniqueCities = Array.from(new Set(workshops.map((w) => w.city).filter(Boolean))).sort();
-  const uniqueStates = Array.from(new Set(workshops.map((w) => w.state).filter(Boolean))).sort();
-
-  const serviceTypes = [
-    "Manutenção Preventiva",
-    "Troca de Óleo",
-    "Freios",
-    "Suspensão",
-    "Elétrica",
-    "Ar Condicionado",
-    "Alinhamento e Balanceamento",
-    "Diagnóstico",
-    "Mecânica Geral",
-  ];
+  const handleRequestQuote = (workshopId: string) => {
+    if (user) {
+      // Logado - vai para solicitar
+      router.push(`/solicitar-orcamento?workshop=${workshopId}`);
+    } else {
+      // Não logado - vai para login com redirect
+      router.push(`/login?redirect=/solicitar-orcamento?workshop=${workshopId}`);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
-
-      {/* Banner de Timer */}
-      {!isAuthenticated && !showLoginModal && timeLeft > 0 && (
-        <div className="bg-yellow-400 text-gray-900 py-3 px-4 text-center font-bold sticky top-16 z-40">
-          ⏰ Você tem {timeLeft} segundo{timeLeft !== 1 ? 's' : ''} para ver as oficinas. Depois, faça login para continuar!
-        </div>
-      )}
-
-      {/* Modal de Login */}
-      {showLoginModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 p-8 text-center">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Lock className="h-8 w-8 text-blue-600" />
-            </div>
-            <h2 className="text-3xl font-heading font-bold text-gray-900 mb-4">
-              Faça login para continuar
-            </h2>
-            <p className="text-gray-600 mb-8 leading-relaxed">
-              Para ver todas as oficinas, solicitar orçamentos e comparar preços, você precisa criar uma conta gratuita.
-            </p>
-            <div className="space-y-3">
-              <Link href="/login">
-                <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-xl transition-all shadow-lg hover:shadow-xl">
-                  Criar Conta Grátis
-                </button>
-              </Link>
-              <Link href="/login">
-                <button className="w-full bg-gray-100 hover:bg-gray-200 text-gray-900 font-bold py-4 px-6 rounded-xl transition-all">
-                  Já tenho conta
-                </button>
-              </Link>
-            </div>
-            <p className="text-sm text-gray-500 mt-6">
-              100% grátis para motoristas • Sem cartão de crédito
-            </p>
-          </div>
-        </div>
-      )}
 
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white py-20 pt-28">
@@ -175,7 +158,7 @@ export default function BuscarOficinasPage() {
               Encontre a <span className="text-yellow-400">Oficina Ideal</span>
             </h1>
             <p className="text-xl md:text-2xl text-blue-100 mb-10 max-w-3xl mx-auto leading-relaxed">
-              Compare preços, veja avaliações reais e solicite orçamentos grátis em oficinas mecânicas confiáveis
+              Compare preços, veja avaliações reais e solicite orçamentos grátis
             </p>
 
             {/* Barra de Busca Principal */}
@@ -184,7 +167,7 @@ export default function BuscarOficinasPage() {
                 <Search className="text-gray-400 flex-shrink-0" size={28} />
                 <input
                   type="text"
-                  placeholder="Buscar por nome, cidade ou serviço..."
+                  placeholder="Buscar por nome ou cidade..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="flex-1 text-gray-900 outline-none text-lg placeholder:text-gray-400"
@@ -196,172 +179,210 @@ export default function BuscarOficinasPage() {
       </section>
 
       {/* Filtros */}
-      <section className="bg-white border-b z-10 shadow-md">
+      <section className="bg-white border-b shadow-sm sticky top-16 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Primeira linha: Busca, Estado, Especialidade */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+            {/* Estado */}
             <select
-              value={cityFilter}
-              onChange={(e) => setCityFilter(e.target.value)}
-              className="border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-semibold focus:border-blue-600 focus:outline-none transition-colors"
+              value={selectedState}
+              onChange={(e) => setSelectedState(e.target.value)}
+              className="px-4 py-3 bg-gray-50 border-0 rounded-xl text-gray-900 focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all cursor-pointer"
             >
-              <option value="">📍 Todas as Cidades</option>
-              {uniqueCities.map((city) => (
-                <option key={city} value={city}>
-                  {city}
+              <option value="">Todos os estados</option>
+              {ESTADOS_BRASILEIROS.map((estado) => (
+                <option key={estado} value={estado}>
+                  {estado}
+                </option>
+              ))}
+            </select>
+            
+            {/* Especialidade */}
+            <select
+              value={selectedSpecialty}
+              onChange={(e) => setSelectedSpecialty(e.target.value)}
+              className="px-4 py-3 bg-gray-50 border-0 rounded-xl text-gray-900 focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all cursor-pointer"
+            >
+              <option value="">Todas especialidades</option>
+              {ESPECIALIDADES.map((esp) => (
+                <option key={esp} value={esp}>
+                  {esp}
                 </option>
               ))}
             </select>
 
+            {/* Ordenar */}
             <select
-              value={stateFilter}
-              onChange={(e) => setStateFilter(e.target.value)}
-              className="border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-semibold focus:border-blue-600 focus:outline-none transition-colors"
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as any)}
+              className="px-4 py-3 bg-gray-50 border-0 rounded-xl text-gray-900 focus:ring-2 focus:ring-blue-500 cursor-pointer"
             >
-              <option value="">🗺️ Todos os Estados</option>
-              {uniqueStates.map((state) => (
-                <option key={state} value={state}>
-                  {state}
-                </option>
-              ))}
+              <option value="rating">Mais avaliadas</option>
+              <option value="reviews">Mais reviews</option>
+              <option value="name">Nome A-Z</option>
             </select>
-
-            <select
-              value={serviceFilter}
-              onChange={(e) => setServiceFilter(e.target.value)}
-              className="border-2 border-gray-200 rounded-xl px-4 py-3 text-gray-700 font-semibold focus:border-blue-600 focus:outline-none transition-colors"
-            >
-              <option value="">🔧 Todos os Serviços</option>
-              {serviceTypes.map((service) => (
-                <option key={service} value={service}>
-                  {service}
-                </option>
-              ))}
-            </select>
+          </div>
+          
+          {/* Segunda linha: Toggle */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <label className="flex items-center gap-2 cursor-pointer group">
+              <input
+                type="checkbox"
+                checked={onlyWithReviews}
+                onChange={(e) => setOnlyWithReviews(e.target.checked)}
+                className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+              />
+              <span className="text-sm text-gray-600 group-hover:text-gray-900 transition-colors">
+                Só oficinas com avaliações
+              </span>
+            </label>
+            
+            {(searchTerm || selectedState || selectedSpecialty || onlyWithReviews) && (
+              <button
+                onClick={clearFilters}
+                className="text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors"
+              >
+                Limpar filtros
+              </button>
+            )}
           </div>
         </div>
       </section>
 
-      {/* Lista de Oficinas */}
-      <section className="flex-1 py-12">
+      {/* Contador de resultados */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <p className="text-gray-600">
+          <span className="font-semibold text-gray-900">{filteredWorkshops.length}</span>{" "}
+          {filteredWorkshops.length === 1 ? "oficina encontrada" : "oficinas encontradas"}
+        </p>
+      </section>
+
+      {/* Grid de Oficinas */}
+      <section className="flex-1 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {loading ? (
-            <div className="text-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-              <p className="mt-4 text-gray-600">Carregando oficinas...</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                <div key={i} className="bg-white rounded-2xl overflow-hidden shadow-sm">
+                  <div className="h-48 bg-gray-200 animate-pulse" />
+                  <div className="p-4 space-y-3">
+                    <div className="h-6 bg-gray-200 rounded animate-pulse" />
+                    <div className="h-4 bg-gray-200 rounded animate-pulse w-2/3" />
+                    <div className="h-10 bg-gray-200 rounded-xl animate-pulse" />
+                  </div>
+                </div>
+              ))}
             </div>
           ) : filteredWorkshops.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-xl text-gray-600">
-                Nenhuma oficina encontrada com os filtros selecionados.
-              </p>
+            <div className="text-center py-16">
+              <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Search className="w-10 h-10 text-gray-300" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Nenhuma oficina encontrada</h3>
+              <p className="text-gray-500 mb-6">Tente ajustar os filtros de busca</p>
+              <button
+                onClick={clearFilters}
+                className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-colors"
+              >
+                Limpar filtros
+              </button>
             </div>
           ) : (
-            <>
-              <div className="mb-6 text-gray-600">
-                {filteredWorkshops.length} oficina(s) encontrada(s)
-              </div>
-
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {filteredWorkshops.map((workshop) => (
-                  <div
-                    key={workshop.id}
-                    className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all p-8 border-2 border-gray-100 hover:border-blue-200"
-                  >
-                    {/* Header do Card */}
-                    <div className="flex justify-between items-start mb-4">
-                      <div>
-                        <h3 className="text-xl font-bold text-gray-900">
-                          {workshop.name}
-                        </h3>
-                        <div className="flex items-center gap-2 mt-1">
-                          <MapPin size={16} className="text-gray-400" />
-                          <span className="text-gray-600">
-                            {workshop.city}, {workshop.state}
-                          </span>
-                        </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {filteredWorkshops.map((workshop) => (
+                <div
+                  key={workshop.id}
+                  className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer group"
+                >
+                  {/* Imagem/Placeholder */}
+                  <div className="relative h-48 bg-gradient-to-br from-blue-100 to-blue-200 overflow-hidden">
+                    {workshop.logo_url ? (
+                      <Image
+                        src={workshop.logo_url}
+                        alt={workshop.name}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <Wrench className="w-16 h-16 text-blue-300 group-hover:scale-110 transition-transform duration-300" />
                       </div>
+                    )}
+                    
+                    {/* Badge PRO */}
+                    {workshop.plan_type === "pro" && (
+                      <span className="absolute top-3 left-3 px-2.5 py-1 bg-yellow-400 text-yellow-900 text-xs font-bold rounded-full shadow-lg">
+                        ⭐ PRO
+                      </span>
+                    )}
+                  </div>
 
-                      {/* Rating */}
-                      {workshop.total_reviews && workshop.total_reviews > 0 ? (
-                        <div className="text-right">
-                          <div className="flex items-center gap-1">
-                            <Star className="text-yellow-400 fill-yellow-400" size={20} />
-                            <span className="text-xl font-bold text-gray-900">
-                              {workshop.average_rating?.toFixed(1)}
-                            </span>
-                          </div>
-                          <p className="text-sm text-gray-500">
-                            {workshop.total_reviews} avaliações
-                          </p>
+                  {/* Conteúdo */}
+                  <div className="p-4">
+                    {/* Header: Nome + Estrelas */}
+                    <div className="flex items-start justify-between gap-2 mb-2">
+                      <h3 className="font-semibold text-gray-900 line-clamp-1 group-hover:text-blue-600 transition-colors">
+                        {workshop.name}
+                      </h3>
+                      {workshop.rating && workshop.rating > 0 ? (
+                        <div className="flex items-center gap-1 text-sm flex-shrink-0">
+                          <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                          <span className="font-medium">{workshop.rating.toFixed(1)}</span>
+                          <span className="text-gray-400">({workshop.reviews_count || 0})</span>
                         </div>
                       ) : (
-                        <div className="text-sm text-gray-400">Sem avaliações</div>
+                        <span className="text-xs text-gray-400 flex-shrink-0">Novo</span>
                       )}
                     </div>
 
-                    {/* Descrição */}
-                    {workshop.description && (
-                      <p className="text-gray-600 mb-4 line-clamp-2">
-                        {workshop.description}
-                      </p>
-                    )}
+                    {/* Localização */}
+                    <p className="text-sm text-gray-500 mb-3 flex items-center gap-1">
+                      <MapPin className="w-4 h-4 flex-shrink-0" />
+                      <span className="line-clamp-1">
+                        {workshop.city}, {workshop.state}
+                      </span>
+                    </p>
 
-                    {/* Serviços */}
-                    {workshop.services && workshop.services.length > 0 && (
-                      <div className="mb-4">
-                        <div className="flex flex-wrap gap-2">
-                          {workshop.services.slice(0, 4).map((service, idx) => (
-                            <span
-                              key={idx}
-                              className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm"
-                            >
-                              {service}
-                            </span>
-                          ))}
-                          {workshop.services.length > 4 && (
-                            <span className="text-sm text-gray-500">
-                              +{workshop.services.length - 4} mais
-                            </span>
-                          )}
-                        </div>
+                    {/* Especialidades (badges) */}
+                    {workshop.specialties && workshop.specialties.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mb-4 min-h-[24px]">
+                        {workshop.specialties.slice(0, 3).map((spec: string, i: number) => (
+                          <span
+                            key={i}
+                            className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full"
+                          >
+                            {spec}
+                          </span>
+                        ))}
+                        {workshop.specialties.length > 3 && (
+                          <span className="text-xs text-gray-400 self-center">
+                            +{workshop.specialties.length - 3}
+                          </span>
+                        )}
                       </div>
                     )}
 
-                    {/* Contato */}
-                    <div className="space-y-2 mb-4 text-sm text-gray-600">
-                      {workshop.phone && (
-                        <div className="flex items-center gap-2">
-                          <Phone size={16} className="text-gray-400" />
-                          <span>{workshop.phone}</span>
-                        </div>
-                      )}
-                      {workshop.email && (
-                        <div className="flex items-center gap-2">
-                          <Mail size={16} className="text-gray-400" />
-                          <span>{workshop.email}</span>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Ações */}
-                    <div className="flex gap-3 pt-4 border-t">
-                      <Link
-                        href={`/solicitar-orcamento?workshop=${workshop.id}`}
-                        className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-center font-medium"
+                    {/* Botões */}
+                    <div className="space-y-2">
+                      <button
+                        onClick={() => handleRequestQuote(workshop.id)}
+                        className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-all group-hover:shadow-lg flex items-center justify-center gap-2"
                       >
+                        <MessageSquare className="w-4 h-4" />
                         Solicitar Orçamento
-                      </Link>
+                      </button>
                       <Link
                         href={`/oficina-detalhes/${workshop.id}`}
-                        className="flex-1 border border-blue-600 text-blue-600 px-4 py-2 rounded-lg hover:bg-blue-50 transition-colors text-center font-medium"
+                        className="w-full py-2.5 border-2 border-gray-200 hover:border-blue-600 text-gray-700 hover:text-blue-600 font-medium rounded-xl transition-all flex items-center justify-center gap-2"
                       >
+                        <Eye className="w-4 h-4" />
                         Ver Detalhes
                       </Link>
                     </div>
                   </div>
-                ))}
-              </div>
-            </>
+                </div>
+              ))}
+            </div>
           )}
         </div>
       </section>
@@ -370,4 +391,3 @@ export default function BuscarOficinasPage() {
     </div>
   );
 }
-

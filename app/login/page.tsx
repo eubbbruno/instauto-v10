@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Car, Wrench, Mail, Lock, Eye, EyeOff, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -18,6 +18,8 @@ export default function LoginPage() {
   const [googleLoading, setGoogleLoading] = useState(false);
 
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectUrl = searchParams.get("redirect");
   const supabase = createClient();
 
   // Login com Email/Senha
@@ -37,6 +39,13 @@ export default function LoginPage() {
         if (error) throw error;
 
         console.log("✅ [Login] Login bem-sucedido:", data.user.email);
+
+        // Se tem redirect, vai para lá
+        if (redirectUrl) {
+          console.log("🔀 [Login] Redirecionando para:", redirectUrl);
+          router.push(redirectUrl);
+          return;
+        }
 
         // Buscar profile para saber o tipo
         const { data: profile } = await supabase

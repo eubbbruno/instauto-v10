@@ -40,11 +40,13 @@ export async function middleware(req: NextRequest) {
     "/termos-uso",
     "/buscar-oficinas",
     "/motoristas",
+    "/avaliar-oficina",
   ];
 
   const isPublicRoute = publicRoutes.some(route => pathname === route) || 
                        pathname.startsWith("/api/") ||
                        pathname.startsWith("/_next/") ||
+                       pathname.startsWith("/oficina-detalhes/") ||
                        pathname.includes(".");
 
   if (isPublicRoute) {
