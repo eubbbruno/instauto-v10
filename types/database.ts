@@ -37,6 +37,8 @@ export interface Workshop {
   accepts_quotes?: boolean;
   average_rating?: number;
   total_reviews?: number;
+  rating?: number;
+  reviews_count?: number;
   created_at: string;
   updated_at?: string;
 }

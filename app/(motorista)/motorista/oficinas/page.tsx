@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import { StarRating } from "@/components/ui/StarRating";
 import { Search, MapPin, Star, Phone, Mail, Clock, Loader2, Building2 } from "lucide-react";
 import { Workshop } from "@/types/database";
 import Link from "next/link";
@@ -207,26 +208,14 @@ export default function OficinasPage() {
                   )}
 
                   {/* Avaliação */}
-                  {workshop.average_rating && (
+                  {(workshop.rating || workshop.average_rating) && (
                     <div className="flex items-center gap-3 p-3 bg-gradient-to-br from-yellow-50 to-amber-50 rounded-xl border-2 border-yellow-200">
-                      <div className="flex items-center gap-1">
-                        {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`h-5 w-5 ${
-                              i < Math.floor(workshop.average_rating || 0)
-                                ? "text-yellow-500 fill-yellow-500"
-                                : "text-gray-300"
-                            }`}
-                          />
-                        ))}
-                      </div>
-                      <span className="font-bold text-gray-900">
-                        {workshop.average_rating.toFixed(1)}
-                      </span>
-                      <span className="text-sm text-gray-600">
-                        ({workshop.total_reviews} avaliações)
-                      </span>
+                      <StarRating
+                        rating={workshop.rating || workshop.average_rating || 0}
+                        size="md"
+                        showCount={true}
+                        count={workshop.reviews_count || 0}
+                      />
                     </div>
                   )}
 

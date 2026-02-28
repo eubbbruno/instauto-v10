@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase";
 import { StatCard } from "@/components/dashboard/StatCard";
+import { StarRating } from "@/components/ui/StarRating";
 import { 
   FileText, 
   Users, 
@@ -23,7 +24,8 @@ import {
   Sparkles,
   Loader2,
   Building2,
-  ClipboardList
+  ClipboardList,
+  Star
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -63,6 +65,7 @@ export default function OficinaDashboard() {
     revenue: 0,
     orders: 0
   });
+  const [recentReviews, setRecentReviews] = useState<any[]>([]);
   const [trends, setTrends] = useState({
     quotes: { value: 0, positive: true },
     clients: { value: 0, positive: true },
@@ -199,10 +202,35 @@ export default function OficinaDashboard() {
       // Carregar alertas
       await loadAlerts();
 
+      // Carregar avaliações recentes
+      await loadRecentReviews();
+
     } catch (error) {
       console.error("Erro ao carregar stats:", error);
     } finally {
       setStatsLoading(false);
+    }
+  };
+
+  const loadRecentReviews = async () => {
+    if (!workshop) return;
+
+    try {
+      const { data } = await supabase
+        .from("reviews")
+        .select(`
+          *,
+          motorist:motorists(profile_id),
+          profile:profiles(name, email)
+        `)
+        .eq("workshop_id", workshop.id)
+        .order("created_at", { ascending: false })
+        .limit(3);
+
+      setRecentReviews(data || []);
+      console.log("⭐ [Dashboard] Avaliações recentes:", data?.length || 0);
+    } catch (error) {
+      console.error("Erro ao carregar avaliações:", error);
     }
   };
 
@@ -602,6 +630,79 @@ export default function OficinaDashboard() {
                       <TrendingUp className="h-12 w-12 mx-auto mb-2 text-gray-300" />
                       <p>Nenhuma receita nos últimos 7 dias</p>
                     </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Reviews Card */}
+            <Card className="border-2 shadow-lg">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="flex items-center gap-2 text-xl">
+                      <Star className="h-6 w-6 text-yellow-500 fill-yellow-500" />
+                      Avaliações
+                    </CardTitle>
+                    <CardDescription>
+                      O que seus clientes estão dizendo
+                    </CardDescription>
+                  </div>
+                  {workshop?.rating && (
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-gray-900 mb-1">
+                        {workshop.rating.toFixed(1)}
+                      </div>
+                      <StarRating
+                        rating={workshop.rating}
+                        size="sm"
+                        showCount={true}
+                        count={workshop.reviews_count || 0}
+                      />
+                    </div>
+                  )}
+                </div>
+              </CardHeader>
+              <CardContent>
+                {recentReviews.length > 0 ? (
+                  <div className="space-y-4">
+                    {recentReviews.map((review) => (
+                      <div key={review.id} className="p-4 bg-gray-50 rounded-lg border-2 border-gray-100">
+                        <div className="flex items-start justify-between mb-2">
+                          <div className="flex items-center gap-2">
+                            <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                              {review.profile?.name?.charAt(0) || review.profile?.email?.charAt(0) || "?"}
+                            </div>
+                            <div>
+                              <p className="font-medium text-gray-900 text-sm">
+                                {review.profile?.name || review.profile?.email?.split("@")[0] || "Cliente"}
+                              </p>
+                              <p className="text-xs text-gray-500">
+                                {format(new Date(review.created_at), "dd/MM/yyyy", { locale: ptBR })}
+                              </p>
+                            </div>
+                          </div>
+                          <StarRating rating={review.rating} size="sm" />
+                        </div>
+                        {review.comment && (
+                          <p className="text-sm text-gray-700 line-clamp-2">{review.comment}</p>
+                        )}
+                      </div>
+                    ))}
+                    <Link href="/oficina/avaliacoes">
+                      <Button variant="outline" className="w-full">
+                        Ver todas as avaliações
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <Star className="h-12 w-12 mx-auto mb-2 text-gray-300" />
+                    <p className="text-gray-500 mb-2">Nenhuma avaliação ainda</p>
+                    <p className="text-xs text-gray-400">
+                      Suas avaliações aparecerão aqui quando os clientes avaliarem seus serviços
+                    </p>
                   </div>
                 )}
               </CardContent>

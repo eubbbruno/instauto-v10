@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { createClient } from "@/lib/supabase";
-import { FileText, Clock, CheckCircle2, XCircle, MessageSquare, DollarSign, Calendar, Loader2, Plus } from "lucide-react";
+import { FileText, Clock, CheckCircle2, XCircle, MessageSquare, DollarSign, Calendar, Loader2, Plus, Star } from "lucide-react";
 import Link from "next/link";
+import { ReviewDialog } from "@/components/motorista/ReviewDialog";
+import { StarRating } from "@/components/ui/StarRating";
 
 interface Quote {
   id: string;
@@ -39,6 +41,9 @@ export default function OrcamentosMotoristPage() {
   const { profile, loading: authLoading } = useAuth();
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [loading, setLoading] = useState(true);
+  const [motoristId, setMotoristId] = useState<string | null>(null);
+  const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
+  const [selectedQuoteForReview, setSelectedQuoteForReview] = useState<Quote | null>(null);
 
   const supabase = createClient();
 
@@ -58,6 +63,18 @@ export default function OrcamentosMotoristPage() {
         setLoading(true);
 
         console.log("🔍 [Orçamentos Motorista] Buscando orçamentos para:", profile.email);
+
+        // Buscar motorist_id
+        const { data: motoristData } = await supabase
+          .from("motorists")
+          .select("id")
+          .eq("profile_id", profile.id)
+          .single();
+
+        if (motoristData && mounted) {
+          setMotoristId(motoristData.id);
+          console.log("🔍 [Orçamentos Motorista] Motorist ID:", motoristData.id);
+        }
 
         // Buscar orçamentos usando email do profile
         let query = supabase
@@ -277,6 +294,17 @@ export default function OrcamentosMotoristPage() {
                           Ver Oficina
                         </Link>
                       )}
+                      
+                      <button
+                        onClick={() => {
+                          setSelectedQuoteForReview(quote);
+                          setReviewDialogOpen(true);
+                        }}
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-yellow-900 text-sm font-medium rounded-lg transition-colors"
+                      >
+                        <Star className="w-4 h-4" />
+                        Avaliar Oficina
+                      </button>
                     </div>
                   </div>
                 )}
@@ -301,6 +329,39 @@ export default function OrcamentosMotoristPage() {
           </div>
         )}
       </div>
+
+      {/* Review Dialog */}
+      {selectedQuoteForReview && motoristId && (
+        <ReviewDialog
+          open={reviewDialogOpen}
+          onOpenChange={setReviewDialogOpen}
+          workshopId={selectedQuoteForReview.workshop_id}
+          workshopName={selectedQuoteForReview.workshop?.name || "Oficina"}
+          motoristId={motoristId}
+          quoteId={selectedQuoteForReview.id}
+          onSuccess={() => {
+            setReviewDialogOpen(false);
+            setSelectedQuoteForReview(null);
+            // Recarregar orçamentos após avaliar
+            if (profile) {
+              const abortController = new AbortController();
+              const loadQuotes = async () => {
+                try {
+                  const { data } = await supabase
+                    .from("quotes")
+                    .select(`*, workshop:workshops(name, phone, city, state)`)
+                    .eq("motorist_email", profile.email)
+                    .order("created_at", { ascending: false });
+                  if (data) setQuotes(data);
+                } catch (error) {
+                  console.error("Erro ao recarregar orçamentos:", error);
+                }
+              };
+              loadQuotes();
+            }
+          }}
+        />
+      )}
     </div>
   );
 }
