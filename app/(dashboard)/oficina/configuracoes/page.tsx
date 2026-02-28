@@ -9,7 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, User, Building2 } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Loader2, User, Building2, Phone } from "lucide-react";
 import { PageHeader } from "@/components/dashboard/PageHeader";
 
 const ESTADOS_BRASILEIROS = [
@@ -64,6 +65,8 @@ export default function ConfiguracoesPage() {
     address: "",
     city: "",
     state: "",
+    description: "",
+    specialties: "",
   });
 
   const supabase = createClient();
@@ -104,6 +107,8 @@ export default function ConfiguracoesPage() {
         address: workshopData.address || "",
         city: workshopData.city || "",
         state: workshopData.state || "",
+        description: workshopData.description || "",
+        specialties: workshopData.specialties || "",
       });
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
@@ -168,6 +173,8 @@ export default function ConfiguracoesPage() {
           address: workshopData.address || null,
           city: workshopData.city || null,
           state: workshopData.state || null,
+          description: workshopData.description || null,
+          specialties: workshopData.specialties || null,
         })
         .eq("id", workshop?.id);
 
@@ -336,33 +343,38 @@ export default function ConfiguracoesPage() {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="workshop-phone">Telefone</Label>
-                  <Input
-                    id="workshop-phone"
-                    value={workshopData.phone}
-                    onChange={(e) =>
-                      setWorkshopData({ ...workshopData, phone: e.target.value })
-                    }
-                    disabled={savingWorkshop}
-                    placeholder="(11) 3456-7890"
-                  />
-                </div>
+              <div className="space-y-2 p-4 bg-green-50 border-2 border-green-200 rounded-xl">
+                <Label htmlFor="workshop-phone" className="flex items-center gap-2 text-green-900">
+                  <Phone className="w-4 h-4" />
+                  Telefone (WhatsApp) *
+                </Label>
+                <Input
+                  id="workshop-phone"
+                  value={workshopData.phone}
+                  onChange={(e) =>
+                    setWorkshopData({ ...workshopData, phone: e.target.value })
+                  }
+                  disabled={savingWorkshop}
+                  placeholder="(11) 98765-4321"
+                  className="border-green-300 focus:border-green-500"
+                />
+                <p className="text-xs text-green-700">
+                  ⚠️ Importante: Este telefone será usado para contato via WhatsApp quando você responder orçamentos!
+                </p>
+              </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="workshop-email">Email</Label>
-                  <Input
-                    id="workshop-email"
-                    type="email"
-                    value={workshopData.email}
-                    onChange={(e) =>
-                      setWorkshopData({ ...workshopData, email: e.target.value })
-                    }
-                    disabled={savingWorkshop}
-                    placeholder="contato@oficina.com"
-                  />
-                </div>
+              <div className="space-y-2">
+                <Label htmlFor="workshop-email">Email</Label>
+                <Input
+                  id="workshop-email"
+                  type="email"
+                  value={workshopData.email}
+                  onChange={(e) =>
+                    setWorkshopData({ ...workshopData, email: e.target.value })
+                  }
+                  disabled={savingWorkshop}
+                  placeholder="contato@oficina.com"
+                />
               </div>
 
               <div className="space-y-2">
@@ -411,6 +423,40 @@ export default function ConfiguracoesPage() {
                     ))}
                   </select>
                 </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="workshop-description">Descrição da Oficina</Label>
+                <Textarea
+                  id="workshop-description"
+                  value={workshopData.description}
+                  onChange={(e) =>
+                    setWorkshopData({ ...workshopData, description: e.target.value })
+                  }
+                  disabled={savingWorkshop}
+                  placeholder="Conte um pouco sobre sua oficina, serviços oferecidos, diferenciais..."
+                  rows={4}
+                  className="resize-none"
+                />
+                <p className="text-xs text-gray-500">
+                  Esta descrição aparecerá no perfil público da sua oficina
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="workshop-specialties">Especialidades</Label>
+                <Input
+                  id="workshop-specialties"
+                  value={workshopData.specialties}
+                  onChange={(e) =>
+                    setWorkshopData({ ...workshopData, specialties: e.target.value })
+                  }
+                  disabled={savingWorkshop}
+                  placeholder="Ex: Freios, Motor, Suspensão, Elétrica, Ar Condicionado"
+                />
+                <p className="text-xs text-gray-500">
+                  Separe as especialidades por vírgula
+                </p>
               </div>
 
               <Button type="submit" disabled={savingWorkshop} className="w-full">

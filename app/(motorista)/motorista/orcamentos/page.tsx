@@ -257,17 +257,27 @@ export default function OrcamentosMotoristPage() {
                       </p>
                     )}
 
-                    {quote.workshop?.phone && (
-                      <a
-                        href={`https://wa.me/55${quote.workshop.phone.replace(/\D/g, "")}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white text-sm font-medium rounded-lg transition-colors"
-                      >
-                        <MessageSquare className="w-4 h-4" />
-                        Falar no WhatsApp
-                      </a>
-                    )}
+                    <div className="flex flex-wrap gap-3">
+                      {quote.workshop?.phone ? (
+                        <a
+                          href={`https://wa.me/55${quote.workshop.phone.replace(/\D/g, "")}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white text-sm font-medium rounded-lg transition-colors"
+                        >
+                          <MessageSquare className="w-4 h-4" />
+                          Falar no WhatsApp
+                        </a>
+                      ) : (
+                        <Link
+                          href={`/oficina-detalhes/${quote.workshop_id}`}
+                          className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium rounded-lg transition-colors"
+                        >
+                          <FileText className="w-4 h-4" />
+                          Ver Oficina
+                        </Link>
+                      )}
+                    </div>
                   </div>
                 )}
 
