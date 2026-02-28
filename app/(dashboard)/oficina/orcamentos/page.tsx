@@ -66,7 +66,13 @@ export default function OrcamentosOficinaPage() {
   }, [user, authLoading, router]);
 
   const loadWorkshopAndQuotes = async () => {
-    if (!profile) return;
+    if (!profile) {
+      console.log("🔍 [Orçamentos] Profile não encontrado");
+      return;
+    }
+
+    console.log("🔍 [Orçamentos] Iniciando busca...");
+    console.log("🔍 [Orçamentos] Profile ID:", profile.id);
 
     setLoading(true);
     try {
@@ -77,13 +83,17 @@ export default function OrcamentosOficinaPage() {
         .eq("profile_id", profile.id)
         .single();
 
+      console.log("🔍 [Orçamentos] Workshop:", { workshop, workshopError });
+
       if (workshopError) throw workshopError;
       if (!workshop) {
+        console.error("🔍 [Orçamentos] Workshop não encontrado!");
         router.push("/completar-cadastro");
         return;
       }
 
       setWorkshopId(workshop.id);
+      console.log("🔍 [Orçamentos] Workshop ID:", workshop.id);
 
       // Buscar orçamentos
       // NOTA: quotes usa motorist_email (text), não motorist_id (FK)
@@ -96,12 +106,19 @@ export default function OrcamentosOficinaPage() {
         .eq("workshop_id", workshop.id)
         .order("created_at", { ascending: false });
 
+      console.log("🔍 [Orçamentos] Resultado da query:", { 
+        count: data?.length || 0, 
+        data, 
+        error 
+      });
+
       if (error) throw error;
       
       // Dados do motorista já vêm nos campos motorist_name, motorist_email, motorist_phone
       setQuotes(data || []);
+      console.log("✅ [Orçamentos] Orçamentos carregados:", data?.length || 0);
     } catch (error) {
-      console.error("Erro ao carregar orçamentos:", error);
+      console.error("❌ [Orçamentos] Erro ao carregar:", error);
     } finally {
       setLoading(false);
     }

@@ -50,6 +50,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [workshop, setWorkshop] = useState<Workshop | null>(null);
   const [dataLoading, setDataLoading] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
   
   const router = useRouter();
   const pathname = usePathname();
@@ -147,6 +148,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         } else {
           console.log("✅ Workshop encontrado:", workshopData.name);
           setWorkshop(workshopData);
+        }
+
+        // Buscar notificações não lidas
+        if (profileData) {
+          const { data: notifications } = await supabase
+            .from("notifications")
+            .select("id")
+            .eq("user_id", profileData.id)
+            .eq("is_read", false);
+          
+          setUnreadCount(notifications?.length || 0);
+          console.log("🔔 [Layout] Notificações não lidas:", notifications?.length || 0);
         }
 
       } catch (error) {
@@ -273,7 +286,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <Menu className="w-6 h-6" />
             </button>
             <span className="font-bold text-gray-900">Instauto</span>
-            <div className="w-10" />
+            <button
+              onClick={() => router.push("/oficina/orcamentos")}
+              className="relative p-2 hover:bg-gray-100 rounded-xl"
+            >
+              <Bell className="w-6 h-6 text-gray-600" />
+              {unreadCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center animate-pulse">
+                  {unreadCount}
+                </span>
+              )}
+            </button>
           </div>
         </div>
 

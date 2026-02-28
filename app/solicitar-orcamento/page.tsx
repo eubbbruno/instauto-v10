@@ -64,21 +64,68 @@ function SolicitarOrcamentoContent() {
         throw new Error("Oficina não selecionada");
       }
 
-      const { error } = await supabase.from("quotes").insert([
-        {
-          workshop_id: workshopId,
-          ...formData,
-        },
-      ]);
+      console.log("📤 [Orçamento] Enviando orçamento...");
+      console.log("📤 [Orçamento] Workshop ID:", workshopId);
+      console.log("📤 [Orçamento] Dados:", formData);
 
-      if (error) throw error;
+      // Inserir orçamento
+      const { data: quoteData, error: quoteError } = await supabase
+        .from("quotes")
+        .insert([
+          {
+            workshop_id: workshopId,
+            ...formData,
+          },
+        ])
+        .select()
+        .single();
+
+      if (quoteError) throw quoteError;
+
+      console.log("✅ [Orçamento] Orçamento criado:", quoteData);
+
+      // Buscar profile_id da oficina para criar notificação
+      const { data: workshopData, error: workshopError } = await supabase
+        .from("workshops")
+        .select("profile_id, name")
+        .eq("id", workshopId)
+        .single();
+
+      console.log("🔍 [Orçamento] Workshop data:", { workshopData, workshopError });
+
+      if (workshopData && !workshopError) {
+        // Criar notificação para a oficina
+        const { error: notifError } = await supabase
+          .from("notifications")
+          .insert({
+            user_id: workshopData.profile_id,
+            type: "quote_received",
+            title: "Novo orçamento recebido!",
+            message: `${formData.motorist_name} solicitou orçamento para ${formData.service_type}`,
+            is_read: false,
+            data: {
+              quote_id: quoteData.id,
+              motorist_name: formData.motorist_name,
+              vehicle: formData.vehicle_brand 
+                ? `${formData.vehicle_brand} ${formData.vehicle_model}` 
+                : "Veículo não informado",
+              service_type: formData.service_type,
+            },
+          });
+
+        if (notifError) {
+          console.error("⚠️ [Orçamento] Erro ao criar notificação:", notifError);
+        } else {
+          console.log("✅ [Orçamento] Notificação criada para oficina");
+        }
+      }
 
       setSuccess(true);
       setTimeout(() => {
         router.push("/buscar-oficinas");
       }, 3000);
     } catch (error: any) {
-      console.error("Erro ao enviar orçamento:", error);
+      console.error("❌ [Orçamento] Erro ao enviar:", error);
       setError(error.message || "Erro ao enviar solicitação. Tente novamente.");
     } finally {
       setLoading(false);
