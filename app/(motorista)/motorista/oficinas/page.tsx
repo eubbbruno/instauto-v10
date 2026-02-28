@@ -3,20 +3,31 @@
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
 import { StarRating } from "@/components/ui/StarRating";
-import { Search, MapPin, Star, Phone, Mail, Clock, Loader2, Building2 } from "lucide-react";
+import { Search, MapPin, Star, Loader2, Wrench, Heart, SlidersHorizontal } from "lucide-react";
 import { Workshop } from "@/types/database";
 import Link from "next/link";
+import Image from "next/image";
 
 const ESTADOS_BRASILEIROS = [
   "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA",
   "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN",
   "RS", "RO", "RR", "SC", "SP", "SE", "TO"
+];
+
+const ESPECIALIDADES = [
+  "Freios",
+  "Motor",
+  "Suspensão",
+  "Elétrica",
+  "Ar Condicionado",
+  "Alinhamento",
+  "Balanceamento",
+  "Troca de Óleo",
+  "Revisão",
+  "Funilaria",
+  "Pintura",
+  "Injeção Eletrônica"
 ];
 
 export default function OficinasPage() {
@@ -25,7 +36,9 @@ export default function OficinasPage() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedState, setSelectedState] = useState<string>("");
-  const [selectedCity, setSelectedCity] = useState<string>("");
+  const [selectedSpecialty, setSelectedSpecialty] = useState<string>("");
+  const [onlyWithReviews, setOnlyWithReviews] = useState(false);
+  const [sortBy, setSortBy] = useState<"rating" | "reviews" | "name">("rating");
   const supabase = createClient();
 
   useEffect(() => {
@@ -49,13 +62,7 @@ export default function OficinasPage() {
           query = query.eq("state", selectedState);
         }
 
-        if (selectedCity) {
-          query = query.ilike("city", `%${selectedCity}%`);
-        }
-
-        const { data, error } = await query
-          .order("created_at", { ascending: false })
-          .limit(50);
+        const { data, error } = await query.limit(100);
 
         if (error) throw error;
         
@@ -73,211 +80,319 @@ export default function OficinasPage() {
       }
     };
 
-    console.log("🚀 [Oficinas] Iniciando fetch...");
     loadWorkshops();
 
     return () => {
-      console.log("🛑 [Oficinas] Cleanup - abortando fetch");
       mounted = false;
       abortController.abort();
     };
-  }, [authLoading, selectedState, selectedCity]);
+  }, [authLoading, selectedState]);
 
-  const filteredWorkshops = workshops.filter((workshop) => {
-    if (!searchTerm) return true;
-    const term = searchTerm.toLowerCase();
-    return (
-      workshop.name.toLowerCase().includes(term) ||
-      workshop.city?.toLowerCase().includes(term) ||
-      workshop.description?.toLowerCase().includes(term)
-    );
-  });
+  const filteredWorkshops = workshops
+    .filter((workshop) => {
+      // Filtro de busca por texto
+      if (searchTerm) {
+        const term = searchTerm.toLowerCase();
+        const matchesSearch = 
+          workshop.name.toLowerCase().includes(term) ||
+          workshop.city?.toLowerCase().includes(term) ||
+          workshop.description?.toLowerCase().includes(term);
+        if (!matchesSearch) return false;
+      }
 
+      // Filtro de especialidade
+      if (selectedSpecialty && workshop.specialties) {
+        const hasSpecialty = workshop.specialties.some(
+          (spec: string) => spec.toLowerCase() === selectedSpecialty.toLowerCase()
+        );
+        if (!hasSpecialty) return false;
+      }
+
+      // Filtro de "só com avaliações"
+      if (onlyWithReviews && (!workshop.rating || workshop.rating === 0)) {
+        return false;
+      }
+
+      return true;
+    })
+    .sort((a, b) => {
+      // Ordenação
+      switch (sortBy) {
+        case "rating":
+          return (b.rating || 0) - (a.rating || 0);
+        case "reviews":
+          return (b.reviews_count || 0) - (a.reviews_count || 0);
+        case "name":
+          return a.name.localeCompare(b.name);
+        default:
+          return 0;
+      }
+    });
+
+  const clearFilters = () => {
+    setSearchTerm("");
+    setSelectedState("");
+    setSelectedSpecialty("");
+    setOnlyWithReviews(false);
+    setSortBy("rating");
+  };
+
+  // Skeleton Loading
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-12">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+      <div className="p-4 sm:p-6 lg:p-8">
+        <div className="mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+            Buscar oficinas perto de você
+          </h1>
+          <p className="text-gray-600">Encontre a oficina perfeita para seu veículo</p>
+        </div>
+
+        {/* Skeleton Filters */}
+        <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="h-12 bg-gray-200 rounded-xl animate-pulse" />
+            ))}
+          </div>
+        </div>
+
+        {/* Skeleton Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+            <div key={i} className="bg-white rounded-2xl overflow-hidden shadow-sm">
+              <div className="h-48 bg-gray-200 animate-pulse" />
+              <div className="p-4 space-y-3">
+                <div className="h-6 bg-gray-200 rounded animate-pulse" />
+                <div className="h-4 bg-gray-200 rounded animate-pulse w-2/3" />
+                <div className="h-10 bg-gray-200 rounded-xl animate-pulse" />
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
 
   return (
     <div className="p-4 sm:p-6 lg:p-8">
-      <div className="space-y-6 sm:space-y-8">
-        {/* Header padrão */}
-        <div className="mb-6 sm:mb-8">
-          <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Buscar Oficinas</p>
-          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">Buscar Oficinas</h1>
-        </div>
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+          🔍 Buscar oficinas perto de você
+        </h1>
+        <p className="text-gray-600">Encontre a oficina perfeita para seu veículo</p>
+      </div>
 
-        {/* Campo de Busca Premium */}
-        <div className="bg-white rounded-2xl shadow-2xl p-8 border-2 border-orange-100 mb-8">
-          <div className="relative mb-6">
-            <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-6 h-6 text-orange-400" />
+      {/* Filtros */}
+      <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-100 mb-6">
+        {/* Primeira linha: Busca, Estado, Especialidade */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+          {/* Busca */}
+          <div className="relative sm:col-span-2">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
             <input
               type="text"
-              placeholder="Buscar por nome, cidade ou serviço..."
-              className="w-full h-14 pl-16 pr-6 text-lg border-2 border-orange-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all font-medium shadow-lg"
+              placeholder="Buscar por nome ou cidade..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-12 pr-4 py-3 bg-gray-50 border-0 rounded-xl text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all"
             />
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Select value={selectedState} onValueChange={setSelectedState}>
-              <SelectTrigger className="h-12 border-2 border-orange-200 focus:border-orange-500 font-medium">
-                <SelectValue placeholder="Selecione o Estado" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Todos os estados</SelectItem>
-                {ESTADOS_BRASILEIROS.map((estado) => (
-                  <SelectItem key={estado} value={estado}>
-                    {estado}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            <Input
-              placeholder="Digite a cidade..."
-              value={selectedCity}
-              onChange={(e) => setSelectedCity(e.target.value)}
-              className="h-12 border-2 border-orange-200 focus:border-orange-500 font-medium"
+          
+          {/* Estado */}
+          <select
+            value={selectedState}
+            onChange={(e) => setSelectedState(e.target.value)}
+            className="px-4 py-3 bg-gray-50 border-0 rounded-xl text-gray-900 focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all cursor-pointer"
+          >
+            <option value="">Todos os estados</option>
+            {ESTADOS_BRASILEIROS.map((estado) => (
+              <option key={estado} value={estado}>
+                {estado}
+              </option>
+            ))}
+          </select>
+          
+          {/* Especialidade */}
+          <select
+            value={selectedSpecialty}
+            onChange={(e) => setSelectedSpecialty(e.target.value)}
+            className="px-4 py-3 bg-gray-50 border-0 rounded-xl text-gray-900 focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all cursor-pointer"
+          >
+            <option value="">Todas especialidades</option>
+            {ESPECIALIDADES.map((esp) => (
+              <option key={esp} value={esp}>
+                {esp}
+              </option>
+            ))}
+          </select>
+        </div>
+        
+        {/* Segunda linha: Toggle + Ordenar */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-4 border-t border-gray-100">
+          <label className="flex items-center gap-2 cursor-pointer group">
+            <input
+              type="checkbox"
+              checked={onlyWithReviews}
+              onChange={(e) => setOnlyWithReviews(e.target.checked)}
+              className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
             />
+            <span className="text-sm text-gray-600 group-hover:text-gray-900 transition-colors">
+              Só oficinas com avaliações
+            </span>
+          </label>
+          
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-gray-500">Ordenar:</span>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as any)}
+              className="px-4 py-2 bg-gray-50 border-0 rounded-xl text-sm text-gray-900 focus:ring-2 focus:ring-blue-500 cursor-pointer"
+            >
+              <option value="rating">Mais avaliadas</option>
+              <option value="reviews">Mais reviews</option>
+              <option value="name">Nome A-Z</option>
+            </select>
           </div>
         </div>
+      </div>
 
-        {/* Lista de Oficinas Premium */}
-        {filteredWorkshops.length === 0 ? (
-          <div className="bg-white rounded-2xl shadow-2xl border-2 border-orange-100 p-16 text-center">
-            <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gradient-to-br from-orange-100 to-amber-200 flex items-center justify-center">
-              <Building2 className="w-12 h-12 text-orange-600" />
-            </div>
-            <h3 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent mb-3">
-              Nenhuma oficina encontrada
-            </h3>
-            <p className="text-gray-600 mb-6 max-w-md mx-auto">
-              Tente ajustar os filtros de busca ou remover alguns critérios.
-            </p>
-            <Button
-              onClick={() => {
-                setSearchTerm("");
-                setSelectedState("");
-                setSelectedCity("");
-              }}
-              className="bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 font-bold shadow-lg"
-            >
-              Limpar Filtros
-            </Button>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredWorkshops.map((workshop, index) => (
-              <div
-                key={workshop.id}
-                className="bg-white rounded-2xl shadow-2xl border-2 border-orange-100 hover:shadow-orange-200/50 hover:scale-105 transition-all duration-300 overflow-hidden"
-                style={{ animationDelay: `${index * 50}ms` }}
-              >
-                {/* Header do Card */}
-                <div className="bg-gradient-to-r from-orange-500 to-amber-600 p-6 text-white relative">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <h3 className="text-2xl font-bold mb-2">{workshop.name}</h3>
-                      {workshop.city && workshop.state && (
-                        <div className="flex items-center gap-2 text-orange-50">
-                          <MapPin className="h-4 w-4" />
-                          <span className="font-medium">{workshop.city}, {workshop.state}</span>
-                        </div>
-                      )}
-                    </div>
-                    {workshop.plan_type === "pro" && (
-                      <Badge className="bg-yellow-400 text-yellow-900 font-bold border-0">
-                        ⭐ PRO
-                      </Badge>
-                    )}
-                  </div>
-                </div>
-
-                {/* Corpo do Card */}
-                <div className="p-6 space-y-4">
-                  {/* Descrição */}
-                  {workshop.description && (
-                    <p className="text-gray-600 line-clamp-2 leading-relaxed">
-                      {workshop.description}
-                    </p>
-                  )}
-
-                  {/* Avaliação */}
-                  {(workshop.rating || workshop.average_rating) && (
-                    <div className="flex items-center gap-3 p-3 bg-gradient-to-br from-yellow-50 to-amber-50 rounded-xl border-2 border-yellow-200">
-                      <StarRating
-                        rating={workshop.rating || workshop.average_rating || 0}
-                        size="md"
-                        showCount={true}
-                        count={workshop.reviews_count || 0}
-                      />
-                    </div>
-                  )}
-
-                  {/* Contato */}
-                  <div className="space-y-3">
-                    {workshop.phone && (
-                      <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
-                        <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-amber-600 rounded-lg flex items-center justify-center">
-                          <Phone className="h-5 w-5 text-white" />
-                        </div>
-                        <span className="font-medium text-gray-700">{workshop.phone}</span>
-                      </div>
-                    )}
-                    {workshop.email && (
-                      <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
-                        <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-sky-600 rounded-lg flex items-center justify-center">
-                          <Mail className="h-5 w-5 text-white" />
-                        </div>
-                        <span className="font-medium text-gray-700 truncate">{workshop.email}</span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Especialidades */}
-                  {workshop.specialties && workshop.specialties.length > 0 && (
-                    <div className="flex flex-wrap gap-2">
-                      {workshop.specialties.slice(0, 3).map((specialty, index) => (
-                        <Badge key={index} className="bg-gradient-to-r from-orange-500 to-amber-600 text-white font-bold border-0">
-                          {specialty}
-                        </Badge>
-                      ))}
-                      {workshop.specialties.length > 3 && (
-                        <Badge className="bg-gray-600 text-white font-bold border-0">
-                          +{workshop.specialties.length - 3}
-                        </Badge>
-                      )}
-                    </div>
-                  )}
-
-                  {/* Botões Premium */}
-                  {/* Botões Premium */}
-                  <div className="flex gap-3 pt-4">
-                    <Link href={`/motorista/oficinas/${workshop.id}`} className="flex-1">
-                      <Button className="w-full bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 font-bold shadow-lg" size="lg">
-                        Ver Detalhes
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Contador de resultados */}
-        {!loading && filteredWorkshops.length > 0 && (
-          <div className="mt-8 text-center text-gray-600">
-            Mostrando {filteredWorkshops.length} oficina(s)
-          </div>
+      {/* Contador de resultados */}
+      <div className="mb-6 flex items-center justify-between">
+        <p className="text-gray-600">
+          <span className="font-semibold text-gray-900">{filteredWorkshops.length}</span>{" "}
+          {filteredWorkshops.length === 1 ? "oficina encontrada" : "oficinas encontradas"}
+        </p>
+        
+        {(searchTerm || selectedState || selectedSpecialty || onlyWithReviews) && (
+          <button
+            onClick={clearFilters}
+            className="text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors"
+          >
+            Limpar filtros
+          </button>
         )}
       </div>
+
+      {/* Grid de Oficinas */}
+      {filteredWorkshops.length === 0 ? (
+        <div className="text-center py-16">
+          <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Search className="w-10 h-10 text-gray-300" />
+          </div>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">Nenhuma oficina encontrada</h3>
+          <p className="text-gray-500 mb-6">Tente ajustar os filtros de busca</p>
+          <button
+            onClick={clearFilters}
+            className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-colors"
+          >
+            Limpar filtros
+          </button>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {filteredWorkshops.map((workshop) => (
+            <Link
+              key={workshop.id}
+              href={`/motorista/oficinas/${workshop.id}`}
+              className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer group"
+            >
+              {/* Imagem/Placeholder */}
+              <div className="relative h-48 bg-gradient-to-br from-blue-100 to-blue-200 overflow-hidden">
+                {workshop.logo_url ? (
+                  <Image
+                    src={workshop.logo_url}
+                    alt={workshop.name}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                ) : (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Wrench className="w-16 h-16 text-blue-300 group-hover:scale-110 transition-transform duration-300" />
+                  </div>
+                )}
+                
+                {/* Badge PRO */}
+                {workshop.plan_type === "pro" && (
+                  <span className="absolute top-3 left-3 px-2.5 py-1 bg-yellow-400 text-yellow-900 text-xs font-bold rounded-full shadow-lg">
+                    ⭐ PRO
+                  </span>
+                )}
+                
+                {/* Favoritar (futuro) */}
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    // TODO: Implementar favoritos
+                  }}
+                  className="absolute top-3 right-3 p-2 bg-white/90 hover:bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                >
+                  <Heart className="w-5 h-5 text-gray-600 hover:text-red-500 transition-colors" />
+                </button>
+              </div>
+
+              {/* Conteúdo */}
+              <div className="p-4">
+                {/* Header: Nome + Estrelas */}
+                <div className="flex items-start justify-between gap-2 mb-2">
+                  <h3 className="font-semibold text-gray-900 line-clamp-1 group-hover:text-blue-600 transition-colors">
+                    {workshop.name}
+                  </h3>
+                  {workshop.rating && workshop.rating > 0 ? (
+                    <div className="flex items-center gap-1 text-sm flex-shrink-0">
+                      <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                      <span className="font-medium">{workshop.rating.toFixed(1)}</span>
+                      <span className="text-gray-400">({workshop.reviews_count || 0})</span>
+                    </div>
+                  ) : (
+                    <span className="text-xs text-gray-400 flex-shrink-0">Novo</span>
+                  )}
+                </div>
+
+                {/* Localização */}
+                <p className="text-sm text-gray-500 mb-3 flex items-center gap-1">
+                  <MapPin className="w-4 h-4 flex-shrink-0" />
+                  <span className="line-clamp-1">
+                    {workshop.city}, {workshop.state}
+                  </span>
+                </p>
+
+                {/* Especialidades (badges) */}
+                {workshop.specialties && workshop.specialties.length > 0 && (
+                  <div className="flex flex-wrap gap-1 mb-4 min-h-[24px]">
+                    {workshop.specialties.slice(0, 3).map((spec: string, i: number) => (
+                      <span
+                        key={i}
+                        className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full"
+                      >
+                        {spec}
+                      </span>
+                    ))}
+                    {workshop.specialties.length > 3 && (
+                      <span className="text-xs text-gray-400 self-center">
+                        +{workshop.specialties.length - 3}
+                      </span>
+                    )}
+                  </div>
+                )}
+
+                {/* Descrição (se houver) */}
+                {workshop.description && (
+                  <p className="text-sm text-gray-500 line-clamp-2 mb-4">
+                    {workshop.description}
+                  </p>
+                )}
+
+                {/* Botão */}
+                <button className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-all group-hover:shadow-lg">
+                  Ver detalhes
+                </button>
+              </div>
+            </Link>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
-

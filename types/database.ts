@@ -39,6 +39,7 @@ export interface Workshop {
   total_reviews?: number;
   rating?: number;
   reviews_count?: number;
+  logo_url?: string;
   created_at: string;
   updated_at?: string;
 }
