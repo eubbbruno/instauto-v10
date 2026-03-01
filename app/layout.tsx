@@ -3,6 +3,7 @@ import { Syne, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { Toaster } from "@/components/ui/toaster";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 const syne = Syne({ 
   subsets: ["latin"],
@@ -47,7 +48,7 @@ export const metadata: Metadata = {
     description: "Encontre oficinas mecânicas de confiança. Compare orçamentos e agende serviços.",
     images: [
       {
-        url: "/og-image.png",
+        url: "/api/og",
         width: 1200,
         height: 630,
         alt: "Instauto - Oficinas Mecânicas",
@@ -58,7 +59,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Instauto - Encontre a Melhor Oficina Mecânica",
     description: "Encontre oficinas mecânicas de confiança. Compare orçamentos e agende serviços.",
-    images: ["/og-image.png"],
+    images: ["/api/og"],
   },
   icons: {
     icon: [
@@ -71,6 +72,9 @@ export const metadata: Metadata = {
     ],
   },
   manifest: "/manifest.json",
+  verification: {
+    google: "ADICIONAR_CODIGO_GOOGLE_SEARCH_CONSOLE",
+  },
 };
 
 export default function RootLayout({
@@ -81,6 +85,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <head>
+        <GoogleAnalytics />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://nzvvkbvmyttlixswwaqw.supabase.co" />
