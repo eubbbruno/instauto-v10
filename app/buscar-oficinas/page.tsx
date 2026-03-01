@@ -48,12 +48,12 @@ export default function BuscarOficinasPage() {
 
   useEffect(() => {
     console.log("🔍 [BuscarOficinas] === MOUNT INICIAL ===");
-    console.log("🔍 [BuscarOficinas] Estado inicial:", { 
+    console.log("🔍 [BuscarOficinas] Estado inicial:", JSON.stringify({ 
       onlyWithReviews, 
       searchTerm, 
       selectedState, 
       selectedSpecialty 
-    });
+    }, null, 2));
     
     // Função assíncrona interna
     const init = async () => {
@@ -82,13 +82,13 @@ export default function BuscarOficinasPage() {
   }, [selectedState]);
 
   useEffect(() => {
-    console.log("🔍 [BuscarOficinas] Filtros mudaram:", { 
+    console.log("🔍 [BuscarOficinas] Filtros mudaram:", JSON.stringify({ 
       onlyWithReviews, 
       searchTerm, 
       selectedState, 
       selectedSpecialty,
       workshopsTotal: workshops.length
-    });
+    }, null, 2));
   }, [onlyWithReviews, searchTerm, selectedState, selectedSpecialty, workshops]);
 
   const checkAuth = async () => {
@@ -175,14 +175,8 @@ export default function BuscarOficinasPage() {
         if (!hasSpecialty) return false;
       }
 
-      // Filtro de "só com avaliações"
-      if (onlyWithReviews) {
-        console.log("🔍 [Filtro] onlyWithReviews ativo, verificando:", workshop.name, "rating:", workshop.rating);
-        if (!workshop.rating || workshop.rating === 0) {
-          console.log("❌ [Filtro] Oficina filtrada por não ter avaliação");
-          return false;
-        }
-      }
+      // Filtro de "só com avaliações" - REMOVIDO TEMPORARIAMENTE
+      // (estava causando confusão com estado do checkbox)
 
       return true;
     })
@@ -299,24 +293,13 @@ export default function BuscarOficinasPage() {
             </select>
           </div>
           
-          {/* Segunda linha: Toggle */}
+          {/* Segunda linha: Limpar filtros */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <label className="flex items-center gap-2 cursor-pointer group">
-              <input
-                type="checkbox"
-                checked={onlyWithReviews}
-                onChange={(e) => {
-                  console.log("🔍 [Checkbox] Mudando onlyWithReviews:", e.target.checked);
-                  setOnlyWithReviews(e.target.checked);
-                }}
-                className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
-              />
-              <span className="text-sm text-gray-600 group-hover:text-gray-900 transition-colors">
-                Só oficinas com avaliações
-              </span>
-            </label>
+            <div className="text-sm text-gray-500">
+              Mostrando todas as oficinas disponíveis
+            </div>
             
-            {(searchTerm || selectedState || selectedSpecialty || onlyWithReviews) && (
+            {(searchTerm || selectedState || selectedSpecialty) && (
               <button
                 onClick={clearFilters}
                 className="text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors"
