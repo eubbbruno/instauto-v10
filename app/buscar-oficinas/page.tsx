@@ -45,12 +45,18 @@ export default function BuscarOficinasPage() {
   const supabase = createClient();
 
   useEffect(() => {
+    // Primeiro verifica auth (opcional)
     checkAuth();
+    
+    // Depois carrega oficinas (independente de auth)
     loadWorkshops();
   }, []);
 
   useEffect(() => {
-    loadWorkshops();
+    // Recarrega quando muda o estado
+    if (!loading) {
+      loadWorkshops();
+    }
   }, [selectedState]);
 
   const checkAuth = async () => {
@@ -61,6 +67,7 @@ export default function BuscarOficinasPage() {
   const loadWorkshops = async () => {
     try {
       setLoading(true);
+      console.log("🔍 [BuscarOficinas] Iniciando busca de oficinas públicas...");
 
       let query = supabase
         .from("workshops")
@@ -68,16 +75,30 @@ export default function BuscarOficinasPage() {
         .eq("is_public", true);
 
       if (selectedState) {
+        console.log("🔍 [BuscarOficinas] Filtrando por estado:", selectedState);
         query = query.eq("state", selectedState);
       }
 
-      const { data, error } = await query.limit(100);
+      const { data, error } = await query
+        .order("rating", { ascending: false, nullsFirst: false })
+        .limit(100);
 
-      if (error) throw error;
+      console.log("🔍 [BuscarOficinas] Resultado:", { 
+        count: data?.length, 
+        error: error?.message,
+        sample: data?.[0]?.name 
+      });
+
+      if (error) {
+        console.error("❌ [BuscarOficinas] Erro:", error);
+        throw error;
+      }
       
       setWorkshops(data || []);
+      console.log("✅ [BuscarOficinas] Oficinas carregadas:", data?.length || 0);
     } catch (error: any) {
-      console.error("❌ [Oficinas] Erro ao carregar:", error);
+      console.error("❌ [BuscarOficinas] Erro ao carregar:", error);
+      setWorkshops([]);
     } finally {
       setLoading(false);
     }
@@ -251,10 +272,38 @@ export default function BuscarOficinasPage() {
 
       {/* Contador de resultados */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <p className="text-gray-600">
-          <span className="font-semibold text-gray-900">{filteredWorkshops.length}</span>{" "}
-          {filteredWorkshops.length === 1 ? "oficina encontrada" : "oficinas encontradas"}
-        </p>
+        <div className="flex items-center justify-between">
+          <p className="text-gray-600">
+            <span className="font-semibold text-gray-900">{filteredWorkshops.length}</span>{" "}
+            {filteredWorkshops.length === 1 ? "oficina encontrada" : "oficinas encontradas"}
+          </p>
+          
+          {/* Debug Info */}
+          <div className="text-xs text-gray-400">
+            Total carregadas: {workshops.length} | Loading: {loading ? "Sim" : "Não"}
+          </div>
+        </div>
+
+        {/* Debug Panel - Temporário */}
+        {!loading && workshops.length === 0 && (
+          <div className="mt-4 p-4 bg-yellow-50 border-2 border-yellow-200 rounded-xl">
+            <p className="text-sm font-semibold text-yellow-900 mb-2">
+              🔍 Debug: Nenhuma oficina carregada do banco
+            </p>
+            <p className="text-xs text-yellow-700 mb-2">
+              Possíveis causas:
+            </p>
+            <ul className="text-xs text-yellow-700 space-y-1 list-disc list-inside">
+              <li>Tabela workshops está vazia</li>
+              <li>Nenhuma oficina tem is_public = true</li>
+              <li>RLS está bloqueando (verificar policies)</li>
+              <li>Erro de conexão com Supabase</li>
+            </ul>
+            <p className="text-xs text-yellow-700 mt-3">
+              Verifique o console do navegador (F12) para mais detalhes.
+            </p>
+          </div>
+        )}
       </section>
 
       {/* Grid de Oficinas */}
