@@ -45,6 +45,13 @@ export default function BuscarOficinasPage() {
   const supabase = createClient();
 
   useEffect(() => {
+    console.log("🔍 [BuscarOficinas] Estado inicial:", { 
+      onlyWithReviews, 
+      searchTerm, 
+      selectedState, 
+      selectedSpecialty 
+    });
+    
     // Primeiro verifica auth (opcional)
     checkAuth();
     
@@ -58,6 +65,16 @@ export default function BuscarOficinasPage() {
       loadWorkshops();
     }
   }, [selectedState]);
+
+  useEffect(() => {
+    console.log("🔍 [BuscarOficinas] Filtros mudaram:", { 
+      onlyWithReviews, 
+      searchTerm, 
+      selectedState, 
+      selectedSpecialty,
+      workshopsTotal: workshops.length
+    });
+  }, [onlyWithReviews, searchTerm, selectedState, selectedSpecialty, workshops]);
 
   const checkAuth = async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -125,8 +142,12 @@ export default function BuscarOficinasPage() {
       }
 
       // Filtro de "só com avaliações"
-      if (onlyWithReviews && (!workshop.rating || workshop.rating === 0)) {
-        return false;
+      if (onlyWithReviews) {
+        console.log("🔍 [Filtro] onlyWithReviews ativo, verificando:", workshop.name, "rating:", workshop.rating);
+        if (!workshop.rating || workshop.rating === 0) {
+          console.log("❌ [Filtro] Oficina filtrada por não ter avaliação");
+          return false;
+        }
       }
 
       return true;
@@ -250,7 +271,10 @@ export default function BuscarOficinasPage() {
               <input
                 type="checkbox"
                 checked={onlyWithReviews}
-                onChange={(e) => setOnlyWithReviews(e.target.checked)}
+                onChange={(e) => {
+                  console.log("🔍 [Checkbox] Mudando onlyWithReviews:", e.target.checked);
+                  setOnlyWithReviews(e.target.checked);
+                }}
                 className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
               />
               <span className="text-sm text-gray-600 group-hover:text-gray-900 transition-colors">
