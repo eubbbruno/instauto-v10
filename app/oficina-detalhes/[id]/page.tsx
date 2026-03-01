@@ -26,6 +26,15 @@ export default function OficinaDetalhesPage() {
 
   const loadWorkshopData = async () => {
     try {
+      console.log("🔍 [Detalhes] Buscando oficina ID:", workshopId);
+      
+      if (!workshopId) {
+        console.error("❌ [Detalhes] ID da oficina não fornecido");
+        setWorkshop(null);
+        setLoading(false);
+        return;
+      }
+
       // Carregar dados da oficina
       const { data: workshopData, error: workshopError } = await supabase
         .from("workshops")
@@ -34,8 +43,22 @@ export default function OficinaDetalhesPage() {
         .eq("is_public", true)
         .single();
 
-      if (workshopError) throw workshopError;
+      console.log("🔍 [Detalhes] Resultado workshop:", { workshopData, workshopError });
+
+      if (workshopError) {
+        console.error("❌ [Detalhes] Erro ao buscar oficina:", workshopError);
+        throw workshopError;
+      }
+      
+      if (!workshopData) {
+        console.error("❌ [Detalhes] Oficina não encontrada ou não está pública");
+        setWorkshop(null);
+        setLoading(false);
+        return;
+      }
+
       setWorkshop(workshopData);
+      console.log("✅ [Detalhes] Oficina carregada:", workshopData.name);
 
       // Carregar avaliações
       const { data: reviewsData, error: reviewsError } = await supabase
@@ -46,11 +69,16 @@ export default function OficinaDetalhesPage() {
         .order("created_at", { ascending: false })
         .limit(10);
 
-      if (reviewsError) throw reviewsError;
-      setReviews(reviewsData || []);
+      console.log("🔍 [Detalhes] Avaliações:", { count: reviewsData?.length, reviewsError });
+
+      if (reviewsError) {
+        console.error("⚠️ [Detalhes] Erro ao buscar avaliações:", reviewsError);
+        // Não bloqueia - continua sem avaliações
+      } else {
+        setReviews(reviewsData || []);
+      }
     } catch (error) {
-      console.error("Erro ao carregar dados:", error);
-      // NÃO redirecionar - apenas mostrar erro
+      console.error("❌ [Detalhes] Erro ao carregar dados:", error);
       setWorkshop(null);
     } finally {
       setLoading(false);

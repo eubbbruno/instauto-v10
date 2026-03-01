@@ -196,14 +196,14 @@ export default function SobrePage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="/cadastro-motorista"
+              href="/login?tipo=motorista"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all"
             >
               Cadastrar como Motorista
               <ArrowRight className="w-5 h-5" />
             </Link>
             <Link
-              href="/cadastro-oficina"
+              href="/login?tipo=oficina"
               className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-bold rounded-xl transition-all"
             >
               Cadastrar Minha Oficina

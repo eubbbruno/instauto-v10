@@ -75,7 +75,7 @@ export default function UserTypeModal({
         <div className="grid md:grid-cols-2 gap-6">
           {/* Motorista */}
           <Link
-            href={action === "login" ? "/login-motorista" : "/cadastro-motorista"}
+            href="/login?tipo=motorista"
             onClick={onClose}
           >
             <div className="group bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl border-2 border-blue-200 hover:border-blue-400 transition-all cursor-pointer hover:shadow-xl">
@@ -96,7 +96,7 @@ export default function UserTypeModal({
 
           {/* Oficina */}
           <Link
-            href={action === "login" ? "/login-oficina" : "/cadastro-oficina"}
+            href="/login?tipo=oficina"
             onClick={onClose}
           >
             <div className="group bg-gradient-to-br from-yellow-50 to-yellow-100 p-8 rounded-2xl border-2 border-yellow-200 hover:border-yellow-400 transition-all cursor-pointer hover:shadow-xl">

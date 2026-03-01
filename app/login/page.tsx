@@ -8,7 +8,14 @@ import { toast } from "sonner";
 import { createClient } from "@/lib/supabase";
 
 export default function LoginPage() {
-  const [userType, setUserType] = useState<"motorista" | "oficina">("motorista");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const redirectUrl = searchParams.get("redirect");
+  const tipoParam = searchParams.get("tipo"); // "motorista" ou "oficina"
+  
+  const [userType, setUserType] = useState<"motorista" | "oficina">(
+    tipoParam === "oficina" ? "oficina" : "motorista"
+  );
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,9 +24,6 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
 
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const redirectUrl = searchParams.get("redirect");
   const supabase = createClient();
 
   // Login com Email/Senha
