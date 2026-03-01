@@ -98,26 +98,26 @@ export function FipeConsult() {
   };
 
   return (
-    <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center">
-          <DollarSign className="w-5 h-5 text-green-600" />
+    <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-100">
+      <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-green-100 rounded-lg sm:rounded-xl flex items-center justify-center">
+          <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
         </div>
         <div>
-          <h2 className="text-lg font-semibold text-gray-900">Consulta Tabela FIPE</h2>
-          <p className="text-sm text-gray-500">Descubra o valor do seu veículo</p>
+          <h2 className="text-base sm:text-lg font-semibold text-gray-900">Consulta Tabela FIPE</h2>
+          <p className="text-xs sm:text-sm text-gray-500">Descubra o valor do seu veículo</p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6">
         {/* Marca */}
         <div>
-          <label className="text-sm font-medium text-gray-700 mb-1 block">Marca</label>
+          <label className="text-xs sm:text-sm font-medium text-gray-700 mb-1 block">Marca</label>
           <select
             value={selectedBrand}
             onChange={(e) => setSelectedBrand(e.target.value)}
             disabled={loadingBrands}
-            className="w-full px-4 py-3 bg-gray-50 border-0 rounded-xl text-sm focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-50 border-0 rounded-lg sm:rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-blue-500"
           >
             <option value="">Selecione a marca</option>
             {brands.map((brand) => (
@@ -130,12 +130,12 @@ export function FipeConsult() {
 
         {/* Modelo */}
         <div>
-          <label className="text-sm font-medium text-gray-700 mb-1 block">Modelo</label>
+          <label className="text-xs sm:text-sm font-medium text-gray-700 mb-1 block">Modelo</label>
           <select
             value={selectedModel}
             onChange={(e) => setSelectedModel(e.target.value)}
             disabled={!selectedBrand || models.length === 0}
-            className="w-full px-4 py-3 bg-gray-50 border-0 rounded-xl text-sm focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-50 border-0 rounded-lg sm:rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-blue-500"
           >
             <option value="">Selecione o modelo</option>
             {models.map((model) => (
@@ -148,12 +148,12 @@ export function FipeConsult() {
 
         {/* Ano */}
         <div>
-          <label className="text-sm font-medium text-gray-700 mb-1 block">Ano</label>
+          <label className="text-xs sm:text-sm font-medium text-gray-700 mb-1 block">Ano</label>
           <select
             value={selectedYear}
             onChange={(e) => setSelectedYear(e.target.value)}
             disabled={!selectedModel || years.length === 0}
-            className="w-full px-4 py-3 bg-gray-50 border-0 rounded-xl text-sm focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-gray-50 border-0 rounded-lg sm:rounded-xl text-xs sm:text-sm focus:ring-2 focus:ring-blue-500"
           >
             <option value="">Selecione o ano</option>
             {years.map((year) => (
@@ -168,16 +168,16 @@ export function FipeConsult() {
       <Button
         onClick={handleConsult}
         disabled={!selectedBrand || !selectedModel || !selectedYear || loading}
-        className="w-full bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-semibold py-3 rounded-xl"
+        className="w-full bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-semibold py-2 sm:py-3 rounded-lg sm:rounded-xl text-sm sm:text-base"
       >
         {loading ? (
           <>
-            <Loader2 className="w-5 h-5 animate-spin mr-2" />
+            <Loader2 className="w-4 h-4 sm:w-5 sm:h-5 animate-spin mr-2" />
             Consultando...
           </>
         ) : (
           <>
-            <Search className="w-5 h-5 mr-2" />
+            <Search className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
             Consultar Valor
           </>
         )}
@@ -185,32 +185,32 @@ export function FipeConsult() {
 
       {/* Resultado */}
       {result && (
-        <div className="mt-6 p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl border border-green-100">
-          <div className="text-center mb-4">
-            <p className="text-sm text-gray-600 mb-1">Valor FIPE</p>
-            <p className="text-4xl font-bold text-green-600">{result.Valor}</p>
+        <div className="mt-4 sm:mt-6 p-4 sm:p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl sm:rounded-2xl border border-green-100">
+          <div className="text-center mb-3 sm:mb-4">
+            <p className="text-xs sm:text-sm text-gray-600 mb-1">Valor FIPE</p>
+            <p className="text-2xl sm:text-3xl lg:text-4xl font-bold text-green-600">{result.Valor}</p>
             <p className="text-xs text-gray-500 mt-1">Ref: {result.MesReferencia}</p>
           </div>
           
-          <div className="grid grid-cols-3 gap-4 mt-4">
-            <div className="text-center p-3 bg-white rounded-xl">
-              <Car className="w-5 h-5 text-blue-600 mx-auto mb-1" />
+          <div className="grid grid-cols-3 gap-2 sm:gap-4 mt-3 sm:mt-4">
+            <div className="text-center p-2 sm:p-3 bg-white rounded-lg sm:rounded-xl">
+              <Car className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 mx-auto mb-1" />
               <p className="text-xs text-gray-500">Marca</p>
-              <p className="text-sm font-medium">{result.Marca}</p>
+              <p className="text-xs sm:text-sm font-medium">{result.Marca}</p>
             </div>
-            <div className="text-center p-3 bg-white rounded-xl">
-              <Calendar className="w-5 h-5 text-purple-600 mx-auto mb-1" />
+            <div className="text-center p-2 sm:p-3 bg-white rounded-lg sm:rounded-xl">
+              <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600 mx-auto mb-1" />
               <p className="text-xs text-gray-500">Ano</p>
-              <p className="text-sm font-medium">{result.AnoModelo}</p>
+              <p className="text-xs sm:text-sm font-medium">{result.AnoModelo}</p>
             </div>
-            <div className="text-center p-3 bg-white rounded-xl">
-              <Fuel className="w-5 h-5 text-orange-600 mx-auto mb-1" />
+            <div className="text-center p-2 sm:p-3 bg-white rounded-lg sm:rounded-xl">
+              <Fuel className="w-4 h-4 sm:w-5 sm:h-5 text-orange-600 mx-auto mb-1" />
               <p className="text-xs text-gray-500">Combustível</p>
-              <p className="text-sm font-medium">{result.Combustivel}</p>
+              <p className="text-xs sm:text-sm font-medium">{result.Combustivel}</p>
             </div>
           </div>
           
-          <p className="text-xs text-gray-400 text-center mt-4">
+          <p className="text-xs text-gray-400 text-center mt-3 sm:mt-4">
             Código FIPE: {result.CodigoFipe}
           </p>
         </div>

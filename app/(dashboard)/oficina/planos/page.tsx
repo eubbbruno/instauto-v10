@@ -213,11 +213,11 @@ export default function PlanosPage() {
     : 0;
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
+    <div className="p-4 sm:p-4 sm:p-6 lg:p-8">
       <div className="space-y-6 sm:space-y-8">
         <div className="mb-6 sm:mb-8">
           <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Planos</p>
-          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-base sm:text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
             Planos e Assinatura 👑
           </h1>
           <p className="text-gray-600">Escolha o melhor plano para sua oficina</p>
@@ -288,7 +288,7 @@ export default function PlanosPage() {
         <h2 className="text-2xl font-bold text-gray-900 mb-6">
           Compare os Planos
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:p-6">
           {/* Plano FREE */}
           <Card className={cn(
             "border-2 transition-all",
@@ -418,7 +418,7 @@ export default function PlanosPage() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:p-6">
               <BenefitCard
                 icon={<TrendingUp className="h-8 w-8 text-purple-600" />}
                 title="Cresça sem limites"

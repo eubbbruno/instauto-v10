@@ -231,13 +231,13 @@ export default function DespesasPage() {
   if (!user) return null;
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
+    <div className="p-4 sm:p-4 sm:p-6 lg:p-8">
       <div className="space-y-6 sm:space-y-8">
         {/* Header padrão */}
         <div className="mb-6 sm:mb-8">
           <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Despesas</p>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">Despesas</h1>
+            <h1 className="text-base sm:text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900">Despesas</h1>
             <Link href="/motorista/despesas/nova">
               <button className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-semibold rounded-xl shadow-lg shadow-yellow-400/30 flex items-center justify-center gap-2 transition-all">
                 <Plus className="w-5 h-5" />
@@ -248,8 +248,8 @@ export default function DespesasPage() {
         </div>
 
         {/* Stats Cards Premium */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white rounded-2xl shadow-2xl p-6 border-2 border-yellow-100 hover:shadow-yellow-200/50 hover:scale-105 transition-all duration-300">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:p-6 mb-8">
+          <div className="bg-white rounded-2xl shadow-2xl p-4 sm:p-6 border-2 border-yellow-100 hover:shadow-yellow-200/50 hover:scale-105 transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Total de Despesas</p>
@@ -261,7 +261,7 @@ export default function DespesasPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-2xl p-6 border-2 border-green-100 hover:shadow-green-200/50 hover:scale-105 transition-all duration-300">
+          <div className="bg-white rounded-2xl shadow-2xl p-4 sm:p-6 border-2 border-green-100 hover:shadow-green-200/50 hover:scale-105 transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Valor Total</p>
@@ -275,7 +275,7 @@ export default function DespesasPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-2xl p-6 border-2 border-orange-100 hover:shadow-orange-200/50 hover:scale-105 transition-all duration-300">
+          <div className="bg-white rounded-2xl shadow-2xl p-4 sm:p-6 border-2 border-orange-100 hover:shadow-orange-200/50 hover:scale-105 transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Média por Despesa</p>
@@ -292,8 +292,8 @@ export default function DespesasPage() {
 
         {/* Despesas por Categoria */}
         {Object.keys(stats.byCategory).length > 0 && (
-          <div className="bg-white rounded-2xl shadow-2xl p-6 border-2 border-yellow-100 mb-8">
-            <h3 className="text-xl font-bold bg-gradient-to-r from-yellow-600 to-amber-600 bg-clip-text text-transparent mb-4">Despesas por Categoria</h3>
+          <div className="bg-white rounded-2xl shadow-2xl p-4 sm:p-6 border-2 border-yellow-100 mb-8">
+            <h3 className="text-base sm:text-lg font-bold bg-gradient-to-r from-yellow-600 to-amber-600 bg-clip-text text-transparent mb-4">Despesas por Categoria</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {Object.entries(stats.byCategory).map(([category, amount]) => (
                 <div key={category} className="flex flex-col p-4 bg-gradient-to-br from-yellow-50 to-amber-50 rounded-xl border-2 border-yellow-200 hover:shadow-lg hover:scale-105 transition-all">
@@ -306,7 +306,7 @@ export default function DespesasPage() {
         )}
 
         {/* Filtros Premium */}
-        <div className="bg-white rounded-2xl shadow-2xl p-6 border-2 border-gray-100 mb-6">
+        <div className="bg-white rounded-2xl shadow-2xl p-4 sm:p-6 border-2 border-gray-100 mb-6">
           <div className="flex flex-col md:flex-row items-center gap-4">
             <div className="relative flex-grow w-full md:w-auto">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />

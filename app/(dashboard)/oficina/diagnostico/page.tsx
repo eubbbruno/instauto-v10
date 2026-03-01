@@ -244,11 +244,11 @@ function DiagnosticoContent() {
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
+    <div className="p-4 sm:p-4 sm:p-6 lg:p-8">
       <div className="space-y-6 sm:space-y-8">
         <div className="mb-6 sm:mb-8">
           <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Diagnóstico</p>
-          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-base sm:text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
             Diagnóstico com IA 🤖
           </h1>
           <p className="text-gray-600">Use inteligência artificial para diagnosticar problemas em veículos</p>
@@ -257,7 +257,7 @@ function DiagnosticoContent() {
       {/* Formulário de Diagnóstico */}
       <Card className="border-2">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-xl font-bold">
+          <CardTitle className="flex items-center gap-2 text-base sm:text-lg font-bold">
             <Sparkles className="h-6 w-6 text-purple-600" />
             Novo Diagnóstico
           </CardTitle>
@@ -348,13 +348,13 @@ Exemplo: 'O carro está fazendo um barulho de rangido ao frear, principalmente e
       {diagnosisResult && (
         <Card className="border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-blue-50">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-xl font-bold text-purple-900">
+            <CardTitle className="flex items-center gap-2 text-base sm:text-lg font-bold text-purple-900">
               <Sparkles className="h-6 w-6" />
               Diagnóstico Gerado
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="bg-white rounded-lg p-6 border-2 border-purple-200 shadow-lg">
+            <div className="bg-white rounded-lg p-4 sm:p-6 border-2 border-purple-200 shadow-lg">
               <div className="prose max-w-none">
                 <div className="whitespace-pre-wrap text-gray-800 leading-relaxed">
                   {diagnosisResult.diagnosis}
@@ -399,7 +399,7 @@ Exemplo: 'O carro está fazendo um barulho de rangido ao frear, principalmente e
       {/* Histórico de Diagnósticos */}
       <Card className="border-2">
         <CardHeader>
-          <CardTitle className="text-xl font-bold">Histórico de Diagnósticos</CardTitle>
+          <CardTitle className="text-base sm:text-lg font-bold">Histórico de Diagnósticos</CardTitle>
           <CardDescription>
             {diagnostics.length} diagnóstico{diagnostics.length !== 1 ? "s" : ""} realizado{diagnostics.length !== 1 ? "s" : ""}
           </CardDescription>

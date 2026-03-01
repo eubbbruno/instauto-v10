@@ -387,14 +387,14 @@ export default function EstoquePage() {
 
   return (
     <PlanGuard>
-      <div className="p-4 sm:p-6 lg:p-8">
+      <div className="p-4 sm:p-4 sm:p-6 lg:p-8">
         <div className="space-y-6 sm:space-y-8">
           {/* Header Premium */}
           <div className="mb-6 sm:mb-8">
             <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Estoque</p>
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">Estoque de Peças</h1>
+                <h1 className="text-base sm:text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">Estoque de Peças</h1>
                 <div className="flex items-center gap-3 flex-wrap">
                   <p className="text-gray-600">Gerencie o inventário da sua oficina</p>
                   <Badge className="bg-blue-100 text-blue-700 text-sm font-medium px-3 py-1 rounded-full">
@@ -418,8 +418,8 @@ export default function EstoquePage() {
           </div>
 
           {/* Cards de Resumo Premium */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card className="relative bg-white rounded-2xl p-6 border-2 border-orange-200 shadow-lg shadow-orange-500/20 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 overflow-hidden group">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:p-6">
+            <Card className="relative bg-white rounded-2xl p-4 sm:p-6 border-2 border-orange-200 shadow-lg shadow-orange-500/20 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 overflow-hidden group">
               <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-orange-400/20 to-amber-400/20 rounded-full blur-3xl -mr-16 -mt-16" />
               <CardHeader className="flex flex-row items-center justify-between pb-2 relative">
                 <CardTitle className="text-sm font-bold text-gray-600 uppercase tracking-wide">
@@ -437,7 +437,7 @@ export default function EstoquePage() {
               </CardContent>
             </Card>
 
-            <Card className="relative bg-white rounded-2xl p-6 border-2 border-yellow-200 shadow-lg shadow-yellow-500/20 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 overflow-hidden group">
+            <Card className="relative bg-white rounded-2xl p-4 sm:p-6 border-2 border-yellow-200 shadow-lg shadow-yellow-500/20 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 overflow-hidden group">
               <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-yellow-400/20 to-orange-400/20 rounded-full blur-3xl -mr-16 -mt-16" />
               <CardHeader className="flex flex-row items-center justify-between pb-2 relative">
                 <CardTitle className="text-sm font-bold text-gray-600 uppercase tracking-wide">
@@ -455,7 +455,7 @@ export default function EstoquePage() {
               </CardContent>
             </Card>
 
-            <Card className="relative bg-white rounded-2xl p-6 border-2 border-green-200 shadow-lg shadow-green-500/20 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 overflow-hidden group">
+            <Card className="relative bg-white rounded-2xl p-4 sm:p-6 border-2 border-green-200 shadow-lg shadow-green-500/20 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 overflow-hidden group">
               <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-400/20 to-emerald-400/20 rounded-full blur-3xl -mr-16 -mt-16" />
               <CardHeader className="flex flex-row items-center justify-between pb-2 relative">
                 <CardTitle className="text-sm font-bold text-gray-600 uppercase tracking-wide">
@@ -501,7 +501,7 @@ export default function EstoquePage() {
                 <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-orange-100 to-amber-200 flex items-center justify-center">
                   <Package className="h-10 w-10 text-orange-600" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2">
                   {searchTerm ? "Nenhuma peça encontrada" : "Nenhuma peça cadastrada"}
                 </h3>
                 <p className="text-gray-600 mb-6 max-w-md mx-auto">

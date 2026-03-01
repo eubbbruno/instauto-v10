@@ -199,14 +199,14 @@ function VeiculosContent() {
   );
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
+    <div className="p-4 sm:p-4 sm:p-6 lg:p-8">
       <div className="space-y-6 sm:space-y-8">
         {/* Header Premium */}
         <div className="mb-6 sm:mb-8">
           <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Veículos</p>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">Veículos</h1>
+              <h1 className="text-base sm:text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">Veículos</h1>
               <div className="flex items-center gap-3 flex-wrap">
                 <p className="text-gray-600">Gerencie os veículos dos seus clientes</p>
                 <Badge className="bg-blue-100 text-blue-700 text-sm font-medium px-3 py-1 rounded-full">

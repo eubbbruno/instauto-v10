@@ -107,13 +107,13 @@ export default function PromocoesPage() {
   const regularPromotions = filteredPromotions.filter(p => !p.featured);
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
+    <div className="p-4 sm:p-4 sm:p-6 lg:p-8">
       <div className="space-y-6 sm:space-y-8">
         {/* Header padrão */}
         <div className="mb-6 sm:mb-8">
           <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Promoções</p>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">Promoções Exclusivas</h1>
+            <h1 className="text-base sm:text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900">Promoções Exclusivas</h1>
             <span className="px-3 py-1 bg-blue-100 text-blue-700 text-sm font-medium rounded-full w-fit">
               {filteredPromotions.length} ofertas ativas
             </span>
@@ -121,8 +121,8 @@ export default function PromocoesPage() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-md p-6 text-white">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 sm:p-6 mb-8">
+          <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-md p-4 sm:p-6 text-white">
             <div className="flex items-center justify-between mb-2">
               <p className="text-blue-100 text-sm">Total de Promoções</p>
               <Gift className="w-5 h-5 text-blue-100" />
@@ -130,7 +130,7 @@ export default function PromocoesPage() {
             <p className="text-3xl font-bold">{promotions.length}</p>
           </div>
 
-          <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-md p-6 text-white">
+          <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-md p-4 sm:p-6 text-white">
             <div className="flex items-center justify-between mb-2">
               <p className="text-green-100 text-sm">Economia Média</p>
               <TrendingUp className="w-5 h-5 text-green-100" />
@@ -138,7 +138,7 @@ export default function PromocoesPage() {
             <p className="text-3xl font-bold">16%</p>
           </div>
 
-          <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl shadow-md p-6 text-white">
+          <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl shadow-md p-4 sm:p-6 text-white">
             <div className="flex items-center justify-between mb-2">
               <p className="text-purple-100 text-sm">Parceiros</p>
               <Users className="w-5 h-5 text-purple-100" />
@@ -146,7 +146,7 @@ export default function PromocoesPage() {
             <p className="text-3xl font-bold">8</p>
           </div>
 
-          <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl shadow-md p-6 text-white">
+          <div className="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl shadow-md p-4 sm:p-6 text-white">
             <div className="flex items-center justify-between mb-2">
               <p className="text-orange-100 text-sm">Categorias</p>
               <Package className="w-5 h-5 text-orange-100" />
@@ -156,7 +156,7 @@ export default function PromocoesPage() {
         </div>
 
         {/* Search and Filters */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6 mb-8">
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex-1">
               <div className="relative">
@@ -195,11 +195,11 @@ export default function PromocoesPage() {
               <Star className="w-6 h-6 text-yellow-500" />
               Promoções em Destaque
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:p-6">
               {featuredPromotions.map((promo) => (
                 <div
                   key={promo.id}
-                  className={`bg-gradient-to-br ${promo.color} rounded-xl shadow-lg p-6 text-white hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer relative overflow-hidden`}
+                  className={`bg-gradient-to-br ${promo.color} rounded-xl shadow-lg p-4 sm:p-6 text-white hover:shadow-xl transition-all hover:-translate-y-1 cursor-pointer relative overflow-hidden`}
                 >
                   <div className="absolute top-0 right-0 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-bl-xl">
                     <span className="text-xs font-bold">DESTAQUE</span>
@@ -210,7 +210,7 @@ export default function PromocoesPage() {
                       {promo.discount} OFF
                     </span>
                   </div>
-                  <h3 className="text-xl font-bold mb-2">{promo.title}</h3>
+                  <h3 className="text-base sm:text-lg font-bold mb-2">{promo.title}</h3>
                   <p className="text-sm opacity-90 mb-4">{promo.description}</p>
                   <div className="flex items-center justify-between text-xs opacity-75 mb-4">
                     <span className="flex items-center gap-1">
@@ -239,11 +239,11 @@ export default function PromocoesPage() {
               <Tag className="w-6 h-6 text-blue-500" />
               Todas as Promoções
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:p-6">
               {regularPromotions.map((promo) => (
                 <div
                   key={promo.id}
-                  className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all hover:-translate-y-1 cursor-pointer"
+                  className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 sm:p-6 hover:shadow-md transition-all hover:-translate-y-1 cursor-pointer"
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div className="text-4xl">{promo.icon}</div>
@@ -277,7 +277,7 @@ export default function PromocoesPage() {
         {filteredPromotions.length === 0 && (
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
             <Gift className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-xl font-bold text-gray-900 mb-2">
+            <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2">
               Nenhuma promoção encontrada
             </h3>
             <p className="text-gray-600 mb-6">

@@ -483,17 +483,17 @@ export default function OficinaDashboard() {
       <OnboardingModal steps={oficinaSteps} storageKey="onboarding_oficina_done" />
       
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
-        <div className="p-4 sm:p-6 lg:p-8">
+        <div className="p-4 sm:p-4 sm:p-6 lg:p-8">
           {/* Header padrão */}
-          <div className="mb-6 sm:mb-8">
-            <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard</p>
-            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
+          <div className="mb-4 sm:mb-6">
+            <p className="text-xs text-gray-500 mb-1">Dashboard</p>
+            <h1 className="text-lg sm:text-base sm:text-lg lg:text-2xl font-bold text-gray-900">
               Bem-vindo de volta, {workshop?.name || 'Oficina'}! 👋
           </h1>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-3 sm:gap-4 lg:gap-4 sm:p-6 mb-6 sm:mb-4 sm:mb-6 lg:mb-8">
           <StatCard
             title="Orçamentos Pendentes"
             value={stats.quotes}
@@ -533,10 +533,10 @@ export default function OficinaDashboard() {
         </div>
 
         {/* Quick Actions */}
-        <Card className="mb-8 border-2 shadow-lg">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-xl">
-              <Sparkles className="h-6 w-6 text-purple-600" />
+        <Card className="mb-4 sm:mb-6 lg:mb-4 sm:mb-6 lg:mb-8 border-2 shadow-lg">
+          <CardHeader className="p-4 sm:p-4 sm:p-6">
+            <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+              <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-purple-600" />
               Ações Rápidas
             </CardTitle>
             <CardDescription>
@@ -547,28 +547,28 @@ export default function OficinaDashboard() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <Link href="/oficina/ordens">
                 <Button className="w-full h-24 flex flex-col gap-2 bg-gradient-to-br from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 shadow-lg shadow-purple-600/30">
-                  <Wrench className="h-6 w-6" />
+                  <Wrench className="h-5 w-5 sm:h-6 sm:w-6" />
                   <span className="font-bold">Nova OS</span>
                 </Button>
               </Link>
               
               <Link href="/oficina/clientes">
                 <Button className="w-full h-24 flex flex-col gap-2 bg-gradient-to-br from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 shadow-lg shadow-green-600/30">
-                  <Users className="h-6 w-6" />
+                  <Users className="h-5 w-5 sm:h-6 sm:w-6" />
                   <span className="font-bold">Novo Cliente</span>
                 </Button>
               </Link>
               
               <Link href="/oficina/veiculos">
                 <Button className="w-full h-24 flex flex-col gap-2 bg-gradient-to-br from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg shadow-blue-600/30">
-                  <Car className="h-6 w-6" />
+                  <Car className="h-5 w-5 sm:h-6 sm:w-6" />
                   <span className="font-bold">Novo Veículo</span>
                 </Button>
               </Link>
               
               <Link href="/oficina/agenda">
                 <Button className="w-full h-24 flex flex-col gap-2 bg-gradient-to-br from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-gray-900 shadow-lg shadow-yellow-500/30">
-                  <Calendar className="h-6 w-6" />
+                  <Calendar className="h-5 w-5 sm:h-6 sm:w-6" />
                   <span className="font-bold">Agendar</span>
                 </Button>
               </Link>
@@ -581,9 +581,9 @@ export default function OficinaDashboard() {
           <div className="lg:col-span-2 space-y-8">
             {/* Revenue Chart */}
             <Card className="border-2 shadow-lg">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-xl">
-                  <TrendingUp className="h-6 w-6 text-green-600" />
+              <CardHeader className="p-4 sm:p-4 sm:p-6">
+                <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                  <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
                   Receita dos Últimos 7 Dias
                 </CardTitle>
                 <CardDescription>
@@ -640,17 +640,17 @@ export default function OficinaDashboard() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
-                    <CardTitle className="flex items-center gap-2 text-xl">
-                      <Star className="h-6 w-6 text-yellow-500 fill-yellow-500" />
+                    <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                      <Star className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-500 fill-yellow-500" />
                       Avaliações
                     </CardTitle>
-                    <CardDescription>
+                    <CardDescription className="text-xs sm:text-sm">
                       O que seus clientes estão dizendo
                     </CardDescription>
                   </div>
                   {workshop?.rating && (
                     <div className="text-center">
-                      <div className="text-3xl font-bold text-gray-900 mb-1">
+                      <div className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">
                         {workshop.rating.toFixed(1)}
                       </div>
                       <StarRating
@@ -711,8 +711,8 @@ export default function OficinaDashboard() {
             {/* Recent Activities */}
             <Card className="border-2 shadow-lg">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-xl">
-                  <Clock className="h-6 w-6 text-blue-600" />
+                <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
+                  <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
                   Atividades Recentes
                 </CardTitle>
                 <CardDescription>
@@ -810,7 +810,7 @@ export default function OficinaDashboard() {
               <Card className="border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-blue-50 shadow-xl">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-lg text-purple-900">
-                    <Crown className="h-6 w-6 text-yellow-500" />
+                    <Crown className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-500" />
                     Desbloqueie o Poder Total
                   </CardTitle>
                 </CardHeader>

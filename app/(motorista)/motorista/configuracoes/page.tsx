@@ -255,12 +255,12 @@ export default function ConfiguracoesPage() {
   if (!user) return null;
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
+    <div className="p-4 sm:p-4 sm:p-6 lg:p-8">
       <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8">
         {/* Header padrão */}
         <div className="mb-6 sm:mb-8">
           <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Configurações</p>
-          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">Configurações</h1>
+          <h1 className="text-base sm:text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900">Configurações</h1>
         </div>
 
         {/* Cards de Configurações */}
@@ -273,7 +273,7 @@ export default function ConfiguracoesPage() {
                   <User className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <CardTitle className="text-xl">Perfil</CardTitle>
+                  <CardTitle className="text-base sm:text-lg">Perfil</CardTitle>
                   <CardDescription>Atualize suas informações pessoais</CardDescription>
                 </div>
               </div>
@@ -339,7 +339,7 @@ export default function ConfiguracoesPage() {
                   <Bell className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <CardTitle className="text-xl">Notificações</CardTitle>
+                  <CardTitle className="text-base sm:text-lg">Notificações</CardTitle>
                   <CardDescription>Gerencie suas preferências de notificação</CardDescription>
                 </div>
               </div>
@@ -398,7 +398,7 @@ export default function ConfiguracoesPage() {
                   <Lock className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <CardTitle className="text-xl">Segurança</CardTitle>
+                  <CardTitle className="text-base sm:text-lg">Segurança</CardTitle>
                   <CardDescription>Altere sua senha e configurações de segurança</CardDescription>
                 </div>
               </div>
@@ -455,7 +455,7 @@ export default function ConfiguracoesPage() {
                   <LogOut className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <CardTitle className="text-xl">Ações da Conta</CardTitle>
+                  <CardTitle className="text-base sm:text-lg">Ações da Conta</CardTitle>
                   <CardDescription>Sair ou excluir sua conta</CardDescription>
                 </div>
               </div>

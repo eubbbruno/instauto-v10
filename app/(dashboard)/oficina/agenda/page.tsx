@@ -408,14 +408,14 @@ export default function AgendaPage() {
 
   return (
     <PlanGuard>
-      <div className="p-4 sm:p-6 lg:p-8">
+      <div className="p-4 sm:p-4 sm:p-6 lg:p-8">
         <div className="space-y-6 sm:space-y-8">
           {/* Header Premium */}
           <div className="mb-6 sm:mb-8">
             <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Agenda</p>
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">Agenda</h1>
+                <h1 className="text-base sm:text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900">Agenda</h1>
                 <p className="text-gray-600">Gerencie os agendamentos da oficina</p>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -445,7 +445,7 @@ export default function AgendaPage() {
           </div>
 
         {/* Cards de Resumo */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:p-6">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-gray-600">

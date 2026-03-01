@@ -254,13 +254,13 @@ export default function LembretesPage() {
   if (!user) return null;
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
+    <div className="p-4 sm:p-4 sm:p-6 lg:p-8">
       <div className="space-y-6 sm:space-y-8">
         {/* Header padrão */}
         <div className="mb-6 sm:mb-8">
           <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Lembretes</p>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">Lembretes</h1>
+            <h1 className="text-base sm:text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900">Lembretes</h1>
             <Link href="/motorista/lembretes/novo">
               <button className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-semibold rounded-xl shadow-lg shadow-yellow-400/30 flex items-center justify-center gap-2 transition-all">
                 <Plus className="w-5 h-5" />
@@ -271,8 +271,8 @@ export default function LembretesPage() {
         </div>
 
         {/* Stats Cards Premium */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-2xl shadow-2xl p-6 border-2 border-teal-100 hover:shadow-teal-200/50 hover:scale-105 transition-all duration-300">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 sm:p-6 mb-8">
+          <div className="bg-white rounded-2xl shadow-2xl p-4 sm:p-6 border-2 border-teal-100 hover:shadow-teal-200/50 hover:scale-105 transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Total de Lembretes</p>
@@ -284,7 +284,7 @@ export default function LembretesPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-2xl p-6 border-2 border-yellow-100 hover:shadow-yellow-200/50 hover:scale-105 transition-all duration-300">
+          <div className="bg-white rounded-2xl shadow-2xl p-4 sm:p-6 border-2 border-yellow-100 hover:shadow-yellow-200/50 hover:scale-105 transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Pendentes</p>
@@ -296,7 +296,7 @@ export default function LembretesPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-2xl p-6 border-2 border-green-100 hover:shadow-green-200/50 hover:scale-105 transition-all duration-300">
+          <div className="bg-white rounded-2xl shadow-2xl p-4 sm:p-6 border-2 border-green-100 hover:shadow-green-200/50 hover:scale-105 transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Concluídos</p>
@@ -308,7 +308,7 @@ export default function LembretesPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-2xl p-6 border-2 border-red-100 hover:shadow-red-200/50 hover:scale-105 transition-all duration-300">
+          <div className="bg-white rounded-2xl shadow-2xl p-4 sm:p-6 border-2 border-red-100 hover:shadow-red-200/50 hover:scale-105 transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide">Urgentes (7 dias)</p>
@@ -322,7 +322,7 @@ export default function LembretesPage() {
         </div>
 
         {/* Filtros Premium */}
-        <div className="bg-white rounded-2xl shadow-2xl p-6 border-2 border-gray-100 mb-6">
+        <div className="bg-white rounded-2xl shadow-2xl p-4 sm:p-6 border-2 border-gray-100 mb-6">
           <div className="flex flex-col md:flex-row items-center gap-4">
             <div className="relative flex-grow w-full md:w-auto">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -376,7 +376,7 @@ export default function LembretesPage() {
               return (
                 <div
                   key={reminder.id}
-                  className={`bg-white rounded-2xl shadow-2xl p-6 border-2 transition-all hover:shadow-teal-200/50 hover:scale-[1.02] ${
+                  className={`bg-white rounded-2xl shadow-2xl p-4 sm:p-6 border-2 transition-all hover:shadow-teal-200/50 hover:scale-[1.02] ${
                     isOverdue
                       ? "border-red-300 bg-red-50"
                       : isUrgent
@@ -387,7 +387,7 @@ export default function LembretesPage() {
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-3">
-                        <h3 className={`text-xl font-bold ${reminder.is_completed ? 'text-gray-400 line-through' : 'bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent'}`}>
+                        <h3 className={`text-base sm:text-lg font-bold ${reminder.is_completed ? 'text-gray-400 line-through' : 'bg-gradient-to-r from-teal-600 to-cyan-600 bg-clip-text text-transparent'}`}>
                           {reminder.title}
                         </h3>
                         <Badge className={`${getPriorityColor(reminder.priority)} font-bold shadow-md`}>
@@ -405,7 +405,7 @@ export default function LembretesPage() {
                       {reminder.description && (
                         <p className="text-gray-600 mb-3">{reminder.description}</p>
                       )}
-                      <div className="flex items-center gap-6 text-sm text-gray-500">
+                      <div className="flex items-center gap-4 sm:p-6 text-sm text-gray-500">
                         <span className="flex items-center gap-1">
                           <Calendar className="w-4 h-4" />
                           {new Date(reminder.due_date).toLocaleDateString("pt-BR")}

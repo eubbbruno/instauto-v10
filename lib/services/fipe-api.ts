@@ -30,21 +30,41 @@ export interface FipePrice {
 type VehicleType = 'carros' | 'motos' | 'caminhoes';
 
 export async function getFipeBrands(type: VehicleType = 'carros'): Promise<FipeBrand[]> {
-  const response = await fetch(`${FIPE_BASE_URL}/${type}/marcas`);
-  return response.json();
+  const url = `${FIPE_BASE_URL}/${type}/marcas`;
+  console.log('🔍 [FIPE] Buscando marcas:', url);
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
+  const data = await response.json();
+  console.log('✅ [FIPE] Marcas carregadas:', data.length);
+  return data;
 }
 
 export async function getFipeModels(type: VehicleType, brandCode: string): Promise<{ modelos: FipeModel[] }> {
-  const response = await fetch(`${FIPE_BASE_URL}/${type}/marcas/${brandCode}/modelos`);
-  return response.json();
+  const url = `${FIPE_BASE_URL}/${type}/marcas/${brandCode}/modelos`;
+  console.log('🔍 [FIPE] Buscando modelos:', url);
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
+  const data = await response.json();
+  console.log('✅ [FIPE] Modelos carregados:', data.modelos?.length);
+  return data;
 }
 
 export async function getFipeYears(type: VehicleType, brandCode: string, modelCode: number): Promise<FipeYear[]> {
-  const response = await fetch(`${FIPE_BASE_URL}/${type}/marcas/${brandCode}/modelos/${modelCode}/anos`);
-  return response.json();
+  const url = `${FIPE_BASE_URL}/${type}/marcas/${brandCode}/modelos/${modelCode}/anos`;
+  console.log('🔍 [FIPE] Buscando anos:', url);
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
+  const data = await response.json();
+  console.log('✅ [FIPE] Anos carregados:', data.length);
+  return data;
 }
 
 export async function getFipePrice(type: VehicleType, brandCode: string, modelCode: number, yearCode: string): Promise<FipePrice> {
-  const response = await fetch(`${FIPE_BASE_URL}/${type}/marcas/${brandCode}/modelos/${modelCode}/anos/${yearCode}`);
-  return response.json();
+  const url = `${FIPE_BASE_URL}/${type}/marcas/${brandCode}/modelos/${modelCode}/anos/${yearCode}`;
+  console.log('🔍 [FIPE] Buscando preço:', url);
+  const response = await fetch(url);
+  if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
+  const data = await response.json();
+  console.log('✅ [FIPE] Preço obtido:', data.Valor);
+  return data;
 }

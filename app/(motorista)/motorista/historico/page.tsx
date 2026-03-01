@@ -126,12 +126,12 @@ export default function HistoricoMotoristPage() {
   }
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
+    <div className="p-4 sm:p-4 sm:p-6 lg:p-8">
       <div className="space-y-6 sm:space-y-8">
         {/* Header padrão */}
         <div className="mb-6 sm:mb-8">
           <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Histórico</p>
-          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">Histórico de Manutenções</h1>
+          <h1 className="text-base sm:text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900">Histórico de Manutenções</h1>
         </div>
 
         {/* Lista de Manutenções Premium */}
@@ -180,12 +180,12 @@ export default function HistoricoMotoristPage() {
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-xl p-6 mb-6 border-2 border-purple-100">
+                <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-xl p-4 sm:p-6 mb-6 border-2 border-purple-100">
                   <p className="text-sm font-semibold text-purple-700 mb-2 uppercase tracking-wide">Descrição do Serviço</p>
                   <p className="text-gray-800 leading-relaxed">{maintenance.description}</p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:p-6 mb-6">
                   <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-gray-50 to-purple-50 rounded-xl border-2 border-purple-100">
                     <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-violet-600 rounded-xl flex items-center justify-center shadow-md">
                       <Wrench className="w-6 h-6 text-white" />

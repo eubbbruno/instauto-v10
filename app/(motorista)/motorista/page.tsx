@@ -212,20 +212,20 @@ export default function MotoristaDashboard() {
       <OnboardingModal steps={motoristaSteps} storageKey="onboarding_motorista_done" />
       
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
-        <div className="p-4 sm:p-6 lg:p-8">
+        <div className="p-4 sm:p-4 sm:p-6 lg:p-8">
           {/* Header com breadcrumb */}
-          <div className="mb-6 sm:mb-8">
+          <div className="mb-6 sm:mb-4 sm:mb-6 lg:mb-8">
             <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard</p>
-            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
+            <h1 className="text-lg sm:text-xl lg:text-xl sm:text-2xl font-bold text-gray-900">
               Bem-vindo de volta, {firstName}! 👋
             </h1>
           </div>
 
         {/* Grid principal - 12 colunas */}
-        <div className="grid grid-cols-12 gap-4 sm:gap-6 mb-6 sm:mb-8">
+        <div className="grid grid-cols-12 gap-4 sm:gap-3 sm:gap-4 lg:gap-4 sm:p-6 mb-6 sm:mb-4 sm:mb-6 lg:mb-8">
           
           {/* Card grande - Visão Geral (8 colunas) */}
-          <div className="col-span-12 lg:col-span-8 bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm border border-gray-100">
+          <div className="col-span-12 lg:col-span-8 bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-4 sm:p-6 shadow-sm border border-gray-100">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
@@ -264,7 +264,7 @@ export default function MotoristaDashboard() {
           </div>
 
           {/* Card lateral - Economia (4 colunas) */}
-          <div className="col-span-12 lg:col-span-4 bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+          <div className="col-span-12 lg:col-span-4 bg-white rounded-3xl p-4 sm:p-6 shadow-sm border border-gray-100">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-semibold text-gray-900">Economia</h2>
               <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
@@ -291,12 +291,12 @@ export default function MotoristaDashboard() {
             <div className="grid grid-cols-2 gap-4">
               <div className="text-center p-4 bg-blue-50 rounded-2xl">
                 <p className="text-xs text-gray-500 mb-1">Veículos</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.vehicles}</p>
+                <p className="text-xl sm:text-2xl font-bold text-gray-900">{stats.vehicles}</p>
                 <span className="text-xs text-green-600 font-medium">+{stats.vehicles}</span>
               </div>
               <div className="text-center p-4 bg-yellow-50 rounded-2xl">
                 <p className="text-xs text-gray-500 mb-1">Orçamentos</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.quotes}</p>
+                <p className="text-xl sm:text-2xl font-bold text-gray-900">{stats.quotes}</p>
                 <span className="text-xs text-blue-600 font-medium">Este mês</span>
               </div>
             </div>
@@ -304,11 +304,11 @@ export default function MotoristaDashboard() {
         </div>
 
         {/* Grid principal - 12 colunas */}
-        <div className="grid grid-cols-12 gap-6 mb-8">
+        <div className="grid grid-cols-12 gap-3 sm:gap-4 lg:gap-4 sm:p-6 mb-4 sm:mb-6 lg:mb-8">
           
           {/* Tabela de atividades (8 colunas) */}
           <div className="col-span-12 lg:col-span-8 bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
-            <div className="p-6 border-b border-gray-100">
+            <div className="p-4 sm:p-6 border-b border-gray-100">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-yellow-100 rounded-xl flex items-center justify-center">
@@ -398,7 +398,7 @@ export default function MotoristaDashboard() {
           <div className="col-span-12 lg:col-span-4 space-y-6">
             
             {/* Próximo Lembrete */}
-            <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-3xl p-6 text-white shadow-sm">
+            <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-3xl p-4 sm:p-6 text-white shadow-sm">
               <h3 className="font-semibold mb-4 text-lg">Próximo Lembrete</h3>
               <div className="flex items-center gap-4 mb-4">
                 <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center">
@@ -418,7 +418,7 @@ export default function MotoristaDashboard() {
             </div>
 
             {/* Ações Rápidas */}
-            <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+            <div className="bg-white rounded-3xl p-4 sm:p-6 shadow-sm border border-gray-100">
               <h3 className="font-semibold text-gray-900 mb-4 text-lg">Ações Rápidas</h3>
               <div className="space-y-3">
                 <Link
@@ -458,9 +458,9 @@ export default function MotoristaDashboard() {
         </div>
 
         {/* Promoções */}
-        <div className="mb-8">
+        <div className="mb-4 sm:mb-6 lg:mb-8">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+            <h2 className="text-base sm:text-lg font-bold text-gray-900 flex items-center gap-2">
               <Gift className="w-5 h-5 text-pink-500" />
               Promoções Exclusivas
             </h2>
@@ -469,11 +469,11 @@ export default function MotoristaDashboard() {
               <ChevronRight className="w-4 h-4" />
             </Link>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 lg:gap-4 sm:p-6">
             {promotions.map((promo) => (
               <div
                 key={promo.id}
-                className={`bg-gradient-to-br ${promo.color} rounded-3xl shadow-sm hover:shadow-md p-6 text-white transition-all cursor-pointer`}
+                className={`bg-gradient-to-br ${promo.color} rounded-3xl shadow-sm hover:shadow-md p-4 sm:p-6 text-white transition-all cursor-pointer`}
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="text-4xl">{promo.icon}</div>
@@ -497,12 +497,12 @@ export default function MotoristaDashboard() {
         {/* Dica para Novos Usuários */}
         {stats.vehicles === 0 && (
           <div className="bg-gradient-to-r from-yellow-50 to-yellow-100/50 border-2 border-yellow-300 rounded-3xl p-8 shadow-sm">
-            <div className="flex items-start gap-6">
+            <div className="flex items-start gap-3 sm:gap-4 lg:gap-4 sm:p-6">
               <div className="w-16 h-16 bg-yellow-400 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg">
                 <Wrench className="w-8 h-8 text-yellow-900" />
               </div>
               <div className="flex-1">
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3">
                   Comece agora!
                 </h3>
                 <p className="text-gray-700 mb-6 text-base">

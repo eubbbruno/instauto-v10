@@ -153,7 +153,7 @@ export default function AvaliacoesPage() {
 
   if (loading) {
     return (
-      <div className="p-4 sm:p-6 lg:p-8">
+      <div className="p-4 sm:p-4 sm:p-6 lg:p-8">
         <div className="flex items-center justify-center py-12">
           <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
         </div>
@@ -165,15 +165,15 @@ export default function AvaliacoesPage() {
   const distribution = getRatingDistribution();
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
+    <div className="p-4 sm:p-4 sm:p-6 lg:p-8">
       {/* Header */}
       <div className="mb-6 sm:mb-8">
         <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Avaliações</p>
-        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">Avaliações dos Clientes</h1>
+        <h1 className="text-base sm:text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900">Avaliações dos Clientes</h1>
       </div>
 
       {/* Summary Card */}
-      <div className="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-sm border border-gray-100 mb-6">
+      <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 sm:p-8 shadow-sm border border-gray-100 mb-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Average Rating */}
           <div className="text-center md:border-r border-gray-200">
@@ -228,7 +228,7 @@ export default function AvaliacoesPage() {
           {reviews.map((review) => (
             <div
               key={review.id}
-              className="bg-white rounded-2xl sm:rounded-3xl p-6 shadow-sm border border-gray-100"
+              className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm border border-gray-100"
             >
               {/* Review Header */}
               <div className="flex items-start justify-between mb-4">

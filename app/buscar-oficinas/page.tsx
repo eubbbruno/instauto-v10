@@ -44,34 +44,12 @@ export default function BuscarOficinasPage() {
   const [user, setUser] = useState<any>(null);
   const supabase = createClient();
 
-  console.log("🔍 [BuscarOficinas] Componente renderizado, supabase:", supabase ? "OK" : "NULL");
-
   useEffect(() => {
-    console.log("🔍 [BuscarOficinas] === MOUNT INICIAL ===");
-    console.log("🔍 [BuscarOficinas] Estado inicial:", JSON.stringify({ 
-      onlyWithReviews, 
-      searchTerm, 
-      selectedState, 
-      selectedSpecialty 
-    }, null, 2));
-    
-    // Função assíncrona interna
     const init = async () => {
-      console.log("🔍 [BuscarOficinas] Iniciando init...");
-      
-      // Primeiro verifica auth (opcional, não bloqueia)
-      console.log("🔍 [BuscarOficinas] Verificando auth...");
       await checkAuth();
-      console.log("🔍 [BuscarOficinas] Auth verificado");
-      
-      // Depois carrega oficinas (independente de auth)
-      console.log("🔍 [BuscarOficinas] Carregando oficinas...");
       await loadWorkshops();
-      console.log("🔍 [BuscarOficinas] Oficinas carregadas");
     };
-    
     init();
-    console.log("🔍 [BuscarOficinas] === FIM MOUNT ===");
   }, []);
 
   useEffect(() => {
@@ -81,15 +59,6 @@ export default function BuscarOficinasPage() {
     }
   }, [selectedState]);
 
-  useEffect(() => {
-    console.log("🔍 [BuscarOficinas] Filtros mudaram:", JSON.stringify({ 
-      onlyWithReviews, 
-      searchTerm, 
-      selectedState, 
-      selectedSpecialty,
-      workshopsTotal: workshops.length
-    }, null, 2));
-  }, [onlyWithReviews, searchTerm, selectedState, selectedSpecialty, workshops]);
 
   const checkAuth = async () => {
     const { data: { session } } = await supabase.auth.getSession();
@@ -97,61 +66,33 @@ export default function BuscarOficinasPage() {
   };
 
   const loadWorkshops = async () => {
-    console.log("🔍 [BuscarOficinas] === INÍCIO loadWorkshops ===");
-    console.log("🔍 [BuscarOficinas] Supabase client:", supabase ? "OK" : "NULL");
-    console.log("🔍 [BuscarOficinas] NEXT_PUBLIC_SUPABASE_URL:", process.env.NEXT_PUBLIC_SUPABASE_URL ? "OK" : "MISSING");
-    console.log("🔍 [BuscarOficinas] NEXT_PUBLIC_SUPABASE_ANON_KEY:", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? "OK" : "MISSING");
-    
     try {
       setLoading(true);
-      console.log("🔍 [BuscarOficinas] Loading setado para true");
-      console.log("🔍 [BuscarOficinas] Iniciando busca de oficinas públicas...");
 
-      console.log("🔍 [BuscarOficinas] Criando query base...");
       let query = supabase
         .from("workshops")
         .select("*")
         .eq("is_public", true);
 
-      console.log("🔍 [BuscarOficinas] Query base criada");
-
       if (selectedState) {
-        console.log("🔍 [BuscarOficinas] Filtrando por estado:", selectedState);
         query = query.eq("state", selectedState);
       }
 
-      console.log("🔍 [BuscarOficinas] Adicionando order e limit...");
       query = query.order("rating", { ascending: false, nullsFirst: false }).limit(100);
 
-      console.log("🔍 [BuscarOficinas] Executando query...");
       const { data, error } = await query;
 
-      console.log("🔍 [BuscarOficinas] Query executada!");
-      console.log("🔍 [BuscarOficinas] Data:", data);
-      console.log("🔍 [BuscarOficinas] Error:", error);
-      console.log("🔍 [BuscarOficinas] Data type:", typeof data);
-      console.log("🔍 [BuscarOficinas] Data is array:", Array.isArray(data));
-      console.log("🔍 [BuscarOficinas] Count:", data?.length);
-      console.log("🔍 [BuscarOficinas] Sample:", data?.[0]);
-
       if (error) {
-        console.error("❌ [BuscarOficinas] Erro na query:", error.message);
-        console.error("❌ [BuscarOficinas] Erro completo:", JSON.stringify(error, null, 2));
+        console.error("Erro ao carregar oficinas:", error);
         throw error;
       }
       
-      console.log("🔍 [BuscarOficinas] Setando workshops...");
       setWorkshops(data || []);
-      console.log("✅ [BuscarOficinas] Oficinas carregadas e setadas:", data?.length || 0);
     } catch (error: any) {
-      console.error("❌ [BuscarOficinas] CATCH - Erro ao carregar:", error);
-      console.error("❌ [BuscarOficinas] CATCH - Tipo:", typeof error);
-      console.error("❌ [BuscarOficinas] CATCH - Stack:", error?.stack);
+      console.error("Erro ao carregar oficinas:", error);
       setWorkshops([]);
     } finally {
-      console.log("🔍 [BuscarOficinas] FINALLY - Setando loading false");
       setLoading(false);
-      console.log("🔍 [BuscarOficinas] === FIM loadWorkshops ===");
     }
   };
 

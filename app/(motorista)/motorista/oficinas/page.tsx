@@ -140,7 +140,7 @@ export default function OficinasPage() {
   // Skeleton Loading
   if (loading) {
     return (
-      <div className="p-4 sm:p-6 lg:p-8">
+      <div className="p-4 sm:p-4 sm:p-6 lg:p-8">
         <div className="mb-8">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
             Buscar oficinas perto de você
@@ -158,7 +158,7 @@ export default function OficinasPage() {
         </div>
 
         {/* Skeleton Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:p-6">
           {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
             <div key={i} className="bg-white rounded-2xl overflow-hidden shadow-sm">
               <div className="h-48 bg-gray-200 animate-pulse" />
@@ -175,7 +175,7 @@ export default function OficinasPage() {
   }
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
+    <div className="p-4 sm:p-4 sm:p-6 lg:p-8">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
@@ -185,7 +185,7 @@ export default function OficinasPage() {
       </div>
 
       {/* Filtros */}
-      <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-gray-100 mb-6">
+      <div className="bg-white rounded-2xl p-4 sm:p-4 sm:p-6 shadow-sm border border-gray-100 mb-6">
         {/* Primeira linha: Busca, Estado, Especialidade */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
           {/* Busca */}
@@ -291,7 +291,7 @@ export default function OficinasPage() {
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:p-6">
           {filteredWorkshops.map((workshop) => (
             <Link
               key={workshop.id}
