@@ -82,6 +82,7 @@ export default function LoginPage() {
           email,
           password,
           options: {
+            emailRedirectTo: `${window.location.origin}/auth/callback`,
             data: {
               name: name,
               user_type: userType === "oficina" ? "workshop" : "motorist",
@@ -89,7 +90,11 @@ export default function LoginPage() {
           },
         });
 
-        console.log("🔵 [Cadastro] Resposta signUp:", { data, error });
+        console.log("🔵 [Cadastro] Resposta signUp:", { 
+          user: data.user?.email, 
+          session: data.session ? "EXISTS" : "NULL",
+          error 
+        });
 
         if (error) {
           console.error("❌ [Cadastro] Erro no signUp:", error);
@@ -103,8 +108,19 @@ export default function LoginPage() {
 
         console.log("✅ [Cadastro] Usuário criado:", data.user.email);
         console.log("✅ [Cadastro] User ID:", data.user.id);
+        console.log("✅ [Cadastro] Session:", data.session ? "Existe" : "Null - precisa confirmar email");
 
-        // Criar profile
+        // Se não tem session, significa que precisa confirmar email
+        if (!data.session) {
+          console.log("⚠️ [Cadastro] Sem session - confirmação de email necessária");
+          toast.success("Conta criada! Verifique seu email para confirmar.", {
+            duration: 5000,
+          });
+          setLoading(false);
+          return;
+        }
+
+        // Se tem session, continuar com criação de profile
         const profileType = userType === "oficina" ? "workshop" : "motorist";
         
         console.log("🔨 [Cadastro] Criando profile tipo:", profileType);
@@ -141,7 +157,8 @@ export default function LoginPage() {
           console.log("✅ [Cadastro] Workshop criado!");
           
           toast.success("Conta criada com sucesso!");
-          router.push("/oficina");
+          console.log("🔀 [Cadastro] Redirecionando para /oficina");
+          setTimeout(() => router.push("/oficina"), 500);
         } else {
           console.log("🔨 [Cadastro] Criando motorist...");
           const { error: motoristError } = await supabase.from("motorists").insert({
@@ -155,7 +172,8 @@ export default function LoginPage() {
           console.log("✅ [Cadastro] Motorist criado!");
           
           toast.success("Conta criada com sucesso!");
-          router.push("/motorista");
+          console.log("🔀 [Cadastro] Redirecionando para /motorista");
+          setTimeout(() => router.push("/motorista"), 500);
         }
       }
     } catch (error: any) {
