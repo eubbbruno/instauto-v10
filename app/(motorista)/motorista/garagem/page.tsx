@@ -54,28 +54,48 @@ export default function GaragemPage() {
 
         const { data: motorist, error: motoristError } = await query1.single();
 
-        if (motoristError) {
-          console.error("❌ Erro ao buscar motorista:", motoristError);
-          if (mounted) {
-            toast({
-              title: "Erro",
-              description: "Não foi possível carregar seus dados. Tente novamente.",
-              variant: "destructive",
-            });
+        let finalMotoristId: string;
+
+        if (motoristError || !motorist) {
+          console.log("⚠️ Motorista não encontrado, criando...");
+          
+          // Criar motorista automaticamente
+          const { data: newMotorist, error: createError } = await supabase
+            .from("motorists")
+            .insert({
+              profile_id: profile.id,
+            })
+            .select()
+            .single();
+
+          if (createError || !newMotorist) {
+            console.error("❌ Erro ao criar motorista:", createError);
+            if (mounted) {
+              toast({
+                title: "Erro",
+                description: "Não foi possível criar seus dados. Tente novamente.",
+                variant: "destructive",
+              });
+            }
+            return;
           }
-          return;
+
+          console.log("✅ Motorista criado:", newMotorist.id);
+          finalMotoristId = newMotorist.id;
+        } else {
+          console.log("✅ Motorista encontrado:", motorist.id);
+          finalMotoristId = motorist.id;
         }
 
         if (!mounted) return;
 
-        console.log("✅ Motorista encontrado:", motorist.id);
-        setMotoristId(motorist.id);
+        setMotoristId(finalMotoristId);
 
         // Buscar veículos
         let query2 = supabase
           .from("motorist_vehicles")
           .select("*")
-          .eq("motorist_id", motorist.id)
+          .eq("motorist_id", finalMotoristId)
           .eq("is_active", true);
 
         if (abortController.signal) query2 = query2.abortSignal(abortController.signal);

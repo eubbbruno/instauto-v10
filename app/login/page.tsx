@@ -68,6 +68,16 @@ export default function LoginPage() {
       } else {
         // CADASTRO
         console.log("🔵 [Cadastro] Criando conta...");
+        console.log("🔵 [Cadastro] Email:", email);
+        console.log("🔵 [Cadastro] Nome:", name);
+        console.log("🔵 [Cadastro] Tipo:", userType);
+
+        if (!name || name.trim().length < 2) {
+          toast.error("Por favor, preencha seu nome");
+          setLoading(false);
+          return;
+        }
+
         const { data, error } = await supabase.auth.signUp({
           email,
           password,
@@ -79,46 +89,73 @@ export default function LoginPage() {
           },
         });
 
-        if (error) throw error;
+        console.log("🔵 [Cadastro] Resposta signUp:", { data, error });
 
-        if (data.user) {
-          console.log("✅ [Cadastro] Usuário criado:", data.user.email);
+        if (error) {
+          console.error("❌ [Cadastro] Erro no signUp:", error);
+          throw error;
+        }
 
-          // Criar profile
-          const profileType = userType === "oficina" ? "workshop" : "motorist";
-          
-          console.log("🔨 [Cadastro] Criando profile tipo:", profileType);
-          await supabase.from("profiles").insert({
-            id: data.user.id,
-            email: data.user.email,
-            name: name,
-            type: profileType,
+        if (!data.user) {
+          console.error("❌ [Cadastro] Nenhum usuário retornado");
+          throw new Error("Erro ao criar conta. Tente novamente.");
+        }
+
+        console.log("✅ [Cadastro] Usuário criado:", data.user.email);
+        console.log("✅ [Cadastro] User ID:", data.user.id);
+
+        // Criar profile
+        const profileType = userType === "oficina" ? "workshop" : "motorist";
+        
+        console.log("🔨 [Cadastro] Criando profile tipo:", profileType);
+        const { error: profileError } = await supabase.from("profiles").insert({
+          id: data.user.id,
+          email: data.user.email,
+          name: name,
+          type: profileType,
+        });
+
+        if (profileError) {
+          console.error("❌ [Cadastro] Erro ao criar profile:", profileError);
+          throw new Error("Erro ao criar perfil: " + profileError.message);
+        }
+        console.log("✅ [Cadastro] Profile criado!");
+
+        // Criar workshop ou motorist
+        if (profileType === "workshop") {
+          console.log("🔨 [Cadastro] Criando workshop...");
+          const { error: workshopError } = await supabase.from("workshops").insert({
+            profile_id: data.user.id,
+            name: name || "Minha Oficina",
+            plan_type: "free",
+            subscription_status: "trial",
+            trial_ends_at: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
+            is_public: true,
+            accepts_quotes: true,
           });
 
-          // Criar workshop ou motorist
-          if (profileType === "workshop") {
-            console.log("🔨 [Cadastro] Criando workshop...");
-            await supabase.from("workshops").insert({
-              profile_id: data.user.id,
-              name: name || "Minha Oficina",
-              plan_type: "free",
-              subscription_status: "trial",
-              trial_ends_at: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
-              is_public: true,
-              accepts_quotes: true,
-            });
-            console.log("✅ [Cadastro] Workshop criado!");
-            router.push("/oficina");
-          } else {
-            console.log("🔨 [Cadastro] Criando motorist...");
-            await supabase.from("motorists").insert({
-              profile_id: data.user.id,
-            });
-            console.log("✅ [Cadastro] Motorist criado!");
-            router.push("/motorista");
+          if (workshopError) {
+            console.error("❌ [Cadastro] Erro ao criar workshop:", workshopError);
+            throw new Error("Erro ao criar oficina: " + workshopError.message);
           }
-
+          console.log("✅ [Cadastro] Workshop criado!");
+          
           toast.success("Conta criada com sucesso!");
+          router.push("/oficina");
+        } else {
+          console.log("🔨 [Cadastro] Criando motorist...");
+          const { error: motoristError } = await supabase.from("motorists").insert({
+            profile_id: data.user.id,
+          });
+
+          if (motoristError) {
+            console.error("❌ [Cadastro] Erro ao criar motorist:", motoristError);
+            throw new Error("Erro ao criar motorista: " + motoristError.message);
+          }
+          console.log("✅ [Cadastro] Motorist criado!");
+          
+          toast.success("Conta criada com sucesso!");
+          router.push("/motorista");
         }
       }
     } catch (error: any) {
@@ -246,14 +283,15 @@ export default function LoginPage() {
             {!isLogin && (
               <div>
                 <label className="text-sm font-medium text-gray-700 mb-1 block">
-                  {userType === "oficina" ? "Nome da Oficina" : "Seu Nome"}
+                  {userType === "oficina" ? "Nome da Oficina" : "Seu Nome"} *
                 </label>
                 <input
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder={userType === "oficina" ? "Auto Center Silva" : "João Silva"}
-                  required={!isLogin}
+                  required
+                  minLength={2}
                   className="w-full px-4 py-3 bg-gray-50 border-0 rounded-xl focus:ring-2 focus:ring-blue-500"
                 />
               </div>
