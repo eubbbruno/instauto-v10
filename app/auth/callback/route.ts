@@ -50,8 +50,13 @@ export async function GET(request: Request) {
       console.log("🔨 [Callback] Criando profile...");
       
       const userTypeCookie = cookieStore.get("instauto_user_type");
+      console.log("🍪 [Callback] Cookie user_type:", userTypeCookie?.value);
+      
       const userType = userTypeCookie?.value === "oficina" ? "workshop" : "motorist";
-      const userName = session.user.user_metadata?.full_name || session.user.email?.split("@")[0] || "Usuário";
+      const userName = session.user.user_metadata?.full_name || session.user.user_metadata?.name || session.user.email?.split("@")[0] || "Usuário";
+
+      console.log("🔨 [Callback] Criando profile com tipo:", userType);
+      console.log("🔨 [Callback] Nome:", userName);
 
       const { error: profileError } = await supabase.from("profiles").insert({
         id: session.user.id,
@@ -67,7 +72,8 @@ export async function GET(request: Request) {
 
       // Criar workshop ou motorist
       if (userType === "workshop") {
-        await supabase.from("workshops").insert({
+        console.log("🔨 [Callback] Criando workshop...");
+        const { error: workshopError } = await supabase.from("workshops").insert({
           profile_id: session.user.id,
           name: userName,
           plan_type: "free",
@@ -75,13 +81,24 @@ export async function GET(request: Request) {
           is_public: true,
           accepts_quotes: true,
         });
-        console.log("✅ [Callback] Workshop criado");
+        
+        if (workshopError) {
+          console.error("❌ [Callback] Erro ao criar workshop:", workshopError);
+        }
+        
+        console.log("✅ [Callback] Workshop criado, redirecionando para /oficina");
         return NextResponse.redirect(new URL("/oficina", requestUrl.origin));
       } else {
-        await supabase.from("motorists").insert({
+        console.log("🔨 [Callback] Criando motorist...");
+        const { error: motoristError } = await supabase.from("motorists").insert({
           profile_id: session.user.id,
         });
-        console.log("✅ [Callback] Motorist criado");
+        
+        if (motoristError) {
+          console.error("❌ [Callback] Erro ao criar motorist:", motoristError);
+        }
+        
+        console.log("✅ [Callback] Motorist criado, redirecionando para /motorista");
         return NextResponse.redirect(new URL("/motorista", requestUrl.origin));
       }
 

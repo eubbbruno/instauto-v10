@@ -52,17 +52,28 @@ export default function LoginPage() {
         }
 
         // Buscar profile para saber o tipo
-        const { data: profile } = await supabase
+        console.log("🔍 [Login] Buscando profile para user:", data.user.id);
+        const { data: profile, error: profileError } = await supabase
           .from("profiles")
           .select("type")
           .eq("id", data.user.id)
           .single();
 
+        if (profileError) {
+          console.error("❌ [Login] Erro ao buscar profile:", profileError);
+          toast.error("Erro ao carregar perfil. Tente novamente.");
+          setLoading(false);
+          return;
+        }
+
+        console.log("✅ [Login] Profile encontrado:", profile);
         console.log("✅ [Login] Profile tipo:", profile?.type);
 
         if (profile?.type === "workshop") {
+          console.log("🔀 [Login] Redirecionando para /oficina");
           router.push("/oficina");
         } else {
+          console.log("🔀 [Login] Redirecionando para /motorista");
           router.push("/motorista");
         }
       } else {
@@ -113,9 +124,12 @@ export default function LoginPage() {
         // Se não tem session, significa que precisa confirmar email
         if (!data.session) {
           console.log("⚠️ [Cadastro] Sem session - confirmação de email necessária");
-          toast.success("Conta criada! Verifique seu email para confirmar.", {
-            duration: 5000,
-          });
+          toast.success(
+            "✅ Conta criada com sucesso! 📧 Enviamos um email de confirmação para " + email + ". Verifique sua caixa de entrada e clique no link para ativar sua conta.",
+            {
+              duration: 8000,
+            }
+          );
           setLoading(false);
           return;
         }
