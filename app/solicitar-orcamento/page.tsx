@@ -253,7 +253,9 @@ function SolicitarOrcamentoContent() {
           .single();
 
         if (workshopData) {
-          await supabase.from("notifications").insert({
+          console.log("🔔 [Orçamento] Criando notificação para profile_id:", workshopData.profile_id);
+          
+          const { error: notifError } = await supabase.from("notifications").insert({
             user_id: workshopData.profile_id,
             type: "quote_received",
             title: "Novo orçamento recebido!",
@@ -267,7 +269,11 @@ function SolicitarOrcamentoContent() {
             },
           });
 
-          console.log("✅ [Orçamento] Notificação criada");
+          if (notifError) {
+            console.error("❌ [Orçamento] Erro ao criar notificação:", notifError);
+          } else {
+            console.log("✅ [Orçamento] Notificação criada com sucesso!");
+          }
         }
       }
 

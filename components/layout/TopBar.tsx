@@ -56,6 +56,7 @@ export function TopBar({ user, userType, userName, onMenuClick, onSignOut }: Top
   }, []);
 
   const fetchNotifications = async () => {
+    console.log("🔔 [TopBar] Buscando notificações para user:", user.id);
     try {
       const { data, error } = await supabase
         .from("notifications")
@@ -64,12 +65,18 @@ export function TopBar({ user, userType, userName, onMenuClick, onSignOut }: Top
         .order("created_at", { ascending: false })
         .limit(5);
 
-      if (error) throw error;
+      if (error) {
+        console.error("❌ [TopBar] Erro ao buscar notificações:", error);
+        throw error;
+      }
+
+      console.log("✅ [TopBar] Notificações encontradas:", data?.length || 0);
+      console.log("✅ [TopBar] Não lidas:", data?.filter(n => !n.is_read).length || 0);
 
       setNotifications(data || []);
       setUnreadCount(data?.filter(n => !n.is_read).length || 0);
     } catch (error) {
-      console.error("Erro ao buscar notificações:", error);
+      console.error("❌ [TopBar] Erro ao buscar notificações:", error);
     }
   };
 

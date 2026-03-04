@@ -56,24 +56,37 @@ export async function GET(request: Request) {
       // Profile não existe, criar agora
       console.log("🔨 [Callback] Profile NÃO existe, criando...");
       
+      // Debug completo de cookies
+      const allCookies = cookieStore.getAll();
+      console.log("🍪 [Callback] TODOS os cookies:", JSON.stringify(allCookies, null, 2));
+      
       // Determinar tipo do usuário (múltiplas fontes)
       const userTypeCookie = cookieStore.get("instauto_user_type");
-      console.log("🍪 [Callback] Cookie instauto_user_type:", userTypeCookie?.value);
+      console.log("🍪 [Callback] Cookie instauto_user_type:", userTypeCookie);
+      console.log("🍪 [Callback] Cookie value:", userTypeCookie?.value);
+      console.log("🍪 [Callback] Cookie value === 'oficina':", userTypeCookie?.value === "oficina");
+      console.log("🍪 [Callback] Cookie value === 'motorista':", userTypeCookie?.value === "motorista");
       
       const userTypeFromMetadata = session.user.user_metadata?.user_type;
       console.log("📋 [Callback] user_metadata.user_type:", userTypeFromMetadata);
+      console.log("📋 [Callback] user_metadata completo:", JSON.stringify(session.user.user_metadata, null, 2));
       
       // Prioridade: cookie > metadata > padrão (motorist)
       let userType = "motorist";
       if (userTypeCookie?.value === "oficina") {
+        console.log("✅ [Callback] Tipo via COOKIE: oficina → workshop");
         userType = "workshop";
       } else if (userTypeFromMetadata === "workshop") {
+        console.log("✅ [Callback] Tipo via METADATA: workshop");
         userType = "workshop";
       } else if (userTypeCookie?.value === "motorista" || userTypeFromMetadata === "motorist") {
+        console.log("✅ [Callback] Tipo via COOKIE/METADATA: motorist");
         userType = "motorist";
+      } else {
+        console.log("⚠️ [Callback] Tipo PADRÃO: motorist");
       }
       
-      console.log("✅ [Callback] Tipo determinado:", userType);
+      console.log("✅ [Callback] Tipo FINAL determinado:", userType);
       
       const userName = session.user.user_metadata?.name || 
                        session.user.user_metadata?.full_name || 

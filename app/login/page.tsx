@@ -93,6 +93,7 @@ export default function LoginPage() {
         const userTypeValue = userType === "oficina" ? "oficina" : "motorista";
         document.cookie = `instauto_user_type=${userTypeValue}; path=/; max-age=3600`;
         console.log("🍪 [Cadastro] Cookie salvo:", userTypeValue);
+        console.log("🍪 [Cadastro] Cookies atuais:", document.cookie);
 
         const { data, error } = await supabase.auth.signUp({
           email,

@@ -96,9 +96,10 @@ export function RespondQuoteDialog({ open, onOpenChange, quote, workshopId, onSu
           });
 
           if (notifError) {
-            console.error("❌ Erro ao criar notificação:", notifError);
+            console.error("❌ [RespondQuote] Erro ao criar notificação:", notifError);
+            console.error("❌ [RespondQuote] Detalhes:", JSON.stringify(notifError, null, 2));
           } else {
-            console.log("✅ Notificação criada para motorista:", motoristProfile.id);
+            console.log("✅ [RespondQuote] Notificação criada para motorista:", motoristProfile.id);
           }
         }
       } catch (notifError) {
