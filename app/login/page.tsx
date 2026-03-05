@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Car, Wrench, Mail, Lock, Eye, EyeOff, Loader2 } from "lucide-react";
+import { Car, Wrench, Mail, Lock, Eye, EyeOff, Loader2, CheckCircle, User } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase";
 
@@ -235,172 +236,242 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-yellow-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        {/* Logo */}
-        <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center">
-              <Car className="w-7 h-7 text-white" />
-            </div>
-            <span className="text-2xl font-bold text-gray-900">Instauto</span>
-          </Link>
+    <div className="min-h-screen flex">
+      {/* Lado Esquerdo - Branding (Desktop) */}
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white p-12 flex-col justify-center relative overflow-hidden">
+        {/* Decoração de fundo */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-20 left-20 w-64 h-64 bg-yellow-400 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 right-20 w-96 h-96 bg-blue-400 rounded-full blur-3xl"></div>
         </div>
 
-        {/* Card */}
-        <div className="bg-white rounded-3xl shadow-xl p-8">
-          <h1 className="text-2xl font-bold text-gray-900 text-center mb-2">
-            {isLogin ? "Entrar" : "Criar conta"}
+        <div className="relative z-10">
+          <Link href="/" className="inline-block mb-12">
+            <Image
+              src="/images/logo.svg"
+              alt="Instauto"
+              width={220}
+              height={60}
+              className="h-14 w-auto"
+            />
+          </Link>
+
+          <h1 className="text-5xl font-bold mb-6 leading-tight">
+            Bem-vindo ao<br />
+            <span className="text-yellow-400">Instauto</span>
           </h1>
-          <p className="text-gray-500 text-center mb-6">
-            {isLogin ? "Bem-vindo de volta!" : "Comece a usar o Instauto"}
+          
+          <p className="text-xl text-blue-100 mb-12">
+            A plataforma que conecta motoristas e oficinas mecânicas de forma simples e eficiente.
           </p>
 
-          {/* Seletor de Tipo */}
-          <div className="grid grid-cols-2 gap-3 mb-6">
-            <button
-              type="button"
-              onClick={() => setUserType("motorista")}
-              className={`p-4 rounded-2xl border-2 transition-all ${
-                userType === "motorista"
-                  ? "border-blue-500 bg-blue-50"
-                  : "border-gray-200 hover:border-gray-300"
-              }`}
-            >
-              <Car className={`w-6 h-6 mx-auto mb-2 ${userType === "motorista" ? "text-blue-600" : "text-gray-400"}`} />
-              <span className={`text-sm font-medium ${userType === "motorista" ? "text-blue-600" : "text-gray-600"}`}>
-                Motorista
-              </span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setUserType("oficina")}
-              className={`p-4 rounded-2xl border-2 transition-all ${
-                userType === "oficina"
-                  ? "border-blue-500 bg-blue-50"
-                  : "border-gray-200 hover:border-gray-300"
-              }`}
-            >
-              <Wrench className={`w-6 h-6 mx-auto mb-2 ${userType === "oficina" ? "text-blue-600" : "text-gray-400"}`} />
-              <span className={`text-sm font-medium ${userType === "oficina" ? "text-blue-600" : "text-gray-600"}`}>
-                Oficina
-              </span>
-            </button>
-          </div>
-
-          {/* Botão Google */}
-          <button
-            onClick={handleGoogleLogin}
-            disabled={googleLoading}
-            className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white border-2 border-gray-200 rounded-xl hover:bg-gray-50 transition-colors mb-4 disabled:opacity-50"
-          >
-            {googleLoading ? (
-              <Loader2 className="w-5 h-5 animate-spin" />
-            ) : (
-              <svg className="w-5 h-5" viewBox="0 0 24 24">
-                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-              </svg>
-            )}
-            <span className="font-medium text-gray-700">
-              {googleLoading ? "Conectando..." : "Continuar com Google"}
-            </span>
-          </button>
-
-          {/* Divisor */}
-          <div className="flex items-center gap-4 my-6">
-            <div className="flex-1 h-px bg-gray-200" />
-            <span className="text-sm text-gray-400">ou</span>
-            <div className="flex-1 h-px bg-gray-200" />
-          </div>
-
-          {/* Formulário */}
-          <form onSubmit={handleEmailAuth} className="space-y-4">
-            {!isLogin && (
+          <div className="space-y-5">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
+                <CheckCircle className="w-6 h-6 text-yellow-400" />
+              </div>
               <div>
-                <label className="text-sm font-medium text-gray-700 mb-1 block">
-                  {userType === "oficina" ? "Nome da Oficina" : "Seu Nome"} *
-                </label>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder={userType === "oficina" ? "Auto Center Silva" : "João Silva"}
-                  required
-                  minLength={2}
-                  className="w-full px-4 py-3 bg-gray-50 border-0 rounded-xl focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-            )}
-
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-1 block">Email</label>
-              <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="seu@email.com"
-                  required
-                  className="w-full pl-12 pr-4 py-3 bg-gray-50 border-0 rounded-xl focus:ring-2 focus:ring-blue-500"
-                />
+                <h3 className="font-semibold text-lg">Oficinas Verificadas</h3>
+                <p className="text-blue-200 text-sm">Encontre profissionais confiáveis</p>
               </div>
             </div>
-
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-1 block">Senha</label>
-              <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <input
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  required
-                  minLength={6}
-                  className="w-full pl-12 pr-12 py-3 bg-gray-50 border-0 rounded-xl focus:ring-2 focus:ring-blue-500"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
+            
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
+                <CheckCircle className="w-6 h-6 text-yellow-400" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-lg">Orçamentos Grátis</h3>
+                <p className="text-blue-200 text-sm">Compare preços sem compromisso</p>
               </div>
             </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-3 bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-semibold rounded-xl transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
-            >
-              {loading && <Loader2 className="w-5 h-5 animate-spin" />}
-              {isLogin ? "Entrar" : "Criar conta"}
-            </button>
-          </form>
-
-          {/* Toggle Login/Cadastro */}
-          <p className="text-center text-gray-600 mt-6">
-            {isLogin ? "Não tem conta?" : "Já tem conta?"}{" "}
-            <button
-              onClick={() => setIsLogin(!isLogin)}
-              className="text-blue-600 font-medium hover:underline"
-            >
-              {isLogin ? "Criar conta" : "Entrar"}
-            </button>
-          </p>
+            
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
+                <CheckCircle className="w-6 h-6 text-yellow-400" />
+              </div>
+              <div>
+                <h3 className="font-semibold text-lg">Gestão Completa</h3>
+                <p className="text-blue-200 text-sm">Controle total dos seus veículos</p>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
 
-        {/* Voltar */}
-        <p className="text-center mt-6">
-          <Link href="/" className="text-gray-500 hover:text-gray-700">
-            ← Voltar para o início
-          </Link>
-        </p>
+      {/* Lado Direito - Formulário */}
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 bg-gray-50">
+        <div className="w-full max-w-md">
+          {/* Logo Mobile */}
+          <div className="lg:hidden text-center mb-8">
+            <Link href="/" className="inline-flex items-center gap-2">
+              <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center">
+                <Car className="w-7 h-7 text-white" />
+              </div>
+              <span className="text-2xl font-bold text-gray-900">Instauto</span>
+            </Link>
+          </div>
+
+          {/* Card do Formulário */}
+          <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 text-center mb-2">
+              {isLogin ? "Entrar" : "Criar conta"}
+            </h1>
+            <p className="text-gray-500 text-center mb-8">
+              {isLogin ? "Bem-vindo de volta!" : "Comece a usar o Instauto"}
+            </p>
+
+            {/* Tabs Motorista/Oficina */}
+            <div className="flex bg-gray-100 rounded-xl p-1 mb-6">
+              <button
+                type="button"
+                onClick={() => setUserType("motorista")}
+                className={`flex-1 py-3 rounded-lg font-medium transition-all flex items-center justify-center gap-2 ${
+                  userType === "motorista"
+                    ? "bg-white shadow-sm text-blue-600"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                <Car className="w-5 h-5" />
+                <span>Motorista</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setUserType("oficina")}
+                className={`flex-1 py-3 rounded-lg font-medium transition-all flex items-center justify-center gap-2 ${
+                  userType === "oficina"
+                    ? "bg-white shadow-sm text-yellow-600"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                <Wrench className="w-5 h-5" />
+                <span>Oficina</span>
+              </button>
+            </div>
+
+            {/* Botão Google */}
+            <button
+              onClick={handleGoogleLogin}
+              disabled={googleLoading}
+              className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white border-2 border-gray-200 rounded-xl hover:bg-gray-50 transition-colors mb-4 disabled:opacity-50"
+            >
+              {googleLoading ? (
+                <Loader2 className="w-5 h-5 animate-spin" />
+              ) : (
+                <svg className="w-5 h-5" viewBox="0 0 24 24">
+                  <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                  <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                  <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                  <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                </svg>
+              )}
+              <span className="font-medium text-gray-700">
+                {googleLoading ? "Conectando..." : "Continuar com Google"}
+              </span>
+            </button>
+
+            {/* Divisor */}
+            <div className="flex items-center gap-4 my-6">
+              <div className="flex-1 h-px bg-gray-200" />
+              <span className="text-sm text-gray-400">ou</span>
+              <div className="flex-1 h-px bg-gray-200" />
+            </div>
+
+            {/* Formulário */}
+            <form onSubmit={handleEmailAuth} className="space-y-4">
+              {!isLogin && (
+                <div>
+                  <label className="text-sm font-medium text-gray-700 mb-2 block">
+                    {userType === "oficina" ? "Nome da Oficina" : "Seu Nome"} *
+                  </label>
+                  <div className="relative">
+                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                    <input
+                      type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder={userType === "oficina" ? "Auto Center Silva" : "João Silva"}
+                      required
+                      minLength={2}
+                      className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    />
+                  </div>
+                </div>
+              )}
+
+              <div>
+                <label className="text-sm font-medium text-gray-700 mb-2 block">Email *</label>
+                <div className="relative">
+                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="seu@email.com"
+                    required
+                    className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-sm font-medium text-gray-700 mb-2 block">Senha *</label>
+                <div className="relative">
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    required
+                    minLength={6}
+                    className="w-full pl-12 pr-12 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                  >
+                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  </button>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-blue-500/30 mt-6"
+              >
+                {loading && <Loader2 className="w-5 h-5 animate-spin" />}
+                {isLogin ? "Entrar" : "Criar conta"}
+              </button>
+            </form>
+
+            {/* Toggle Login/Cadastro */}
+            <div className="mt-6 text-center">
+              <p className="text-sm text-gray-600">
+                {isLogin ? "Não tem conta?" : "Já tem conta?"}{" "}
+                <button
+                  onClick={() => setIsLogin(!isLogin)}
+                  className="text-blue-600 font-semibold hover:text-blue-700 hover:underline transition-colors"
+                >
+                  {isLogin ? "Criar conta grátis" : "Fazer login"}
+                </button>
+              </p>
+            </div>
+          </div>
+
+          {/* Voltar */}
+          <div className="text-center mt-8">
+            <Link 
+              href="/" 
+              className="inline-flex items-center gap-2 text-gray-500 hover:text-gray-700 transition-colors text-sm font-medium"
+            >
+              <span>←</span>
+              <span>Voltar para o site</span>
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -158,7 +158,7 @@ export default function BuscarOficinasPage() {
       <Header />
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white py-20 pt-28">
+      <section className="bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white py-12 pt-24 sm:py-16 sm:pt-28">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-semibold mb-6">
@@ -190,64 +190,80 @@ export default function BuscarOficinasPage() {
       </section>
 
       {/* Filtros */}
-      <section className="bg-white border-b shadow-sm sticky top-16 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          {/* Primeira linha: Busca, Estado, Especialidade */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
-            {/* Estado */}
-            <select
-              value={selectedState}
-              onChange={(e) => setSelectedState(e.target.value)}
-              className="px-4 py-3 bg-gray-50 border-0 rounded-xl text-gray-900 focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all cursor-pointer"
-            >
-              <option value="">Todos os estados</option>
-              {ESTADOS_BRASILEIROS.map((estado) => (
-                <option key={estado} value={estado}>
-                  {estado}
-                </option>
-              ))}
-            </select>
-            
-            {/* Especialidade */}
-            <select
-              value={selectedSpecialty}
-              onChange={(e) => setSelectedSpecialty(e.target.value)}
-              className="px-4 py-3 bg-gray-50 border-0 rounded-xl text-gray-900 focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all cursor-pointer"
-            >
-              <option value="">Todas especialidades</option>
-              {ESPECIALIDADES.map((esp) => (
-                <option key={esp} value={esp}>
-                  {esp}
-                </option>
-              ))}
-            </select>
+      <section className="bg-white border-b shadow-sm sticky top-0 z-40 pt-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+          <div className="bg-gray-50 rounded-2xl p-4 sm:p-5 border border-gray-100">
+            {/* Primeira linha: Estado, Especialidade, Ordenar */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-4">
+              {/* Estado */}
+              <select
+                value={selectedState}
+                onChange={(e) => setSelectedState(e.target.value)}
+                className="px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all cursor-pointer"
+              >
+                <option value="">📍 Todos os estados</option>
+                {ESTADOS_BRASILEIROS.map((estado) => (
+                  <option key={estado} value={estado}>
+                    {estado}
+                  </option>
+                ))}
+              </select>
+              
+              {/* Especialidade */}
+              <select
+                value={selectedSpecialty}
+                onChange={(e) => setSelectedSpecialty(e.target.value)}
+                className="px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all cursor-pointer"
+              >
+                <option value="">🔧 Todas especialidades</option>
+                {ESPECIALIDADES.map((esp) => (
+                  <option key={esp} value={esp}>
+                    {esp}
+                  </option>
+                ))}
+              </select>
 
-            {/* Ordenar */}
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as any)}
-              className="px-4 py-3 bg-gray-50 border-0 rounded-xl text-gray-900 focus:ring-2 focus:ring-blue-500 cursor-pointer"
-            >
-              <option value="rating">Mais avaliadas</option>
-              <option value="reviews">Mais reviews</option>
-              <option value="name">Nome A-Z</option>
-            </select>
-          </div>
-          
-          {/* Segunda linha: Limpar filtros */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="text-sm text-gray-500">
-              Mostrando todas as oficinas disponíveis
+              {/* Ordenar */}
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as any)}
+                className="px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all cursor-pointer"
+              >
+                <option value="rating">⭐ Mais avaliadas</option>
+                <option value="reviews">💬 Mais reviews</option>
+                <option value="name">🔤 Nome A-Z</option>
+              </select>
             </div>
             
-            {(searchTerm || selectedState || selectedSpecialty) && (
-              <button
-                onClick={clearFilters}
-                className="text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors"
-              >
-                Limpar filtros
-              </button>
-            )}
+            {/* Segunda linha: Toggle + Contador + Limpar */}
+            <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-gray-200">
+              <label className="flex items-center gap-2 cursor-pointer group">
+                <input
+                  type="checkbox"
+                  checked={onlyWithReviews}
+                  onChange={(e) => setOnlyWithReviews(e.target.checked)}
+                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
+                />
+                <span className="text-sm text-gray-600 group-hover:text-gray-900 transition-colors">
+                  Só oficinas com avaliações
+                </span>
+              </label>
+              
+              <div className="flex items-center gap-4">
+                <span className="text-sm font-medium text-gray-700">
+                  {filteredWorkshops.length} {filteredWorkshops.length === 1 ? "oficina" : "oficinas"}
+                </span>
+                
+                {(searchTerm || selectedState || selectedSpecialty || onlyWithReviews) && (
+                  <button
+                    onClick={clearFilters}
+                    className="text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors"
+                  >
+                    Limpar filtros
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </section>
