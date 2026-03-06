@@ -29,14 +29,14 @@ export default function OficinasPage() {
       <Header />
 
       {/* Hero Section */}
-      <section className="relative min-h-[85vh] bg-gradient-to-br from-blue-600 via-blue-500 to-blue-600 overflow-hidden">
+      <section className="relative min-h-[85vh] bg-gradient-to-br from-blue-600 via-blue-500 to-blue-600 overflow-hidden pt-20 sm:pt-24">
         {/* Elementos decorativos */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-40 -right-40 w-96 h-96 bg-yellow-400/20 rounded-full blur-3xl" />
           <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-400/30 rounded-full blur-3xl" />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 pb-20">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Conteúdo */}
             <div className="text-white">

@@ -296,7 +296,7 @@ function SolicitarOrcamentoContent() {
     return (
       <div className="min-h-screen flex flex-col bg-gray-50">
         <Header />
-        <div className="flex-1 flex items-center justify-center">
+        <div className="flex-1 flex items-center justify-center pt-20 sm:pt-24">
           <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
         </div>
         <Footer />
@@ -308,7 +308,7 @@ function SolicitarOrcamentoContent() {
     return (
       <div className="min-h-screen flex flex-col bg-gray-50">
         <Header />
-        <div className="flex-1 flex items-center justify-center p-4">
+        <div className="flex-1 flex items-center justify-center p-4 pt-20 sm:pt-24">
           <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full text-center">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle2 className="h-8 w-8 text-green-600" />
@@ -333,7 +333,7 @@ function SolicitarOrcamentoContent() {
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
 
-      <section className="flex-1 py-12">
+      <section className="flex-1 py-12 pt-24 sm:pt-28">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="mb-8">

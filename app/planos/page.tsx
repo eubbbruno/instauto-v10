@@ -21,7 +21,7 @@ export default function PlanosPage() {
       <Header />
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 pt-36 pb-20 sm:pt-44 md:pb-32 overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center text-white">
             <h1 className="text-4xl md:text-6xl font-heading font-bold mb-6 leading-tight">

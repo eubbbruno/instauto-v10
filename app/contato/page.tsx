@@ -35,9 +35,9 @@ export default function ContatoPage() {
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      
+
       {/* Hero simples */}
-      <section className="bg-gradient-to-br from-blue-600 to-blue-500 py-20 mt-16">
+      <section className="bg-gradient-to-br from-blue-600 to-blue-500 py-20 pt-32 sm:pt-36">
         <div className="max-w-4xl mx-auto px-4 text-center text-white">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">Entre em Contato</h1>
           <p className="text-xl text-blue-100">

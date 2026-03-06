@@ -89,7 +89,7 @@ export default function OficinaDetalhesPage() {
     return (
       <div className="min-h-screen flex flex-col bg-gray-50">
         <Header />
-        <div className="flex-1 flex items-center justify-center">
+        <div className="flex-1 flex items-center justify-center pt-20 sm:pt-24">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
         </div>
         <Footer />
@@ -101,7 +101,7 @@ export default function OficinaDetalhesPage() {
     return (
       <div className="min-h-screen flex flex-col bg-gray-50">
         <Header />
-        <div className="flex-1 flex items-center justify-center">
+        <div className="flex-1 flex items-center justify-center pt-20 sm:pt-24">
           <p className="text-xl text-gray-600">Oficina não encontrada</p>
         </div>
         <Footer />
@@ -112,6 +112,7 @@ export default function OficinaDetalhesPage() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
+      <div className="pt-20 sm:pt-24">
 
       <section className="flex-1 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -333,6 +334,7 @@ export default function OficinaDetalhesPage() {
           </div>
         </div>
       </section>
+      </div>
 
       <Footer />
     </div>
