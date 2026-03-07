@@ -59,6 +59,7 @@ export function RespondQuoteDialog({ open, onOpenChange, quote, workshopId, onSu
       try {
         console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
         console.log("🔔 [RespondQuote] Iniciando criação de notificação...");
+        console.log("🔔 [RespondQuote] Quote completo:", JSON.stringify(quote, null, 2));
         console.log("🔔 [RespondQuote] Email do motorista:", quote.motorist_email);
         
         // 1. Buscar profile_id do motorista pelo email

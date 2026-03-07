@@ -142,25 +142,32 @@ export default function MotoristaLayout({ children }: { children: React.ReactNod
 
         // Buscar notificações não lidas
         if (profileData) {
-          const { data: notifications } = await supabase
+          console.log("🔔 [Layout Motorista] Buscando notificações para profile:", profileData.id);
+          const { data: notifications, error: notifError } = await supabase
             .from("notifications")
-            .select("id")
+            .select("*")
             .eq("user_id", profileData.id)
             .eq("is_read", false);
           
+          console.log("🔔 [Layout Motorista] Notificações encontradas:", notifications?.length || 0);
+          console.log("🔔 [Layout Motorista] Erro:", notifError);
+          if (notifications && notifications.length > 0) {
+            console.log("🔔 [Layout Motorista] Primeira notificação:", JSON.stringify(notifications[0], null, 2));
+          }
+          
           setUnreadCount(notifications?.length || 0);
-          console.log("🔔 [Layout Motorista] Notificações não lidas:", notifications?.length || 0);
         }
 
-        // Buscar orçamentos com resposta (aceito ou rejeitado)
+        // Buscar orçamentos com resposta (respondido ou rejeitado)
         if (motoristData?.id) {
           const { count } = await supabase
             .from("quotes")
             .select("*", { count: "exact", head: true })
             .eq("motorist_id", motoristData.id)
-            .in("status", ["accepted", "rejected"]);
+            .in("status", ["responded", "rejected"]);
           
           setPendingResponses(count || 0);
+          console.log("🔔 [Layout Motorista] Orçamentos respondidos:", count || 0);
         }
 
       } catch (error) {
