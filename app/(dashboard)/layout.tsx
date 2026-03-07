@@ -144,11 +144,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
         // Buscar orçamentos pendentes
         if (workshopData?.id) {
-          const { count } = await supabase
+          console.log("🔔 [Layout Oficina] Buscando orçamentos pendentes para workshop:", workshopData.id);
+          const { data: quotesData, count, error: quotesError } = await supabase
             .from("quotes")
-            .select("*", { count: "exact", head: true })
+            .select("*", { count: "exact" })
             .eq("workshop_id", workshopData.id)
             .eq("status", "pending");
+          
+          console.log("🔔 [Layout Oficina] Orçamentos pendentes:", count || 0);
+          console.log("🔔 [Layout Oficina] Erro:", quotesError);
+          if (quotesData && quotesData.length > 0) {
+            console.log("🔔 [Layout Oficina] Primeiro orçamento:", JSON.stringify(quotesData[0], null, 2));
+          }
           
           setPendingQuotes(count || 0);
         }

@@ -159,15 +159,21 @@ export default function MotoristaLayout({ children }: { children: React.ReactNod
         }
 
         // Buscar orçamentos com resposta (respondido ou rejeitado)
-        if (motoristData?.id) {
-          const { count } = await supabase
+        if (profileData?.email) {
+          console.log("🔔 [Layout Motorista] Buscando orçamentos para email:", profileData.email);
+          const { data: quotesData, count, error: quotesError } = await supabase
             .from("quotes")
-            .select("*", { count: "exact", head: true })
-            .eq("motorist_id", motoristData.id)
+            .select("*", { count: "exact" })
+            .eq("motorist_email", profileData.email)
             .in("status", ["responded", "rejected"]);
           
-          setPendingResponses(count || 0);
           console.log("🔔 [Layout Motorista] Orçamentos respondidos:", count || 0);
+          console.log("🔔 [Layout Motorista] Erro:", quotesError);
+          if (quotesData && quotesData.length > 0) {
+            console.log("🔔 [Layout Motorista] Primeiro orçamento:", JSON.stringify(quotesData[0], null, 2));
+          }
+          
+          setPendingResponses(count || 0);
         }
 
       } catch (error) {
