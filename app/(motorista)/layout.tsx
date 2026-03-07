@@ -44,6 +44,7 @@ export default function MotoristaLayout({ children }: { children: React.ReactNod
   const [dataLoading, setDataLoading] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [pendingResponses, setPendingResponses] = useState(0);
   
   const router = useRouter();
   const pathname = usePathname();
@@ -151,6 +152,17 @@ export default function MotoristaLayout({ children }: { children: React.ReactNod
           console.log("🔔 [Layout Motorista] Notificações não lidas:", notifications?.length || 0);
         }
 
+        // Buscar orçamentos com resposta (aceito ou rejeitado)
+        if (motoristData?.id) {
+          const { count } = await supabase
+            .from("quotes")
+            .select("*", { count: "exact", head: true })
+            .eq("motorist_id", motoristData.id)
+            .in("status", ["accepted", "rejected"]);
+          
+          setPendingResponses(count || 0);
+        }
+
       } catch (error) {
         console.error("❌ Erro ao carregar dados:", error);
       } finally {
@@ -216,6 +228,8 @@ export default function MotoristaLayout({ children }: { children: React.ReactNod
         <nav className="flex-1 p-3 sm:p-4 space-y-1 overflow-y-auto max-h-[calc(100vh-200px)]">
           {menuItems.map((item) => {
             const isActive = pathname === item.href;
+            const showBadge = item.href === "/motorista/orcamentos" && pendingResponses > 0;
+            
             return (
               <Link
                 key={item.href}
@@ -229,8 +243,13 @@ export default function MotoristaLayout({ children }: { children: React.ReactNod
                   }
                 `}
               >
-                <item.icon className="w-4 h-4 sm:w-5 sm:h-5" />
-                <span className="text-sm sm:text-base font-medium">{item.label}</span>
+                <item.icon className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+                <span className="text-sm sm:text-base font-medium flex-1">{item.label}</span>
+                {showBadge && (
+                  <span className="ml-auto bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full animate-pulse">
+                    {pendingResponses > 9 ? "9+" : pendingResponses}
+                  </span>
+                )}
               </Link>
             );
           })}

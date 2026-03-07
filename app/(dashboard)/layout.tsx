@@ -52,6 +52,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [dataLoading, setDataLoading] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [pendingQuotes, setPendingQuotes] = useState(0);
   
   const router = useRouter();
   const pathname = usePathname();
@@ -141,6 +142,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           setUnreadCount(notifications?.length || 0);
         }
 
+        // Buscar orçamentos pendentes
+        if (workshopData?.id) {
+          const { count } = await supabase
+            .from("quotes")
+            .select("*", { count: "exact", head: true })
+            .eq("workshop_id", workshopData.id)
+            .eq("status", "pending");
+          
+          setPendingQuotes(count || 0);
+        }
+
       } catch (error) {
         console.error("Erro ao carregar dados:", error);
       } finally {
@@ -202,6 +214,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <nav className="flex-1 p-3 sm:p-4 space-y-1 overflow-y-auto max-h-[calc(100vh-200px)]">
           {menuItems.map((item) => {
             const isActive = pathname === item.href;
+            const showBadge = item.href === "/oficina/orcamentos" && pendingQuotes > 0;
+            
             return (
               <Link
                 key={item.href}
@@ -215,8 +229,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   }
                 `}
               >
-                <item.icon className="w-4 h-4 sm:w-5 sm:h-5" />
-                <span className="text-sm sm:text-base font-medium">{item.label}</span>
+                <item.icon className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+                <span className="text-sm sm:text-base font-medium flex-1">{item.label}</span>
+                {showBadge && (
+                  <span className="ml-auto bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full animate-pulse">
+                    {pendingQuotes > 9 ? "9+" : pendingQuotes}
+                  </span>
+                )}
               </Link>
             );
           })}

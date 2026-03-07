@@ -57,53 +57,85 @@ export function RespondQuoteDialog({ open, onOpenChange, quote, workshopId, onSu
 
       // Criar notificação para o motorista
       try {
+        console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+        console.log("🔔 [RespondQuote] Iniciando criação de notificação...");
+        console.log("🔔 [RespondQuote] Email do motorista:", quote.motorist_email);
+        
         // 1. Buscar profile_id do motorista pelo email
         const { data: motoristProfile, error: profileError } = await supabase
           .from("profiles")
           .select("id, name")
           .eq("email", quote.motorist_email)
-          .single();
+          .maybeSingle();
+
+        console.log("🔔 [RespondQuote] Profile do motorista:", motoristProfile);
+        console.log("🔔 [RespondQuote] Erro ao buscar profile:", profileError);
 
         if (profileError) {
-          console.error("❌ Erro ao buscar profile do motorista:", profileError);
-        } else if (motoristProfile) {
-          // 2. Buscar nome da oficina
-          const { data: workshop } = await supabase
-            .from("workshops")
-            .select("name")
-            .eq("id", workshopId)
-            .single();
-
-          const workshopName = workshop?.name || "Oficina";
-
-          // 3. Criar notificação
-          const { error: notifError } = await supabase.from("notifications").insert({
-            user_id: motoristProfile.id,
-            type: responseType === "accept" ? "quote_response" : "quote_rejected",
-            title: responseType === "accept" 
-              ? "Orçamento Respondido! 🎉" 
-              : "Orçamento Recusado",
-            message: responseType === "accept"
-              ? `A oficina ${workshopName} respondeu seu orçamento. Valor estimado: R$ ${parseFloat(formData.estimated_price).toFixed(2)}`
-              : `A oficina ${workshopName} não pôde atender seu orçamento no momento.`,
-            is_read: false,
-            data: {
-              quote_id: quote.id,
-              workshop_id: workshopId,
-              estimated_price: responseType === "accept" ? parseFloat(formData.estimated_price) : null,
-              response_type: responseType
-            }
-          });
-
-          if (notifError) {
-            console.error("❌ [RespondQuote] Erro ao criar notificação:", notifError);
-            console.error("❌ [RespondQuote] Detalhes:", JSON.stringify(notifError, null, 2));
-          } else {
-            console.log("✅ [RespondQuote] Notificação criada para motorista:", motoristProfile.id);
-          }
+          console.error("❌ [RespondQuote] Erro ao buscar profile:", profileError);
+          throw profileError;
         }
+        
+        if (!motoristProfile) {
+          console.error("❌ [RespondQuote] Profile do motorista não encontrado!");
+          console.error("❌ [RespondQuote] Email buscado:", quote.motorist_email);
+          throw new Error("Profile do motorista não encontrado");
+        }
+
+        console.log("✅ [RespondQuote] Profile encontrado, ID:", motoristProfile.id);
+
+        // 2. Buscar nome da oficina
+        const { data: workshop } = await supabase
+          .from("workshops")
+          .select("name")
+          .eq("id", workshopId)
+          .maybeSingle();
+
+        const workshopName = workshop?.name || "Oficina";
+        console.log("🔔 [RespondQuote] Nome da oficina:", workshopName);
+
+        // 3. Criar notificação
+        const notificationData = {
+          user_id: motoristProfile.id,
+          type: responseType === "accept" ? "quote_response" : "quote_rejected",
+          title: responseType === "accept" 
+            ? "Orçamento Respondido! 🎉" 
+            : "Orçamento Recusado",
+          message: responseType === "accept"
+            ? `A oficina ${workshopName} respondeu seu orçamento. Valor estimado: R$ ${parseFloat(formData.estimated_price).toFixed(2)}`
+            : `A oficina ${workshopName} não pôde atender seu orçamento no momento.`,
+          is_read: false,
+          data: {
+            quote_id: quote.id,
+            workshop_id: workshopId,
+            estimated_price: responseType === "accept" ? parseFloat(formData.estimated_price) : null,
+            response_type: responseType
+          }
+        };
+
+        console.log("🔔 [RespondQuote] Dados da notificação:", JSON.stringify(notificationData, null, 2));
+
+        const { data: notifResult, error: notifError } = await supabase
+          .from("notifications")
+          .insert(notificationData)
+          .select()
+          .single();
+
+        if (notifError) {
+          console.error("❌ [RespondQuote] ERRO ao criar notificação:");
+          console.error("   - Código:", notifError.code);
+          console.error("   - Mensagem:", notifError.message);
+          console.error("   - Detalhes:", notifError.details);
+          console.error("   - Hint:", notifError.hint);
+          throw notifError;
+        }
+
+        console.log("✅ [RespondQuote] Notificação criada com sucesso!");
+        console.log("✅ [RespondQuote] Notificação ID:", notifResult?.id);
+        console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
       } catch (notifError) {
-        console.error("❌ Erro no processo de notificação:", notifError);
+        console.error("❌ [RespondQuote] Erro no processo de notificação:", notifError);
+        console.error("❌ [RespondQuote] Stack:", notifError instanceof Error ? notifError.stack : "N/A");
         // Não falha a operação principal se notificação falhar
       }
 
