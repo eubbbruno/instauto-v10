@@ -256,7 +256,7 @@ export default function LoginPage() {
             />
           </Link>
 
-          <h1 className="text-5xl font-bold mb-6 leading-tight">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
             Bem-vindo ao<br />
             <span className="text-yellow-400">Instauto</span>
           </h1>

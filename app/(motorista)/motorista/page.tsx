@@ -242,7 +242,7 @@ export default function MotoristaDashboard() {
             
             {/* Valor total */}
             <div className="mb-6">
-              <p className="text-4xl font-bold text-gray-900">R$ 0,00</p>
+              <p className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">R$ 0,00</p>
               <p className="text-sm text-green-600 flex items-center gap-1 mt-1 font-medium">
                 <ArrowUp className="w-4 h-4" />
                 +R$ 0,00 comparado ao mês anterior
@@ -281,7 +281,7 @@ export default function MotoristaDashboard() {
                     strokeDasharray="330 440" strokeLinecap="round" />
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-4xl font-bold text-gray-900">75%</span>
+                  <span className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">75%</span>
                   <span className="text-sm text-gray-500">da meta</span>
                 </div>
               </div>
@@ -476,7 +476,7 @@ export default function MotoristaDashboard() {
                 className={`bg-gradient-to-br ${promo.color} rounded-3xl shadow-sm hover:shadow-md p-4 sm:p-6 text-white transition-all cursor-pointer`}
               >
                 <div className="flex items-start justify-between mb-4">
-                  <div className="text-4xl">{promo.icon}</div>
+                  <div className="text-2xl sm:text-3xl lg:text-4xl">{promo.icon}</div>
                   <span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-bold">
                     {promo.discount} OFF
                   </span>
