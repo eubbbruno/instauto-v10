@@ -9,7 +9,7 @@ export default function PrivacidadePage() {
       <Header />
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-green-600 via-green-700 to-green-800 pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center text-white">
             <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-6">
@@ -18,7 +18,7 @@ export default function PrivacidadePage() {
             <h1 className="text-4xl md:text-5xl font-heading font-bold mb-4 leading-tight">
               Política de Privacidade
             </h1>
-            <p className="text-lg text-green-100 font-sans">
+            <p className="text-lg text-blue-100 font-sans">
               Última atualização: 22 de dezembro de 2024
             </p>
           </div>
@@ -46,14 +46,14 @@ export default function PrivacidadePage() {
           <div className="max-w-4xl mx-auto">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 text-green-600 hover:text-green-700 font-sans font-semibold mb-8 transition-colors"
+              className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-sans font-semibold mb-8 transition-colors"
             >
               <ArrowLeft className="h-4 w-4" />
               Voltar para o início
             </Link>
 
             <div className="prose prose-lg max-w-none">
-              <div className="bg-green-50 border-l-4 border-green-600 p-6 rounded-r-xl mb-8">
+              <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-xl mb-8">
                 <p className="text-gray-800 font-sans leading-relaxed m-0">
                   No Instauto, levamos sua privacidade a sério. Esta política descreve 
                   como coletamos, usamos, armazenamos e protegemos suas informações pessoais.
@@ -150,7 +150,7 @@ export default function PrivacidadePage() {
               </ul>
               <p className="text-gray-700 font-sans leading-relaxed mb-6">
                 Para exercer seus direitos, entre em contato através de{" "}
-                <a href="mailto:privacidade@instauto.com.br" className="text-green-600 hover:text-green-700 font-semibold">
+                <a href="mailto:privacidade@instauto.com.br" className="text-blue-600 hover:text-blue-700 font-semibold">
                   privacidade@instauto.com.br
                 </a>
               </p>
@@ -240,7 +240,7 @@ export default function PrivacidadePage() {
                 </p>
               </div>
 
-              <div className="bg-green-50 border-l-4 border-green-600 p-6 rounded-r-xl mt-8">
+              <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-xl mt-8">
                 <p className="text-gray-800 font-sans leading-relaxed m-0">
                   <strong>Compromisso com a Privacidade:</strong> No Instauto, respeitamos 
                   sua privacidade e nos comprometemos a proteger seus dados pessoais. Se você 

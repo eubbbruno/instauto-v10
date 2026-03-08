@@ -149,6 +149,14 @@ export default function Footer() {
                   Política de Privacidade
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/cookies"
+                  className="hover:text-yellow-400 transition-colors hover:translate-x-1 inline-block"
+                >
+                  Política de Cookies
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -215,6 +223,12 @@ export default function Footer() {
                 className="text-gray-400 hover:text-yellow-400 transition-colors"
               >
                 Privacidade
+              </Link>
+              <Link
+                href="/cookies"
+                className="text-gray-400 hover:text-yellow-400 transition-colors"
+              >
+                Cookies
               </Link>
             </div>
           </div>
