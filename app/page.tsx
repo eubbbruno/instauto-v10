@@ -24,12 +24,16 @@ import {
 export default function HomePage() {
   const router = useRouter();
   const [selectedLocation, setSelectedLocation] = useState("");
+  const [selectedState, setSelectedState] = useState("");
+  const [city, setCity] = useState("");
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (selectedLocation) {
-      router.push(`/buscar-oficinas?location=${encodeURIComponent(selectedLocation)}`);
-    }
+    const params = new URLSearchParams();
+    if (selectedState) params.set('estado', selectedState);
+    if (city) params.set('cidade', city);
+    
+    router.push(`/buscar-oficinas?${params.toString()}`);
   };
   return (
     <div className="min-h-screen bg-white">
@@ -50,7 +54,7 @@ export default function HomePage() {
             <div className="text-white">
               {/* Badge com animação */}
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-sans font-semibold mb-6">
-                <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                <span className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse" />
                 Mais de 500 oficinas cadastradas
               </div>
 
@@ -67,17 +71,61 @@ export default function HomePage() {
               </p>
 
               {/* CAMPO DE BUSCA - PRINCIPAL */}
-              <div className="bg-white rounded-2xl shadow-2xl p-2 mb-6 max-w-2xl">
-                <form onSubmit={handleSearch} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-                  <div className="flex-1 flex items-center gap-3 px-4 min-h-[48px]">
-                    <MapPin className="w-5 h-5 text-gray-400 flex-shrink-0" />
-                    <AddressAutocomplete onSelect={setSelectedLocation} />
+              <div className="bg-white rounded-2xl shadow-2xl p-4 mb-6 max-w-2xl">
+                <form onSubmit={handleSearch} className="flex flex-col gap-3">
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    {/* Select de Estado */}
+                    <select
+                      value={selectedState}
+                      onChange={(e) => setSelectedState(e.target.value)}
+                      className="flex-1 px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    >
+                      <option value="">Selecione o estado</option>
+                      <option value="AC">Acre</option>
+                      <option value="AL">Alagoas</option>
+                      <option value="AP">Amapá</option>
+                      <option value="AM">Amazonas</option>
+                      <option value="BA">Bahia</option>
+                      <option value="CE">Ceará</option>
+                      <option value="DF">Distrito Federal</option>
+                      <option value="ES">Espírito Santo</option>
+                      <option value="GO">Goiás</option>
+                      <option value="MA">Maranhão</option>
+                      <option value="MT">Mato Grosso</option>
+                      <option value="MS">Mato Grosso do Sul</option>
+                      <option value="MG">Minas Gerais</option>
+                      <option value="PA">Pará</option>
+                      <option value="PB">Paraíba</option>
+                      <option value="PR">Paraná</option>
+                      <option value="PE">Pernambuco</option>
+                      <option value="PI">Piauí</option>
+                      <option value="RJ">Rio de Janeiro</option>
+                      <option value="RN">Rio Grande do Norte</option>
+                      <option value="RS">Rio Grande do Sul</option>
+                      <option value="RO">Rondônia</option>
+                      <option value="RR">Roraima</option>
+                      <option value="SC">Santa Catarina</option>
+                      <option value="SP">São Paulo</option>
+                      <option value="SE">Sergipe</option>
+                      <option value="TO">Tocantins</option>
+                    </select>
+
+                    {/* Input de cidade */}
+                    <input
+                      type="text"
+                      placeholder="Digite a cidade (opcional)"
+                      value={city}
+                      onChange={(e) => setCity(e.target.value)}
+                      className="flex-1 px-4 py-3 rounded-xl border border-gray-200 bg-white text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    />
                   </div>
+
+                  {/* Botão buscar */}
                   <button
                     type="submit"
-                    className="flex items-center justify-center gap-2 px-6 py-3 sm:py-3 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold rounded-xl transition-all whitespace-nowrap min-h-[48px]"
+                    className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-yellow-900 font-bold rounded-xl transition-all shadow-lg shadow-yellow-500/30"
                   >
-                    Buscar
+                    Buscar Oficinas
                     <ArrowRight className="w-5 h-5" />
                   </button>
                 </form>
@@ -86,15 +134,15 @@ export default function HomePage() {
               {/* Badges de benefícios */}
               <div className="flex flex-wrap gap-4 sm:gap-6 text-sm text-white/90 font-sans">
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0" />
+                  <CheckCircle2 className="w-5 h-5 text-yellow-400 flex-shrink-0" />
                   <span>100% Grátis</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0" />
+                  <CheckCircle2 className="w-5 h-5 text-yellow-400 flex-shrink-0" />
                   <span>Sem compromisso</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-green-400 flex-shrink-0" />
+                  <CheckCircle2 className="w-5 h-5 text-yellow-400 flex-shrink-0" />
                   <span>Orçamento em minutos</span>
                 </div>
               </div>
@@ -362,8 +410,8 @@ export default function HomePage() {
             </div>
 
             <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-shadow">
-              <div className="w-14 h-14 bg-green-100 rounded-xl flex items-center justify-center mb-6">
-                <Shield className="h-7 w-7 text-green-600" />
+              <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
+                <Shield className="h-7 w-7 text-blue-600" />
               </div>
               <h3 className="text-xl font-heading font-bold text-gray-900 mb-3">
                 Seguro e Confiável

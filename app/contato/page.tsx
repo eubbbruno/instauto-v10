@@ -75,8 +75,8 @@ export default function ContatoPage() {
 
                 {/* Telefone */}
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <Phone className="w-6 h-6 text-green-600" />
+                  <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <Phone className="w-6 h-6 text-blue-600" />
                   </div>
                   <div>
                     <h3 className="font-bold text-gray-900 mb-1">Telefone / WhatsApp</h3>

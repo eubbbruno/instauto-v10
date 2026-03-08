@@ -44,6 +44,24 @@ export default function BuscarOficinasPage() {
   const [user, setUser] = useState<any>(null);
   const supabase = createClient();
 
+  // Ler parâmetros da URL
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const estadoParam = params.get('estado');
+      const cidadeParam = params.get('cidade');
+      
+      if (estadoParam) {
+        setSelectedState(estadoParam);
+        console.log('🔍 [BuscarOficinas] Estado da URL:', estadoParam);
+      }
+      if (cidadeParam) {
+        setSearchTerm(cidadeParam);
+        console.log('🔍 [BuscarOficinas] Cidade da URL:', cidadeParam);
+      }
+    }
+  }, []);
+
   useEffect(() => {
     const init = async () => {
       await checkAuth();

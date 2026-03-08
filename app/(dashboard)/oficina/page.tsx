@@ -406,9 +406,9 @@ export default function OficinaDashboard() {
 
   const getActivityColor = (type: string) => {
     switch (type) {
-      case 'order': return 'text-purple-600 bg-purple-100';
+      case 'order': return 'text-yellow-600 bg-yellow-100';
       case 'quote': return 'text-blue-600 bg-blue-100';
-      case 'client': return 'text-green-600 bg-green-100';
+      case 'client': return 'text-blue-600 bg-blue-100';
       default: return 'text-gray-600 bg-gray-100';
     }
   };

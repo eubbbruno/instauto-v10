@@ -106,8 +106,8 @@ export default function OficinasPage() {
                 {/* Badge +40% faturamento - Animação bounce */}
                 <div className="absolute -top-4 -left-4 px-4 py-3 bg-white rounded-2xl shadow-xl animate-bounce">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-                      <TrendingUp className="w-6 h-6 text-green-600" />
+                    <div className="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center">
+                      <TrendingUp className="w-6 h-6 text-yellow-600" />
                     </div>
                     <div>
                       <p className="text-2xl font-heading font-bold text-gray-900">+40%</p>
@@ -191,15 +191,15 @@ export default function OficinasPage() {
             </div>
 
             {/* Com Instauto */}
-            <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl p-8 border-2 border-green-200 shadow-lg relative">
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl p-8 border-2 border-blue-200 shadow-lg relative">
               {/* Badge Recomendado */}
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-green-500 text-white text-sm font-sans font-semibold rounded-full">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-yellow-500 text-yellow-900 text-sm font-sans font-semibold rounded-full">
                 RECOMENDADO
               </div>
-              
+
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-                  <Check className="w-6 h-6 text-green-600" />
+                <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                  <Check className="w-6 h-6 text-blue-600" />
                 </div>
                 <h3 className="text-xl font-heading font-bold text-gray-900">Com Instauto</h3>
               </div>
@@ -212,8 +212,8 @@ export default function OficinasPage() {
                   "Economize 10+ horas por semana",
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-3">
-                    <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <Check className="w-4 h-4 text-green-600" />
+                    <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Check className="w-4 h-4 text-blue-600" />
                     </div>
                     <span className="text-gray-700 font-sans">{item}</span>
                   </li>
@@ -257,11 +257,11 @@ export default function OficinasPage() {
                 desc: "Cadastro completo com histórico de serviços realizados",
                 colorClass: "bg-blue-100 text-blue-600"
               },
-              { 
-                icon: Car, 
-                title: "Veículos", 
+              {
+                icon: Car,
+                title: "Veículos",
                 desc: "Controle de frota com peças, modelo e histórico",
-                colorClass: "bg-green-100 text-green-600"
+                colorClass: "bg-blue-100 text-blue-600"
               },
               { 
                 icon: FileText, 
@@ -269,11 +269,11 @@ export default function OficinasPage() {
                 desc: "Gestão completa das OS com status e valores",
                 colorClass: "bg-yellow-100 text-yellow-600"
               },
-              { 
-                icon: Package, 
-                title: "Estoque", 
+              {
+                icon: Package,
+                title: "Estoque",
                 desc: "Controle de peças com alertas de reposição",
-                colorClass: "bg-purple-100 text-purple-600"
+                colorClass: "bg-yellow-100 text-yellow-600"
               },
               { 
                 icon: DollarSign, 
@@ -291,7 +291,7 @@ export default function OficinasPage() {
                 icon: Brain, 
                 title: "Diagnóstico IA", 
                 desc: "Inteligência artificial para identificar problemas",
-                colorClass: "bg-pink-100 text-pink-600"
+                colorClass: "bg-blue-100 text-blue-600"
               },
               { 
                 icon: MessageCircle, 
@@ -433,8 +433,8 @@ export default function OficinasPage() {
           {/* Garantia */}
           <div className="max-w-2xl mx-auto mt-12">
             <div className="bg-gray-50 rounded-2xl p-6 flex items-start gap-4">
-              <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                <Shield className="w-6 h-6 text-green-600" />
+              <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                <Shield className="w-6 h-6 text-blue-600" />
               </div>
               <div>
                 <h4 className="font-heading font-bold text-gray-900">Garantia de 14 dias — Risco Zero</h4>
