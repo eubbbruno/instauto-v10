@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase";
 import { Workshop, Review } from "@/types/database";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { MapPin, Phone, Mail, Star, CheckCircle2 } from "lucide-react";
+import { MapPin, Phone, Mail, Star, CheckCircle2, MessageCircle } from "lucide-react";
 import Link from "next/link";
 
 export default function OficinaDetalhesPage() {
@@ -184,13 +184,25 @@ export default function OficinaDetalhesPage() {
               </div>
 
               {/* CTA */}
-              <div className="w-full md:w-auto">
+              <div className="w-full md:w-auto space-y-3">
                 <Link
                   href={`/solicitar-orcamento?workshop=${workshop.id}`}
                   className="block bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition-colors text-center font-bold text-lg shadow-lg"
                 >
                   Solicitar Orçamento
                 </Link>
+                
+                {workshop.phone && (
+                  <a
+                    href={`https://wa.me/55${workshop.phone.replace(/\D/g, '')}?text=Olá! Vi sua oficina no Instauto e gostaria de mais informações.`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 w-full px-8 py-4 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg transition-colors shadow-lg"
+                  >
+                    <MessageCircle className="w-5 h-5" />
+                    WhatsApp
+                  </a>
+                )}
               </div>
             </div>
           </div>

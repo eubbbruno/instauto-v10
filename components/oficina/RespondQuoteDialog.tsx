@@ -134,6 +134,39 @@ export function RespondQuoteDialog({ open, onOpenChange, quote, workshopId, onSu
         console.log("✅ [RespondQuote] Notificação criada com sucesso!");
         console.log("✅ [RespondQuote] Notificação ID:", notifResult?.id);
         console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+
+        // Enviar email de notificação para o motorista
+        if (responseType === "accept") {
+          try {
+            console.log("📧 [RespondQuote] Enviando email para motorista:", quote.motorist_email);
+            const emailResponse = await fetch('/api/send-notification-email', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                to: quote.motorist_email,
+                subject: 'Seu orçamento foi respondido! 🎉',
+                type: 'quote_response',
+                data: {
+                  motoristName: quote.motorist_name,
+                  workshopName: workshopName,
+                  vehicleBrand: quote.vehicle_brand,
+                  vehicleModel: quote.vehicle_model,
+                  estimatedPrice: parseFloat(formData.estimated_price).toFixed(2),
+                  estimatedDays: "A combinar",
+                  workshopResponse: formData.workshop_response,
+                }
+              })
+            });
+
+            if (emailResponse.ok) {
+              console.log("✅ [RespondQuote] Email enviado com sucesso!");
+            } else {
+              console.error("❌ [RespondQuote] Erro ao enviar email:", await emailResponse.text());
+            }
+          } catch (emailError) {
+            console.error("❌ [RespondQuote] Erro ao enviar email:", emailError);
+          }
+        }
       } catch (notifError) {
         console.error("❌ [RespondQuote] Erro no processo de notificação:", notifError);
         console.error("❌ [RespondQuote] Stack:", notifError instanceof Error ? notifError.stack : "N/A");

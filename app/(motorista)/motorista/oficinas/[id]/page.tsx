@@ -328,7 +328,7 @@ export default function WorkshopDetailsPage() {
 
               {workshop.phone && (
                 <a
-                  href={`https://wa.me/55${workshop.phone.replace(/\D/g, "")}`}
+                  href={`https://wa.me/55${workshop.phone.replace(/\D/g, '')}?text=Olá! Vi sua oficina no Instauto e gostaria de mais informações sobre serviços.`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full py-3 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2"

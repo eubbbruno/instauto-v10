@@ -248,7 +248,7 @@ function SolicitarOrcamentoContent() {
       if (workshop) {
         const { data: workshopData } = await supabase
           .from("workshops")
-          .select("profile_id, name")
+          .select("profile_id, name, email")
           .eq("id", workshopId)
           .single();
 
@@ -273,6 +273,38 @@ function SolicitarOrcamentoContent() {
             console.error("❌ [Orçamento] Erro ao criar notificação:", notifError);
           } else {
             console.log("✅ [Orçamento] Notificação criada com sucesso!");
+          }
+
+          // Enviar email de notificação para a oficina
+          try {
+            console.log("📧 [Orçamento] Enviando email para oficina:", workshopData.email);
+            const emailResponse = await fetch('/api/send-notification-email', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                to: workshopData.email,
+                subject: 'Novo orçamento recebido! 🚗',
+                type: 'new_quote',
+                data: {
+                  workshopName: workshopData.name,
+                  motoristName: profile?.name || user?.email?.split("@")[0] || "Motorista",
+                  vehicleBrand: formData.vehicle_brand,
+                  vehicleModel: formData.vehicle_model,
+                  vehicleYear: formData.vehicle_year,
+                  serviceType: formData.service_type,
+                  description: formData.description,
+                  urgency: formData.urgency,
+                }
+              })
+            });
+
+            if (emailResponse.ok) {
+              console.log("✅ [Orçamento] Email enviado com sucesso!");
+            } else {
+              console.error("❌ [Orçamento] Erro ao enviar email:", await emailResponse.text());
+            }
+          } catch (emailError) {
+            console.error("❌ [Orçamento] Erro ao enviar email:", emailError);
           }
         }
       }
