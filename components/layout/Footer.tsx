@@ -135,7 +135,7 @@ export default function Footer() {
             <ul className="space-y-3 font-sans text-[15px]">
               <li>
                 <Link
-                  href="/termos-uso"
+                  href="/termos"
                   className="hover:text-yellow-400 transition-colors hover:translate-x-1 inline-block"
                 >
                   Termos de Uso
@@ -143,7 +143,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/politica-privacidade"
+                  href="/privacidade"
                   className="hover:text-yellow-400 transition-colors hover:translate-x-1 inline-block"
                 >
                   Política de Privacidade
@@ -213,13 +213,13 @@ export default function Footer() {
             </p>
             <div className="flex gap-6 text-sm font-sans">
               <Link
-                href="/termos-uso"
+                href="/termos"
                 className="text-gray-400 hover:text-yellow-400 transition-colors"
               >
-                Termos de Uso
+                Termos
               </Link>
               <Link
-                href="/politica-privacidade"
+                href="/privacidade"
                 className="text-gray-400 hover:text-yellow-400 transition-colors"
               >
                 Privacidade

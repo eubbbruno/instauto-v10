@@ -36,9 +36,9 @@ export async function middleware(req: NextRequest) {
     "/planos",
     "/termos",
     "/privacidade",
-    "/politica-privacidade",
-    "/termos-uso",
+    "/cookies",
     "/buscar-oficinas",
+    "/solicitar-orcamento",
     "/motoristas",
     "/avaliar-oficina",
   ];
