@@ -59,6 +59,21 @@ export async function middleware(req: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
+  // Rotas de admin - precisa ser admin
+  if (pathname.startsWith("/admin")) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", session.user.id)
+      .single();
+
+    if (profile?.role !== "admin") {
+      console.log("🚫 [Middleware] Acesso negado ao admin. User:", session.user.email);
+      const homeUrl = new URL("/", req.url);
+      return NextResponse.redirect(homeUrl);
+    }
+  }
+
   return res;
 }
 
