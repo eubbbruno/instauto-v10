@@ -263,6 +263,55 @@ export default function ConfiguracoesPage() {
           <h1 className="text-base sm:text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900">Configurações</h1>
         </div>
 
+        {/* Foto de Perfil */}
+        <Card className="border-2 border-gray-200 hover:shadow-xl hover:border-gray-400 transition-all duration-300 mb-6">
+          <CardHeader className="bg-gradient-to-r from-blue-50 via-blue-50/50 to-blue-50/30">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center shadow-lg">
+                <User className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <CardTitle className="text-base sm:text-lg">Foto de Perfil</CardTitle>
+                <CardDescription>Personalize seu perfil com uma foto</CardDescription>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent className="pt-6">
+            <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+              {/* Avatar atual ou placeholder */}
+              <div className="relative flex-shrink-0">
+                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-3xl font-bold shadow-lg">
+                  {profile?.name?.charAt(0)?.toUpperCase() || 'U'}
+                </div>
+                <button className="absolute bottom-0 right-0 p-2 bg-white rounded-full shadow-lg border-2 border-gray-200 hover:bg-gray-50 transition-colors">
+                  <User className="w-4 h-4 text-gray-600" />
+                </button>
+              </div>
+              
+              <div className="flex-1 text-center sm:text-left">
+                <p className="text-sm text-gray-600 mb-3">
+                  Adicione uma foto para personalizar seu perfil
+                </p>
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <button 
+                    disabled
+                    className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Escolher foto
+                  </button>
+                  <button 
+                    disabled
+                    className="px-4 py-2 border border-gray-300 text-gray-700 text-sm rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Remover
+                  </button>
+                </div>
+                <p className="text-xs text-gray-400 mt-2">JPG, PNG até 5MB • Em breve</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Cards de Configurações */}
         <div className="space-y-6">
           {/* PERFIL */}

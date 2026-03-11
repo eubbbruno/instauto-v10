@@ -81,8 +81,15 @@ export default function PlanosPage() {
         .eq("workshop_id", workshopData.id)
         .gte("created_at", firstDay.toISOString());
 
+      // Contar orçamentos recebidos neste mês
+      const { count: quotesThisMonth } = await supabase
+        .from("quotes")
+        .select("*", { count: "exact", head: true })
+        .eq("workshop_id", workshopData.id)
+        .gte("created_at", firstDay.toISOString());
+
       setStats({
-        clients: clientsCount || 0,
+        clients: quotesThisMonth || 0, // Usar quotesThisMonth para o limite de orçamentos
         ordersThisMonth: ordersCount || 0,
       });
       
@@ -283,9 +290,82 @@ export default function PlanosPage() {
         </CardHeader>
       </Card>
 
+      {/* Card de Uso Atual - Apenas para FREE */}
+      {!isPro && (
+        <Card className="border-2 border-yellow-200 bg-yellow-50/50 mb-6">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <TrendingUp className="h-5 w-5 text-yellow-600" />
+              Seu Uso Este Mês
+            </CardTitle>
+            <CardDescription>
+              Acompanhe o uso dos recursos do plano FREE
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {/* Orçamentos */}
+              <div>
+                <div className="flex justify-between text-sm mb-2">
+                  <span className="text-gray-600 font-medium">Orçamentos recebidos</span>
+                  <span className="font-bold text-gray-900">{stats.clients}/5</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-3">
+                  <div 
+                    className={cn(
+                      "rounded-full h-3 transition-all duration-500",
+                      stats.clients >= 5 ? "bg-red-500" : "bg-blue-600"
+                    )}
+                    style={{ width: `${Math.min((stats.clients / 5) * 100, 100)}%` }}
+                  />
+                </div>
+                {stats.clients >= 5 && (
+                  <p className="text-xs text-red-600 font-medium mt-2 flex items-center gap-1">
+                    <X className="w-3 h-3" />
+                    Limite atingido! Faça upgrade para PRO e receba orçamentos ilimitados.
+                  </p>
+                )}
+                {stats.clients >= 3 && stats.clients < 5 && (
+                  <p className="text-xs text-yellow-600 font-medium mt-2">
+                    ⚠️ Você está próximo do limite mensal
+                  </p>
+                )}
+              </div>
+              
+              {/* Dias restantes do trial */}
+              {daysUntilTrialEnd > 0 && (
+                <div className="p-4 bg-white rounded-lg border-2 border-yellow-300">
+                  <p className="text-sm text-gray-900 font-medium mb-1">
+                    ⏳ Período de Avaliação
+                  </p>
+                  <p className="text-xs text-gray-600">
+                    {daysUntilTrialEnd} {daysUntilTrialEnd === 1 ? 'dia restante' : 'dias restantes'} do seu trial gratuito
+                  </p>
+                  {daysUntilTrialEnd <= 3 && (
+                    <p className="text-xs text-red-600 font-medium mt-2">
+                      Seu trial está acabando! Faça upgrade agora.
+                    </p>
+                  )}
+                </div>
+              )}
+              {daysUntilTrialEnd <= 0 && (
+                <div className="p-4 bg-red-50 rounded-lg border-2 border-red-300">
+                  <p className="text-sm text-red-900 font-bold mb-1">
+                    ❌ Trial Expirado
+                  </p>
+                  <p className="text-xs text-red-700">
+                    Faça upgrade para PRO para continuar recebendo orçamentos
+                  </p>
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Comparativo de Planos */}
       <div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">
+        <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4 md:mb-6">
           Compare os Planos
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:p-6">
@@ -312,15 +392,22 @@ export default function PlanosPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
+              <div className="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                <p className="text-xs font-semibold text-blue-900 mb-1">Trial de 14 dias</p>
+                <p className="text-xs text-blue-700">Teste todos os recursos gratuitamente</p>
+              </div>
               <ul className="space-y-3">
-                <FeatureItem included>Dashboard básico</FeatureItem>
-                <FeatureItem included>Configurações da oficina</FeatureItem>
+                <FeatureItem included>Até 5 orçamentos/mês</FeatureItem>
+                <FeatureItem included>Perfil básico</FeatureItem>
                 <FeatureItem included>Marketplace de orçamentos</FeatureItem>
                 <FeatureItem included>Perfil público</FeatureItem>
                 <FeatureItem included>Suporte por email</FeatureItem>
+                <FeatureItem included={false}>Sem destaque na busca</FeatureItem>
                 <FeatureItem included={false}>Sistema de gestão</FeatureItem>
                 <FeatureItem included={false}>Clientes e veículos</FeatureItem>
                 <FeatureItem included={false}>Ordens de serviço</FeatureItem>
+                <FeatureItem included={false}>Diagnóstico com IA</FeatureItem>
+                <FeatureItem included={false}>Agenda integrada</FeatureItem>
               </ul>
               {isPro && (
                 <Button variant="outline" className="w-full" disabled>
@@ -360,19 +447,31 @@ export default function PlanosPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
+              <div className="mb-4 p-3 bg-purple-50 rounded-lg border border-purple-200">
+                <p className="text-xs font-semibold text-purple-900 mb-1">✨ Recursos Premium</p>
+                <p className="text-xs text-purple-700">Tudo que você precisa para crescer</p>
+              </div>
               <ul className="space-y-3">
                 <FeatureItem included highlight>
-                  <strong>Clientes ilimitados</strong>
+                  <strong>Orçamentos ilimitados</strong>
                 </FeatureItem>
                 <FeatureItem included highlight>
-                  <strong>OS ilimitadas</strong>
+                  <strong>Destaque na busca (badge PRO)</strong>
                 </FeatureItem>
+                <FeatureItem included>Perfil completo com fotos</FeatureItem>
+                <FeatureItem included>Clientes ilimitados</FeatureItem>
+                <FeatureItem included>OS ilimitadas</FeatureItem>
                 <FeatureItem included>Gestão de veículos</FeatureItem>
                 <FeatureItem included>Dashboard avançado</FeatureItem>
                 <FeatureItem included>Relatórios completos</FeatureItem>
                 <FeatureItem included>Suporte prioritário</FeatureItem>
                 <FeatureItem included>Backup automático</FeatureItem>
-                <FeatureItem included>Atualizações antecipadas</FeatureItem>
+                <FeatureItem included>
+                  🤖 Diagnóstico com IA (em breve)
+                </FeatureItem>
+                <FeatureItem included>
+                  📅 Agenda integrada (em breve)
+                </FeatureItem>
               </ul>
               {!isPro ? (
                 <Button

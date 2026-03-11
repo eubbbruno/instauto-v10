@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2, User, Building2, Phone } from "lucide-react";
+import { Loader2, User, Building2, Phone, Camera } from "lucide-react";
 import { PageHeader } from "@/components/dashboard/PageHeader";
 
 const ESTADOS_BRASILEIROS = [
@@ -218,6 +218,53 @@ export default function ConfiguracoesPage() {
           </h1>
           <p className="text-gray-600">Gerencie seus dados pessoais e da oficina</p>
         </div>
+
+      {/* Foto de Perfil */}
+      <Card className="mb-6">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Camera className="h-5 w-5" />
+            Foto de Perfil
+          </CardTitle>
+          <CardDescription>
+            Personalize seu perfil com uma foto
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+            {/* Avatar atual ou placeholder */}
+            <div className="relative flex-shrink-0">
+              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-3xl font-bold shadow-lg">
+                {profile?.name?.charAt(0)?.toUpperCase() || 'U'}
+              </div>
+              <button className="absolute bottom-0 right-0 p-2 bg-white rounded-full shadow-lg border-2 border-gray-200 hover:bg-gray-50 transition-colors">
+                <Camera className="w-4 h-4 text-gray-600" />
+              </button>
+            </div>
+            
+            <div className="flex-1 text-center sm:text-left">
+              <p className="text-sm text-gray-600 mb-3">
+                Adicione uma foto para personalizar seu perfil
+              </p>
+              <div className="flex flex-col sm:flex-row gap-2">
+                <button 
+                  disabled
+                  className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Escolher foto
+                </button>
+                <button 
+                  disabled
+                  className="px-4 py-2 border border-gray-300 text-gray-700 text-sm rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Remover
+                </button>
+              </div>
+              <p className="text-xs text-gray-400 mt-2">JPG, PNG até 5MB • Em breve</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:p-6">
         {/* Meus Dados */}

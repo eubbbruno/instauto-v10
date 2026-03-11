@@ -576,6 +576,52 @@ export default function OficinaDashboard() {
           </CardContent>
         </Card>
 
+        {/* Cards de Destaque: Diagnóstico IA + Agenda */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 md:mb-8">
+          {/* Diagnóstico IA */}
+          <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl md:rounded-2xl p-5 md:p-6 text-white shadow-lg">
+            <div className="flex items-center gap-3 mb-3 md:mb-4">
+              <div className="p-2.5 md:p-3 bg-white/20 backdrop-blur-sm rounded-lg md:rounded-xl">
+                <Sparkles className="w-5 h-5 md:w-6 md:h-6" />
+              </div>
+              <div>
+                <h3 className="font-bold text-base md:text-lg">Diagnóstico com IA</h3>
+                <p className="text-blue-100 text-xs md:text-sm">Em breve</p>
+              </div>
+            </div>
+            <p className="text-blue-100 text-xs md:text-sm mb-3 md:mb-4 leading-relaxed">
+              Use inteligência artificial para diagnosticar problemas dos veículos 
+              a partir de fotos e descrições dos clientes.
+            </p>
+            <button 
+              disabled
+              className="w-full py-2.5 md:py-3 bg-white/20 backdrop-blur-sm rounded-lg text-xs md:text-sm font-medium cursor-not-allowed hover:bg-white/25 transition-colors"
+            >
+              🔒 Disponível em breve
+            </button>
+          </div>
+
+          {/* Agenda de Hoje */}
+          <div className="bg-white/80 backdrop-blur-md border border-white/20 rounded-xl md:rounded-2xl p-5 md:p-6 shadow-lg">
+            <div className="flex items-center justify-between mb-3 md:mb-4">
+              <h3 className="font-semibold text-gray-900 flex items-center gap-2 text-base md:text-lg">
+                <Calendar className="w-4 h-4 md:w-5 md:h-5 text-blue-600" />
+                Agenda de Hoje
+              </h3>
+              <span className="text-xs md:text-sm text-gray-500">
+                {new Date().toLocaleDateString('pt-BR', { weekday: 'short', day: 'numeric', month: 'short' })}
+              </span>
+            </div>
+            
+            {/* Placeholder - sem agendamentos */}
+            <div className="text-center py-6 md:py-8 text-gray-500">
+              <Calendar className="w-10 h-10 md:w-12 md:h-12 mx-auto mb-2 md:mb-3 text-gray-300" />
+              <p className="text-xs md:text-sm">Nenhum agendamento para hoje</p>
+              <p className="text-[10px] md:text-xs text-gray-400 mt-1">Em breve: sistema de agendamentos</p>
+            </div>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Revenue Chart + Recent Activities */}
           <div className="lg:col-span-2 space-y-8">
