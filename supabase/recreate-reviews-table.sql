@@ -18,8 +18,8 @@ CREATE TABLE reviews (
   
   -- Relacionamentos
   workshop_id UUID NOT NULL REFERENCES workshops(id) ON DELETE CASCADE,
-  motorist_id UUID REFERENCES profiles(id) ON DELETE SET NULL,
-  quote_id UUID REFERENCES quotes(id) ON DELETE SET NULL,
+  motorist_id UUID NULL REFERENCES profiles(id) ON DELETE SET NULL,
+  quote_id UUID NULL REFERENCES quotes(id) ON DELETE SET NULL,
   
   -- Dados do motorista (para avaliações públicas sem login)
   motorist_name TEXT,

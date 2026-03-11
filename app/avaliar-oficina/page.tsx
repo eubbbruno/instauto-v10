@@ -66,12 +66,19 @@ function AvaliarOficinaContent() {
         throw new Error("Oficina não selecionada");
       }
 
-      console.log("📝 [Avaliação] Enviando avaliação...");
+      console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+      console.log("📝 [Avaliação] INICIANDO ENVIO DE AVALIAÇÃO");
       console.log("📝 [Avaliação] Workshop ID:", workshopId);
       console.log("📝 [Avaliação] Rating:", rating);
-      console.log("📝 [Avaliação] Dados:", formData);
+      console.log("📝 [Avaliação] Dados do formulário:", formData);
 
-      const reviewData = {
+      // Verificar se usuário está logado
+      const { data: { session } } = await supabase.auth.getSession();
+      console.log("📝 [Avaliação] Usuário logado?", !!session);
+      console.log("📝 [Avaliação] User ID:", session?.user?.id || "não logado");
+
+      // Montar dados da avaliação
+      const reviewData: any = {
         workshop_id: workshopId,
         rating,
         motorist_name: formData.motorist_name,
@@ -79,6 +86,28 @@ function AvaliarOficinaContent() {
         comment: formData.comment || null,
         service_type: formData.service_type || null,
       };
+
+      // Adicionar motorist_id APENAS se usuário estiver logado
+      if (session?.user?.id) {
+        console.log("📝 [Avaliação] Verificando se profile existe...");
+        
+        const { data: profile, error: profileError } = await supabase
+          .from("profiles")
+          .select("id")
+          .eq("id", session.user.id)
+          .maybeSingle();
+
+        if (profile) {
+          reviewData.motorist_id = profile.id;
+          console.log("📝 [Avaliação] Motorist ID adicionado:", profile.id);
+        } else {
+          console.log("📝 [Avaliação] Profile não encontrado, avaliação será anônima");
+        }
+      } else {
+        console.log("📝 [Avaliação] Usuário não logado, avaliação será anônima");
+      }
+
+      console.log("📝 [Avaliação] Dados finais para inserir:", JSON.stringify(reviewData, null, 2));
 
       const { data, error } = await supabase
         .from("reviews")
