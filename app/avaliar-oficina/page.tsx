@@ -72,42 +72,26 @@ function AvaliarOficinaContent() {
       console.log("📝 [Avaliação] Rating:", rating);
       console.log("📝 [Avaliação] Dados do formulário:", formData);
 
-      // Verificar se usuário está logado
-      const { data: { session } } = await supabase.auth.getSession();
-      console.log("📝 [Avaliação] Usuário logado?", !!session);
-      console.log("📝 [Avaliação] User ID:", session?.user?.id || "não logado");
-
-      // Montar dados da avaliação
-      const reviewData: any = {
+      // Montar dados da avaliação (SEM motorist_id - avaliação anônima)
+      const reviewData = {
         workshop_id: workshopId,
-        rating,
+        rating: rating,
         motorist_name: formData.motorist_name,
         motorist_email: formData.motorist_email,
         comment: formData.comment || null,
         service_type: formData.service_type || null,
       };
 
-      // Adicionar motorist_id APENAS se usuário estiver logado
-      if (session?.user?.id) {
-        console.log("📝 [Avaliação] Verificando se profile existe...");
-        
-        const { data: profile, error: profileError } = await supabase
-          .from("profiles")
-          .select("id")
-          .eq("id", session.user.id)
-          .maybeSingle();
-
-        if (profile) {
-          reviewData.motorist_id = profile.id;
-          console.log("📝 [Avaliação] Motorist ID adicionado:", profile.id);
-        } else {
-          console.log("📝 [Avaliação] Profile não encontrado, avaliação será anônima");
-        }
-      } else {
-        console.log("📝 [Avaliação] Usuário não logado, avaliação será anônima");
-      }
-
-      console.log("📝 [Avaliação] Dados finais para inserir:", JSON.stringify(reviewData, null, 2));
+      console.log("📝 [Avaliação] Dados EXATOS a inserir:");
+      console.log(JSON.stringify(reviewData, null, 2));
+      console.log("📝 [Avaliação] Tipo de cada campo:");
+      console.log("  - workshop_id:", typeof reviewData.workshop_id, "=", reviewData.workshop_id);
+      console.log("  - rating:", typeof reviewData.rating, "=", reviewData.rating);
+      console.log("  - motorist_name:", typeof reviewData.motorist_name, "=", reviewData.motorist_name);
+      console.log("  - motorist_email:", typeof reviewData.motorist_email, "=", reviewData.motorist_email);
+      console.log("  - comment:", typeof reviewData.comment, "=", reviewData.comment);
+      console.log("  - service_type:", typeof reviewData.service_type, "=", reviewData.service_type);
+      console.log("📝 [Avaliação] Inserindo na tabela reviews...");
 
       const { data, error } = await supabase
         .from("reviews")
