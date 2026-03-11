@@ -112,8 +112,24 @@ function SolicitarOrcamentoContent() {
         .single();
 
       if (error) throw error;
-      setWorkshop(data);
-      console.log("✅ [Orçamento] Oficina carregada:", data.name);
+      
+      // Buscar email do profile separadamente
+      if (data) {
+        const { data: profileData } = await supabase
+          .from("profiles")
+          .select("email")
+          .eq("id", data.profile_id)
+          .single();
+        
+        const workshopWithEmail = {
+          ...data,
+          email: profileData?.email
+        };
+        
+        setWorkshop(workshopWithEmail);
+        console.log("✅ [Orçamento] Oficina carregada:", workshopWithEmail.name);
+        console.log("✅ [Orçamento] Email oficina:", workshopWithEmail.email);
+      }
     } catch (error) {
       console.error("❌ [Orçamento] Erro ao carregar oficina:", error);
     }
@@ -248,11 +264,19 @@ function SolicitarOrcamentoContent() {
       if (workshop) {
         const { data: workshopData } = await supabase
           .from("workshops")
-          .select("profile_id, name, email")
+          .select("profile_id, name")
           .eq("id", workshopId)
           .single();
 
         if (workshopData) {
+          // Buscar email do profile
+          const { data: profileData } = await supabase
+            .from("profiles")
+            .select("email")
+            .eq("id", workshopData.profile_id)
+            .single();
+          
+          const workshopEmail = profileData?.email;
           console.log("🔔 [Orçamento] Criando notificação para profile_id:", workshopData.profile_id);
           
           const { error: notifError } = await supabase.from("notifications").insert({
@@ -277,12 +301,12 @@ function SolicitarOrcamentoContent() {
 
           // Enviar email de notificação para a oficina
           try {
-            console.log("📧 [Orçamento] Enviando email para oficina:", workshopData.email);
+            console.log("📧 [Orçamento] Enviando email para oficina:", workshopEmail);
             const emailResponse = await fetch('/api/send-notification-email', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
-                to: workshopData.email,
+                to: workshopEmail,
                 subject: 'Novo orçamento recebido! 🚗',
                 type: 'new_quote',
                 data: {

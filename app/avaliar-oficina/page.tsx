@@ -66,23 +66,86 @@ function AvaliarOficinaContent() {
         throw new Error("Oficina não selecionada");
       }
 
-      const { error } = await supabase.from("reviews").insert([
-        {
-          workshop_id: workshopId,
-          rating,
-          ...formData,
-        },
-      ]);
+      console.log("📝 [Avaliação] Enviando avaliação...");
+      console.log("📝 [Avaliação] Workshop ID:", workshopId);
+      console.log("📝 [Avaliação] Rating:", rating);
+      console.log("📝 [Avaliação] Dados:", formData);
 
-      if (error) throw error;
+      const reviewData = {
+        workshop_id: workshopId,
+        rating,
+        motorist_name: formData.motorist_name,
+        motorist_email: formData.motorist_email,
+        comment: formData.comment || null,
+        service_type: formData.service_type || null,
+      };
+
+      const { data, error } = await supabase
+        .from("reviews")
+        .insert([reviewData])
+        .select()
+        .single();
+
+      if (error) {
+        console.error("❌ [Avaliação] Erro ao inserir:", error);
+        console.error("❌ [Avaliação] Código:", error.code);
+        console.error("❌ [Avaliação] Mensagem:", error.message);
+        console.error("❌ [Avaliação] Detalhes:", error.details);
+        throw error;
+      }
+
+      console.log("✅ [Avaliação] Avaliação criada:", data);
+
+      // Atualizar média da oficina
+      try {
+        console.log("📊 [Avaliação] Recalculando média da oficina...");
+        
+        const { data: allReviews } = await supabase
+          .from("reviews")
+          .select("rating")
+          .eq("workshop_id", workshopId);
+
+        if (allReviews && allReviews.length > 0) {
+          const avgRating = allReviews.reduce((sum, r) => sum + r.rating, 0) / allReviews.length;
+          
+          console.log("📊 [Avaliação] Nova média:", avgRating.toFixed(1));
+          console.log("📊 [Avaliação] Total de avaliações:", allReviews.length);
+
+          const { error: updateError } = await supabase
+            .from("workshops")
+            .update({
+              rating: Number(avgRating.toFixed(1)),
+              reviews_count: allReviews.length,
+            })
+            .eq("id", workshopId);
+
+          if (updateError) {
+            console.error("❌ [Avaliação] Erro ao atualizar média:", updateError);
+          } else {
+            console.log("✅ [Avaliação] Média atualizada com sucesso!");
+          }
+        }
+      } catch (avgError) {
+        console.error("❌ [Avaliação] Erro ao calcular média:", avgError);
+        // Não bloquear o fluxo se falhar ao atualizar a média
+      }
 
       setSuccess(true);
       setTimeout(() => {
         router.push(`/oficina-detalhes/${workshopId}`);
       }, 3000);
     } catch (error: any) {
-      console.error("Erro ao enviar avaliação:", error);
-      setError(error.message || "Erro ao enviar avaliação. Tente novamente.");
+      console.error("❌ [Avaliação] Erro geral:", error);
+      
+      let errorMessage = "Erro ao enviar avaliação. Tente novamente.";
+      
+      if (error.code === "42501") {
+        errorMessage = "Erro de permissão. Por favor, execute o script SQL fix-reviews-rls.sql no Supabase.";
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
