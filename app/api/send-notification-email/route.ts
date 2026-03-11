@@ -3,11 +3,22 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   try {
-    const { to, subject, type, data } = await request.json();
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    console.log("📨 [Email API] REQUISIÇÃO RECEBIDA");
+    
+    const body = await request.json();
+    const { to, subject, type, data } = body;
 
-    console.log('📧 [Email API] Enviando email:', { to, subject, type });
+    console.log("📨 [Email API] Destinatário:", to);
+    console.log("📨 [Email API] Assunto:", subject);
+    console.log("📨 [Email API] Tipo:", type);
+    console.log("📨 [Email API] Dados:", JSON.stringify(data, null, 2));
 
     // Verificar se API key está configurada
+    console.log("📨 [Email API] Verificando RESEND_API_KEY...");
+    console.log("📨 [Email API] API Key presente?", !!process.env.RESEND_API_KEY);
+    console.log("📨 [Email API] API Key (primeiros 10 chars):", process.env.RESEND_API_KEY?.substring(0, 10) + "...");
+    
     if (!process.env.RESEND_API_KEY) {
       console.warn('⚠️ [Email API] RESEND_API_KEY não configurada. Email não será enviado.');
       return NextResponse.json({ 
@@ -16,7 +27,9 @@ export async function POST(request: NextRequest) {
       }, { status: 200 });
     }
 
+    console.log("📨 [Email API] Inicializando Resend...");
     const resend = new Resend(process.env.RESEND_API_KEY);
+    console.log("📨 [Email API] Resend inicializado com sucesso!");
 
     let html = '';
 
@@ -282,6 +295,11 @@ export async function POST(request: NextRequest) {
       `;
     }
 
+    console.log("📨 [Email API] Preparando envio via Resend...");
+    console.log("📨 [Email API] From: Instauto <noreply@instauto.com.br>");
+    console.log("📨 [Email API] To:", to);
+    console.log("📨 [Email API] HTML length:", html.length, "chars");
+
     const { data: result, error } = await resend.emails.send({
       from: 'Instauto <noreply@instauto.com.br>',
       to: [to],
@@ -289,16 +307,33 @@ export async function POST(request: NextRequest) {
       html: html,
     });
 
+    console.log("📨 [Email API] Resposta do Resend recebida!");
+    console.log("📨 [Email API] Erro?", !!error);
+    console.log("📨 [Email API] Resultado?", !!result);
+
     if (error) {
-      console.error('❌ [Email API] Erro ao enviar email:', error);
-      return NextResponse.json({ error }, { status: 500 });
+      console.error("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+      console.error('❌ [Email API] ERRO AO ENVIAR EMAIL:');
+      console.error('❌ [Email API] Erro completo:', JSON.stringify(error, null, 2));
+      console.error("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+      return NextResponse.json({ success: false, error }, { status: 500 });
     }
 
-    console.log('✅ [Email API] Email enviado com sucesso:', result);
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    console.log('✅ [Email API] EMAIL ENVIADO COM SUCESSO!');
+    console.log('✅ [Email API] ID do email:', result?.id);
+    console.log('✅ [Email API] Resultado completo:', JSON.stringify(result, null, 2));
+    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    
     return NextResponse.json({ success: true, data: result });
 
-  } catch (error) {
-    console.error('❌ [Email API] Erro geral:', error);
-    return NextResponse.json({ error: 'Erro ao enviar email' }, { status: 500 });
+  } catch (error: any) {
+    console.error("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    console.error('❌ [Email API] ERRO CRÍTICO:');
+    console.error('❌ [Email API] Tipo:', error.name);
+    console.error('❌ [Email API] Mensagem:', error.message);
+    console.error('❌ [Email API] Stack:', error.stack);
+    console.error("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+    return NextResponse.json({ success: false, error: 'Erro ao enviar email', details: error.message }, { status: 500 });
   }
 }

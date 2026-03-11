@@ -301,34 +301,62 @@ function SolicitarOrcamentoContent() {
 
           // Enviar email de notificação para a oficina
           try {
-            console.log("📧 [Orçamento] Enviando email para oficina:", workshopEmail);
+            console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            console.log("📧 [Orçamento] PREPARANDO EMAIL PARA OFICINA");
+            console.log("📧 [Orçamento] Email da oficina:", workshopEmail);
+            console.log("📧 [Orçamento] Nome da oficina:", workshopData.name);
+            console.log("📧 [Orçamento] Motorista:", profile?.name || user?.email?.split("@")[0] || "Motorista");
+            
+            if (!workshopEmail) {
+              console.error("❌ [Orçamento] Email da oficina está vazio!");
+              throw new Error("Email da oficina não encontrado");
+            }
+
+            const emailData = {
+              to: workshopEmail,
+              subject: 'Novo orçamento recebido! 🚗',
+              type: 'new_quote',
+              data: {
+                workshopName: workshopData.name,
+                motoristName: profile?.name || user?.email?.split("@")[0] || "Motorista",
+                vehicleBrand: formData.vehicle_brand,
+                vehicleModel: formData.vehicle_model,
+                vehicleYear: formData.vehicle_year,
+                serviceType: formData.service_type,
+                description: formData.description,
+                urgency: formData.urgency,
+              }
+            };
+
+            console.log("📧 [Orçamento] Dados do email:", JSON.stringify(emailData, null, 2));
+            console.log("📧 [Orçamento] Chamando API /api/send-notification-email...");
+
             const emailResponse = await fetch('/api/send-notification-email', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                to: workshopEmail,
-                subject: 'Novo orçamento recebido! 🚗',
-                type: 'new_quote',
-                data: {
-                  workshopName: workshopData.name,
-                  motoristName: profile?.name || user?.email?.split("@")[0] || "Motorista",
-                  vehicleBrand: formData.vehicle_brand,
-                  vehicleModel: formData.vehicle_model,
-                  vehicleYear: formData.vehicle_year,
-                  serviceType: formData.service_type,
-                  description: formData.description,
-                  urgency: formData.urgency,
-                }
-              })
+              body: JSON.stringify(emailData)
             });
+
+            console.log("📧 [Orçamento] Status da resposta:", emailResponse.status);
+            console.log("📧 [Orçamento] Status OK?", emailResponse.ok);
+
+            const emailResult = await emailResponse.json();
+            console.log("📧 [Orçamento] Resultado da API:", JSON.stringify(emailResult, null, 2));
 
             if (emailResponse.ok) {
               console.log("✅ [Orçamento] Email enviado com sucesso!");
             } else {
-              console.error("❌ [Orçamento] Erro ao enviar email:", await emailResponse.text());
+              console.error("❌ [Orçamento] Erro ao enviar email. Status:", emailResponse.status);
+              console.error("❌ [Orçamento] Detalhes:", emailResult);
             }
-          } catch (emailError) {
-            console.error("❌ [Orçamento] Erro ao enviar email:", emailError);
+            console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+          } catch (emailError: any) {
+            console.error("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            console.error("❌ [Orçamento] ERRO CRÍTICO ao enviar email:");
+            console.error("❌ [Orçamento] Tipo:", emailError.name);
+            console.error("❌ [Orçamento] Mensagem:", emailError.message);
+            console.error("❌ [Orçamento] Stack:", emailError.stack);
+            console.error("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
           }
         }
       }
