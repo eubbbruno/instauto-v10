@@ -249,55 +249,58 @@ export default function MotoristaDashboard() {
               </p>
             </div>
             
-            {/* Gráfico de barras simples */}
-            <div className="h-64 flex items-end justify-between gap-4">
+            {/* Gráfico de barras simples - Reduzido */}
+            <div className="h-40 md:h-48 flex items-end justify-between gap-2 md:gap-4">
               {chartData.map((item, index) => (
-                <div key={index} className="flex-1 flex flex-col items-center gap-2">
+                <div key={index} className="flex-1 flex flex-col items-center gap-1 md:gap-2">
                   <div 
-                    className="w-full bg-gradient-to-t from-blue-600 to-blue-500 rounded-t-xl hover:from-blue-500 hover:to-blue-400 transition-all cursor-pointer"
+                    className="w-full bg-gradient-to-t from-blue-600 to-blue-500 rounded-t-lg hover:from-blue-500 hover:to-blue-400 transition-all cursor-pointer"
                     style={{ height: `${(item.value / 900) * 100}%` }}
                   />
-                  <span className="text-xs text-gray-500 font-medium">{item.name}</span>
+                  <span className="text-[10px] md:text-xs text-gray-500 font-medium">{item.name}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Card lateral - Economia (4 colunas) */}
-          <div className="col-span-12 lg:col-span-4 bg-white rounded-3xl p-4 sm:p-6 shadow-sm border border-gray-100">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-semibold text-gray-900">Economia</h2>
-              <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+          {/* Card lateral - Economia (4 colunas) - Com Glassmorphism */}
+          <div className="col-span-12 lg:col-span-4 bg-white/80 backdrop-blur-md border border-white/20 rounded-3xl p-4 sm:p-6 shadow-lg">
+            <div className="flex items-center justify-between mb-4 md:mb-6">
+              <h2 className="text-base md:text-lg font-semibold text-gray-900">Economia</h2>
+              <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors hidden md:block">
                 <MoreHorizontal className="w-5 h-5 text-gray-400" />
               </button>
             </div>
             
-            {/* Gauge circular */}
-            <div className="flex flex-col items-center mb-6">
-              <div className="relative w-40 h-40">
+            {/* Gauge circular - Reduzido */}
+            <div className="flex flex-col items-center mb-4 md:mb-6">
+              <div className="relative w-28 h-28 md:w-36 md:h-36">
                 <svg className="w-full h-full transform -rotate-90">
-                  <circle cx="80" cy="80" r="70" stroke="#E5E7EB" strokeWidth="12" fill="none" />
-                  <circle cx="80" cy="80" r="70" stroke="#3B82F6" strokeWidth="12" fill="none" 
-                    strokeDasharray="330 440" strokeLinecap="round" />
+                  <circle cx="56" cy="56" r="50" stroke="#E5E7EB" strokeWidth="10" fill="none" className="md:hidden" />
+                  <circle cx="56" cy="56" r="50" stroke="#3B82F6" strokeWidth="10" fill="none" 
+                    strokeDasharray="235 314" strokeLinecap="round" className="md:hidden" />
+                  <circle cx="72" cy="72" r="60" stroke="#E5E7EB" strokeWidth="12" fill="none" className="hidden md:block" />
+                  <circle cx="72" cy="72" r="60" stroke="#3B82F6" strokeWidth="12" fill="none" 
+                    strokeDasharray="283 377" strokeLinecap="round" className="hidden md:block" />
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <span className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">75%</span>
-                  <span className="text-sm text-gray-500">da meta</span>
+                  <span className="text-2xl md:text-3xl font-bold text-gray-900">75%</span>
+                  <span className="text-xs md:text-sm text-gray-500">da meta</span>
                 </div>
               </div>
             </div>
             
             {/* Stats */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="text-center p-4 bg-blue-50 rounded-2xl">
-                <p className="text-xs text-gray-500 mb-1">Veículos</p>
-                <p className="text-xl sm:text-2xl font-bold text-gray-900">{stats.vehicles}</p>
-                <span className="text-xs text-green-600 font-medium">+{stats.vehicles}</span>
+            <div className="grid grid-cols-2 gap-3 md:gap-4">
+              <div className="text-center p-3 md:p-4 bg-blue-50 rounded-xl md:rounded-2xl">
+                <p className="text-[10px] md:text-xs text-gray-500 mb-1">Veículos</p>
+                <p className="text-lg md:text-2xl font-bold text-gray-900">{stats.vehicles}</p>
+                <span className="text-[10px] md:text-xs text-green-600 font-medium">+{stats.vehicles}</span>
               </div>
-              <div className="text-center p-4 bg-yellow-50 rounded-2xl">
-                <p className="text-xs text-gray-500 mb-1">Orçamentos</p>
-                <p className="text-xl sm:text-2xl font-bold text-gray-900">{stats.quotes}</p>
-                <span className="text-xs text-blue-600 font-medium">Este mês</span>
+              <div className="text-center p-3 md:p-4 bg-yellow-50 rounded-xl md:rounded-2xl">
+                <p className="text-[10px] md:text-xs text-gray-500 mb-1">Orçamentos</p>
+                <p className="text-lg md:text-2xl font-bold text-gray-900">{stats.quotes}</p>
+                <span className="text-[10px] md:text-xs text-blue-600 font-medium">Este mês</span>
               </div>
             </div>
           </div>
@@ -397,56 +400,56 @@ export default function MotoristaDashboard() {
           {/* Cards laterais (4 colunas) */}
           <div className="col-span-12 lg:col-span-4 space-y-6">
             
-            {/* Próximo Lembrete */}
-            <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-3xl p-4 sm:p-6 text-white shadow-sm">
-              <h3 className="font-semibold mb-4 text-lg">Próximo Lembrete</h3>
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center">
-                  <AlertCircle className="w-7 h-7" />
+            {/* Próximo Lembrete - Com Glassmorphism */}
+            <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-3xl p-4 sm:p-5 text-white shadow-lg backdrop-blur-sm">
+              <h3 className="font-semibold mb-3 md:mb-4 text-base md:text-lg">Próximo Lembrete</h3>
+              <div className="flex items-center gap-3 md:gap-4 mb-3 md:mb-4">
+                <div className="w-12 h-12 md:w-14 md:h-14 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center">
+                  <AlertCircle className="w-6 h-6 md:w-7 md:h-7" />
                 </div>
                 <div>
-                  <p className="font-medium">Troca de óleo</p>
-                  <p className="text-blue-200 text-sm">Em 5 dias</p>
+                  <p className="font-medium text-sm md:text-base">Troca de óleo</p>
+                  <p className="text-blue-200 text-xs md:text-sm">Em 5 dias</p>
                 </div>
               </div>
               <Link
                 href="/motorista/lembretes"
-                className="block w-full py-3 bg-yellow-400 text-yellow-900 font-semibold rounded-xl hover:bg-yellow-300 transition-colors text-center"
+                className="block w-full py-2.5 md:py-3 bg-yellow-400 text-yellow-900 font-semibold rounded-xl hover:bg-yellow-300 transition-colors text-center text-sm md:text-base"
               >
                 Ver todos
               </Link>
             </div>
 
-            {/* Ações Rápidas */}
-            <div className="bg-white rounded-3xl p-4 sm:p-6 shadow-sm border border-gray-100">
-              <h3 className="font-semibold text-gray-900 mb-4 text-lg">Ações Rápidas</h3>
+            {/* Ações Rápidas - Com Glassmorphism */}
+            <div className="bg-white/80 backdrop-blur-md border border-white/20 rounded-3xl p-4 sm:p-5 shadow-lg">
+              <h3 className="font-semibold text-gray-900 mb-3 md:mb-4 text-base md:text-lg">Ações Rápidas</h3>
               <div className="space-y-3">
                 <Link
                   href="/motorista/oficinas"
-                  className="flex items-center gap-3 p-4 bg-yellow-400 hover:bg-yellow-500 rounded-2xl transition-all group"
+                  className="flex items-center gap-3 p-3 md:p-4 bg-yellow-400 hover:bg-yellow-500 rounded-xl md:rounded-2xl transition-all group shadow-md"
                 >
-                  <div className="w-12 h-12 bg-black/10 rounded-xl flex items-center justify-center">
-                    <Search className="w-6 h-6 text-black" />
+                  <div className="w-10 h-10 md:w-12 md:h-12 bg-black/10 rounded-lg md:rounded-xl flex items-center justify-center">
+                    <Search className="w-5 h-5 md:w-6 md:h-6 text-black" />
                   </div>
                   <div className="flex-1">
-                    <p className="font-bold text-black">Buscar Oficinas</p>
-                    <p className="text-sm text-black/70">Encontre as melhores</p>
+                    <p className="font-bold text-black text-sm md:text-base">Buscar Oficinas</p>
+                    <p className="text-xs md:text-sm text-black/70 hidden sm:block">Encontre as melhores</p>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-black group-hover:translate-x-1 transition-transform" />
+                  <ChevronRight className="w-4 h-4 md:w-5 md:h-5 text-black group-hover:translate-x-1 transition-transform" />
                 </Link>
                 
                 <Link
                   href="/motorista/garagem"
-                  className="flex items-center gap-3 p-4 bg-blue-50 hover:bg-blue-100 rounded-2xl transition-all group"
+                  className="flex items-center gap-3 p-3 md:p-4 bg-blue-50 hover:bg-blue-100 rounded-xl md:rounded-2xl transition-all group"
                 >
-                  <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center">
-                    <Car className="w-6 h-6 text-white" />
+                  <div className="w-10 h-10 md:w-12 md:h-12 bg-blue-600 rounded-lg md:rounded-xl flex items-center justify-center">
+                    <Car className="w-5 h-5 md:w-6 md:h-6 text-white" />
                   </div>
                   <div className="flex-1">
-                    <p className="font-bold text-gray-900">Minha Garagem</p>
-                    <p className="text-sm text-gray-600">{stats.vehicles} veículos</p>
+                    <p className="font-bold text-gray-900 text-sm md:text-base">Minha Garagem</p>
+                    <p className="text-xs md:text-sm text-gray-600 hidden sm:block">{stats.vehicles} veículos</p>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-gray-400 group-hover:translate-x-1 transition-transform" />
+                  <ChevronRight className="w-4 h-4 md:w-5 md:h-5 text-gray-400 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
             </div>
@@ -469,23 +472,23 @@ export default function MotoristaDashboard() {
               <ChevronRight className="w-4 h-4" />
             </Link>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 lg:gap-4 sm:p-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
             {promotions.map((promo) => (
               <div
                 key={promo.id}
-                className={`bg-gradient-to-br ${promo.color} rounded-3xl shadow-sm hover:shadow-md p-4 sm:p-6 text-white transition-all cursor-pointer`}
+                className={`bg-gradient-to-br ${promo.color} rounded-2xl md:rounded-3xl shadow-lg hover:shadow-xl hover:-translate-y-1 p-4 md:p-5 text-white transition-all cursor-pointer`}
               >
-                <div className="flex items-start justify-between mb-4">
-                  <div className="text-2xl sm:text-3xl lg:text-4xl">{promo.icon}</div>
-                  <span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-bold">
+                <div className="flex items-start justify-between mb-3 md:mb-4">
+                  <div className="text-2xl md:text-3xl">{promo.icon}</div>
+                  <span className="bg-white/30 backdrop-blur-md px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-bold">
                     {promo.discount} OFF
                   </span>
                 </div>
-                <h3 className="text-lg font-bold mb-2">{promo.title}</h3>
-                <p className="text-sm opacity-90 mb-4">{promo.description}</p>
-                <div className="flex items-center justify-between pt-4 border-t border-white/20">
-                  <span className="text-sm font-semibold">{promo.partner}</span>
-                  <button className="bg-white/20 hover:bg-white/30 px-4 py-2 rounded-lg text-sm font-semibold transition-colors">
+                <h3 className="text-base md:text-lg font-bold mb-1 md:mb-2">{promo.title}</h3>
+                <p className="text-xs md:text-sm opacity-90 mb-3 md:mb-4 hidden sm:block">{promo.description}</p>
+                <div className="flex items-center justify-between pt-3 md:pt-4 border-t border-white/20">
+                  <span className="text-xs md:text-sm font-semibold">{promo.partner}</span>
+                  <button className="bg-white/30 hover:bg-white/40 backdrop-blur-sm px-3 md:px-4 py-1.5 md:py-2 rounded-lg text-xs md:text-sm font-semibold transition-colors">
                     Usar →
                   </button>
                 </div>

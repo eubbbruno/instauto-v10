@@ -66,12 +66,15 @@ export default function HomePage() {
               </h1>
 
               {/* Subtítulo */}
-              <p className="text-base sm:text-lg md:text-xl text-blue-100 font-sans mb-6 sm:mb-8 max-w-xl">
+              <p className="hidden sm:block text-lg md:text-xl text-blue-100 font-sans mb-6 sm:mb-8 max-w-xl">
                 Solicite orçamentos grátis, compare preços e avaliações de oficinas confiáveis na sua região.
               </p>
+              <p className="block sm:hidden text-base text-blue-100 font-sans mb-6 max-w-xl">
+                Orçamentos grátis de oficinas confiáveis
+              </p>
 
-              {/* CAMPO DE BUSCA - PRINCIPAL */}
-              <div className="bg-white rounded-2xl shadow-2xl p-4 mb-6 max-w-2xl">
+              {/* CAMPO DE BUSCA - PRINCIPAL com Glassmorphism */}
+              <div className="bg-white/90 backdrop-blur-md border border-white/20 rounded-2xl shadow-2xl p-4 mb-6 max-w-2xl">
                 <form onSubmit={handleSearch} className="flex flex-col gap-3">
                   <div className="flex flex-col sm:flex-row gap-3">
                     {/* Select de Estado */}
@@ -395,43 +398,43 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl border-2 border-blue-100 hover:border-blue-500 hover:shadow-xl transition-all duration-300">
-              <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
-                <Zap className="w-8 h-8 text-blue-600" />
+          <div className="grid md:grid-cols-3 gap-6 md:gap-8">
+            {/* Card 1 - Com Glassmorphism */}
+            <div className="bg-white/70 backdrop-blur-md border border-white/20 p-6 md:p-8 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+              <div className="w-14 h-14 md:w-16 md:h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-4 md:mb-6">
+                <Zap className="w-7 h-7 md:w-8 md:h-8 text-blue-600" />
               </div>
-              <h3 className="text-xl font-heading font-bold text-gray-900 mb-3">
+              <h3 className="text-lg md:text-xl font-heading font-bold text-gray-900 mb-2 md:mb-3">
                 Rápido e Fácil
               </h3>
-              <p className="text-gray-600 font-sans leading-relaxed">
+              <p className="hidden sm:block text-gray-600 font-sans leading-relaxed text-sm md:text-base">
                 Encontre oficinas em segundos. Interface simples e intuitiva para solicitar orçamentos sem complicação.
-                Sem complicação.
               </p>
             </div>
 
-            <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-shadow">
-              <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
-                <Shield className="h-7 w-7 text-blue-600" />
+            {/* Card 2 - Com Glassmorphism */}
+            <div className="bg-white/70 backdrop-blur-md border border-white/20 p-6 md:p-8 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+              <div className="w-14 h-14 md:w-16 md:h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-4 md:mb-6">
+                <Shield className="w-7 h-7 md:w-8 md:h-8 text-blue-600" />
               </div>
-              <h3 className="text-xl font-heading font-bold text-gray-900 mb-3">
+              <h3 className="text-lg md:text-xl font-heading font-bold text-gray-900 mb-2 md:mb-3">
                 Seguro e Confiável
               </h3>
-              <p className="text-gray-600 font-sans leading-relaxed">
-                Seus dados protegidos com criptografia de ponta. Backup
-                automático diário.
+              <p className="hidden sm:block text-gray-600 font-sans leading-relaxed text-sm md:text-base">
+                Seus dados protegidos com criptografia de ponta. Backup automático diário.
               </p>
             </div>
 
-            <div className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-shadow">
-              <div className="w-14 h-14 bg-yellow-100 rounded-xl flex items-center justify-center mb-6">
-                <BarChart3 className="h-7 w-7 text-yellow-600" />
+            {/* Card 3 - Com Glassmorphism */}
+            <div className="bg-white/70 backdrop-blur-md border border-white/20 p-6 md:p-8 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+              <div className="w-14 h-14 md:w-16 md:h-16 bg-yellow-100 rounded-2xl flex items-center justify-center mb-4 md:mb-6">
+                <BarChart3 className="w-7 h-7 md:w-8 md:h-8 text-yellow-600" />
               </div>
-              <h3 className="text-xl font-heading font-bold text-gray-900 mb-3">
+              <h3 className="text-lg md:text-xl font-heading font-bold text-gray-900 mb-2 md:mb-3">
                 Relatórios Inteligentes
               </h3>
-              <p className="text-gray-600 font-sans leading-relaxed">
-                Acompanhe o desempenho da sua oficina com gráficos e relatórios
-                em tempo real.
+              <p className="hidden sm:block text-gray-600 font-sans leading-relaxed text-sm md:text-base">
+                Acompanhe o desempenho da sua oficina com gráficos e relatórios em tempo real.
               </p>
             </div>
           </div>

@@ -190,16 +190,16 @@ export default function BuscarOficinasPage() {
               Compare preços, veja avaliações reais e solicite orçamentos grátis
             </p>
 
-            {/* Barra de Busca Principal */}
-            <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-2xl p-6">
-              <div className="flex items-center gap-4">
-                <Search className="text-gray-400 flex-shrink-0" size={28} />
+            {/* Barra de Busca Principal - Com Glassmorphism */}
+            <div className="max-w-3xl mx-auto bg-white/90 backdrop-blur-md border border-white/20 rounded-2xl shadow-2xl p-4 md:p-6">
+              <div className="flex items-center gap-3 md:gap-4">
+                <Search className="text-gray-400 flex-shrink-0" size={24} />
                 <input
                   type="text"
                   placeholder="Buscar por nome ou cidade..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="flex-1 text-gray-900 outline-none text-lg placeholder:text-gray-400"
+                  className="flex-1 text-gray-900 outline-none text-base md:text-lg placeholder:text-gray-400"
                 />
               </div>
             </div>
@@ -207,17 +207,17 @@ export default function BuscarOficinasPage() {
         </div>
       </section>
 
-      {/* Filtros */}
+      {/* Filtros - Mobile Friendly */}
       <section className="bg-white border-b shadow-sm sticky top-0 z-40 pt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-          <div className="bg-gray-50 rounded-2xl p-4 sm:p-5 border border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-6">
+          <div className="bg-gray-50 rounded-xl md:rounded-2xl p-3 md:p-5 border border-gray-100">
             {/* Primeira linha: Estado, Especialidade, Ordenar */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3 mb-3 md:mb-4">
               {/* Estado */}
               <select
                 value={selectedState}
                 onChange={(e) => setSelectedState(e.target.value)}
-                className="px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all cursor-pointer"
+                className="px-3 md:px-4 py-2.5 md:py-3 bg-white border border-gray-200 rounded-lg md:rounded-xl text-gray-900 text-xs md:text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all cursor-pointer"
               >
                 <option value="">📍 Todos os estados</option>
                 {ESTADOS_BRASILEIROS.map((estado) => (
@@ -231,7 +231,7 @@ export default function BuscarOficinasPage() {
               <select
                 value={selectedSpecialty}
                 onChange={(e) => setSelectedSpecialty(e.target.value)}
-                className="px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all cursor-pointer"
+                className="px-3 md:px-4 py-2.5 md:py-3 bg-white border border-gray-200 rounded-lg md:rounded-xl text-gray-900 text-xs md:text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all cursor-pointer"
               >
                 <option value="">🔧 Todas especialidades</option>
                 {ESPECIALIDADES.map((esp) => (
@@ -245,7 +245,7 @@ export default function BuscarOficinasPage() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as any)}
-                className="px-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-900 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all cursor-pointer"
+                className="px-3 md:px-4 py-2.5 md:py-3 bg-white border border-gray-200 rounded-lg md:rounded-xl text-gray-900 text-xs md:text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all cursor-pointer"
               >
                 <option value="rating">⭐ Mais avaliadas</option>
                 <option value="reviews">💬 Mais reviews</option>
@@ -326,14 +326,14 @@ export default function BuscarOficinasPage() {
       <section className="flex-1 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
               {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-                <div key={i} className="bg-white rounded-2xl overflow-hidden shadow-sm">
-                  <div className="h-48 bg-gray-200 animate-pulse" />
-                  <div className="p-4 space-y-3">
-                    <div className="h-6 bg-gray-200 rounded animate-pulse" />
-                    <div className="h-4 bg-gray-200 rounded animate-pulse w-2/3" />
-                    <div className="h-10 bg-gray-200 rounded-xl animate-pulse" />
+                <div key={i} className="bg-white rounded-xl md:rounded-2xl overflow-hidden shadow-sm">
+                  <div className="h-36 md:h-48 bg-gray-200 animate-pulse" />
+                  <div className="p-3 md:p-4 space-y-2 md:space-y-3">
+                    <div className="h-5 md:h-6 bg-gray-200 rounded animate-pulse" />
+                    <div className="h-3 md:h-4 bg-gray-200 rounded animate-pulse w-2/3" />
+                    <div className="h-9 md:h-10 bg-gray-200 rounded-lg md:rounded-xl animate-pulse" />
                   </div>
                 </div>
               ))}
@@ -353,14 +353,14 @@ export default function BuscarOficinasPage() {
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
               {filteredWorkshops.map((workshop) => (
                 <div
                   key={workshop.id}
-                  className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer group"
+                  className="bg-white/90 backdrop-blur-sm border border-white/20 rounded-xl md:rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer group"
                 >
-                  {/* Imagem/Placeholder */}
-                  <div className="relative h-48 bg-gradient-to-br from-blue-100 to-blue-200 overflow-hidden">
+                  {/* Imagem/Placeholder - Menor no mobile */}
+                  <div className="relative h-36 md:h-48 bg-gradient-to-br from-blue-100 to-blue-200 overflow-hidden">
                     {workshop.logo_url ? (
                       <Image
                         src={workshop.logo_url}
@@ -370,47 +370,47 @@ export default function BuscarOficinasPage() {
                       />
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <Wrench className="w-16 h-16 text-blue-300 group-hover:scale-110 transition-transform duration-300" />
+                        <Wrench className="w-12 h-12 md:w-16 md:h-16 text-blue-300 group-hover:scale-110 transition-transform duration-300" />
                       </div>
                     )}
                     
                     {/* Badge PRO */}
                     {workshop.plan_type === "pro" && (
-                      <span className="absolute top-3 left-3 px-2.5 py-1 bg-yellow-400 text-yellow-900 text-xs font-bold rounded-full shadow-lg">
+                      <span className="absolute top-2 left-2 md:top-3 md:left-3 px-2 md:px-2.5 py-0.5 md:py-1 bg-yellow-400 text-yellow-900 text-[10px] md:text-xs font-bold rounded-full shadow-lg">
                         ⭐ PRO
                       </span>
                     )}
                   </div>
 
-                  {/* Conteúdo */}
-                  <div className="p-4">
+                  {/* Conteúdo - Mais compacto */}
+                  <div className="p-3 md:p-4">
                     {/* Header: Nome + Estrelas */}
-                    <div className="flex items-start justify-between gap-2 mb-2">
-                      <h3 className="font-semibold text-gray-900 line-clamp-1 group-hover:text-blue-600 transition-colors">
+                    <div className="flex items-start justify-between gap-2 mb-1.5 md:mb-2">
+                      <h3 className="font-semibold text-sm md:text-base text-gray-900 line-clamp-1 group-hover:text-blue-600 transition-colors">
                         {workshop.name}
                       </h3>
                       {workshop.rating && workshop.rating > 0 ? (
-                        <div className="flex items-center gap-1 text-sm flex-shrink-0">
-                          <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                        <div className="flex items-center gap-0.5 md:gap-1 text-xs md:text-sm flex-shrink-0">
+                          <Star className="w-3 h-3 md:w-4 md:h-4 fill-yellow-400 text-yellow-400" />
                           <span className="font-medium">{workshop.rating.toFixed(1)}</span>
-                          <span className="text-gray-400">({workshop.reviews_count || 0})</span>
+                          <span className="text-gray-400 hidden sm:inline">({workshop.reviews_count || 0})</span>
                         </div>
                       ) : (
-                        <span className="text-xs text-gray-400 flex-shrink-0">Novo</span>
+                        <span className="text-[10px] md:text-xs text-gray-400 flex-shrink-0">Novo</span>
                       )}
                     </div>
 
                     {/* Localização */}
-                    <p className="text-sm text-gray-500 mb-3 flex items-center gap-1">
-                      <MapPin className="w-4 h-4 flex-shrink-0" />
+                    <p className="text-xs md:text-sm text-gray-500 mb-2 md:mb-3 flex items-center gap-1">
+                      <MapPin className="w-3 h-3 md:w-4 md:h-4 flex-shrink-0" />
                       <span className="line-clamp-1">
                         {workshop.city}, {workshop.state}
                       </span>
                     </p>
 
-                    {/* Especialidades (badges) */}
+                    {/* Especialidades (badges) - Ocultar no mobile */}
                     {workshop.specialties && workshop.specialties.length > 0 && (
-                      <div className="flex flex-wrap gap-1 mb-4 min-h-[24px]">
+                      <div className="hidden sm:flex flex-wrap gap-1 mb-3 md:mb-4 min-h-[24px]">
                         {workshop.specialties.slice(0, 3).map((spec: string, i: number) => (
                           <span
                             key={i}
@@ -427,18 +427,19 @@ export default function BuscarOficinasPage() {
                       </div>
                     )}
 
-                    {/* Botões */}
+                    {/* Botões - Mobile friendly (44px min) */}
                     <div className="space-y-2">
                       <button
                         onClick={() => handleRequestQuote(workshop.id)}
-                        className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-all group-hover:shadow-lg flex items-center justify-center gap-2"
+                        className="w-full py-3 md:py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg md:rounded-xl transition-all group-hover:shadow-lg flex items-center justify-center gap-2 text-sm md:text-base"
                       >
                         <MessageSquare className="w-4 h-4" />
-                        Solicitar Orçamento
+                        <span className="hidden sm:inline">Solicitar Orçamento</span>
+                        <span className="sm:hidden">Orçamento</span>
                       </button>
                       <Link
                         href={`/oficina-detalhes/${workshop.id}`}
-                        className="w-full py-2.5 border-2 border-gray-200 hover:border-blue-600 text-gray-700 hover:text-blue-600 font-medium rounded-xl transition-all flex items-center justify-center gap-2"
+                        className="w-full py-3 md:py-2.5 border-2 border-gray-200 hover:border-blue-600 text-gray-700 hover:text-blue-600 font-medium rounded-lg md:rounded-xl transition-all flex items-center justify-center gap-2 text-sm md:text-base"
                       >
                         <Eye className="w-4 h-4" />
                         Ver Detalhes

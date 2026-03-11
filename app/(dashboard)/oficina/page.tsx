@@ -492,8 +492,8 @@ export default function OficinaDashboard() {
           </h1>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-3 sm:gap-4 lg:gap-4 sm:p-6 mb-6 sm:mb-4 sm:mb-6 lg:mb-8">
+        {/* Stats Cards - Compactos */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-4 md:mb-6">
           <StatCard
             title="Orçamentos Pendentes"
             value={stats.quotes}
@@ -592,17 +592,17 @@ export default function OficinaDashboard() {
               </CardHeader>
               <CardContent>
                 {revenueChart.length > 0 ? (
-                  <ResponsiveContainer width="100%" height={250}>
+                  <ResponsiveContainer width="100%" height={180}>
                     <LineChart data={revenueChart}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                       <XAxis 
                         dataKey="day" 
                         stroke="#6b7280"
-                        style={{ fontSize: '12px' }}
+                        style={{ fontSize: '11px' }}
                       />
                       <YAxis 
                         stroke="#6b7280"
-                        style={{ fontSize: '12px' }}
+                        style={{ fontSize: '11px' }}
                         tickFormatter={(value) => `R$ ${value}`}
                       />
                       <Tooltip 
@@ -618,17 +618,17 @@ export default function OficinaDashboard() {
                         type="monotone" 
                         dataKey="value" 
                         stroke="#10b981" 
-                        strokeWidth={3}
-                        dot={{ fill: '#10b981', r: 4 }}
-                        activeDot={{ r: 6 }}
+                        strokeWidth={2}
+                        dot={{ fill: '#10b981', r: 3 }}
+                        activeDot={{ r: 5 }}
                       />
                     </LineChart>
                   </ResponsiveContainer>
                 ) : (
-                  <div className="h-[250px] flex items-center justify-center text-gray-500">
+                  <div className="h-[180px] flex items-center justify-center text-gray-500">
                     <div className="text-center">
-                      <TrendingUp className="h-12 w-12 mx-auto mb-2 text-gray-300" />
-                      <p>Nenhuma receita nos últimos 7 dias</p>
+                      <TrendingUp className="h-10 w-10 mx-auto mb-2 text-gray-300" />
+                      <p className="text-sm">Nenhuma receita nos últimos 7 dias</p>
                     </div>
                   </div>
                 )}
@@ -755,33 +755,33 @@ export default function OficinaDashboard() {
             </Card>
           </div>
 
-          {/* Alerts Sidebar */}
-          <div className="space-y-6">
+          {/* Alerts Sidebar - Com Glassmorphism */}
+          <div className="space-y-4 md:space-y-6">
             {alerts.length > 0 ? (
               alerts.map((alert) => {
                 const Icon = getAlertIcon(alert.type);
                 const colorClass = getAlertColor(alert.type);
                 
                 return (
-                  <Card key={alert.id} className={`border-2 ${colorClass} shadow-lg`}>
-                    <CardHeader className="pb-3">
-                      <CardTitle className="flex items-center gap-2 text-lg">
-                        <Icon className="h-5 w-5" />
+                  <Card key={alert.id} className={`border-2 ${colorClass} bg-white/80 backdrop-blur-sm shadow-lg`}>
+                    <CardHeader className="pb-3 p-4 md:p-6">
+                      <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+                        <Icon className="h-4 w-4 md:h-5 md:w-5" />
                         {alert.title}
                       </CardTitle>
                     </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-gray-700 mb-4">
+                    <CardContent className="p-4 md:p-6 pt-0">
+                      <p className="text-xs md:text-sm text-gray-700 mb-3 md:mb-4">
                         {alert.description}
                       </p>
                       {alert.action && alert.actionLink && (
                         <Link href={alert.actionLink}>
                           <Button 
                             variant="outline" 
-                            className="w-full border-2 font-bold group"
+                            className="w-full border-2 font-bold group text-xs md:text-sm h-9 md:h-10"
                           >
                             {alert.action}
-                            <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                            <ArrowRight className="ml-2 h-3 w-3 md:h-4 md:w-4 group-hover:translate-x-1 transition-transform" />
                           </Button>
                         </Link>
                       )}
@@ -790,15 +790,15 @@ export default function OficinaDashboard() {
                 );
               })
             ) : (
-              <Card className="border-2 border-green-200 bg-green-50 shadow-lg">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-lg text-green-900">
-                    <CheckCircle2 className="h-5 w-5" />
+              <Card className="border-2 border-green-200 bg-green-50/80 backdrop-blur-sm shadow-lg">
+                <CardHeader className="p-4 md:p-6">
+                  <CardTitle className="flex items-center gap-2 text-base md:text-lg text-green-900">
+                    <CheckCircle2 className="h-4 w-4 md:h-5 md:w-5" />
                     Tudo em ordem!
                   </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-green-800">
+                <CardContent className="p-4 md:p-6 pt-0">
+                  <p className="text-xs md:text-sm text-green-800">
                     Não há alertas no momento. Continue o ótimo trabalho!
                   </p>
                 </CardContent>
