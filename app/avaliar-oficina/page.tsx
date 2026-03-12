@@ -80,6 +80,7 @@ function AvaliarOficinaContent() {
         motorist_email: formData.motorist_email,
         comment: formData.comment || null,
         service_type: formData.service_type || null,
+        is_visible: true, // Tornar avaliação visível por padrão
       };
 
       console.log("📝 [Avaliação] Dados EXATOS a inserir:");

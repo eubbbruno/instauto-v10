@@ -61,6 +61,7 @@ export default function OficinaDetalhesPage() {
       console.log("✅ [Detalhes] Oficina carregada:", workshopData.name);
 
       // Carregar avaliações
+      console.log("🔍 [Detalhes] Buscando avaliações para workshop:", workshopId);
       const { data: reviewsData, error: reviewsError } = await supabase
         .from("reviews")
         .select("*")
@@ -69,7 +70,11 @@ export default function OficinaDetalhesPage() {
         .order("created_at", { ascending: false })
         .limit(10);
 
-      console.log("🔍 [Detalhes] Avaliações:", { count: reviewsData?.length, reviewsError });
+      console.log("🔍 [Detalhes] Avaliações encontradas:", reviewsData?.length || 0);
+      console.log("🔍 [Detalhes] Erro ao buscar avaliações:", reviewsError);
+      if (reviewsData && reviewsData.length > 0) {
+        console.log("🔍 [Detalhes] Primeira avaliação:", reviewsData[0]);
+      }
 
       if (reviewsError) {
         console.error("⚠️ [Detalhes] Erro ao buscar avaliações:", reviewsError);
