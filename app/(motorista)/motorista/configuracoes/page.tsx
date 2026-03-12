@@ -2,8 +2,8 @@
 
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { Settings, User, Bell, Lock, LogOut, Loader2, Save, Trash2 } from "lucide-react";
+import { useEffect, useState, useRef } from "react";
+import { Settings, User, Bell, Lock, LogOut, Loader2, Save, Trash2, Camera } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -32,6 +32,9 @@ export default function ConfiguracoesPage() {
   const [saving, setSaving] = useState(false);
   const [motoristData, setMotoristData] = useState<any>(null);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Form states
   const [profileForm, setProfileForm] = useState({
@@ -81,6 +84,7 @@ export default function ConfiguracoesPage() {
         name: profile?.name || "",
         phone: motorist?.phone || "",
       });
+      setAvatarUrl(profile?.avatar_url || null);
 
       // Carregar preferências de notificação (se existir coluna)
       // Por enquanto, usar valores padrão
@@ -207,6 +211,95 @@ export default function ConfiguracoesPage() {
     router.push("/login");
   };
 
+  const handleAvatarUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Validar
+    if (!file.type.startsWith("image/")) {
+      toast({
+        variant: "destructive",
+        title: "Erro",
+        description: "Por favor, selecione uma imagem",
+      });
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      toast({
+        variant: "destructive",
+        title: "Erro",
+        description: "Imagem deve ter no máximo 5MB",
+      });
+      return;
+    }
+
+    setUploading(true);
+
+    try {
+      // Nome único para o arquivo
+      const fileExt = file.name.split(".").pop();
+      const fileName = `${profile?.id}-${Date.now()}.${fileExt}`;
+      const filePath = `avatars/${fileName}`;
+
+      // Upload para Supabase Storage
+      const { error: uploadError } = await supabase.storage
+        .from("images")
+        .upload(filePath, file, { upsert: true });
+
+      if (uploadError) throw uploadError;
+
+      // Pegar URL pública
+      const { data: urlData } = supabase.storage
+        .from("images")
+        .getPublicUrl(filePath);
+
+      // Atualizar profile
+      const { error: updateError } = await supabase
+        .from("profiles")
+        .update({ avatar_url: urlData.publicUrl })
+        .eq("id", profile?.id);
+
+      if (updateError) throw updateError;
+
+      setAvatarUrl(urlData.publicUrl);
+      toast({
+        title: "Sucesso",
+        description: "Foto atualizada com sucesso!",
+      });
+
+    } catch (error) {
+      console.error("Erro no upload:", error);
+      toast({
+        variant: "destructive",
+        title: "Erro",
+        description: "Erro ao enviar foto",
+      });
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleRemoveAvatar = async () => {
+    try {
+      await supabase
+        .from("profiles")
+        .update({ avatar_url: null })
+        .eq("id", profile?.id);
+      
+      setAvatarUrl(null);
+      toast({
+        title: "Sucesso",
+        description: "Foto removida",
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Erro",
+        description: "Erro ao remover foto",
+      });
+    }
+  };
+
   const handleDeleteAccount = async () => {
     setSaving(true);
     try {
@@ -280,13 +373,38 @@ export default function ConfiguracoesPage() {
             <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
               {/* Avatar atual ou placeholder */}
               <div className="relative flex-shrink-0">
-                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-3xl font-bold shadow-lg">
-                  {profile?.name?.charAt(0)?.toUpperCase() || 'U'}
-                </div>
-                <button className="absolute bottom-0 right-0 p-2 bg-white rounded-full shadow-lg border-2 border-gray-200 hover:bg-gray-50 transition-colors">
-                  <User className="w-4 h-4 text-gray-600" />
+                {avatarUrl ? (
+                  <img 
+                    src={avatarUrl} 
+                    alt="Avatar" 
+                    className="w-24 h-24 rounded-full object-cover shadow-lg"
+                  />
+                ) : (
+                  <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-3xl font-bold shadow-lg">
+                    {profile?.name?.charAt(0)?.toUpperCase() || 'U'}
+                  </div>
+                )}
+                <button 
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={uploading}
+                  className="absolute bottom-0 right-0 p-2 bg-white rounded-full shadow-lg border-2 border-gray-200 hover:bg-gray-50 transition-colors disabled:opacity-50"
+                >
+                  {uploading ? (
+                    <Loader2 className="w-4 h-4 text-gray-600 animate-spin" />
+                  ) : (
+                    <Camera className="w-4 h-4 text-gray-600" />
+                  )}
                 </button>
               </div>
+
+              {/* Input hidden */}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleAvatarUpload}
+                className="hidden"
+              />
               
               <div className="flex-1 text-center sm:text-left">
                 <p className="text-sm text-gray-600 mb-3">
@@ -294,19 +412,22 @@ export default function ConfiguracoesPage() {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-2">
                   <button 
-                    disabled
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={uploading}
                     className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Escolher foto
+                    {uploading ? "Enviando..." : "Escolher foto"}
                   </button>
-                  <button 
-                    disabled
-                    className="px-4 py-2 border border-gray-300 text-gray-700 text-sm rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    Remover
-                  </button>
+                  {avatarUrl && (
+                    <button 
+                      onClick={handleRemoveAvatar}
+                      className="px-4 py-2 border border-gray-300 text-gray-700 text-sm rounded-lg hover:bg-gray-50 transition-colors"
+                    >
+                      Remover
+                    </button>
+                  )}
                 </div>
-                <p className="text-xs text-gray-400 mt-2">JPG, PNG até 5MB • Em breve</p>
+                <p className="text-xs text-gray-400 mt-2">JPG, PNG até 5MB</p>
               </div>
             </div>
           </CardContent>

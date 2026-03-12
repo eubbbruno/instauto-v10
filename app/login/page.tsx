@@ -24,6 +24,8 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [showEmailConfirmation, setShowEmailConfirmation] = useState(false);
+  const [registeredEmail, setRegisteredEmail] = useState("");
 
   const supabase = createClient();
 
@@ -131,12 +133,8 @@ export default function LoginPage() {
         // Se não tem session, significa que precisa confirmar email
         if (!data.session) {
           console.log("⚠️ [Cadastro] Sem session - confirmação de email necessária");
-          toast.success(
-            "✅ Conta criada com sucesso! 📧 Enviamos um email de confirmação para " + email + ". Verifique sua caixa de entrada e clique no link para ativar sua conta.",
-            {
-              duration: 8000,
-            }
-          );
+          setRegisteredEmail(email);
+          setShowEmailConfirmation(true);
           setLoading(false);
           return;
         }
@@ -314,14 +312,56 @@ export default function LoginPage() {
 
           {/* Card do Formulário */}
           <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8">
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 text-center mb-2">
-              {isLogin ? "Entrar" : "Criar conta"}
-            </h1>
-            <p className="text-gray-500 text-center mb-8">
-              {isLogin ? "Bem-vindo de volta!" : "Comece a usar o Instauto"}
-            </p>
+            {/* Mensagem de Confirmação de Email */}
+            {showEmailConfirmation ? (
+              <div className="text-center py-4">
+                <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Mail className="w-10 h-10 text-green-600" />
+                </div>
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
+                  Verifique seu email! 📧
+                </h2>
+                <p className="text-gray-600 mb-3 text-sm sm:text-base">
+                  Enviamos um link de confirmação para:
+                </p>
+                <p className="font-semibold text-blue-600 mb-6 text-sm sm:text-base break-all px-4">
+                  {registeredEmail}
+                </p>
+                <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-4 mb-6">
+                  <p className="text-sm text-blue-900 font-medium mb-2">
+                    📬 Próximos passos:
+                  </p>
+                  <ol className="text-sm text-blue-800 text-left space-y-2">
+                    <li>1. Abra seu email</li>
+                    <li>2. Clique no link de confirmação</li>
+                    <li>3. Você será redirecionado automaticamente</li>
+                  </ol>
+                </div>
+                <div className="space-y-3">
+                  <button
+                    onClick={() => {
+                      setShowEmailConfirmation(false);
+                      setIsLogin(true);
+                    }}
+                    className="w-full py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors"
+                  >
+                    Entendi, vou verificar
+                  </button>
+                  <p className="text-xs text-gray-400">
+                    Não recebeu? Verifique a pasta de spam ou tente novamente.
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <>
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 text-center mb-2">
+                  {isLogin ? "Entrar" : "Criar conta"}
+                </h1>
+                <p className="text-gray-500 text-center mb-8">
+                  {isLogin ? "Bem-vindo de volta!" : "Comece a usar o Instauto"}
+                </p>
 
-            {/* Tabs Motorista/Oficina */}
+                {/* Tabs Motorista/Oficina */}
             <div className="flex bg-gray-100 rounded-xl p-1 mb-6">
               <button
                 type="button"
@@ -459,6 +499,8 @@ export default function LoginPage() {
                 </button>
               </p>
             </div>
+              </>
+            )}
           </div>
 
           {/* Voltar */}
