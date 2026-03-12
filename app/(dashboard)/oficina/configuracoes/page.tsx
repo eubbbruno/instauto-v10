@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2, User, Building2, Phone, Camera } from "lucide-react";
+import { Loader2, User, Building2, Phone, Camera, Sparkles } from "lucide-react";
 import { useRef } from "react";
 import { PageHeader } from "@/components/dashboard/PageHeader";
 
@@ -387,6 +387,45 @@ export default function ConfiguracoesPage() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Assistente de Perfil com IA */}
+      <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl sm:rounded-2xl p-6 sm:p-8 text-white shadow-xl mb-6">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="p-2.5 bg-white/20 backdrop-blur-sm rounded-xl">
+            <Sparkles className="w-6 h-6" />
+          </div>
+          <div className="flex-1">
+            <h3 className="font-bold text-lg sm:text-xl">Assistente de Perfil com IA</h3>
+            <span className="inline-block px-2 py-0.5 bg-white/20 backdrop-blur-sm rounded text-xs font-medium mt-1">
+              Em breve
+            </span>
+          </div>
+        </div>
+        <p className="text-white/90 text-sm sm:text-base mb-4 leading-relaxed">
+          Nossa inteligência artificial vai ajudar você a criar uma descrição profissional, 
+          sugerir especialidades relevantes e otimizar seu perfil para atrair mais clientes.
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+          <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
+            <p className="text-xs font-semibold mb-1">✨ Descrição otimizada</p>
+            <p className="text-xs text-white/70">IA escreve por você</p>
+          </div>
+          <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
+            <p className="text-xs font-semibold mb-1">🎯 Especialidades</p>
+            <p className="text-xs text-white/70">Sugestões inteligentes</p>
+          </div>
+          <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
+            <p className="text-xs font-semibold mb-1">📈 SEO automático</p>
+            <p className="text-xs text-white/70">Mais visibilidade</p>
+          </div>
+        </div>
+        <button 
+          disabled
+          className="w-full sm:w-auto px-6 py-3 bg-white/20 backdrop-blur-sm rounded-lg text-sm font-semibold cursor-not-allowed hover:bg-white/25 transition-colors"
+        >
+          🔒 Disponível em breve
+        </button>
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:p-6">
         {/* Meus Dados */}

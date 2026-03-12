@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase";
 import { Workshop, Review } from "@/types/database";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { MapPin, Phone, Mail, Star, CheckCircle2, MessageCircle } from "lucide-react";
+import { MapPin, Phone, Mail, Star, CheckCircle2, MessageCircle, Clock, Award, TrendingUp } from "lucide-react";
 import Link from "next/link";
 
 export default function OficinaDetalhesPage() {
@@ -112,157 +112,139 @@ export default function OficinaDetalhesPage() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
-      <div className="pt-20 sm:pt-24">
-
-      <section className="flex-1 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header da Oficina */}
-          <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
-            <div className="flex flex-col md:flex-row justify-between items-start gap-6">
-              <div className="flex-1">
-                <h1 className="text-4xl font-bold text-gray-900 mb-4">
-                  {workshop.name}
-                </h1>
-
-                {/* Rating */}
-                {workshop.total_reviews && workshop.total_reviews > 0 ? (
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="flex items-center gap-1">
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <Star
-                          key={star}
-                          className={`${
-                            star <= (workshop.average_rating || 0)
-                              ? "text-yellow-400 fill-yellow-400"
-                              : "text-gray-300"
-                          }`}
-                          size={24}
-                        />
-                      ))}
-                    </div>
-                    <span className="text-xl font-bold text-gray-900">
-                      {workshop.average_rating?.toFixed(1)}
-                    </span>
-                    <span className="text-gray-500">
-                      ({workshop.total_reviews} avaliações)
-                    </span>
-                  </div>
-                ) : (
-                  <p className="text-gray-500 mb-4">Sem avaliações ainda</p>
-                )}
-
-                {/* Descrição */}
-                {workshop.description && (
-                  <p className="text-gray-700 text-lg mb-6">
-                    {workshop.description}
-                  </p>
-                )}
-
-                {/* Informações de Contato */}
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3 text-gray-700">
-                    <MapPin className="text-blue-600" size={20} />
-                    <span>
-                      {workshop.address && `${workshop.address}, `}
-                      {workshop.city}, {workshop.state}
-                      {workshop.zip_code && ` - ${workshop.zip_code}`}
-                    </span>
-                  </div>
-                  {workshop.phone && (
-                    <div className="flex items-center gap-3 text-gray-700">
-                      <Phone className="text-blue-600" size={20} />
-                      <span>{workshop.phone}</span>
-                    </div>
-                  )}
-                  {workshop.email && (
-                    <div className="flex items-center gap-3 text-gray-700">
-                      <Mail className="text-blue-600" size={20} />
-                      <span>{workshop.email}</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* CTA */}
-              <div className="w-full md:w-auto space-y-3">
-                <Link
-                  href={`/solicitar-orcamento?workshop=${workshop.id}`}
-                  className="block bg-blue-600 text-white px-8 py-4 rounded-lg hover:bg-blue-700 transition-colors text-center font-bold text-lg shadow-lg"
-                >
-                  Solicitar Orçamento
-                </Link>
-                
-                {workshop.phone && (
-                  <a
-                    href={`https://wa.me/55${workshop.phone.replace(/\D/g, '')}?text=Olá! Vi sua oficina no Instauto e gostaria de mais informações.`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 w-full px-8 py-4 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg transition-colors shadow-lg"
-                  >
-                    <MessageCircle className="w-5 h-5" />
-                    WhatsApp
-                  </a>
-                )}
-              </div>
+      
+      {/* Header com Gradiente */}
+      <div className="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 h-40 sm:h-56 pt-20 sm:pt-24" />
+      
+      {/* Conteúdo Principal */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 -mt-16 sm:-mt-24 pb-12">
+        
+        {/* Cards de Destaque (Stats) */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
+          {/* Avaliação Média */}
+          <div className="bg-white/90 backdrop-blur-md border border-white/20 rounded-xl sm:rounded-2xl p-4 sm:p-5 shadow-lg">
+            <div className="flex items-center gap-2 mb-2">
+              <Star className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400 fill-yellow-400" />
+              <span className="text-xs sm:text-sm font-semibold text-gray-600 uppercase">Avaliação</span>
             </div>
+            <p className="text-2xl sm:text-3xl font-bold text-gray-900">
+              {workshop.rating?.toFixed(1) || "0.0"}
+            </p>
+            <p className="text-xs text-gray-500 mt-1">
+              {workshop.reviews_count || 0} {workshop.reviews_count === 1 ? "review" : "reviews"}
+            </p>
           </div>
+          
+          {/* Tempo de Resposta */}
+          <div className="bg-white/90 backdrop-blur-md border border-white/20 rounded-xl sm:rounded-2xl p-4 sm:p-5 shadow-lg">
+            <div className="flex items-center gap-2 mb-2">
+              <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
+              <span className="text-xs sm:text-sm font-semibold text-gray-600 uppercase">Resposta</span>
+            </div>
+            <p className="text-2xl sm:text-3xl font-bold text-gray-900">~24h</p>
+            <p className="text-xs text-gray-500 mt-1">tempo médio</p>
+          </div>
+          
+          {/* Orçamentos */}
+          <div className="bg-white/90 backdrop-blur-md border border-white/20 rounded-xl sm:rounded-2xl p-4 sm:p-5 shadow-lg">
+            <div className="flex items-center gap-2 mb-2">
+              <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
+              <span className="text-xs sm:text-sm font-semibold text-gray-600 uppercase">Orçamentos</span>
+            </div>
+            <p className="text-2xl sm:text-3xl font-bold text-gray-900">100+</p>
+            <p className="text-xs text-gray-500 mt-1">realizados</p>
+          </div>
+          
+          {/* Experiência */}
+          <div className="bg-white/90 backdrop-blur-md border border-white/20 rounded-xl sm:rounded-2xl p-4 sm:p-5 shadow-lg">
+            <div className="flex items-center gap-2 mb-2">
+              <Award className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
+              <span className="text-xs sm:text-sm font-semibold text-gray-600 uppercase">Confiável</span>
+            </div>
+            <p className="text-2xl sm:text-3xl font-bold text-gray-900">✓</p>
+            <p className="text-xs text-gray-500 mt-1">verificado</p>
+          </div>
+        </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Coluna Principal */}
-            <div className="lg:col-span-2 space-y-8">
-              {/* Serviços */}
-              {workshop.services && workshop.services.length > 0 && (
-                <div className="bg-white rounded-lg shadow-lg p-8">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                    Serviços Oferecidos
-                  </h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {workshop.services.map((service, idx) => (
-                      <div key={idx} className="flex items-center gap-2">
-                        <CheckCircle2 className="text-green-500" size={20} />
-                        <span className="text-gray-700">{service}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+        {/* Grid Principal */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Coluna Principal */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Sobre a Oficina */}
+            <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-6 sm:p-8">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
+                Sobre a Oficina
+              </h2>
+              {workshop.description ? (
+                <p className="text-gray-700 leading-relaxed text-sm sm:text-base">
+                  {workshop.description}
+                </p>
+              ) : (
+                <p className="text-gray-500 text-sm sm:text-base">
+                  Esta oficina ainda não adicionou uma descrição.
+                </p>
               )}
+            </div>
 
-              {/* Especialidades */}
-              {workshop.specialties && workshop.specialties.length > 0 && (
-                <div className="bg-white rounded-lg shadow-lg p-8">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                    Especialidades
-                  </h2>
-                  <div className="flex flex-wrap gap-2">
-                    {workshop.specialties.map((specialty, idx) => (
-                      <span
-                        key={idx}
-                        className="bg-blue-100 text-blue-700 px-4 py-2 rounded-full font-medium"
-                      >
-                        {specialty}
-                      </span>
-                    ))}
-                  </div>
+            {/* Serviços Oferecidos */}
+            {workshop.services && workshop.services.length > 0 && (
+              <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-6 sm:p-8">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
+                  Serviços Oferecidos
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {workshop.services.map((service, idx) => (
+                    <div key={idx} className="flex items-center gap-2">
+                      <CheckCircle2 className="text-green-500 flex-shrink-0" size={20} />
+                      <span className="text-gray-700 text-sm sm:text-base">{service}</span>
+                    </div>
+                  ))}
                 </div>
-              )}
+              </div>
+            )}
 
-              {/* Avaliações */}
-              <div className="bg-white rounded-lg shadow-lg p-8">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">
+            {/* Avaliações dos Clientes */}
+            <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-6 sm:p-8">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
                   Avaliações dos Clientes
                 </h2>
+                <Link
+                  href={`/avaliar-oficina?workshop=${workshop.id}`}
+                  className="text-blue-600 hover:text-blue-700 font-semibold text-sm sm:text-base hidden sm:block"
+                >
+                  Deixar avaliação
+                </Link>
+              </div>
 
-                {reviews.length === 0 ? (
-                  <p className="text-gray-500">
-                    Nenhuma avaliação ainda. Seja o primeiro a avaliar!
+              {reviews.length === 0 ? (
+                <div className="text-center py-12">
+                  <Star className="w-12 h-12 sm:w-16 sm:h-16 text-gray-300 mx-auto mb-4" />
+                  <p className="text-gray-500 mb-2 text-sm sm:text-base">
+                    Nenhuma avaliação ainda
                   </p>
-                ) : (
-                  <div className="space-y-6">
-                    {reviews.map((review) => (
-                      <div key={review.id} className="border-b pb-6 last:border-b-0">
-                        <div className="flex items-start justify-between mb-2">
+                  <p className="text-xs sm:text-sm text-gray-400 mb-6">
+                    Seja o primeiro a avaliar esta oficina!
+                  </p>
+                  <Link
+                    href={`/avaliar-oficina?workshop=${workshop.id}`}
+                    className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold text-sm sm:text-base"
+                  >
+                    Avaliar Agora
+                  </Link>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  {reviews.map((review) => (
+                    <div key={review.id} className="border-b border-gray-100 pb-6 last:border-b-0 last:pb-0">
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex items-start gap-3">
+                          {/* Avatar */}
+                          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold text-sm sm:text-base flex-shrink-0">
+                            {review.motorist_name?.charAt(0)?.toUpperCase() || "?"}
+                          </div>
                           <div>
-                            <p className="font-semibold text-gray-900">
+                            <p className="font-semibold text-gray-900 text-sm sm:text-base">
                               {review.motorist_name}
                             </p>
                             <div className="flex items-center gap-1 mt-1">
@@ -279,73 +261,120 @@ export default function OficinaDetalhesPage() {
                               ))}
                             </div>
                           </div>
-                          <span className="text-sm text-gray-500">
-                            {new Date(review.created_at).toLocaleDateString("pt-BR")}
-                          </span>
                         </div>
-
-                        {review.comment && (
-                          <p className="text-gray-700 mb-3">{review.comment}</p>
-                        )}
-
-                        {review.service_type && (
-                          <span className="inline-block bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-sm">
-                            {review.service_type}
-                          </span>
-                        )}
-
-                        {review.response && (
-                          <div className="mt-4 bg-blue-50 p-4 rounded-lg">
-                            <p className="text-sm font-semibold text-blue-900 mb-1">
-                              Resposta da oficina:
-                            </p>
-                            <p className="text-sm text-blue-800">{review.response}</p>
-                          </div>
-                        )}
+                        <span className="text-xs sm:text-sm text-gray-500 flex-shrink-0">
+                          {new Date(review.created_at).toLocaleDateString("pt-BR")}
+                        </span>
                       </div>
-                    ))}
+
+                      {review.comment && (
+                        <p className="text-gray-700 mb-3 text-sm sm:text-base leading-relaxed ml-0 sm:ml-15">
+                          {review.comment}
+                        </p>
+                      )}
+
+                      {review.service_type && (
+                        <span className="inline-block bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs sm:text-sm font-medium ml-0 sm:ml-15">
+                          {review.service_type}
+                        </span>
+                      )}
+
+                      {review.response && (
+                        <div className="mt-4 bg-blue-50 p-4 rounded-lg ml-0 sm:ml-15">
+                          <p className="text-xs sm:text-sm font-semibold text-blue-900 mb-1">
+                            Resposta da oficina:
+                          </p>
+                          <p className="text-xs sm:text-sm text-blue-800">{review.response}</p>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Sidebar */}
+          <div className="space-y-6">
+            {/* Localização */}
+            <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-6">
+              <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <MapPin className="w-5 h-5 text-blue-600" />
+                Localização
+              </h3>
+              <div className="space-y-2 text-sm sm:text-base">
+                {workshop.address && (
+                  <p className="text-gray-700">{workshop.address}</p>
+                )}
+                <p className="text-gray-700">
+                  {workshop.city}, {workshop.state}
+                </p>
+                {workshop.zip_code && (
+                  <p className="text-gray-600">CEP: {workshop.zip_code}</p>
+                )}
+              </div>
+            </div>
+
+            {/* Contato */}
+            <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-6">
+              <h3 className="text-lg font-bold text-gray-900 mb-4">
+                Contato
+              </h3>
+              <div className="space-y-3">
+                {workshop.phone && (
+                  <div className="flex items-center gap-3 text-gray-700 text-sm sm:text-base">
+                    <Phone className="text-blue-600 flex-shrink-0" size={18} />
+                    <span>{workshop.phone}</span>
+                  </div>
+                )}
+                {workshop.email && (
+                  <div className="flex items-center gap-3 text-gray-700 text-sm sm:text-base">
+                    <Mail className="text-blue-600 flex-shrink-0" size={18} />
+                    <span className="break-all">{workshop.email}</span>
                   </div>
                 )}
               </div>
             </div>
 
-            {/* Sidebar */}
-            <div className="space-y-6">
-              {/* CTA Adicional */}
-              <div className="bg-blue-50 rounded-lg p-6 border-2 border-blue-200">
-                <h3 className="text-lg font-bold text-blue-900 mb-2">
-                  Precisa de um orçamento?
-                </h3>
-                <p className="text-blue-700 text-sm mb-4">
-                  Solicite gratuitamente e receba uma resposta em até 48 horas.
-                </p>
-                <Link
-                  href={`/solicitar-orcamento?workshop=${workshop.id}`}
-                  className="block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors text-center font-bold"
-                >
-                  Solicitar Agora
-                </Link>
+            {/* Horário de Funcionamento */}
+            <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-6">
+              <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <Clock className="w-5 h-5 text-blue-600" />
+                Horário
+              </h3>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Segunda a Sexta</span>
+                  <span className="text-gray-900 font-medium">8h às 18h</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Sábado</span>
+                  <span className="text-gray-900 font-medium">8h às 12h</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Domingo</span>
+                  <span className="text-gray-500">Fechado</span>
+                </div>
               </div>
+            </div>
 
-              {/* Avaliar */}
-              <div className="bg-white rounded-lg shadow-lg p-6">
-                <h3 className="text-lg font-bold text-gray-900 mb-2">
-                  Já foi cliente?
-                </h3>
-                <p className="text-gray-600 text-sm mb-4">
-                  Compartilhe sua experiência e ajude outros motoristas.
-                </p>
-                <Link
-                  href={`/avaliar-oficina?workshop=${workshop.id}`}
-                  className="block border-2 border-blue-600 text-blue-600 px-6 py-3 rounded-lg hover:bg-blue-50 transition-colors text-center font-bold"
-                >
-                  Deixar Avaliação
-                </Link>
-              </div>
+            {/* CTA Avaliar */}
+            <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl sm:rounded-2xl border-2 border-yellow-200 p-6">
+              <h3 className="text-lg font-bold text-gray-900 mb-2">
+                Já foi cliente?
+              </h3>
+              <p className="text-gray-700 text-sm mb-4">
+                Compartilhe sua experiência e ajude outros motoristas.
+              </p>
+              <Link
+                href={`/avaliar-oficina?workshop=${workshop.id}`}
+                className="block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors text-center font-bold"
+              >
+                ⭐ Deixar Avaliação
+              </Link>
             </div>
           </div>
         </div>
-      </section>
       </div>
 
       <Footer />

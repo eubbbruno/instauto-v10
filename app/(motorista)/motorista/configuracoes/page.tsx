@@ -3,7 +3,7 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
-import { Settings, User, Bell, Lock, LogOut, Loader2, Save, Trash2, Camera } from "lucide-react";
+import { Settings, User, Bell, Lock, LogOut, Loader2, Save, Trash2, Camera, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -432,6 +432,45 @@ export default function ConfiguracoesPage() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Assistente de Perfil com IA */}
+        <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl sm:rounded-2xl p-6 sm:p-8 text-white shadow-xl mb-6">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="p-2.5 bg-white/20 backdrop-blur-sm rounded-xl">
+              <Sparkles className="w-6 h-6" />
+            </div>
+            <div className="flex-1">
+              <h3 className="font-bold text-lg sm:text-xl">Assistente Pessoal com IA</h3>
+              <span className="inline-block px-2 py-0.5 bg-white/20 backdrop-blur-sm rounded text-xs font-medium mt-1">
+                Em breve
+              </span>
+            </div>
+          </div>
+          <p className="text-white/90 text-sm sm:text-base mb-4 leading-relaxed">
+            Nossa IA vai ajudar você a gerenciar melhor seus veículos, receber lembretes personalizados 
+            de manutenção e encontrar as melhores oficinas para cada tipo de serviço.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
+              <p className="text-xs font-semibold mb-1">🚗 Manutenção inteligente</p>
+              <p className="text-xs text-white/70">Lembretes personalizados</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
+              <p className="text-xs font-semibold mb-1">💰 Economia</p>
+              <p className="text-xs text-white/70">Melhores preços</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3">
+              <p className="text-xs font-semibold mb-1">🔍 Diagnóstico</p>
+              <p className="text-xs text-white/70">IA analisa problemas</p>
+            </div>
+          </div>
+          <button 
+            disabled
+            className="w-full sm:w-auto px-6 py-3 bg-white/20 backdrop-blur-sm rounded-lg text-sm font-semibold cursor-not-allowed hover:bg-white/25 transition-colors"
+          >
+            🔒 Disponível em breve
+          </button>
+        </div>
 
         {/* Cards de Configurações */}
         <div className="space-y-6">
