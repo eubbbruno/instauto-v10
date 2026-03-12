@@ -70,7 +70,7 @@ export async function GET(request: Request) {
         console.log(`   - ${cookie.name}: ${cookie.value}`);
       });
       
-      // Determinar tipo do usuário (múltiplas fontes)
+      // Determinar tipo do usuário (múltiplas fontes com prioridade)
       const userTypeCookie = cookieStore.get("instauto_user_type");
       const userTypeFromMetadata = session.user.user_metadata?.user_type;
       
@@ -81,14 +81,22 @@ export async function GET(request: Request) {
       console.log("   3. user_metadata.name:", session.user.user_metadata?.name || "não encontrado");
       console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
       
-      // Lógica clara e simples
+      // Lógica clara e simples com prioridade para user_metadata
       let userType: "workshop" | "motorist" = "motorist"; // padrão
       
-      if (userTypeCookie?.value === "oficina" || userTypeFromMetadata === "workshop") {
+      // Prioridade 1: user_metadata (mais confiável, vem do signUp)
+      if (userTypeFromMetadata === "workshop") {
         userType = "workshop";
-        console.log("✅ [Callback] TIPO DETERMINADO: WORKSHOP (oficina)");
-      } else {
-        console.log("✅ [Callback] TIPO DETERMINADO: MOTORIST (motorista)");
+        console.log("✅ [Callback] TIPO DETERMINADO: WORKSHOP (via metadata)");
+      } 
+      // Prioridade 2: cookie
+      else if (userTypeCookie?.value === "oficina") {
+        userType = "workshop";
+        console.log("✅ [Callback] TIPO DETERMINADO: WORKSHOP (via cookie)");
+      } 
+      // Padrão: motorist
+      else {
+        console.log("✅ [Callback] TIPO DETERMINADO: MOTORIST (padrão)");
       }
       
       console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
@@ -120,44 +128,78 @@ export async function GET(request: Request) {
         console.error("   - Mensagem:", profileError.message);
         console.error("   - Detalhes:", profileError.details);
         console.error("   - Hint:", profileError.hint);
-        console.error("   - Objeto completo:", JSON.stringify(profileError, null, 2));
-        return NextResponse.redirect(new URL("/login?error=profile_create", requestUrl.origin));
+        
+        // FALLBACK: Tentar criar via API (usa service role key para bypass RLS)
+        console.log("🔄 [Callback] Tentando criar profile via API fallback...");
+        try {
+          const apiResponse = await fetch(`${requestUrl.origin}/api/create-profile`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              userType: userType === "workshop" ? "oficina" : "motorista",
+              email: session.user.email,
+              name: userName,
+            }),
+          });
+
+          const apiResult = await apiResponse.json();
+          
+          if (!apiResponse.ok) {
+            console.error("❌ [Callback] API fallback também falhou:", apiResult);
+            return NextResponse.redirect(new URL("/login?error=profile_create_failed", requestUrl.origin));
+          }
+          
+          console.log("✅ [Callback] Profile criado via API fallback!");
+        } catch (apiError) {
+          console.error("❌ [Callback] Erro no API fallback:", apiError);
+          return NextResponse.redirect(new URL("/login?error=profile_create_failed", requestUrl.origin));
+        }
+      } else {
+        console.log("✅ [Callback] Profile criado com sucesso!");
+        console.log("✅ [Callback] Profile ID:", profileResult?.id);
+        console.log("✅ [Callback] Profile tipo:", profileResult?.type);
       }
 
-      console.log("✅ [Callback] Profile criado com sucesso!");
-      console.log("✅ [Callback] Profile ID:", profileResult?.id);
-      console.log("✅ [Callback] Profile tipo:", profileResult?.type);
-
-      // Criar workshop ou motorist
+      // Criar workshop ou motorist (já foi criado via API fallback se necessário)
+      // Mas vamos tentar criar aqui também para garantir
       if (userType === "workshop") {
         console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-        console.log("🔨 [Callback] Criando WORKSHOP...");
-        const workshopData = {
-          profile_id: session.user.id,
-          name: userName,
-          plan_type: "free",
-          subscription_status: "trial",
-          trial_ends_at: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
-          is_public: true,
-          accepts_quotes: true,
-        };
-        console.log("📋 [Callback] Dados do workshop:", JSON.stringify(workshopData, null, 2));
+        console.log("🔨 [Callback] Verificando/criando WORKSHOP...");
         
-        const { data: workshopResult, error: workshopError } = await supabase
+        // Verificar se já existe
+        const { data: existingWorkshop } = await supabase
           .from("workshops")
-          .insert(workshopData)
-          .select()
-          .single();
-        
-        if (workshopError) {
-          console.error("❌ [Callback] ERRO ao criar workshop:", workshopError);
-          console.error("❌ [Callback] Código:", workshopError.code);
-          console.error("❌ [Callback] Mensagem:", workshopError.message);
-          console.error("❌ [Callback] Detalhes:", workshopError.details);
-          console.error("❌ [Callback] Hint:", workshopError.hint);
+          .select("id")
+          .eq("profile_id", session.user.id)
+          .maybeSingle();
+
+        if (!existingWorkshop) {
+          const workshopData = {
+            profile_id: session.user.id,
+            name: userName,
+            plan_type: "free",
+            subscription_status: "trial",
+            trial_ends_at: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
+            is_public: true,
+            accepts_quotes: true,
+          };
+          console.log("📋 [Callback] Dados do workshop:", JSON.stringify(workshopData, null, 2));
+          
+          const { data: workshopResult, error: workshopError } = await supabase
+            .from("workshops")
+            .insert(workshopData)
+            .select()
+            .single();
+          
+          if (workshopError) {
+            console.error("❌ [Callback] ERRO ao criar workshop:", workshopError);
+            // Não bloquear o redirect, workshop pode ter sido criado via API
+          } else {
+            console.log("✅ [Callback] Workshop criado com sucesso!");
+            console.log("✅ [Callback] Workshop ID:", workshopResult?.id);
+          }
         } else {
-          console.log("✅ [Callback] Workshop criado com sucesso!");
-          console.log("✅ [Callback] Workshop ID:", workshopResult?.id);
+          console.log("✅ [Callback] Workshop já existe!");
         }
         
         console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
@@ -168,26 +210,36 @@ export async function GET(request: Request) {
         return response;
       } else {
         console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-        console.log("🔨 [Callback] Criando MOTORIST...");
-        const motoristData = {
-          profile_id: session.user.id,
-        };
-        console.log("📋 [Callback] Dados do motorist:", JSON.stringify(motoristData, null, 2));
+        console.log("🔨 [Callback] Verificando/criando MOTORIST...");
         
-        const { data: motoristResult, error: motoristError } = await supabase
+        // Verificar se já existe
+        const { data: existingMotorist } = await supabase
           .from("motorists")
-          .insert(motoristData)
-          .select()
-          .single();
-        
-        if (motoristError) {
-          console.error("❌ [Callback] ERRO ao criar motorist:", motoristError);
-          console.error("❌ [Callback] Código:", motoristError.code);
-          console.error("❌ [Callback] Mensagem:", motoristError.message);
-          console.error("❌ [Callback] Detalhes:", motoristError.details);
+          .select("id")
+          .eq("profile_id", session.user.id)
+          .maybeSingle();
+
+        if (!existingMotorist) {
+          const motoristData = {
+            profile_id: session.user.id,
+          };
+          console.log("📋 [Callback] Dados do motorist:", JSON.stringify(motoristData, null, 2));
+          
+          const { data: motoristResult, error: motoristError } = await supabase
+            .from("motorists")
+            .insert(motoristData)
+            .select()
+            .single();
+          
+          if (motoristError) {
+            console.error("❌ [Callback] ERRO ao criar motorist:", motoristError);
+            // Não bloquear o redirect, motorist pode ter sido criado via API
+          } else {
+            console.log("✅ [Callback] Motorist criado com sucesso!");
+            console.log("✅ [Callback] Motorist ID:", motoristResult?.id);
+          }
         } else {
-          console.log("✅ [Callback] Motorist criado com sucesso!");
-          console.log("✅ [Callback] Motorist ID:", motoristResult?.id);
+          console.log("✅ [Callback] Motorist já existe!");
         }
         
         console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
