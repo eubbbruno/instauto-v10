@@ -545,7 +545,7 @@ export default function OficinaDashboard() {
           <div className="lg:col-span-2 space-y-6">
             {/* Orçamentos Pendentes */}
             {stats.quotes > 0 && (
-              <div className="bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl shadow-sm p-5 sm:p-6">
+              <div className="group bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl shadow-sm hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-200/50 transition-all duration-300 p-5 sm:p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-base sm:text-lg font-bold text-gray-900 flex items-center gap-2">
                     <FileText className="w-5 h-5 text-blue-600" />
@@ -628,27 +628,26 @@ export default function OficinaDashboard() {
 
           {/* Sidebar - 1/3 */}
           <div className="space-y-6">
-            {/* Diagnóstico IA */}
-            <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-5 text-white shadow-lg">
-              <div className="flex items-center gap-3 mb-3">
-                <div className="p-2 bg-white/20 backdrop-blur-sm rounded-xl">
-                  <Sparkles className="w-5 h-5" />
+            {/* Diagnóstico IA Premium */}
+            <Link href="/oficina/diagnostico" className="block group">
+              <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-5 text-white shadow-lg hover:shadow-2xl hover:shadow-blue-500/30 transition-all duration-300 hover:-translate-y-1">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="p-2.5 bg-white/20 backdrop-blur-sm rounded-xl group-hover:bg-white/30 transition-colors">
+                    <Sparkles className="w-5 h-5" />
+                  </div>
+                  <h3 className="font-bold text-base">Diagnóstico com IA</h3>
                 </div>
-                <h3 className="font-bold text-base">Diagnóstico com IA</h3>
+                <p className="text-blue-100 text-sm mb-4 leading-relaxed">
+                  Analise problemas de veículos com inteligência artificial
+                </p>
+                <div className="w-full py-2.5 bg-white text-blue-600 rounded-xl text-sm font-semibold text-center group-hover:bg-blue-50 transition-colors">
+                  Iniciar Diagnóstico
+                </div>
               </div>
-              <p className="text-blue-100 text-sm mb-4 leading-relaxed">
-                Analise problemas de veículos com inteligência artificial
-              </p>
-              <Link 
-                href="/oficina/diagnostico"
-                className="block w-full py-2.5 bg-white text-blue-600 rounded-xl text-sm font-semibold text-center hover:bg-blue-50 transition-colors"
-              >
-                Iniciar Diagnóstico
-              </Link>
-            </div>
+            </Link>
 
-            {/* Agenda */}
-            <div className="bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl p-5 shadow-sm">
+            {/* Agenda Premium */}
+            <div className="group bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-200/50 transition-all duration-300">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-bold text-base text-gray-900 flex items-center gap-2">
                   <Calendar className="w-5 h-5 text-blue-600" />
@@ -665,9 +664,9 @@ export default function OficinaDashboard() {
               </div>
             </div>
 
-            {/* Avaliações Resumo */}
+            {/* Avaliações Resumo Premium */}
             {workshop && (
-              <div className="bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl p-5 shadow-sm">
+              <div className="group bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-200/50 transition-all duration-300">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
                     <Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />
@@ -789,4 +788,4 @@ export default function OficinaDashboard() {
     </>
   );
 }
-
+

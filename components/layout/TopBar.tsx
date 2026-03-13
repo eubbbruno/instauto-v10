@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Bell, User, Settings, LogOut, Menu, X, Check } from "lucide-react";
+import { Bell, User, Settings, LogOut, Menu, X, Check, ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase";
 import Link from "next/link";
@@ -136,34 +136,33 @@ export function TopBar({ user, userType, userName, onMenuClick, onSignOut }: Top
   };
 
   return (
-    <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-200/50 shadow-sm">
-      <div className="px-4 sm:px-6 py-3">
-        <div className="flex items-center justify-between">
-          {/* Left: Menu button (mobile) */}
-          <button
-            onClick={onMenuClick}
-            className="lg:hidden p-2 hover:bg-gray-100 rounded-xl transition-colors"
-          >
-            <Menu className="w-6 h-6 text-gray-600" />
-          </button>
+    <header className="sticky top-0 z-40 bg-white/70 backdrop-blur-xl border-b border-gray-200/50">
+      <div className="flex items-center justify-between h-16 px-6">
+        {/* Left: Menu button (mobile) */}
+        <button
+          onClick={onMenuClick}
+          className="lg:hidden p-2 hover:bg-gray-100 rounded-xl transition-colors"
+        >
+          <Menu className="w-6 h-6 text-gray-600" />
+        </button>
 
-          {/* Center: Empty space (desktop) */}
-          <div className="hidden lg:block flex-1" />
+        {/* Center: Empty space (desktop) */}
+        <div className="hidden lg:block flex-1" />
 
-          {/* Right: Notifications & User Menu */}
-          <div className="flex items-center gap-2 sm:gap-3 ml-auto">
-            {/* Notifications */}
+        {/* Right: Actions */}
+        <div className="flex items-center gap-2 ml-auto">
+            {/* Notifications Premium */}
             <div className="relative" ref={notifRef}>
               <button
                 onClick={() => {
                   setShowNotifications(!showNotifications);
                   setShowUserMenu(false);
                 }}
-                className="relative p-2 hover:bg-gray-100 rounded-xl transition-colors"
+                className="relative p-2.5 hover:bg-gray-100 rounded-xl transition-all duration-200 group"
               >
-                <Bell className="w-6 h-6 text-gray-600" />
+                <Bell className="w-5 h-5 text-gray-500 group-hover:text-gray-700 transition-colors" />
                 {unreadCount > 0 && (
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center animate-pulse">
+                  <span className="absolute top-1 right-1 w-5 h-5 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs rounded-full flex items-center justify-center font-bold shadow-lg shadow-red-500/30">
                     {unreadCount > 9 ? "9+" : unreadCount}
                   </span>
                 )}
@@ -233,21 +232,22 @@ export function TopBar({ user, userType, userName, onMenuClick, onSignOut }: Top
               )}
             </div>
 
-            {/* User Menu */}
+            {/* Separador */}
+            <div className="w-px h-8 bg-gray-200 mx-2" />
+            
+            {/* User Menu Premium */}
             <div className="relative" ref={userMenuRef}>
               <button
                 onClick={() => {
                   setShowUserMenu(!showUserMenu);
                   setShowNotifications(false);
                 }}
-                className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-xl transition-colors"
+                className="flex items-center gap-3 p-1.5 hover:bg-gray-100 rounded-xl transition-all duration-200"
               >
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold shadow-md">
                   {userName?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase() || "U"}
                 </div>
-                <span className="hidden sm:block text-sm font-medium text-gray-700 max-w-[120px] truncate">
-                  {userName || user?.email?.split("@")[0]}
-                </span>
+                <ChevronDown className="w-4 h-4 text-gray-400 hidden sm:block" />
               </button>
 
               {/* User Dropdown */}
@@ -283,7 +283,6 @@ export function TopBar({ user, userType, userName, onMenuClick, onSignOut }: Top
               )}
             </div>
           </div>
-        </div>
       </div>
     </header>
   );

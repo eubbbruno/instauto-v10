@@ -198,84 +198,158 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar Premium */}
       <aside className={`
         fixed inset-y-0 left-0 z-50 w-64 bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800
         border-r border-gray-700/50 transform transition-transform duration-300 lg:translate-x-0
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
       `}>
-        {/* Logo */}
+        {/* Logo Premium */}
         <div className="p-5 border-b border-gray-700/50">
-          <Link href="/oficina" className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center shadow-lg">
-              <Wrench className="w-5 h-5 text-white" />
+          <Link href="/oficina" className="flex items-center gap-3">
+            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
+              <Wrench className="w-6 h-6 text-white" />
             </div>
-            <span className="text-xl font-bold">
-              <span className="text-blue-400">Inst</span>
-              <span className="text-white">auto</span>
-            </span>
+            <div className="flex items-baseline">
+              <span className="text-2xl font-bold text-blue-400">Inst</span>
+              <span className="text-2xl font-bold text-white">auto</span>
+            </div>
           </Link>
         </div>
 
-        {/* Menu */}
+        {/* Menu Premium */}
         <nav className="flex-1 p-3 space-y-1 overflow-y-auto max-h-[calc(100vh-200px)]">
-          {menuItems.map((item, index) => {
+          {/* Seção Principal */}
+          <div className="px-4 py-2">
+            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Principal
+            </span>
+          </div>
+          
+          {menuItems.slice(0, 5).map((item) => {
             const isActive = pathname === item.href;
             const showBadge = item.href === "/oficina/orcamentos" && pendingQuotes > 0;
-            const showSeparator = index === 4 || index === 8;
             
             return (
-              <div key={item.href}>
-                {showSeparator && <div className="h-px bg-gray-700/50 my-3" />}
-                <Link
-                  href={item.href}
-                  onClick={() => setSidebarOpen(false)}
-                  className={`
-                    flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200
-                    ${isActive 
-                      ? "bg-blue-600 text-white shadow-lg shadow-blue-600/30" 
-                      : "text-gray-400 hover:bg-gray-800 hover:text-white"
-                    }
-                  `}
-                >
-                  <item.icon className="w-5 h-5 flex-shrink-0" />
-                  <span className="text-sm font-medium flex-1">{item.label}</span>
-                  {showBadge && (
-                    <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-                      {pendingQuotes > 9 ? "9+" : pendingQuotes}
-                    </span>
-                  )}
-                </Link>
-              </div>
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setSidebarOpen(false)}
+                className={`
+                  relative flex items-center gap-3 px-4 py-3 rounded-xl
+                  transition-all duration-200 ease-out
+                  ${isActive 
+                    ? "bg-gradient-to-r from-blue-600/20 to-transparent text-white" 
+                    : "text-gray-400 hover:text-white hover:bg-white/5"
+                  }
+                `}
+              >
+                {isActive && (
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-blue-400 to-blue-600 rounded-r-full" />
+                )}
+                <item.icon className={`w-5 h-5 flex-shrink-0 ${isActive ? "text-blue-400" : ""}`} />
+                <span className="text-sm font-medium flex-1">{item.label}</span>
+                {showBadge && (
+                  <span className="px-2 py-0.5 bg-blue-500/20 text-blue-400 text-xs font-semibold rounded-full">
+                    {pendingQuotes}
+                  </span>
+                )}
+              </Link>
+            );
+          })}
+
+          {/* Seção Gestão */}
+          <div className="px-4 py-2 mt-4">
+            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Gestão
+            </span>
+          </div>
+          
+          {menuItems.slice(5, 9).map((item) => {
+            const isActive = pathname === item.href;
+            
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setSidebarOpen(false)}
+                className={`
+                  relative flex items-center gap-3 px-4 py-3 rounded-xl
+                  transition-all duration-200 ease-out
+                  ${isActive 
+                    ? "bg-gradient-to-r from-blue-600/20 to-transparent text-white" 
+                    : "text-gray-400 hover:text-white hover:bg-white/5"
+                  }
+                `}
+              >
+                {isActive && (
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-blue-400 to-blue-600 rounded-r-full" />
+                )}
+                <item.icon className={`w-5 h-5 flex-shrink-0 ${isActive ? "text-blue-400" : ""}`} />
+                <span className="text-sm font-medium flex-1">{item.label}</span>
+              </Link>
+            );
+          })}
+
+          {/* Seção Configurações */}
+          <div className="px-4 py-2 mt-4">
+            <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+              Sistema
+            </span>
+          </div>
+          
+          {menuItems.slice(9).map((item) => {
+            const isActive = pathname === item.href;
+            
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setSidebarOpen(false)}
+                className={`
+                  relative flex items-center gap-3 px-4 py-3 rounded-xl
+                  transition-all duration-200 ease-out
+                  ${isActive 
+                    ? "bg-gradient-to-r from-blue-600/20 to-transparent text-white" 
+                    : "text-gray-400 hover:text-white hover:bg-white/5"
+                  }
+                `}
+              >
+                {isActive && (
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-gradient-to-b from-blue-400 to-blue-600 rounded-r-full" />
+                )}
+                <item.icon className={`w-5 h-5 flex-shrink-0 ${isActive ? "text-blue-400" : ""}`} />
+                <span className="text-sm font-medium flex-1">{item.label}</span>
+              </Link>
             );
           })}
         </nav>
 
-        {/* User Profile */}
-        <div className="p-4 border-t border-gray-700/50 mt-auto">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold shadow-lg">
+        {/* User Profile Premium */}
+        <div className="p-4 mx-3 mb-3 bg-white/5 rounded-2xl backdrop-blur-sm border border-white/10">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-blue-500/20">
               {workshop?.name?.charAt(0) || "O"}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-white truncate">{workshop?.name || "Oficina"}</p>
-              <div className="flex items-center gap-2">
-                <p className="text-xs text-gray-400 truncate">{profile?.email}</p>
+              <div className="flex items-center gap-2 mb-0.5">
+                <p className="text-sm font-semibold text-white truncate">{workshop?.name || "Oficina"}</p>
                 {workshop?.plan_type === "pro" && (
-                  <span className="text-[10px] px-1.5 py-0.5 bg-yellow-500/20 text-yellow-400 rounded font-bold">
+                  <span className="text-[10px] px-1.5 py-0.5 bg-gradient-to-r from-yellow-500/20 to-yellow-600/20 text-yellow-400 rounded-full font-bold border border-yellow-500/30">
                     PRO
                   </span>
                 )}
               </div>
+              <p className="text-xs text-gray-400 truncate">{profile?.email}</p>
             </div>
+            <button 
+              onClick={signOut}
+              className="p-2 hover:bg-white/10 rounded-lg transition-colors group"
+              title="Sair"
+            >
+              <LogOut className="w-4 h-4 text-gray-400 group-hover:text-white transition-colors" />
+            </button>
           </div>
-          <button
-            onClick={signOut}
-            className="w-full flex items-center justify-center gap-2 px-4 py-2 text-gray-400 hover:bg-gray-800 hover:text-white rounded-xl transition-all text-sm"
-          >
-            <LogOut className="w-4 h-4" />
-            Sair
-          </button>
         </div>
       </aside>
 

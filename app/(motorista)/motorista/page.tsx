@@ -263,8 +263,8 @@ export default function MotoristaDashboard() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
             {/* Coluna Principal - 2/3 */}
             <div className="lg:col-span-2 space-y-6">
-              {/* Meus Veículos */}
-              <div className="bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl shadow-sm p-5 sm:p-6">
+              {/* Meus Veículos Premium */}
+              <div className="group bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl shadow-sm hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-200/50 transition-all duration-300 p-5 sm:p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-base sm:text-lg font-bold text-gray-900 flex items-center gap-2">
                     <Car className="w-5 h-5 text-blue-600" />
@@ -303,8 +303,8 @@ export default function MotoristaDashboard() {
                 )}
               </div>
 
-              {/* Últimos Orçamentos */}
-              <div className="bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl shadow-sm p-5 sm:p-6">
+              {/* Últimos Orçamentos Premium */}
+              <div className="group bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl shadow-sm hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-200/50 transition-all duration-300 p-5 sm:p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-base sm:text-lg font-bold text-gray-900 flex items-center gap-2">
                     <FileText className="w-5 h-5 text-blue-600" />
@@ -349,8 +349,8 @@ export default function MotoristaDashboard() {
 
             {/* Sidebar - 1/3 */}
             <div className="space-y-6">
-              {/* Ações Rápidas */}
-              <div className="bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl p-5 shadow-sm">
+              {/* Ações Rápidas Premium */}
+              <div className="group bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-200/50 transition-all duration-300">
                 <h3 className="font-bold text-base text-gray-900 mb-4">Ações Rápidas</h3>
                 <div className="space-y-2">
                   <Link 
@@ -400,8 +400,8 @@ export default function MotoristaDashboard() {
                 </Link>
               </div>
 
-              {/* Próximo Lembrete */}
-              <div className="bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl p-5 shadow-sm">
+              {/* Próximo Lembrete Premium */}
+              <div className="group bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-200/50 transition-all duration-300">
                 <h3 className="font-bold text-base text-gray-900 mb-4 flex items-center gap-2">
                   <Bell className="w-5 h-5 text-blue-600" />
                   Próximo Lembrete
@@ -423,4 +423,4 @@ export default function MotoristaDashboard() {
       </div>
     </>
   );
-}
+}
