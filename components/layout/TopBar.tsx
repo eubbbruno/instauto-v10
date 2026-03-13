@@ -136,43 +136,44 @@ export function TopBar({ user, userType, userName, onMenuClick, onSignOut }: Top
   };
 
   return (
-    <header className="sticky top-0 z-40 h-14 px-8 flex items-center justify-between border-b border-white/5 bg-[#09090B]/80 backdrop-blur-xl">
-      {/* Left: Breadcrumb */}
-      <div className="flex items-center gap-2 text-sm">
+    <header className="sticky top-0 z-40 bg-white/70 backdrop-blur-xl border-b border-gray-200/50">
+      <div className="flex items-center justify-between h-16 px-6">
+        {/* Left: Menu button (mobile) */}
         <button
           onClick={onMenuClick}
-          className="lg:hidden p-2 -ml-2 hover:bg-white/5 rounded-lg transition-colors"
+          className="lg:hidden p-2 hover:bg-gray-100 rounded-xl transition-colors"
         >
-          <Menu className="w-5 h-5 text-gray-400" />
+          <Menu className="w-6 h-6 text-gray-600" />
         </button>
-        <span className="text-gray-500 hidden lg:inline">
-          {userType === "workshop" ? "Dashboard Oficina" : "Dashboard Motorista"}
-        </span>
-      </div>
 
-      {/* Right: Actions */}
-      <div className="flex items-center gap-3">
-            {/* Notifications - Estilo Vercel */}
+        {/* Center: Empty space (desktop) */}
+        <div className="hidden lg:block flex-1" />
+
+        {/* Right: Actions */}
+        <div className="flex items-center gap-2 ml-auto">
+            {/* Notifications Premium */}
             <div className="relative" ref={notifRef}>
               <button
                 onClick={() => {
                   setShowNotifications(!showNotifications);
                   setShowUserMenu(false);
                 }}
-                className="relative p-2 rounded-lg hover:bg-white/5 transition-colors"
+                className="relative p-2.5 hover:bg-gray-100 rounded-xl transition-all duration-200 group"
               >
-                <Bell className="w-5 h-5 text-gray-400" />
+                <Bell className="w-5 h-5 text-gray-500 group-hover:text-gray-700 transition-colors" />
                 {unreadCount > 0 && (
-                  <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-blue-500 rounded-full" />
+                  <span className="absolute top-1 right-1 w-5 h-5 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs rounded-full flex items-center justify-center font-bold shadow-lg shadow-red-500/30">
+                    {unreadCount > 9 ? "9+" : unreadCount}
+                  </span>
                 )}
               </button>
 
-              {/* Notifications Dropdown - Dark Theme */}
+              {/* Notifications Dropdown */}
               {showNotifications && (
-                <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-[#0A0A0F] backdrop-blur-md rounded-xl shadow-2xl border border-white/10 overflow-hidden">
-                  <div className="p-4 border-b border-white/5">
-                    <h3 className="font-semibold text-white">Notificações</h3>
-                    <p className="text-xs text-gray-500 mt-1">
+                <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-200/50 overflow-hidden">
+                  <div className="p-4 border-b border-gray-200/50 bg-gradient-to-r from-blue-50/80 to-gray-50/80">
+                    <h3 className="font-semibold text-gray-900">Notificações</h3>
+                    <p className="text-xs text-gray-600 mt-1">
                       {unreadCount > 0 ? `${unreadCount} não lida${unreadCount > 1 ? "s" : ""}` : "Tudo em dia!"}
                     </p>
                   </div>
@@ -180,7 +181,7 @@ export function TopBar({ user, userType, userName, onMenuClick, onSignOut }: Top
                   <div className="max-h-96 overflow-y-auto">
                     {notifications.length === 0 ? (
                       <div className="p-8 text-center">
-                        <Bell className="w-12 h-12 text-gray-600 mx-auto mb-3" />
+                        <Bell className="w-12 h-12 text-gray-300 mx-auto mb-3" />
                         <p className="text-gray-500 text-sm">Nenhuma notificação</p>
                       </div>
                     ) : (
@@ -188,25 +189,25 @@ export function TopBar({ user, userType, userName, onMenuClick, onSignOut }: Top
                         <button
                           key={notification.id}
                           onClick={() => handleNotificationClick(notification)}
-                          className={`w-full p-4 text-left hover:bg-white/5 transition-colors border-b border-white/5 ${
-                            !notification.is_read ? "bg-white/[0.02]" : ""
+                          className={`w-full p-4 text-left hover:bg-gray-50 transition-colors border-b border-gray-100 ${
+                            !notification.is_read ? "bg-blue-50/50" : ""
                           }`}
                         >
                           <div className="flex items-start gap-3">
                             <span className="text-2xl">{getNotificationIcon(notification.type)}</span>
                             <div className="flex-1 min-w-0">
                               <div className="flex items-center gap-2 mb-1">
-                                <p className="font-semibold text-white text-sm truncate">
+                                <p className="font-semibold text-gray-900 text-sm truncate">
                                   {notification.title}
                                 </p>
                                 {!notification.is_read && (
                                   <span className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></span>
                                 )}
                               </div>
-                              <p className="text-xs text-gray-400 line-clamp-2 mb-1">
+                              <p className="text-xs text-gray-600 line-clamp-2 mb-1">
                                 {notification.message}
                               </p>
-                              <p className="text-xs text-gray-600">
+                              <p className="text-xs text-gray-400">
                                 {getTimeAgo(notification.created_at)}
                               </p>
                             </div>
@@ -217,10 +218,10 @@ export function TopBar({ user, userType, userName, onMenuClick, onSignOut }: Top
                   </div>
 
                   {notifications.length > 0 && (
-                    <div className="p-3 border-t border-white/5">
+                    <div className="p-3 border-t border-gray-100 bg-gray-50">
                       <Link
                         href={userType === "workshop" ? "/oficina/orcamentos" : "/motorista/orcamentos"}
-                        className="block text-center text-sm font-medium text-blue-400 hover:text-blue-300"
+                        className="block text-center text-sm font-medium text-blue-600 hover:text-blue-700"
                         onClick={() => setShowNotifications(false)}
                       >
                         Ver todas as notificações
@@ -230,7 +231,59 @@ export function TopBar({ user, userType, userName, onMenuClick, onSignOut }: Top
                 </div>
               )}
             </div>
+
+            {/* Separador */}
+            <div className="w-px h-8 bg-gray-200 mx-2" />
+            
+            {/* User Menu Premium */}
+            <div className="relative" ref={userMenuRef}>
+              <button
+                onClick={() => {
+                  setShowUserMenu(!showUserMenu);
+                  setShowNotifications(false);
+                }}
+                className="flex items-center gap-3 p-1.5 hover:bg-gray-100 rounded-xl transition-all duration-200"
+              >
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold shadow-md">
+                  {userName?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase() || "U"}
+                </div>
+                <ChevronDown className="w-4 h-4 text-gray-400 hidden sm:block" />
+              </button>
+
+              {/* User Dropdown */}
+              {showUserMenu && (
+                <div className="absolute right-0 mt-2 w-56 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-200/50 overflow-hidden">
+                  <div className="p-4 border-b border-gray-200/50 bg-gradient-to-r from-blue-50/80 to-gray-50/80">
+                    <p className="font-semibold text-gray-900 truncate">{userName || "Usuário"}</p>
+                    <p className="text-xs text-gray-600 truncate">{user?.email}</p>
+                  </div>
+
+                  <div className="py-2">
+                    <Link
+                      href={userType === "workshop" ? "/oficina/configuracoes" : "/motorista/configuracoes"}
+                      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors"
+                      onClick={() => setShowUserMenu(false)}
+                    >
+                      <Settings className="w-5 h-5 text-gray-600" />
+                      <span className="text-sm text-gray-700">Configurações</span>
+                    </Link>
+
+                    <button
+                      onClick={() => {
+                        setShowUserMenu(false);
+                        onSignOut();
+                      }}
+                      className="w-full flex items-center gap-3 px-4 py-3 hover:bg-red-50 transition-colors text-left"
+                    >
+                      <LogOut className="w-5 h-5 text-red-600" />
+                      <span className="text-sm text-red-600 font-medium">Sair</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
+      </div>
     </header>
   );
 }

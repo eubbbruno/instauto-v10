@@ -13,11 +13,10 @@ import {
   Wrench, 
   Plus,
   Car,
-  TrendingUp,
-  TrendingDown,
   Calendar,
   Package,
   AlertTriangle,
+  TrendingUp,
   Clock,
   CheckCircle2,
   Crown,
@@ -483,144 +482,106 @@ export default function OficinaDashboard() {
       {/* Onboarding Modal */}
       <OnboardingModal steps={oficinaSteps} storageKey="onboarding_oficina_done" />
       
-      <div className="min-h-screen bg-[#09090B]">
-        <div className="p-8">
-          {/* Hero Section */}
-          <div className="mb-8">
-            <h1 className="text-2xl font-semibold text-white mb-1">
-              Bem-vindo de volta, {workshop?.name || 'Oficina'}
-            </h1>
-            <p className="text-gray-500 text-sm">
-              Aqui está o resumo da sua oficina hoje
-            </p>
-          </div>
-
-          {/* Metrics Grid - Estilo Stripe */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <div className="p-5 rounded-xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-colors">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">Orçamentos</span>
-                {trends.quotes?.positive ? (
-                  <TrendingUp className="w-4 h-4 text-emerald-500" />
-                ) : (
-                  <TrendingDown className="w-4 h-4 text-red-500" />
-                )}
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-gray-50">
+        <div className="p-4 sm:p-6 lg:p-8">
+          {/* Header */}
+          <div className="mb-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs sm:text-sm text-gray-500 mb-1">
+                  {format(new Date(), "EEEE, dd 'de' MMMM", { locale: ptBR })}
+                </p>
+                <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900">
+                  Olá, {workshop?.name || 'Oficina'}! 👋
+                </h1>
               </div>
-              {statsLoading ? (
-                <div className="h-8 w-16 bg-white/5 animate-pulse rounded" />
-              ) : (
-                <>
-                  <p className="text-2xl font-semibold text-white">{stats.quotes}</p>
-                  <p className={`text-xs mt-1 ${trends.quotes?.positive ? 'text-emerald-500' : 'text-red-500'}`}>
-                    {trends.quotes?.positive ? '+' : '-'}{trends.quotes?.value}% este mês
-                  </p>
-                </>
-              )}
-            </div>
-
-            <div className="p-5 rounded-xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-colors">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">Clientes</span>
-                {trends.clients?.positive ? (
-                  <TrendingUp className="w-4 h-4 text-emerald-500" />
-                ) : (
-                  <TrendingDown className="w-4 h-4 text-red-500" />
-                )}
-              </div>
-              {statsLoading ? (
-                <div className="h-8 w-16 bg-white/5 animate-pulse rounded" />
-              ) : (
-                <>
-                  <p className="text-2xl font-semibold text-white">{stats.clients}</p>
-                  <p className={`text-xs mt-1 ${trends.clients?.positive ? 'text-emerald-500' : 'text-red-500'}`}>
-                    {trends.clients?.positive ? '+' : '-'}{trends.clients?.value}% este mês
-                  </p>
-                </>
-              )}
-            </div>
-
-            <div className="p-5 rounded-xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-colors">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">Receita</span>
-                {trends.revenue?.positive ? (
-                  <TrendingUp className="w-4 h-4 text-emerald-500" />
-                ) : (
-                  <TrendingDown className="w-4 h-4 text-red-500" />
-                )}
-              </div>
-              {statsLoading ? (
-                <div className="h-8 w-24 bg-white/5 animate-pulse rounded" />
-              ) : (
-                <>
-                  <p className="text-2xl font-semibold text-white">
-                    R$ {stats.revenue.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}
-                  </p>
-                  <p className={`text-xs mt-1 ${trends.revenue?.positive ? 'text-emerald-500' : 'text-red-500'}`}>
-                    {trends.revenue?.positive ? '+' : '-'}{trends.revenue?.value}% este mês
-                  </p>
-                </>
-              )}
-            </div>
-
-            <div className="p-5 rounded-xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-colors">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">OS</span>
-                {trends.orders?.positive ? (
-                  <TrendingUp className="w-4 h-4 text-emerald-500" />
-                ) : (
-                  <TrendingDown className="w-4 h-4 text-red-500" />
-                )}
-              </div>
-              {statsLoading ? (
-                <div className="h-8 w-16 bg-white/5 animate-pulse rounded" />
-              ) : (
-                <>
-                  <p className="text-2xl font-semibold text-white">{stats.orders}</p>
-                  <p className={`text-xs mt-1 ${trends.orders?.positive ? 'text-emerald-500' : 'text-red-500'}`}>
-                    {trends.orders?.positive ? '+' : '-'}{trends.orders?.value}% este mês
-                  </p>
-                </>
-              )}
             </div>
           </div>
 
-          {/* Grid 2 colunas */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            
-            {/* Coluna Principal - 2/3 */}
-            <div className="lg:col-span-2 space-y-6">
-              {/* Card de Orçamentos Pendentes */}
-              {stats.quotes > 0 && (
-                <div className="rounded-xl bg-white/[0.02] border border-white/5 overflow-hidden">
-                  <div className="px-5 py-4 border-b border-white/5 flex items-center justify-between">
-                    <h3 className="text-sm font-medium text-white">Orçamentos Pendentes</h3>
-                    <Link href="/oficina/orcamentos" className="text-xs text-blue-400 hover:text-blue-300">
-                      Ver todos
-                    </Link>
-                  </div>
-                  <div className="divide-y divide-white/5">
-                    {recentActivities
-                      .filter(a => a.type === 'quote' && a.status === 'pending')
-                      .slice(0, 3)
-                      .map((activity) => (
-                        <div key={activity.id} className="px-5 py-4 hover:bg-white/[0.02] transition-colors">
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <p className="text-sm text-white font-medium">{activity.title}</p>
-                              <p className="text-xs text-gray-500 mt-0.5">{activity.description}</p>
-                            </div>
-                            <span className="text-xs text-gray-400">
-                              {format(new Date(activity.time), "HH:mm")}
-                            </span>
-                          </div>
+        {/* Stats Cards */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
+          <StatCard
+            title="Orçamentos"
+            value={stats.quotes}
+            description={stats.quotes === 0 ? "Nenhum pendente" : "pendentes"}
+            icon={FileText}
+            color="blue"
+            trend={trends.quotes}
+            loading={statsLoading}
+          />
+          <StatCard
+            title="Clientes"
+            value={stats.clients}
+            description="cadastrados"
+            icon={Users}
+            color="blue"
+            trend={trends.clients}
+            loading={statsLoading}
+          />
+          <StatCard
+            title="Receita"
+            value={`R$ ${stats.revenue.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`}
+            description="este mês"
+            icon={DollarSign}
+            color="blue"
+            trend={trends.revenue}
+            loading={statsLoading}
+          />
+          <StatCard
+            title="OS"
+            value={stats.orders}
+            description="este mês"
+            icon={Wrench}
+            color="blue"
+            trend={trends.orders}
+            loading={statsLoading}
+          />
+        </div>
+
+        {/* Grid Principal */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+
+          {/* Coluna Principal - 2/3 */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Orçamentos Pendentes */}
+            {stats.quotes > 0 && (
+              <div className="group bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl shadow-sm hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-200/50 transition-all duration-300 p-5 sm:p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-base sm:text-lg font-bold text-gray-900 flex items-center gap-2">
+                    <FileText className="w-5 h-5 text-blue-600" />
+                    Orçamentos Pendentes
+                  </h2>
+                  <Link 
+                    href="/oficina/orcamentos"
+                    className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                  >
+                    Ver todos
+                  </Link>
+                </div>
+                <div className="space-y-3">
+                  {recentActivities
+                    .filter(a => a.type === 'quote' && a.status === 'pending')
+                    .slice(0, 3)
+                    .map((activity) => (
+                      <div key={activity.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+                        <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
+                          <FileText className="w-5 h-5 text-blue-600" />
                         </div>
-                      ))}
-                    {recentActivities.filter(a => a.type === 'quote' && a.status === 'pending').length === 0 && (
-                      <div className="px-5 py-8 text-center text-gray-500">
-                        <FileText className="w-12 h-12 mx-auto mb-3 text-gray-600" />
-                        <p className="text-sm">Nenhum orçamento pendente</p>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-gray-900 truncate">{activity.title}</p>
+                          <p className="text-xs text-gray-500 truncate">{activity.description}</p>
+                        </div>
+                        <span className="text-xs text-gray-400 flex-shrink-0">
+                          {format(new Date(activity.time), "HH:mm")}
+                        </span>
                       </div>
-                    )}
+                    ))}
+                  {recentActivities.filter(a => a.type === 'quote' && a.status === 'pending').length === 0 && (
+                    <div className="text-center py-8 text-gray-500">
+                      <FileText className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+                      <p className="text-sm">Nenhum orçamento pendente</p>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
