@@ -482,416 +482,311 @@ export default function OficinaDashboard() {
       {/* Onboarding Modal */}
       <OnboardingModal steps={oficinaSteps} storageKey="onboarding_oficina_done" />
       
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
-        <div className="p-4 sm:p-4 sm:p-6 lg:p-8">
-          {/* Header padrão */}
-          <div className="mb-4 sm:mb-6">
-            <p className="text-xs text-gray-500 mb-1">Dashboard</p>
-            <h1 className="text-lg sm:text-base sm:text-lg lg:text-2xl font-bold text-gray-900">
-              Bem-vindo de volta, {workshop?.name || 'Oficina'}! 👋
-          </h1>
-        </div>
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-gray-50">
+        <div className="p-4 sm:p-6 lg:p-8">
+          {/* Header */}
+          <div className="mb-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs sm:text-sm text-gray-500 mb-1">
+                  {format(new Date(), "EEEE, dd 'de' MMMM", { locale: ptBR })}
+                </p>
+                <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900">
+                  Olá, {workshop?.name || 'Oficina'}! 👋
+                </h1>
+              </div>
+            </div>
+          </div>
 
-        {/* Stats Cards - Compactos */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-4 md:mb-6">
+        {/* Stats Cards */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
           <StatCard
-            title="Orçamentos Pendentes"
+            title="Orçamentos"
             value={stats.quotes}
-            description={stats.quotes === 0 ? "Nenhum pendente" : `${stats.quotes} aguardando resposta`}
+            description={stats.quotes === 0 ? "Nenhum pendente" : "pendentes"}
             icon={FileText}
             color="blue"
             trend={trends.quotes}
             loading={statsLoading}
           />
           <StatCard
-            title="Total de Clientes"
+            title="Clientes"
             value={stats.clients}
-            description={stats.clients === 0 ? "Nenhum cliente" : "clientes cadastrados"}
+            description="cadastrados"
             icon={Users}
-            color="green"
+            color="blue"
             trend={trends.clients}
             loading={statsLoading}
           />
           <StatCard
-            title="Receita do Mês"
+            title="Receita"
             value={`R$ ${stats.revenue.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`}
-            description="Faturamento mensal"
+            description="este mês"
             icon={DollarSign}
-            color="yellow"
+            color="blue"
             trend={trends.revenue}
             loading={statsLoading}
           />
           <StatCard
-            title="OS do Mês"
+            title="OS"
             value={stats.orders}
-            description={stats.orders === 0 ? "Nenhuma OS" : "ordens de serviço"}
+            description="este mês"
             icon={Wrench}
-            color="purple"
+            color="blue"
             trend={trends.orders}
             loading={statsLoading}
           />
         </div>
 
-        {/* Quick Actions */}
-        <Card className="mb-4 sm:mb-6 lg:mb-4 sm:mb-6 lg:mb-8 border-2 shadow-lg">
-          <CardHeader className="p-4 sm:p-4 sm:p-6">
-            <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-              <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-purple-600" />
-              Ações Rápidas
-            </CardTitle>
-            <CardDescription>
-              Acesse rapidamente as funcionalidades mais usadas
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <Link href="/oficina/ordens">
-                <Button className="w-full h-24 flex flex-col gap-2 bg-gradient-to-br from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 shadow-lg shadow-purple-600/30">
-                  <Wrench className="h-5 w-5 sm:h-6 sm:w-6" />
-                  <span className="font-bold">Nova OS</span>
-                </Button>
-              </Link>
-              
-              <Link href="/oficina/clientes">
-                <Button className="w-full h-24 flex flex-col gap-2 bg-gradient-to-br from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 shadow-lg shadow-green-600/30">
-                  <Users className="h-5 w-5 sm:h-6 sm:w-6" />
-                  <span className="font-bold">Novo Cliente</span>
-                </Button>
-              </Link>
-              
-              <Link href="/oficina/veiculos">
-                <Button className="w-full h-24 flex flex-col gap-2 bg-gradient-to-br from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg shadow-blue-600/30">
-                  <Car className="h-5 w-5 sm:h-6 sm:w-6" />
-                  <span className="font-bold">Novo Veículo</span>
-                </Button>
-              </Link>
-              
-              <Link href="/oficina/agenda">
-                <Button className="w-full h-24 flex flex-col gap-2 bg-gradient-to-br from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-gray-900 shadow-lg shadow-yellow-500/30">
-                  <Calendar className="h-5 w-5 sm:h-6 sm:w-6" />
-                  <span className="font-bold">Agendar</span>
-                </Button>
-              </Link>
-            </div>
-          </CardContent>
-        </Card>
+        {/* Grid Principal */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
 
-        {/* Cards de Destaque: Diagnóstico IA + Agenda */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 md:mb-8">
-          {/* Diagnóstico IA */}
-          <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl md:rounded-2xl p-5 md:p-6 text-white shadow-lg">
-            <div className="flex items-center gap-3 mb-3 md:mb-4">
-              <div className="p-2.5 md:p-3 bg-white/20 backdrop-blur-sm rounded-lg md:rounded-xl">
-                <Sparkles className="w-5 h-5 md:w-6 md:h-6" />
-              </div>
-              <div>
-                <h3 className="font-bold text-base md:text-lg">Diagnóstico com IA</h3>
-                <p className="text-blue-100 text-xs md:text-sm">Em breve</p>
-              </div>
-            </div>
-            <p className="text-blue-100 text-xs md:text-sm mb-3 md:mb-4 leading-relaxed">
-              Use inteligência artificial para diagnosticar problemas dos veículos 
-              a partir de fotos e descrições dos clientes.
-            </p>
-            <button 
-              disabled
-              className="w-full py-2.5 md:py-3 bg-white/20 backdrop-blur-sm rounded-lg text-xs md:text-sm font-medium cursor-not-allowed hover:bg-white/25 transition-colors"
-            >
-              🔒 Disponível em breve
-            </button>
-          </div>
-
-          {/* Agenda de Hoje */}
-          <div className="bg-white/80 backdrop-blur-md border border-white/20 rounded-xl md:rounded-2xl p-5 md:p-6 shadow-lg">
-            <div className="flex items-center justify-between mb-3 md:mb-4">
-              <h3 className="font-semibold text-gray-900 flex items-center gap-2 text-base md:text-lg">
-                <Calendar className="w-4 h-4 md:w-5 md:h-5 text-blue-600" />
-                Agenda de Hoje
-              </h3>
-              <span className="text-xs md:text-sm text-gray-500">
-                {new Date().toLocaleDateString('pt-BR', { weekday: 'short', day: 'numeric', month: 'short' })}
-              </span>
-            </div>
-            
-            {/* Placeholder - sem agendamentos */}
-            <div className="text-center py-6 md:py-8 text-gray-500">
-              <Calendar className="w-10 h-10 md:w-12 md:h-12 mx-auto mb-2 md:mb-3 text-gray-300" />
-              <p className="text-xs md:text-sm">Nenhum agendamento para hoje</p>
-              <p className="text-[10px] md:text-xs text-gray-400 mt-1">Em breve: sistema de agendamentos</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Revenue Chart + Recent Activities */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* Revenue Chart */}
-            <Card className="border-2 shadow-lg">
-              <CardHeader className="p-4 sm:p-4 sm:p-6">
-                <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                  <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 text-green-600" />
-                  Receita dos Últimos 7 Dias
-                </CardTitle>
-                <CardDescription>
-                  Acompanhe o faturamento diário da sua oficina
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {revenueChart.length > 0 ? (
-                  <ResponsiveContainer width="100%" height={180}>
-                    <LineChart data={revenueChart}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                      <XAxis 
-                        dataKey="day" 
-                        stroke="#6b7280"
-                        style={{ fontSize: '11px' }}
-                      />
-                      <YAxis 
-                        stroke="#6b7280"
-                        style={{ fontSize: '11px' }}
-                        tickFormatter={(value) => `R$ ${value}`}
-                      />
-                      <Tooltip 
-                        formatter={(value: any) => [`R$ ${value.toFixed(2)}`, 'Receita']}
-                        contentStyle={{
-                          backgroundColor: 'white',
-                          border: '2px solid #e5e7eb',
-                          borderRadius: '8px',
-                          padding: '8px'
-                        }}
-                      />
-                      <Line 
-                        type="monotone" 
-                        dataKey="value" 
-                        stroke="#10b981" 
-                        strokeWidth={2}
-                        dot={{ fill: '#10b981', r: 3 }}
-                        activeDot={{ r: 5 }}
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-                ) : (
-                  <div className="h-[180px] flex items-center justify-center text-gray-500">
-                    <div className="text-center">
-                      <TrendingUp className="h-10 w-10 mx-auto mb-2 text-gray-300" />
-                      <p className="text-sm">Nenhuma receita nos últimos 7 dias</p>
-                    </div>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
-            {/* Reviews Card */}
-            <Card className="border-2 shadow-lg">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                      <Star className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-500 fill-yellow-500" />
-                      Avaliações
-                    </CardTitle>
-                    <CardDescription className="text-xs sm:text-sm">
-                      O que seus clientes estão dizendo
-                    </CardDescription>
-                  </div>
-                  {workshop?.rating && (
-                    <div className="text-center">
-                      <div className="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">
-                        {workshop.rating.toFixed(1)}
+          {/* Coluna Principal - 2/3 */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Orçamentos Pendentes */}
+            {stats.quotes > 0 && (
+              <div className="bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl shadow-sm p-5 sm:p-6">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-base sm:text-lg font-bold text-gray-900 flex items-center gap-2">
+                    <FileText className="w-5 h-5 text-blue-600" />
+                    Orçamentos Pendentes
+                  </h2>
+                  <Link 
+                    href="/oficina/orcamentos"
+                    className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                  >
+                    Ver todos
+                  </Link>
+                </div>
+                <div className="space-y-3">
+                  {recentActivities
+                    .filter(a => a.type === 'quote' && a.status === 'pending')
+                    .slice(0, 3)
+                    .map((activity) => (
+                      <div key={activity.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+                        <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
+                          <FileText className="w-5 h-5 text-blue-600" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-gray-900 truncate">{activity.title}</p>
+                          <p className="text-xs text-gray-500 truncate">{activity.description}</p>
+                        </div>
+                        <span className="text-xs text-gray-400 flex-shrink-0">
+                          {format(new Date(activity.time), "HH:mm")}
+                        </span>
                       </div>
-                      <StarRating
-                        rating={workshop.rating}
-                        size="sm"
-                        showCount={true}
-                        count={workshop.reviews_count || 0}
-                      />
+                    ))}
+                  {recentActivities.filter(a => a.type === 'quote' && a.status === 'pending').length === 0 && (
+                    <div className="text-center py-8 text-gray-500">
+                      <FileText className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+                      <p className="text-sm">Nenhum orçamento pendente</p>
                     </div>
                   )}
                 </div>
-              </CardHeader>
-              <CardContent>
+              </div>
+            )}
+
+            {/* Gráfico de Receita */}
+            <div className="bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl shadow-sm p-5 sm:p-6 hidden sm:block">
+              <h2 className="text-base sm:text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-blue-600" />
+                Receita dos Últimos 7 Dias
+              </h2>
+              <ResponsiveContainer width="100%" height={150}>
+                <LineChart data={revenueChart}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                  <XAxis 
+                    dataKey="day" 
+                    tick={{ fontSize: 12, fill: '#6b7280' }}
+                    stroke="#9ca3af"
+                  />
+                  <YAxis 
+                    tick={{ fontSize: 12, fill: '#6b7280' }}
+                    stroke="#9ca3af"
+                  />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: 'white',
+                      border: '1px solid #e5e7eb',
+                      borderRadius: '8px',
+                      fontSize: '12px'
+                    }}
+                    formatter={(value: any) => [`R$ ${value.toLocaleString('pt-BR')}`, 'Receita']}
+                  />
+                  <Line 
+                    type="monotone" 
+                    dataKey="value" 
+                    stroke="#3b82f6" 
+                    strokeWidth={2}
+                    dot={{ fill: '#3b82f6', r: 4 }}
+                    activeDot={{ r: 6 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          {/* Sidebar - 1/3 */}
+          <div className="space-y-6">
+            {/* Diagnóstico IA */}
+            <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-5 text-white shadow-lg">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="p-2 bg-white/20 backdrop-blur-sm rounded-xl">
+                  <Sparkles className="w-5 h-5" />
+                </div>
+                <h3 className="font-bold text-base">Diagnóstico com IA</h3>
+              </div>
+              <p className="text-blue-100 text-sm mb-4 leading-relaxed">
+                Analise problemas de veículos com inteligência artificial
+              </p>
+              <Link 
+                href="/oficina/diagnostico"
+                className="block w-full py-2.5 bg-white text-blue-600 rounded-xl text-sm font-semibold text-center hover:bg-blue-50 transition-colors"
+              >
+                Iniciar Diagnóstico
+              </Link>
+            </div>
+
+            {/* Agenda */}
+            <div className="bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl p-5 shadow-sm">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-bold text-base text-gray-900 flex items-center gap-2">
+                  <Calendar className="w-5 h-5 text-blue-600" />
+                  Agenda de Hoje
+                </h3>
+                <span className="text-xs text-gray-500">
+                  {format(new Date(), "dd/MM")}
+                </span>
+              </div>
+              <div className="text-center py-6 text-gray-500">
+                <Calendar className="w-10 h-10 mx-auto mb-2 text-gray-300" />
+                <p className="text-xs">Nenhum agendamento</p>
+                <p className="text-[10px] text-gray-400 mt-1">Em breve</p>
+              </div>
+            </div>
+
+            {/* Avaliações Resumo */}
+            {workshop && (
+              <div className="bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl p-5 shadow-sm">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />
+                    <div>
+                      <span className="text-xl font-bold text-gray-900">
+                        {workshop.rating?.toFixed(1) || "0.0"}
+                      </span>
+                      <span className="text-gray-500 text-sm ml-1">
+                        ({workshop.reviews_count || 0})
+                      </span>
+                    </div>
+                  </div>
+                  <Link 
+                    href="/oficina/avaliacoes" 
+                    className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                  >
+                    Ver todas
+                  </Link>
+                </div>
                 {recentReviews.length > 0 ? (
-                  <div className="space-y-4">
-                    {recentReviews.map((review) => (
-                      <div key={review.id} className="p-4 bg-gray-50 rounded-lg border-2 border-gray-100">
-                        <div className="flex items-start justify-between mb-2">
-                          <div className="flex items-center gap-2">
-                            <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                              {review.profile?.name?.charAt(0) || review.profile?.email?.charAt(0) || "?"}
-                            </div>
-                            <div>
-                              <p className="font-medium text-gray-900 text-sm">
-                                {review.profile?.name || review.profile?.email?.split("@")[0] || "Cliente"}
-                              </p>
-                              <p className="text-xs text-gray-500">
-                                {format(new Date(review.created_at), "dd/MM/yyyy", { locale: ptBR })}
-                              </p>
-                            </div>
+                  <div className="space-y-2">
+                    {recentReviews.slice(0, 2).map((review: any) => (
+                      <div key={review.id} className="text-sm">
+                        <div className="flex items-center gap-2 mb-1">
+                          <div className="flex">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <Star
+                                key={star}
+                                className={`w-3 h-3 ${
+                                  star <= review.rating
+                                    ? "text-yellow-400 fill-yellow-400"
+                                    : "text-gray-300"
+                                }`}
+                              />
+                            ))}
                           </div>
-                          <StarRating rating={review.rating} size="sm" />
+                          <span className="text-xs text-gray-500">
+                            {review.motorist_name}
+                          </span>
                         </div>
                         {review.comment && (
-                          <p className="text-sm text-gray-700 line-clamp-2">{review.comment}</p>
+                          <p className="text-xs text-gray-600 line-clamp-2">
+                            {review.comment}
+                          </p>
                         )}
                       </div>
                     ))}
-                    <Link href="/oficina/avaliacoes">
-                      <Button variant="outline" className="w-full">
-                        Ver todas as avaliações
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    </Link>
                   </div>
                 ) : (
-                  <div className="text-center py-12">
-                    <Star className="h-12 w-12 mx-auto mb-2 text-gray-300" />
-                    <p className="text-gray-500 mb-2">Nenhuma avaliação ainda</p>
-                    <p className="text-xs text-gray-400">
-                      Suas avaliações aparecerão aqui quando os clientes avaliarem seus serviços
-                    </p>
-                  </div>
+                  <p className="text-xs text-gray-500 text-center py-4">
+                    Ainda não há avaliações
+                  </p>
                 )}
-              </CardContent>
-            </Card>
+              </div>
+            )}
 
-            {/* Recent Activities */}
-            <Card className="border-2 shadow-lg">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-                  <Clock className="h-5 w-5 sm:h-6 sm:w-6 text-blue-600" />
-                  Atividades Recentes
-                </CardTitle>
-                <CardDescription>
-                  Últimas movimentações na sua oficina
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {recentActivities.length > 0 ? (
-                  <div className="space-y-4">
-                    {recentActivities.map((activity) => {
-                      const Icon = getActivityIcon(activity.type);
-                      const colorClass = getActivityColor(activity.type);
-                      
-                      return (
-                        <div key={activity.id} className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border-2 border-gray-100 hover:border-blue-200 transition-colors">
-                          <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${colorClass} flex-shrink-0`}>
-                            <Icon className="h-5 w-5" />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 mb-1">
-                              <p className="font-semibold text-gray-900">{activity.title}</p>
-                              {getStatusBadge(activity.status)}
-                            </div>
-                            <p className="text-sm text-gray-600">{activity.description}</p>
-                            <p className="text-xs text-gray-400 mt-1">
-                              {format(new Date(activity.time), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
-                            </p>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <div className="text-center py-12">
-                    <Clock className="h-12 w-12 mx-auto mb-2 text-gray-300" />
-                    <p className="text-gray-500">Nenhuma atividade recente</p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+            {/* Card PRO (apenas se FREE) */}
+            {workshop?.plan_type === "free" && (
+              <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 border-2 border-yellow-200 rounded-2xl p-5 shadow-sm">
+                <div className="flex items-center gap-2 mb-3">
+                  <Crown className="w-5 h-5 text-yellow-600" />
+                  <h3 className="font-bold text-base text-gray-900">Upgrade PRO</h3>
+                </div>
+                <p className="text-sm text-gray-700 mb-4">
+                  Orçamentos ilimitados, destaque na busca e mais recursos
+                </p>
+                <Link 
+                  href="/oficina/planos"
+                  className="block w-full py-2.5 bg-blue-600 text-white rounded-xl text-sm font-semibold text-center hover:bg-blue-700 transition-colors"
+                >
+                  Ver Planos
+                </Link>
+              </div>
+            )}
           </div>
+        </div>
 
-          {/* Alerts Sidebar - Com Glassmorphism */}
-          <div className="space-y-4 md:space-y-6">
-            {alerts.length > 0 ? (
-              alerts.map((alert) => {
+        {/* Alertas (se houver) */}
+        {alerts.length > 0 && (
+          <div className="mt-6">
+            <h2 className="text-base sm:text-lg font-bold text-gray-900 mb-4">Alertas</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {alerts.map((alert) => {
                 const Icon = getAlertIcon(alert.type);
                 const colorClass = getAlertColor(alert.type);
                 
                 return (
-                  <Card key={alert.id} className={`border-2 ${colorClass} bg-white/80 backdrop-blur-sm shadow-lg`}>
-                    <CardHeader className="pb-3 p-4 md:p-6">
-                      <CardTitle className="flex items-center gap-2 text-base md:text-lg">
-                        <Icon className="h-4 w-4 md:h-5 md:w-5" />
-                        {alert.title}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-4 md:p-6 pt-0">
-                      <p className="text-xs md:text-sm text-gray-700 mb-3 md:mb-4">
-                        {alert.description}
-                      </p>
-                      {alert.action && alert.actionLink && (
-                        <Link href={alert.actionLink}>
-                          <Button 
-                            variant="outline" 
-                            className="w-full border-2 font-bold group text-xs md:text-sm h-9 md:h-10"
+                  <div 
+                    key={alert.id} 
+                    className={`border-2 ${colorClass} rounded-xl p-4 shadow-sm`}
+                  >
+                    <div className="flex items-start gap-3">
+                      <Icon className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-sm text-gray-900 mb-1">
+                          {alert.title}
+                        </h3>
+                        <p className="text-xs text-gray-600 mb-3">
+                          {alert.description}
+                        </p>
+                        {alert.actionLink && (
+                          <Link
+                            href={alert.actionLink}
+                            className="text-xs font-medium text-blue-600 hover:text-blue-700"
                           >
-                            {alert.action}
-                            <ArrowRight className="ml-2 h-3 w-3 md:h-4 md:w-4 group-hover:translate-x-1 transition-transform" />
-                          </Button>
-                        </Link>
-                      )}
-                    </CardContent>
-                  </Card>
+                            {alert.action} →
+                          </Link>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 );
-              })
-            ) : (
-              <Card className="border-2 border-green-200 bg-green-50/80 backdrop-blur-sm shadow-lg">
-                <CardHeader className="p-4 md:p-6">
-                  <CardTitle className="flex items-center gap-2 text-base md:text-lg text-green-900">
-                    <CheckCircle2 className="h-4 w-4 md:h-5 md:w-5" />
-                    Tudo em ordem!
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-4 md:p-6 pt-0">
-                  <p className="text-xs md:text-sm text-green-800">
-                    Não há alertas no momento. Continue o ótimo trabalho!
-                  </p>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Upgrade Banner */}
-            {workshop?.plan_type === 'free' && (
-              <Card className="border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-blue-50 shadow-xl">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-lg text-purple-900">
-                    <Crown className="h-5 w-5 sm:h-6 sm:w-6 text-yellow-500" />
-                    Desbloqueie o Poder Total
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2 mb-4 text-sm text-purple-800">
-                    <li className="flex items-center gap-2">
-                      <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0" />
-                      Clientes ilimitados
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0" />
-                      OS ilimitadas
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0" />
-                      Relatórios avançados
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <CheckCircle2 className="h-4 w-4 text-green-600 flex-shrink-0" />
-                      Suporte prioritário
-                    </li>
-                  </ul>
-                  <Link href="/oficina/planos">
-                    <Button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 font-bold shadow-lg shadow-purple-600/30">
-                      <Crown className="mr-2 h-4 w-4" />
-                      Fazer Upgrade Agora
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            )}
+              })}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
     </>
   );
 }
+
