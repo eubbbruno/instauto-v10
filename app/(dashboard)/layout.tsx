@@ -200,76 +200,80 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
       {/* Sidebar */}
       <aside className={`
-        fixed inset-y-0 left-0 z-50 w-64 bg-gradient-to-b from-blue-50 via-white to-blue-50/50 
-        border-r border-blue-100 transform transition-transform duration-300 lg:translate-x-0
+        fixed inset-y-0 left-0 z-50 w-64 bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800
+        border-r border-gray-700/50 transform transition-transform duration-300 lg:translate-x-0
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
       `}>
         {/* Logo */}
-        <div className="p-4 sm:p-6 border-b border-gray-100">
-          <Link href="/oficina">
-            <Image 
-              src="/images/logo-of-dark.svg" 
-              alt="Instauto" 
-              width={140} 
-              height={40}
-              className="h-8 sm:h-10 w-auto"
-            />
+        <div className="p-5 border-b border-gray-700/50">
+          <Link href="/oficina" className="flex items-center gap-2">
+            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center shadow-lg">
+              <Wrench className="w-5 h-5 text-white" />
+            </div>
+            <span className="text-xl font-bold">
+              <span className="text-blue-400">Inst</span>
+              <span className="text-white">auto</span>
+            </span>
           </Link>
         </div>
 
         {/* Menu */}
-        <nav className="flex-1 p-3 sm:p-4 space-y-1 overflow-y-auto max-h-[calc(100vh-200px)]">
-          {menuItems.map((item) => {
+        <nav className="flex-1 p-3 space-y-1 overflow-y-auto max-h-[calc(100vh-200px)]">
+          {menuItems.map((item, index) => {
             const isActive = pathname === item.href;
             const showBadge = item.href === "/oficina/orcamentos" && pendingQuotes > 0;
+            const showSeparator = index === 4 || index === 8;
             
             return (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setSidebarOpen(false)}
-                className={`
-                  flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl transition-all duration-200
-                  ${isActive 
-                    ? "bg-blue-600 text-white shadow-lg shadow-blue-600/30" 
-                    : "text-gray-600 hover:bg-blue-50 hover:text-blue-600"
-                  }
-                `}
-              >
-                <item.icon className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
-                <span className="text-sm sm:text-base font-medium flex-1">{item.label}</span>
-                {showBadge && (
-                  <span className="ml-auto bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full animate-pulse">
-                    {pendingQuotes > 9 ? "9+" : pendingQuotes}
-                  </span>
-                )}
-              </Link>
+              <div key={item.href}>
+                {showSeparator && <div className="h-px bg-gray-700/50 my-3" />}
+                <Link
+                  href={item.href}
+                  onClick={() => setSidebarOpen(false)}
+                  className={`
+                    flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200
+                    ${isActive 
+                      ? "bg-blue-600 text-white shadow-lg shadow-blue-600/30" 
+                      : "text-gray-400 hover:bg-gray-800 hover:text-white"
+                    }
+                  `}
+                >
+                  <item.icon className="w-5 h-5 flex-shrink-0" />
+                  <span className="text-sm font-medium flex-1">{item.label}</span>
+                  {showBadge && (
+                    <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                      {pendingQuotes > 9 ? "9+" : pendingQuotes}
+                    </span>
+                  )}
+                </Link>
+              </div>
             );
           })}
         </nav>
 
-        {/* User */}
-        <div className="p-3 sm:p-4 border-t border-gray-100 mt-auto">
-          <div className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 rounded-lg sm:rounded-xl bg-gray-50">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-base">
+        {/* User Profile */}
+        <div className="p-4 border-t border-gray-700/50 mt-auto">
+          <div className="flex items-center gap-3 mb-3">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold shadow-lg">
               {workshop?.name?.charAt(0) || "O"}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="font-medium text-gray-900 truncate text-xs sm:text-sm">{workshop?.name || "Oficina"}</p>
-              <span className={`text-xs px-1.5 sm:px-2 py-0.5 rounded-full ${
-                workshop?.plan_type === "pro" 
-                  ? "bg-yellow-100 text-yellow-700" 
-                  : "bg-gray-100 text-gray-600"
-              }`}>
-                {workshop?.plan_type === "pro" ? "PRO" : "FREE"}
-              </span>
+              <p className="text-sm font-medium text-white truncate">{workshop?.name || "Oficina"}</p>
+              <div className="flex items-center gap-2">
+                <p className="text-xs text-gray-400 truncate">{profile?.email}</p>
+                {workshop?.plan_type === "pro" && (
+                  <span className="text-[10px] px-1.5 py-0.5 bg-yellow-500/20 text-yellow-400 rounded font-bold">
+                    PRO
+                  </span>
+                )}
+              </div>
             </div>
           </div>
           <button
             onClick={signOut}
-            className="w-full mt-2 sm:mt-3 flex items-center justify-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 text-red-600 hover:bg-red-50 rounded-lg sm:rounded-xl transition-colors text-xs sm:text-sm"
+            className="w-full flex items-center justify-center gap-2 px-4 py-2 text-gray-400 hover:bg-gray-800 hover:text-white rounded-xl transition-all text-sm"
           >
-            <LogOut className="w-3 h-3 sm:w-4 sm:h-4" />
+            <LogOut className="w-4 h-4" />
             Sair
           </button>
         </div>

@@ -136,7 +136,7 @@ export function TopBar({ user, userType, userName, onMenuClick, onSignOut }: Top
   };
 
   return (
-    <header className="sticky top-0 z-30 bg-white border-b border-gray-100 shadow-sm">
+    <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-200/50 shadow-sm">
       <div className="px-4 sm:px-6 py-3">
         <div className="flex items-center justify-between">
           {/* Left: Menu button (mobile) */}
@@ -147,15 +147,11 @@ export function TopBar({ user, userType, userName, onMenuClick, onSignOut }: Top
             <Menu className="w-6 h-6 text-gray-600" />
           </button>
 
-          {/* Center: Logo/Title (desktop) */}
-          <div className="hidden lg:block">
-            <h2 className="text-lg font-semibold text-gray-900">
-              {userType === "workshop" ? "Dashboard Oficina" : "Dashboard Motorista"}
-            </h2>
-          </div>
+          {/* Center: Empty space (desktop) */}
+          <div className="hidden lg:block flex-1" />
 
           {/* Right: Notifications & User Menu */}
-          <div className="flex items-center gap-2 sm:gap-4 ml-auto lg:ml-0">
+          <div className="flex items-center gap-2 sm:gap-3 ml-auto">
             {/* Notifications */}
             <div className="relative" ref={notifRef}>
               <button
@@ -175,10 +171,10 @@ export function TopBar({ user, userType, userName, onMenuClick, onSignOut }: Top
 
               {/* Notifications Dropdown */}
               {showNotifications && (
-                <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-                  <div className="p-4 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-yellow-50">
+                <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-200/50 overflow-hidden">
+                  <div className="p-4 border-b border-gray-200/50 bg-gradient-to-r from-blue-50/80 to-gray-50/80">
                     <h3 className="font-semibold text-gray-900">Notificações</h3>
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-gray-600 mt-1">
                       {unreadCount > 0 ? `${unreadCount} não lida${unreadCount > 1 ? "s" : ""}` : "Tudo em dia!"}
                     </p>
                   </div>
@@ -256,10 +252,10 @@ export function TopBar({ user, userType, userName, onMenuClick, onSignOut }: Top
 
               {/* User Dropdown */}
               {showUserMenu && (
-                <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-                  <div className="p-4 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-yellow-50">
+                <div className="absolute right-0 mt-2 w-56 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-gray-200/50 overflow-hidden">
+                  <div className="p-4 border-b border-gray-200/50 bg-gradient-to-r from-blue-50/80 to-gray-50/80">
                     <p className="font-semibold text-gray-900 truncate">{userName || "Usuário"}</p>
-                    <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+                    <p className="text-xs text-gray-600 truncate">{user?.email}</p>
                   </div>
 
                   <div className="py-2">
