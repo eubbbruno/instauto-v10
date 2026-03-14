@@ -307,16 +307,19 @@ export default function ConfiguracoesPage() {
   return (
     <div className="p-4 sm:p-4 sm:p-6 lg:p-8">
       <div className="space-y-6 sm:space-y-8">
-        <div className="mb-6 sm:mb-8">
-          <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Configurações</p>
-          <h1 className="text-base sm:text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
-            Configurações ⚙️
-          </h1>
-          <p className="text-gray-600">Gerencie seus dados pessoais e da oficina</p>
-        </div>
+        <FadeIn>
+          <div className="mb-6 sm:mb-8">
+            <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Configurações</p>
+            <h1 className="text-base sm:text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
+              Configurações ⚙️
+            </h1>
+            <p className="text-gray-600">Gerencie seus dados pessoais e da oficina</p>
+          </div>
+        </FadeIn>
 
       {/* Foto de Perfil */}
-      <Card className="mb-6">
+      <FadeIn delay={0.1}>
+        <Card className="mb-6">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Camera className="h-5 w-5" />
@@ -389,9 +392,11 @@ export default function ConfiguracoesPage() {
           </div>
         </CardContent>
       </Card>
+      </FadeIn>
 
       {/* Assistente de Perfil com IA */}
-      <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl sm:rounded-2xl p-6 sm:p-8 text-white shadow-xl mb-6">
+      <FadeIn delay={0.2}>
+        <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl sm:rounded-2xl p-6 sm:p-8 text-white shadow-xl mb-6">
         <div className="flex items-center gap-3 mb-4">
           <div className="p-2.5 bg-white/20 backdrop-blur-sm rounded-xl">
             <Sparkles className="w-6 h-6" />
@@ -427,11 +432,13 @@ export default function ConfiguracoesPage() {
         >
           🔒 Disponível em breve
         </button>
-      </div>
+        </div>
+      </FadeIn>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:p-6">
-        {/* Meus Dados */}
-        <Card>
+      <FadeIn delay={0.3}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:p-6">
+          {/* Meus Dados */}
+          <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <User className="h-5 w-5" />
@@ -682,10 +689,12 @@ export default function ConfiguracoesPage() {
             </form>
           </CardContent>
         </Card>
-      </div>
+        </div>
+      </FadeIn>
 
       {/* Informações do Plano */}
-      <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
+      <FadeIn delay={0.4}>
+        <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
         <CardHeader>
           <CardTitle>Plano Atual</CardTitle>
           <CardDescription>
@@ -718,9 +727,10 @@ export default function ConfiguracoesPage() {
             </Button>
           </div>
         </CardContent>
-      </Card>
-        </div>
+        </Card>
+      </FadeIn>
       </div>
+    </div>
   );
 }
 

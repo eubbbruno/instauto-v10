@@ -161,11 +161,12 @@ function ClientesContent() {
     <div className="p-4 sm:p-4 sm:p-6 lg:p-8">
       <div className="space-y-6 sm:space-y-8">
         {/* Header Premium */}
-        <div className="mb-6 sm:mb-8">
-          <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Clientes</p>
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-              <h1 className="text-base sm:text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">Clientes</h1>
+        <FadeIn>
+          <div className="mb-6 sm:mb-8">
+            <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Clientes</p>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <h1 className="text-base sm:text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">Clientes</h1>
               <div className="flex items-center gap-3 flex-wrap">
                 <p className="text-gray-600">
                   Gerencie sua base de clientes
@@ -187,11 +188,13 @@ function ClientesContent() {
               <Plus className="w-5 h-5" />
               Novo Cliente
             </button>
+            </div>
           </div>
-        </div>
+        </FadeIn>
 
         {/* Alerta de limite próximo */}
         {showLimitWarning && (
+          <FadeIn delay={0.1}>
           <Card className="border-2 border-yellow-200 bg-gradient-to-br from-yellow-50 to-orange-50 shadow-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-yellow-900 font-bold text-lg">
@@ -210,10 +213,12 @@ function ClientesContent() {
               </Button>
             </CardContent>
           </Card>
+          </FadeIn>
         )}
 
         {/* Search Card */}
-        <Card className="border-2 shadow-lg">
+        <FadeIn delay={0.2}>
+          <Card className="border-2 shadow-lg">
           <CardContent className="pt-6">
             <div className="relative">
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -226,8 +231,10 @@ function ClientesContent() {
             </div>
           </CardContent>
         </Card>
+        </FadeIn>
 
         {/* Table */}
+        <FadeIn delay={0.3}>
         {loading ? (
           <div className="flex items-center justify-center py-12">
             <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
@@ -305,6 +312,7 @@ function ClientesContent() {
             </div>
           </div>
         )}
+        </FadeIn>
 
         {/* Dialog */}
         <ClientDialog

@@ -286,10 +286,11 @@ export default function GaragemPage() {
     <div className="p-4 sm:p-4 sm:p-6 lg:p-8">
       <div className="space-y-6 sm:space-y-8">
         {/* Header padrão */}
-        <div className="mb-6 sm:mb-8">
-          <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Garagem</p>
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <h1 className="text-base sm:text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900">Minha Garagem</h1>
+        <FadeIn>
+          <div className="mb-6 sm:mb-8">
+            <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Garagem</p>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <h1 className="text-base sm:text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900">Minha Garagem</h1>
             <button 
               className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-semibold rounded-xl shadow-lg shadow-yellow-400/30 flex items-center justify-center gap-2 transition-all"
               onClick={() => {
@@ -300,10 +301,12 @@ export default function GaragemPage() {
               <Plus className="w-5 h-5" />
               Adicionar Veículo
             </button>
+            </div>
           </div>
-        </div>
+        </FadeIn>
 
         {/* Lista de Veículos */}
+        <FadeIn delay={0.1}>
         {vehicles.length === 0 ? (
           <div className="bg-white rounded-2xl sm:rounded-3xl p-8 sm:p-12 shadow-sm border border-gray-100 text-center">
             <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-blue-100 flex items-center justify-center">
@@ -327,9 +330,10 @@ export default function GaragemPage() {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-4 sm:p-6">
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-4 sm:p-6" staggerDelay={0.1}>
             {vehicles.map((vehicle) => (
-              <div key={vehicle.id} className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-4 sm:p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+              <StaggerItem key={vehicle.id}>
+                <GlassCard variant="default" hover className="p-4 sm:p-4 sm:p-6">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
                     <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-1">
@@ -384,10 +388,12 @@ export default function GaragemPage() {
                     <Trash2 className="h-4 w-4" />
                   </button>
                 </div>
-              </div>
+                </GlassCard>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         )}
+        </FadeIn>
       </div>
 
       {/* Dialog de Adicionar/Editar */}
