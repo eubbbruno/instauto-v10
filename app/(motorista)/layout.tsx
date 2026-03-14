@@ -218,22 +218,23 @@ export default function MotoristaLayout({ children }: { children: React.ReactNod
         />
       )}
 
-      {/* Sidebar Premium */}
+      {/* Sidebar Premium - Card Flutuante */}
       <aside className={`
-        fixed inset-y-0 left-0 z-50 w-64 bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800
-        border-r border-gray-700/50 transform transition-transform duration-300 lg:translate-x-0
+        fixed top-3 left-3 bottom-3 z-50 w-64 bg-gradient-to-b from-gray-900 via-gray-900 to-gray-800
+        rounded-r-2xl shadow-2xl border-r border-gray-700/50
+        transform transition-transform duration-300 lg:translate-x-0
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
       `}>
-        {/* Logo Premium */}
+        {/* Logo */}
         <div className="p-5 border-b border-gray-700/50">
-          <Link href="/motorista" className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
-              <Car className="w-6 h-6 text-white" />
-            </div>
-            <div className="flex items-baseline">
-              <span className="text-2xl font-bold text-blue-400">Inst</span>
-              <span className="text-2xl font-bold text-white">auto</span>
-            </div>
+          <Link href="/motorista" className="flex items-center">
+            <Image 
+              src="/images/logo-of-dark.svg" 
+              alt="Instauto" 
+              width={140} 
+              height={40}
+              className="h-10 w-auto"
+            />
           </Link>
         </div>
 

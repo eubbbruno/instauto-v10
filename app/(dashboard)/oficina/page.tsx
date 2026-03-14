@@ -483,9 +483,9 @@ export default function OficinaDashboard() {
       <OnboardingModal steps={oficinaSteps} storageKey="onboarding_oficina_done" />
       
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-gray-50">
-        <div className="p-4 sm:p-6 lg:p-8">
+        <div className="p-6">
           {/* Header */}
-          <div className="mb-6">
+          <div className="mb-4">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs sm:text-sm text-gray-500 mb-1">
@@ -499,7 +499,7 @@ export default function OficinaDashboard() {
           </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
           <StatCard
             title="Orçamentos"
             value={stats.quotes}
@@ -539,10 +539,10 @@ export default function OficinaDashboard() {
         </div>
 
         {/* Grid Principal */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
 
           {/* Coluna Principal - 2/3 */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-4">
             {/* Orçamentos Pendentes */}
             {stats.quotes > 0 && (
               <div className="group bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl shadow-sm hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-200/50 transition-all duration-300 p-5 sm:p-6">
@@ -592,7 +592,7 @@ export default function OficinaDashboard() {
                 <TrendingUp className="w-5 h-5 text-blue-600" />
                 Receita dos Últimos 7 Dias
               </h2>
-              <ResponsiveContainer width="100%" height={150}>
+              <ResponsiveContainer width="100%" height={120}>
                 <LineChart data={revenueChart}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                   <XAxis 
@@ -627,7 +627,7 @@ export default function OficinaDashboard() {
           </div>
 
           {/* Sidebar - 1/3 */}
-          <div className="space-y-6">
+          <div className="space-y-4">
             {/* Diagnóstico IA Premium */}
             <Link href="/oficina/diagnostico" className="block group">
               <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-5 text-white shadow-lg hover:shadow-2xl hover:shadow-blue-500/30 transition-all duration-300 hover:-translate-y-1">

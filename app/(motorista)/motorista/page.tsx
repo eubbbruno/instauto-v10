@@ -212,9 +212,9 @@ export default function MotoristaDashboard() {
       <OnboardingModal steps={motoristaSteps} storageKey="onboarding_motorista_done" />
       
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-gray-50">
-        <div className="p-4 sm:p-6 lg:p-8">
+        <div className="p-6">
           {/* Header */}
-          <div className="mb-6">
+          <div className="mb-4">
             <p className="text-xs sm:text-sm text-gray-500 mb-1">
               {new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}
             </p>
@@ -224,7 +224,7 @@ export default function MotoristaDashboard() {
           </div>
 
           {/* Stats Cards */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
             <StatCard
               title="Veículos"
               value={stats.vehicles}
@@ -260,9 +260,9 @@ export default function MotoristaDashboard() {
           </div>
 
           {/* Grid Principal */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
             {/* Coluna Principal - 2/3 */}
-            <div className="lg:col-span-2 space-y-6">
+            <div className="lg:col-span-2 space-y-4">
               {/* Meus Veículos Premium */}
               <div className="group bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl shadow-sm hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-200/50 transition-all duration-300 p-5 sm:p-6">
                 <div className="flex items-center justify-between mb-4">
@@ -348,7 +348,7 @@ export default function MotoristaDashboard() {
             </div>
 
             {/* Sidebar - 1/3 */}
-            <div className="space-y-6">
+            <div className="space-y-4">
               {/* Ações Rápidas Premium */}
               <div className="group bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-200/50 transition-all duration-300">
                 <h3 className="font-bold text-base text-gray-900 mb-4">Ações Rápidas</h3>
