@@ -229,7 +229,7 @@ export default function MotoristaLayout({ children }: { children: React.ReactNod
         <div className="p-4 border-b border-white/10">
           <Link href="/motorista" className="flex items-center justify-center">
             <Image 
-              src="/images/logo-of-dark.svg" 
+              src="/images/logo.svg" 
               alt="Instauto" 
               width={160} 
               height={45}

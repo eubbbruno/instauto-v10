@@ -25,7 +25,8 @@ import {
   Loader2,
   Building2,
   ClipboardList,
-  Star
+  Star,
+  MessageCircle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -33,7 +34,7 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Badge } from "@/components/ui/badge";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from "recharts";
 import { OnboardingModal } from "@/components/ui/OnboardingModal";
 
 interface RecentActivity {
@@ -593,7 +594,13 @@ export default function OficinaDashboard() {
                 Receita dos Últimos 7 Dias
               </h2>
               <ResponsiveContainer width="100%" height={120}>
-                <LineChart data={revenueChart}>
+                <AreaChart data={revenueChart}>
+                  <defs>
+                    <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
+                      <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                   <XAxis 
                     dataKey="day" 
@@ -613,15 +620,16 @@ export default function OficinaDashboard() {
                     }}
                     formatter={(value: any) => [`R$ ${value.toLocaleString('pt-BR')}`, 'Receita']}
                   />
-                  <Line 
+                  <Area 
                     type="monotone" 
                     dataKey="value" 
                     stroke="#3b82f6" 
                     strokeWidth={2}
+                    fill="url(#colorRevenue)"
                     dot={{ fill: '#3b82f6', r: 4 }}
                     activeDot={{ r: 6 }}
                   />
-                </LineChart>
+                </AreaChart>
               </ResponsiveContainer>
             </div>
           </div>
@@ -651,16 +659,30 @@ export default function OficinaDashboard() {
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-bold text-base text-gray-900 flex items-center gap-2">
                   <Calendar className="w-5 h-5 text-blue-600" />
-                  Agenda de Hoje
+                  Agenda da Semana
                 </h3>
-                <span className="text-xs text-gray-500">
-                  {format(new Date(), "dd/MM")}
-                </span>
+                <span className="text-xs text-blue-600 font-medium">Em breve</span>
               </div>
-              <div className="text-center py-6 text-gray-500">
-                <Calendar className="w-10 h-10 mx-auto mb-2 text-gray-300" />
-                <p className="text-xs">Nenhum agendamento</p>
-                <p className="text-[10px] text-gray-400 mt-1">Em breve</p>
+              <div className="grid grid-cols-7 gap-1">
+                {['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'].map((day, index) => {
+                  const isToday = new Date().getDay() === (index + 1) % 7;
+                  return (
+                    <div key={day} className="text-center">
+                      <div className={`text-[10px] font-medium mb-1 ${isToday ? 'text-blue-600' : 'text-gray-500'}`}>
+                        {day}
+                      </div>
+                      <div className={`h-12 rounded-lg border-2 ${
+                        isToday 
+                          ? 'border-blue-600 bg-blue-50' 
+                          : 'border-gray-200 bg-gray-50'
+                      }`}>
+                        <div className="h-full flex flex-col justify-center items-center">
+                          <div className={`w-1 h-1 rounded-full ${isToday ? 'bg-blue-600' : 'bg-gray-300'}`} />
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
@@ -723,6 +745,23 @@ export default function OficinaDashboard() {
               </div>
             )}
 
+            {/* Card WhatsApp */}
+            <div className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200 rounded-2xl p-5 shadow-sm">
+              <div className="flex items-center gap-2 mb-3">
+                <MessageCircle className="w-5 h-5 text-green-600" />
+                <h3 className="font-bold text-base text-gray-900">WhatsApp Business</h3>
+              </div>
+              <p className="text-sm text-gray-700 mb-4">
+                Integre seu WhatsApp e responda clientes direto da plataforma
+              </p>
+              <Link 
+                href="/oficina/whatsapp"
+                className="block w-full py-2.5 bg-green-600 text-white rounded-xl text-sm font-semibold text-center hover:bg-green-700 transition-colors"
+              >
+                Configurar WhatsApp
+              </Link>
+            </div>
+
             {/* Card PRO (apenas se FREE) */}
             {workshop?.plan_type === "free" && (
               <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 border-2 border-yellow-200 rounded-2xl p-5 shadow-sm">
@@ -743,46 +782,6 @@ export default function OficinaDashboard() {
             )}
           </div>
         </div>
-
-        {/* Alertas (se houver) */}
-        {alerts.length > 0 && (
-          <div className="mt-6">
-            <h2 className="text-base sm:text-lg font-bold text-gray-900 mb-4">Alertas</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {alerts.map((alert) => {
-                const Icon = getAlertIcon(alert.type);
-                const colorClass = getAlertColor(alert.type);
-                
-                return (
-                  <div 
-                    key={alert.id} 
-                    className={`border-2 ${colorClass} rounded-xl p-4 shadow-sm`}
-                  >
-                    <div className="flex items-start gap-3">
-                      <Icon className="w-5 h-5 flex-shrink-0 mt-0.5" />
-                      <div className="flex-1">
-                        <h3 className="font-semibold text-sm text-gray-900 mb-1">
-                          {alert.title}
-                        </h3>
-                        <p className="text-xs text-gray-600 mb-3">
-                          {alert.description}
-                        </p>
-                        {alert.actionLink && (
-                          <Link
-                            href={alert.actionLink}
-                            className="text-xs font-medium text-blue-600 hover:text-blue-700"
-                          >
-                            {alert.action} →
-                          </Link>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
       </div>
     </div>
     </>
