@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase";
 import { StatCard } from "@/components/dashboard/StatCard";
+import { StaggerContainer, StaggerItem, FadeIn, FloatingCard } from "@/components/ui/motion";
+import { GlassCard } from "@/components/ui/glass-card";
 import { StarRating } from "@/components/ui/StarRating";
 import { 
   FileText, 
@@ -498,45 +500,53 @@ export default function OficinaDashboard() {
             </div>
           </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
-          <StatCard
-            title="Orçamentos"
-            value={stats.quotes}
-            description={stats.quotes === 0 ? "Nenhum pendente" : "pendentes"}
-            icon={FileText}
-            color="blue"
-            trend={trends.quotes}
-            loading={statsLoading}
-          />
-          <StatCard
-            title="Clientes"
-            value={stats.clients}
-            description="cadastrados"
-            icon={Users}
-            color="blue"
-            trend={trends.clients}
-            loading={statsLoading}
-          />
-          <StatCard
-            title="Receita"
-            value={`R$ ${stats.revenue.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`}
-            description="este mês"
-            icon={DollarSign}
-            color="blue"
-            trend={trends.revenue}
-            loading={statsLoading}
-          />
-          <StatCard
-            title="OS"
-            value={stats.orders}
-            description="este mês"
-            icon={Wrench}
-            color="blue"
-            trend={trends.orders}
-            loading={statsLoading}
-          />
-        </div>
+        {/* Stats Cards com animação em sequência */}
+        <StaggerContainer className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4" staggerDelay={0.1}>
+          <StaggerItem>
+            <StatCard
+              title="Orçamentos"
+              value={stats.quotes}
+              description={stats.quotes === 0 ? "Nenhum pendente" : "pendentes"}
+              icon={FileText}
+              color="blue"
+              trend={trends.quotes}
+              loading={statsLoading}
+            />
+          </StaggerItem>
+          <StaggerItem>
+            <StatCard
+              title="Clientes"
+              value={stats.clients}
+              description="cadastrados"
+              icon={Users}
+              color="blue"
+              trend={trends.clients}
+              loading={statsLoading}
+            />
+          </StaggerItem>
+          <StaggerItem>
+            <StatCard
+              title="Receita"
+              value={`R$ ${stats.revenue.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`}
+              description="este mês"
+              icon={DollarSign}
+              color="blue"
+              trend={trends.revenue}
+              loading={statsLoading}
+            />
+          </StaggerItem>
+          <StaggerItem>
+            <StatCard
+              title="OS"
+              value={stats.orders}
+              description="este mês"
+              icon={Wrench}
+              color="blue"
+              trend={trends.orders}
+              loading={statsLoading}
+            />
+          </StaggerItem>
+        </StaggerContainer>
 
         {/* Grid Principal - 2/3 + 1/3 */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
@@ -633,23 +643,25 @@ export default function OficinaDashboard() {
 
           {/* Coluna Direita - 1/3 */}
           <div className="space-y-4">
-            {/* Diagnóstico IA Premium */}
-            <Link href="/oficina/diagnostico" className="block group">
-              <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-5 text-white shadow-lg hover:shadow-2xl hover:shadow-blue-500/30 transition-all duration-300 hover:-translate-y-1">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="p-2.5 bg-white/20 backdrop-blur-sm rounded-xl group-hover:bg-white/30 transition-colors">
-                    <Sparkles className="w-5 h-5" />
+            {/* Diagnóstico IA Premium com animação */}
+            <FadeIn delay={0.3}>
+              <Link href="/oficina/diagnostico" className="block">
+                <FloatingCard className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl p-5 text-white shadow-lg hover:shadow-2xl hover:shadow-blue-500/30 transition-all duration-300">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="p-2.5 bg-white/20 backdrop-blur-sm rounded-xl transition-colors">
+                      <Sparkles className="w-5 h-5" />
+                    </div>
+                    <h3 className="font-bold text-base">Diagnóstico com IA</h3>
                   </div>
-                  <h3 className="font-bold text-base">Diagnóstico com IA</h3>
-                </div>
-                <p className="text-blue-100 text-sm mb-4 leading-relaxed">
-                  Analise problemas de veículos com inteligência artificial
-                </p>
-                <div className="w-full py-2.5 bg-white text-blue-600 rounded-xl text-sm font-semibold text-center group-hover:bg-blue-50 transition-colors">
-                  Iniciar Diagnóstico
-                </div>
-              </div>
-            </Link>
+                  <p className="text-blue-100 text-sm mb-4 leading-relaxed">
+                    Analise problemas de veículos com inteligência artificial
+                  </p>
+                  <div className="w-full py-2.5 bg-white text-blue-600 rounded-xl text-sm font-semibold text-center hover:bg-blue-50 transition-colors">
+                    Iniciar Diagnóstico
+                  </div>
+                </FloatingCard>
+              </Link>
+            </FadeIn>
 
             {/* Card WhatsApp */}
             <div className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200 rounded-2xl p-5 shadow-sm">

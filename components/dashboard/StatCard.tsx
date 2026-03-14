@@ -1,5 +1,8 @@
+"use client";
+
 import { LucideIcon } from "lucide-react";
 import { TrendingUp, TrendingDown } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface StatCardProps {
   title: string;
@@ -68,9 +71,19 @@ export function StatCard({
   const colors = colorClasses[color];
   
   return (
-    <div className={`relative bg-white/80 backdrop-blur-md border border-white/20 rounded-2xl p-4 md:p-5 shadow-lg ${colors.shadow} hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 overflow-hidden group`}>
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      whileHover={{ y: -4, transition: { duration: 0.2 } }}
+      className={`relative bg-white/80 backdrop-blur-md border border-white/20 rounded-2xl p-4 md:p-5 shadow-lg ${colors.shadow} hover:shadow-xl transition-all duration-300 overflow-hidden group`}
+    >
       {/* Background decoration */}
-      <div className={`absolute top-0 right-0 w-24 h-24 ${colors.bg} rounded-full blur-3xl opacity-40 group-hover:opacity-60 transition-opacity -mr-12 -mt-12`} />
+      <motion.div 
+        className={`absolute top-0 right-0 w-24 h-24 ${colors.bg} rounded-full blur-3xl opacity-40 -mr-12 -mt-12`}
+        animate={{ opacity: [0.4, 0.6, 0.4] }}
+        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+      />
       
       <div className="relative">
         {/* Header com ícone */}
@@ -116,6 +129,6 @@ export function StatCard({
           )}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
