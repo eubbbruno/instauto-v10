@@ -11,7 +11,7 @@ import {
   LayoutDashboard, Users, Car, FileText, Package, DollarSign,
   Calendar, MessageSquare, Settings, CreditCard, Wrench, Menu,
   X, LogOut, Bell, ChevronDown, Loader2, ClipboardList, Receipt,
-  Stethoscope
+  Stethoscope, ChevronRight
 } from "lucide-react";
 
 interface Profile {
@@ -200,26 +200,26 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
       {/* Sidebar Premium - Card Flutuante */}
       <aside className={`
-        fixed top-3 left-3 bottom-3 z-50 w-64 bg-gradient-to-b from-blue-900 via-blue-800 to-blue-900
-        rounded-r-2xl shadow-2xl border-r border-blue-700/30
+        fixed top-3 left-3 bottom-3 z-50 w-64 bg-gradient-to-b from-[#1e3a8a] via-[#1e40af] to-[#1e3a8a]
+        rounded-r-2xl shadow-2xl border-r border-blue-600/30
         transform transition-transform duration-300 lg:translate-x-0
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
       `}>
         {/* Logo */}
-        <div className="p-5 border-b border-white/10">
+        <div className="p-4 border-b border-white/10">
           <Link href="/oficina" className="flex items-center justify-center">
             <Image 
-              src="/images/logo.svg" 
+              src="/images/logo-of-dark.svg" 
               alt="Instauto" 
-              width={140} 
-              height={40}
-              className="h-8 w-auto"
+              width={160} 
+              height={45}
+              className="h-9 w-auto"
             />
           </Link>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 p-3 space-y-0.5 overflow-y-auto max-h-[calc(100vh-200px)]">
+        <nav className="flex-1 p-3 space-y-0.5 overflow-hidden">
           {menuItems.map((item) => {
             const isActive = pathname === item.href;
             const showBadge = item.href === "/oficina/orcamentos" && pendingQuotes > 0;
