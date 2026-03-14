@@ -424,11 +424,12 @@ export default function FinanceiroPage() {
       <div className="p-4 sm:p-4 sm:p-6 lg:p-8">
         <div className="space-y-6 sm:space-y-8">
           {/* Header Premium */}
-          <div className="mb-6 sm:mb-8">
-            <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Financeiro</p>
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div>
-                <h1 className="text-base sm:text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">Financeiro</h1>
+          <FadeIn>
+            <div className="mb-6 sm:mb-8">
+              <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Financeiro</p>
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                  <h1 className="text-base sm:text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">Financeiro</h1>
                 <div className="flex items-center gap-3 flex-wrap">
                   <p className="text-gray-600">Gerencie receitas e despesas da oficina</p>
                   <Badge className={`${balance >= 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'} text-sm font-medium px-3 py-1 rounded-full`}>
@@ -452,11 +453,12 @@ export default function FinanceiroPage() {
                   Despesa
                 </button>
               </div>
+              </div>
             </div>
-          </div>
+          </FadeIn>
 
         {/* Cards de Resumo */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:p-6">
+        <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:p-6" staggerDelay={0.1}>
           <Card className="border-2">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-bold text-gray-600">
@@ -516,10 +518,11 @@ export default function FinanceiroPage() {
               </p>
             </CardContent>
           </Card>
-        </div>
+        </StaggerContainer>
 
           {/* Gráfico Premium */}
-          <Card className="border-2 border-green-100 shadow-2xl hover:shadow-green-200/50 transition-all duration-300 overflow-hidden">
+          <FadeIn delay={0.3}>
+            <Card className="border-2 border-green-100 shadow-2xl hover:shadow-green-200/50 transition-all duration-300 overflow-hidden">
             <CardHeader className="border-b-2 border-green-100 bg-gradient-to-r from-green-50 via-emerald-50 to-green-50/50 py-6">
               <CardTitle className="flex items-center gap-3 text-2xl">
                 <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-green-500/30">
@@ -548,10 +551,12 @@ export default function FinanceiroPage() {
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
-        </Card>
+          </Card>
+          </FadeIn>
 
           {/* Filtros Premium */}
-          <Card className="border-2 shadow-lg">
+          <FadeIn delay={0.4}>
+            <Card className="border-2 shadow-lg">
             <CardHeader className="border-b bg-gradient-to-r from-gray-50 to-green-50/30">
               <CardTitle className="text-base sm:text-lg font-bold flex items-center gap-2">
                 <Filter className="h-5 w-5 text-green-600" />
@@ -759,6 +764,7 @@ export default function FinanceiroPage() {
               </CardContent>
             </Card>
           )}
+          </FadeIn>
 
         {/* Dialog Criar/Editar */}
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>

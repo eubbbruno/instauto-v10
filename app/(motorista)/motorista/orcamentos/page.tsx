@@ -170,10 +170,11 @@ export default function OrcamentosMotoristPage() {
     <div className="p-4 sm:p-4 sm:p-6 lg:p-8">
       <div className="space-y-6 sm:space-y-8">
         {/* Header padrão */}
-        <div className="mb-6 sm:mb-8">
-          <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Orçamentos</p>
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <h1 className="text-base sm:text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900">Meus Orçamentos</h1>
+        <FadeIn>
+          <div className="mb-6 sm:mb-8">
+            <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Orçamentos</p>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <h1 className="text-base sm:text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900">Meus Orçamentos</h1>
             <Link
               href="/motorista/oficinas"
               className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-semibold rounded-xl shadow-lg shadow-yellow-400/30 flex items-center justify-center gap-2 transition-all"
@@ -181,11 +182,14 @@ export default function OrcamentosMotoristPage() {
               <Plus className="w-5 h-5" />
               Solicitar Novo
             </Link>
+            </div>
           </div>
-        </div>
+        </FadeIn>
 
         {/* Lista de Orçamentos */}
+        <StaggerContainer className="space-y-6" staggerDelay={0.1}>
         {quotes.length === 0 ? (
+          <StaggerItem>
           <div className="bg-white rounded-3xl p-12 shadow-sm border border-gray-100 text-center">
             <div className="w-20 h-20 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <FileText className="h-10 w-10 text-gray-400" />
@@ -202,13 +206,12 @@ export default function OrcamentosMotoristPage() {
               </button>
             </Link>
           </div>
+          </StaggerItem>
         ) : (
-          <div className="space-y-6">
+          <>
             {quotes.map((quote) => (
-              <div
-                key={quote.id}
-                className="bg-white rounded-3xl shadow-sm border border-gray-100 p-4 sm:p-6 hover:shadow-md transition-shadow"
-              >
+              <StaggerItem key={quote.id}>
+                <GlassCard variant="default" hover className="p-6">
                 <div className="flex justify-between items-start mb-6">
                   <div>
                     <h3 className="text-lg font-bold text-gray-900 mb-1">
@@ -326,10 +329,12 @@ export default function OrcamentosMotoristPage() {
                 <p className="text-xs text-gray-400 pt-4 border-t border-gray-100">
                   Solicitado em {new Date(quote.created_at).toLocaleDateString("pt-BR")}
                 </p>
-              </div>
+                </GlassCard>
+              </StaggerItem>
             ))}
-          </div>
+          </>
         )}
+        </StaggerContainer>
       </div>
 
       {/* Review Dialog */}

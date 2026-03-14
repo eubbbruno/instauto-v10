@@ -194,11 +194,12 @@ export default function OrcamentosOficinaPage() {
     <div className="p-4 sm:p-4 sm:p-6 lg:p-8">
       <div className="space-y-6 sm:space-y-8">
         {/* Header Premium */}
-        <div className="mb-6 sm:mb-8">
-          <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Orçamentos</p>
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-            <div>
-              <h1 className="text-base sm:text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">Orçamentos Recebidos</h1>
+        <FadeIn>
+          <div className="mb-6 sm:mb-8">
+            <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Orçamentos</p>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+              <div>
+                <h1 className="text-base sm:text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">Orçamentos Recebidos</h1>
               <div className="flex items-center gap-3 flex-wrap">
                 <p className="text-gray-600">Gerencie as solicitações de orçamento</p>
                 {pendingCount > 0 && (
@@ -208,9 +209,12 @@ export default function OrcamentosOficinaPage() {
                 )}
               </div>
             </div>
+            </div>
           </div>
+        </FadeIn>
 
-          {/* Filtros */}
+        {/* Filtros */}
+        <FadeIn delay={0.1}>
           <Card className="border-2 shadow-lg">
             <CardHeader className="border-b bg-gradient-to-r from-gray-50 to-blue-50/30">
               <CardTitle className="flex items-center gap-2">
@@ -248,9 +252,11 @@ export default function OrcamentosOficinaPage() {
               </div>
             </CardContent>
           </Card>
+        </FadeIn>
         </div>
 
         {/* Lista de Orçamentos */}
+        <FadeIn delay={0.2}>
         {filteredQuotes.length === 0 ? (
           <Card className="border-2 shadow-xl bg-gradient-to-br from-white to-gray-50">
             <CardContent className="text-center py-16">
@@ -388,7 +394,7 @@ export default function OrcamentosOficinaPage() {
             Mostrando {filteredQuotes.length} de {quotes.length} orçamento(s)
           </div>
         )}
-      </div>
+      </FadeIn>
 
       {/* Dialog de Responder */}
       {selectedQuote && workshopId && (

@@ -204,11 +204,12 @@ function VeiculosContent() {
     <div className="p-4 sm:p-4 sm:p-6 lg:p-8">
       <div className="space-y-6 sm:space-y-8">
         {/* Header Premium */}
-        <div className="mb-6 sm:mb-8">
-          <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Veículos</p>
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-            <div>
-              <h1 className="text-base sm:text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">Veículos</h1>
+        <FadeIn>
+          <div className="mb-6 sm:mb-8">
+            <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Veículos</p>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div>
+                <h1 className="text-base sm:text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">Veículos</h1>
               <div className="flex items-center gap-3 flex-wrap">
                 <p className="text-gray-600">Gerencie os veículos dos seus clientes</p>
                 <Badge className="bg-blue-100 text-blue-700 text-sm font-medium px-3 py-1 rounded-full">
@@ -223,11 +224,13 @@ function VeiculosContent() {
               <Plus className="w-5 h-5" />
               Novo Veículo
             </button>
+            </div>
           </div>
-        </div>
+        </FadeIn>
 
         {/* Search Card */}
-        <Card className="border-2 shadow-lg">
+        <FadeIn delay={0.1}>
+          <Card className="border-2 shadow-lg">
           <CardContent className="pt-6">
             <div className="relative">
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -239,9 +242,11 @@ function VeiculosContent() {
               />
             </div>
           </CardContent>
-        </Card>
+          </Card>
+        </FadeIn>
 
         {/* Table */}
+        <FadeIn delay={0.2}>
         {loading ? (
           <div className="flex items-center justify-center py-12">
             <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
@@ -336,6 +341,7 @@ function VeiculosContent() {
             </div>
           </div>
         )}
+        </FadeIn>
 
         {/* Dialog */}
         <VehicleDialog
