@@ -14,6 +14,8 @@ import {
   AlertCircle, Car, User, Calendar, Filter 
 } from "lucide-react";
 import { RespondQuoteDialog } from "@/components/oficina/RespondQuoteDialog";
+import { FadeIn } from "@/components/ui/motion";
+import { GlassCard } from "@/components/ui/glass-card";
 
 interface Quote {
   id: string;

@@ -13,6 +13,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Loader2, User, Building2, Phone, Camera, Sparkles } from "lucide-react";
 import { useRef } from "react";
 import { PageHeader } from "@/components/dashboard/PageHeader";
+import { FadeIn } from "@/components/ui/motion";
+import { GlassCard } from "@/components/ui/glass-card";
 
 const ESTADOS_BRASILEIROS = [
   { value: "AC", label: "Acre" },

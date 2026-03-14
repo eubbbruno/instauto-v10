@@ -8,6 +8,8 @@ import { FileText, Clock, CheckCircle2, XCircle, MessageSquare, DollarSign, Cale
 import Link from "next/link";
 import { ReviewDialog } from "@/components/motorista/ReviewDialog";
 import { StarRating } from "@/components/ui/StarRating";
+import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/motion";
+import { GlassCard } from "@/components/ui/glass-card";
 
 interface Quote {
   id: string;

@@ -9,6 +9,8 @@ import { Car, Plus, Pencil, Trash2, Loader2, Wrench, AlertCircle } from "lucide-
 import { VehicleDialog } from "@/components/motorista/VehicleDialog";
 import { MotoristVehicle } from "@/types/database";
 import { useToast } from "@/components/ui/use-toast";
+import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/motion";
+import { GlassCard } from "@/components/ui/glass-card";
 import {
   AlertDialog,
   AlertDialogAction,

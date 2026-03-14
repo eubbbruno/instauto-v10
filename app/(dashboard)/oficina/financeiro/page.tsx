@@ -41,6 +41,8 @@ import {
 } from "@/components/ui/select";
 import PlanGuard from "@/components/auth/PlanGuard";
 import { PageHeader } from "@/components/dashboard/PageHeader";
+import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/motion";
+import { GlassCard } from "@/components/ui/glass-card";
 import {
   Loader2,
   Plus,

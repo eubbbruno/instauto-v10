@@ -11,6 +11,8 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/components/ui/use-toast";
 import { createClient } from "@/lib/supabase";
+import { FadeIn } from "@/components/ui/motion";
+import { GlassCard } from "@/components/ui/glass-card";
 import {
   AlertDialog,
   AlertDialogAction,

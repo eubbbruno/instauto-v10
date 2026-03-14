@@ -28,6 +28,8 @@ import {
 import { Plus, Pencil, Trash2, Loader2, Search, Car as CarIcon } from "lucide-react";
 import PlanGuard from "@/components/auth/PlanGuard";
 import { PageHeader } from "@/components/dashboard/PageHeader";
+import { FadeIn } from "@/components/ui/motion";
+import { GlassCard } from "@/components/ui/glass-card";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { PlateSearchInput } from "@/components/ui/PlateSearchInput";

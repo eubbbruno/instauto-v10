@@ -30,6 +30,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import PlanGuard from "@/components/auth/PlanGuard";
 import { PageHeader } from "@/components/dashboard/PageHeader";
+import { FadeIn } from "@/components/ui/motion";
+import { GlassCard } from "@/components/ui/glass-card";
 
 export default function ClientesPage() {
   return (
