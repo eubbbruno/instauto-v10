@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Bell, User, Settings, LogOut, Menu, X, Check, ChevronDown } from "lucide-react";
+import { Bell, User, Settings, LogOut, Menu, X, Check, ChevronDown, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase";
 import Link from "next/link";
@@ -137,7 +137,7 @@ export function TopBar({ user, userType, userName, onMenuClick, onSignOut }: Top
 
   return (
     <header className="sticky top-0 z-40 bg-white/70 backdrop-blur-xl border-b border-gray-200/50">
-      <div className="flex items-center justify-between h-16 px-6">
+      <div className="flex items-center justify-between h-16 px-6 gap-4">
         {/* Left: Menu button (mobile) */}
         <button
           onClick={onMenuClick}
@@ -146,11 +146,20 @@ export function TopBar({ user, userType, userName, onMenuClick, onSignOut }: Top
           <Menu className="w-6 h-6 text-gray-600" />
         </button>
 
-        {/* Center: Empty space (desktop) */}
-        <div className="hidden lg:block flex-1" />
+        {/* Center: Search Bar */}
+        <div className="flex-1 max-w-xl hidden lg:block">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Buscar clientes, veículos, orçamentos..."
+              className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+            />
+          </div>
+        </div>
 
         {/* Right: Actions */}
-        <div className="flex items-center gap-2 ml-auto">
+        <div className="flex items-center gap-3">
             {/* Notifications Premium */}
             <div className="relative" ref={notifRef}>
               <button
