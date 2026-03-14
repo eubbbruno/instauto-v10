@@ -82,14 +82,15 @@
 ## 2. Arquivos para Remover/Limpar
 
 ### Dependências Não Utilizadas
-❌ **Remover:**
-- `chart.js` + `react-chartjs-2` - Não utilizados (usar apenas Recharts)
+✅ **REMOVIDO:**
+- `chart.js` + `react-chartjs-2` - Removidos com sucesso (15/02/2026)
 
 ### Duplicação de Bibliotecas
-⚠️ **Unificar:**
-- **Toast:** Escolher entre `sonner` (recomendado) ou `react-hot-toast`
-  - Atualmente: 4 arquivos usam sonner, 3 usam react-hot-toast
-  - **Recomendação:** Migrar tudo para `sonner` (mais moderno)
+✅ **UNIFICADO:**
+- **Toast:** Migrado para `sonner` (15/02/2026)
+  - ✅ `react-hot-toast` removido
+  - ✅ 3 arquivos migrados para `sonner`
+  - Todos os arquivos agora usam `import { toast } from "sonner"`
 
 ### Scripts SQL Possivelmente Obsoletos
 ⚠️ **Revisar necessidade:**
@@ -265,11 +266,11 @@ lib/
 
 ### 🎯 Próximos Passos Sugeridos
 
-**Fase 1 - Limpeza (1-2 dias):**
-1. Remover `chart.js` e `react-chartjs-2`
-2. Migrar todos os toasts para `sonner`
-3. Limpar console.logs desnecessários
-4. Remover scripts SQL obsoletos
+**Fase 1 - Limpeza (1-2 dias):** ✅ **CONCLUÍDA**
+1. ✅ Remover `chart.js` e `react-chartjs-2` - **FEITO** (removidos 5 pacotes)
+2. ✅ Migrar todos os toasts para `sonner` - **FEITO** (3 arquivos migrados)
+3. ⚠️ Limpar console.logs desnecessários - **PARCIAL** (logs críticos de auth mantidos)
+4. ⏳ Remover scripts SQL obsoletos - **PENDENTE** (requer análise do banco)
 
 **Fase 2 - Padronização (2-3 dias):**
 1. Criar componente Card com variantes

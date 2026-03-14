@@ -229,7 +229,6 @@ export default function OficinaDashboard() {
         .limit(3);
 
       setRecentReviews(data || []);
-      console.log("⭐ [Dashboard] Avaliações recentes:", data?.length || 0);
     } catch (error) {
       console.error("Erro ao carregar avaliações:", error);
     }
