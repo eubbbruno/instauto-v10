@@ -10,6 +10,8 @@ import Image from "next/image";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { FipeConsult } from "@/components/motorista/FipeConsult";
 import { OnboardingModal } from "@/components/ui/OnboardingModal";
+import { FadeIn, SlideUp, StaggerContainer, StaggerItem, FloatingCard } from "@/components/ui/motion";
+import { GlassCard } from "@/components/ui/glass-card";
 
 export default function MotoristaDashboard() {
   const { user, profile, loading } = useAuth();
@@ -223,48 +225,57 @@ export default function MotoristaDashboard() {
             </h1>
           </div>
 
-          {/* Stats Cards */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
-            <StatCard
-              title="Veículos"
-              value={stats.vehicles}
-              description="cadastrados"
-              icon={Car}
-              color="blue"
-              loading={statsLoading}
-            />
-            <StatCard
-              title="Orçamentos"
-              value={stats.quotes}
-              description="solicitados"
-              icon={FileText}
-              color="blue"
-              loading={statsLoading}
-            />
-            <StatCard
-              title="Manutenções"
-              value={stats.maintenances}
-              description="agendadas"
-              icon={Wrench}
-              color="blue"
-              loading={statsLoading}
-            />
-            <StatCard
-              title="Economia"
-              value="R$ 0"
-              description="este mês"
-              icon={TrendingUp}
-              color="blue"
-              loading={statsLoading}
-            />
-          </div>
+          {/* Stats Cards com animação em sequência */}
+          <StaggerContainer className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4" staggerDelay={0.1}>
+            <StaggerItem>
+              <StatCard
+                title="Veículos"
+                value={stats.vehicles}
+                description="cadastrados"
+                icon={Car}
+                color="blue"
+                loading={statsLoading}
+              />
+            </StaggerItem>
+            <StaggerItem>
+              <StatCard
+                title="Orçamentos"
+                value={stats.quotes}
+                description="solicitados"
+                icon={FileText}
+                color="blue"
+                loading={statsLoading}
+              />
+            </StaggerItem>
+            <StaggerItem>
+              <StatCard
+                title="Manutenções"
+                value={stats.maintenances}
+                description="agendadas"
+                icon={Wrench}
+                color="blue"
+                loading={statsLoading}
+              />
+            </StaggerItem>
+            <StaggerItem>
+              <StatCard
+                title="Economia"
+                value="R$ 0"
+                description="este mês"
+                icon={TrendingUp}
+                color="blue"
+                loading={statsLoading}
+              />
+            </StaggerItem>
+          </StaggerContainer>
 
           {/* Grid Principal */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
             {/* Coluna Principal - 2/3 */}
             <div className="lg:col-span-2 space-y-4">
               {/* Meus Veículos Premium */}
-              <div className="group bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl shadow-sm hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-200/50 transition-all duration-300 p-5 sm:p-6">
+              <FadeIn delay={0.2}>
+                <GlassCard variant="default" className="p-5 sm:p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-base sm:text-lg font-bold text-gray-900 flex items-center gap-2">
                     <Car className="w-5 h-5 text-blue-600" />
@@ -301,10 +312,12 @@ export default function MotoristaDashboard() {
                     </Link>
                   </div>
                 )}
-              </div>
+                </GlassCard>
+              </FadeIn>
 
               {/* Últimos Orçamentos Premium */}
-              <div className="group bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl shadow-sm hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-200/50 transition-all duration-300 p-5 sm:p-6">
+              <FadeIn delay={0.3}>
+                <GlassCard variant="default" className="p-5 sm:p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-base sm:text-lg font-bold text-gray-900 flex items-center gap-2">
                     <FileText className="w-5 h-5 text-blue-600" />
@@ -344,13 +357,15 @@ export default function MotoristaDashboard() {
                     </Link>
                   </div>
                 )}
-              </div>
+                </GlassCard>
+              </FadeIn>
             </div>
 
             {/* Sidebar - 1/3 */}
             <div className="space-y-4">
-              {/* Ações Rápidas Premium */}
-              <div className="group bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-200/50 transition-all duration-300">
+              {/* Ações Rápidas Premium com FloatingCard */}
+              <FadeIn delay={0.4}>
+                <GlassCard variant="elevated" className="p-5">
                 <h3 className="font-bold text-base text-gray-900 mb-4">Ações Rápidas</h3>
                 <div className="space-y-2">
                   <Link 
@@ -381,10 +396,12 @@ export default function MotoristaDashboard() {
                     <ChevronRight className="w-5 h-5 text-gray-400" />
                   </Link>
                 </div>
-              </div>
+                </GlassCard>
+              </FadeIn>
 
               {/* Dicas de Manutenção */}
-              <div className="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-200 rounded-2xl p-5 shadow-sm">
+              <FadeIn delay={0.5}>
+                <GlassCard variant="highlighted" className="p-5">
                 <div className="flex items-center gap-2 mb-3">
                   <Zap className="w-5 h-5 text-blue-600" />
                   <h3 className="font-bold text-base text-gray-900">Dica do Dia</h3>
@@ -398,10 +415,12 @@ export default function MotoristaDashboard() {
                 >
                   Criar lembrete →
                 </Link>
-              </div>
+                </GlassCard>
+              </FadeIn>
 
               {/* Próximo Lembrete Premium */}
-              <div className="group bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-200/50 transition-all duration-300">
+              <FadeIn delay={0.6}>
+                <GlassCard variant="default" className="p-5">
                 <h3 className="font-bold text-base text-gray-900 mb-4 flex items-center gap-2">
                   <Bell className="w-5 h-5 text-blue-600" />
                   Próximo Lembrete
@@ -416,7 +435,8 @@ export default function MotoristaDashboard() {
                     Criar lembrete →
                   </Link>
                 </div>
-              </div>
+                </GlassCard>
+              </FadeIn>
             </div>
           </div>
         </div>
