@@ -539,53 +539,51 @@ export default function OficinaDashboard() {
           />
         </div>
 
-        {/* Grid Principal */}
+        {/* Grid Principal - 2/3 + 1/3 */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
 
-          {/* Coluna Principal - 2/3 */}
+          {/* Coluna Esquerda - 2/3 */}
           <div className="lg:col-span-2 space-y-4">
             {/* Orçamentos Pendentes */}
-            {stats.quotes > 0 && (
-              <div className="group bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl shadow-sm hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-200/50 transition-all duration-300 p-5 sm:p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-base sm:text-lg font-bold text-gray-900 flex items-center gap-2">
-                    <FileText className="w-5 h-5 text-blue-600" />
-                    Orçamentos Pendentes
-                  </h2>
-                  <Link 
-                    href="/oficina/orcamentos"
-                    className="text-sm text-blue-600 hover:text-blue-700 font-medium"
-                  >
-                    Ver todos
-                  </Link>
-                </div>
-                <div className="space-y-3">
-                  {recentActivities
-                    .filter(a => a.type === 'quote' && a.status === 'pending')
-                    .slice(0, 3)
-                    .map((activity) => (
-                      <div key={activity.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
-                        <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
-                          <FileText className="w-5 h-5 text-blue-600" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-gray-900 truncate">{activity.title}</p>
-                          <p className="text-xs text-gray-500 truncate">{activity.description}</p>
-                        </div>
-                        <span className="text-xs text-gray-400 flex-shrink-0">
-                          {format(new Date(activity.time), "HH:mm")}
-                        </span>
-                      </div>
-                    ))}
-                  {recentActivities.filter(a => a.type === 'quote' && a.status === 'pending').length === 0 && (
-                    <div className="text-center py-8 text-gray-500">
-                      <FileText className="w-12 h-12 mx-auto mb-3 text-gray-300" />
-                      <p className="text-sm">Nenhum orçamento pendente</p>
-                    </div>
-                  )}
-                </div>
+            <div className="group bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl shadow-sm hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-200/50 transition-all duration-300 p-5 sm:p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-base sm:text-lg font-bold text-gray-900 flex items-center gap-2">
+                  <FileText className="w-5 h-5 text-blue-600" />
+                  Orçamentos Pendentes
+                </h2>
+                <Link 
+                  href="/oficina/orcamentos"
+                  className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+                >
+                  Ver todos
+                </Link>
               </div>
-            )}
+              <div className="space-y-3">
+                {recentActivities
+                  .filter(a => a.type === 'quote' && a.status === 'pending')
+                  .slice(0, 5)
+                  .map((activity) => (
+                    <div key={activity.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+                      <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
+                        <FileText className="w-5 h-5 text-blue-600" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-gray-900 truncate">{activity.title}</p>
+                        <p className="text-xs text-gray-500 truncate">{activity.description}</p>
+                      </div>
+                      <span className="text-xs text-gray-400 flex-shrink-0">
+                        {format(new Date(activity.time), "HH:mm")}
+                      </span>
+                    </div>
+                  ))}
+                {recentActivities.filter(a => a.type === 'quote' && a.status === 'pending').length === 0 && (
+                  <div className="text-center py-8 text-gray-500">
+                    <FileText className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+                    <p className="text-sm">Nenhum orçamento pendente</p>
+                  </div>
+                )}
+              </div>
+            </div>
 
             {/* Gráfico de Receita */}
             <div className="bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl shadow-sm p-5 sm:p-6 hidden sm:block">
@@ -634,7 +632,7 @@ export default function OficinaDashboard() {
             </div>
           </div>
 
-          {/* Sidebar - 1/3 */}
+          {/* Coluna Direita - 1/3 */}
           <div className="space-y-4">
             {/* Diagnóstico IA Premium */}
             <Link href="/oficina/diagnostico" className="block group">
@@ -654,39 +652,24 @@ export default function OficinaDashboard() {
               </div>
             </Link>
 
-            {/* Agenda Premium */}
-            <div className="group bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-200/50 transition-all duration-300">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-bold text-base text-gray-900 flex items-center gap-2">
-                  <Calendar className="w-5 h-5 text-blue-600" />
-                  Agenda da Semana
-                </h3>
-                <span className="text-xs text-blue-600 font-medium">Em breve</span>
+            {/* Card WhatsApp */}
+            <div className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200 rounded-2xl p-5 shadow-sm">
+              <div className="flex items-center gap-2 mb-3">
+                <MessageCircle className="w-5 h-5 text-green-600" />
+                <h3 className="font-bold text-base text-gray-900">WhatsApp Business</h3>
               </div>
-              <div className="grid grid-cols-7 gap-1">
-                {['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'].map((day, index) => {
-                  const isToday = new Date().getDay() === (index + 1) % 7;
-                  return (
-                    <div key={day} className="text-center">
-                      <div className={`text-[10px] font-medium mb-1 ${isToday ? 'text-blue-600' : 'text-gray-500'}`}>
-                        {day}
-                      </div>
-                      <div className={`h-12 rounded-lg border-2 ${
-                        isToday 
-                          ? 'border-blue-600 bg-blue-50' 
-                          : 'border-gray-200 bg-gray-50'
-                      }`}>
-                        <div className="h-full flex flex-col justify-center items-center">
-                          <div className={`w-1 h-1 rounded-full ${isToday ? 'bg-blue-600' : 'bg-gray-300'}`} />
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+              <p className="text-sm text-gray-700 mb-4">
+                Integre seu WhatsApp e responda clientes direto da plataforma
+              </p>
+              <Link 
+                href="/oficina/whatsapp"
+                className="block w-full py-2.5 bg-green-600 text-white rounded-xl text-sm font-semibold text-center hover:bg-green-700 transition-colors"
+              >
+                Configurar WhatsApp
+              </Link>
             </div>
 
-            {/* Avaliações Resumo Premium */}
+            {/* Avaliações Resumo Compacto */}
             {workshop && (
               <div className="group bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-200/50 transition-all duration-300">
                 <div className="flex items-center justify-between mb-4">
@@ -744,43 +727,63 @@ export default function OficinaDashboard() {
                 )}
               </div>
             )}
+          </div>
+        </div>
 
-            {/* Card WhatsApp */}
-            <div className="bg-gradient-to-br from-green-50 to-green-100 border-2 border-green-200 rounded-2xl p-5 shadow-sm">
-              <div className="flex items-center gap-2 mb-3">
-                <MessageCircle className="w-5 h-5 text-green-600" />
-                <h3 className="font-bold text-base text-gray-900">WhatsApp Business</h3>
-              </div>
-              <p className="text-sm text-gray-700 mb-4">
-                Integre seu WhatsApp e responda clientes direto da plataforma
-              </p>
-              <Link 
-                href="/oficina/whatsapp"
-                className="block w-full py-2.5 bg-green-600 text-white rounded-xl text-sm font-semibold text-center hover:bg-green-700 transition-colors"
-              >
-                Configurar WhatsApp
-              </Link>
+        {/* Rodapé - Full Width */}
+        <div className="space-y-4">
+          {/* Agenda da Semana - Full Width */}
+          <div className="group bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl p-5 shadow-sm hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-200/50 transition-all duration-300">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="font-bold text-base text-gray-900 flex items-center gap-2">
+                <Calendar className="w-5 h-5 text-blue-600" />
+                Agenda da Semana
+              </h3>
+              <span className="text-xs text-blue-600 font-medium">Em breve</span>
             </div>
+            <div className="grid grid-cols-7 gap-2 sm:gap-3">
+              {['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'].map((day, index) => {
+                const isToday = new Date().getDay() === (index + 1) % 7;
+                return (
+                  <div key={day} className="text-center">
+                    <div className={`text-xs sm:text-sm font-medium mb-2 ${isToday ? 'text-blue-600' : 'text-gray-500'}`}>
+                      {day}
+                    </div>
+                    <div className={`h-16 sm:h-20 rounded-lg border-2 ${
+                      isToday 
+                        ? 'border-blue-600 bg-blue-50' 
+                        : 'border-gray-200 bg-gray-50'
+                    }`}>
+                      <div className="h-full flex flex-col justify-center items-center">
+                        <div className={`w-2 h-2 rounded-full ${isToday ? 'bg-blue-600' : 'bg-gray-300'}`} />
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
 
-            {/* Card PRO (apenas se FREE) */}
-            {workshop?.plan_type === "free" && (
-              <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 border-2 border-yellow-200 rounded-2xl p-5 shadow-sm">
-                <div className="flex items-center gap-2 mb-3">
+          {/* Card PRO Discreto (apenas se FREE) */}
+          {workshop?.plan_type === "free" && (
+            <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 border border-yellow-200 rounded-2xl p-4 shadow-sm">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
                   <Crown className="w-5 h-5 text-yellow-600" />
-                  <h3 className="font-bold text-base text-gray-900">Upgrade PRO</h3>
+                  <div>
+                    <h3 className="font-bold text-sm text-gray-900">Upgrade para PRO</h3>
+                    <p className="text-xs text-gray-600">Orçamentos ilimitados e mais recursos</p>
+                  </div>
                 </div>
-                <p className="text-sm text-gray-700 mb-4">
-                  Orçamentos ilimitados, destaque na busca e mais recursos
-                </p>
                 <Link 
                   href="/oficina/planos"
-                  className="block w-full py-2.5 bg-blue-600 text-white rounded-xl text-sm font-semibold text-center hover:bg-blue-700 transition-colors"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700 transition-colors"
                 >
                   Ver Planos
                 </Link>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
