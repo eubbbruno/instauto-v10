@@ -10,6 +10,8 @@ import Footer from "@/components/layout/Footer";
 import { Search, MapPin, Star, Loader2, Wrench, Heart, MessageSquare, Eye } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/motion";
+import { GlassCard } from "@/components/ui/glass-card";
 
 const ESTADOS_BRASILEIROS = [
   "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA",

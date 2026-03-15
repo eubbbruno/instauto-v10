@@ -7,6 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase";
+import { FadeIn } from "@/components/ui/motion";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -299,19 +300,20 @@ export default function LoginPage() {
 
       {/* Lado Direito - Formulário */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 bg-gray-50">
-        <div className="w-full max-w-md">
-          {/* Logo Mobile */}
-          <div className="lg:hidden text-center mb-8">
-            <Link href="/" className="inline-flex items-center gap-2">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center">
-                <Car className="w-7 h-7 text-white" />
-              </div>
-              <span className="text-2xl font-bold text-gray-900">Instauto</span>
-            </Link>
-          </div>
+        <FadeIn className="w-full max-w-md">
+          <div className="w-full max-w-md">
+            {/* Logo Mobile */}
+            <div className="lg:hidden text-center mb-8">
+              <Link href="/" className="inline-flex items-center gap-2">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center">
+                  <Car className="w-7 h-7 text-white" />
+                </div>
+                <span className="text-2xl font-bold text-gray-900">Instauto</span>
+              </Link>
+            </div>
 
-          {/* Card do Formulário */}
-          <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8">
+            {/* Card do Formulário */}
+            <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8">
             {/* Mensagem de Confirmação de Email */}
             {showEmailConfirmation ? (
               <div className="text-center py-4">
@@ -513,7 +515,8 @@ export default function LoginPage() {
               <span>Voltar para o site</span>
             </Link>
           </div>
-        </div>
+          </div>
+        </FadeIn>
       </div>
     </div>
   );
