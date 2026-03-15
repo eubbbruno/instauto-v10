@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import AddressAutocomplete from "@/components/search/AddressAutocomplete";
+import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/motion";
+import { GlassCard } from "@/components/ui/glass-card";
 import {
   ArrowRight,
   CheckCircle2,
@@ -51,19 +53,20 @@ export default function HomePage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Conteúdo */}
-            <div className="text-white">
-              {/* Badge com animação */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-sans font-semibold mb-6">
-                <span className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse" />
-                Mais de 500 oficinas cadastradas
-              </div>
+            <FadeIn>
+              <div className="text-white">
+                {/* Badge com animação */}
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-sans font-semibold mb-6">
+                  <span className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse" />
+                  Mais de 500 oficinas cadastradas
+                </div>
 
-              {/* Título */}
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-4 sm:mb-6">
-                Encontre a melhor{" "}
-                <span className="text-yellow-400">oficina mecânica</span>{" "}
-                perto de você
-              </h1>
+                {/* Título */}
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-4 sm:mb-6">
+                  Encontre a melhor{" "}
+                  <span className="text-yellow-400">oficina mecânica</span>{" "}
+                  perto de você
+                </h1>
 
               {/* Subtítulo */}
               <p className="hidden sm:block text-lg md:text-xl text-blue-100 font-sans mb-6 sm:mb-8 max-w-xl">
@@ -149,10 +152,12 @@ export default function HomePage() {
                   <span>Orçamento em minutos</span>
                 </div>
               </div>
-            </div>
+              </div>
+            </FadeIn>
 
             {/* Imagem 3D com elementos decorativos */}
-            <div className="hidden lg:flex justify-center items-center">
+            <FadeIn delay={0.2}>
+              <div className="hidden lg:flex justify-center items-center">
               <div className="relative">
                 <Image
                   src="/images/img-01.png"
@@ -182,7 +187,8 @@ export default function HomePage() {
                   </div>
                 </div>
               </div>
-            </div>
+              </div>
+            </FadeIn>
           </div>
         </div>
 
@@ -389,18 +395,21 @@ export default function HomePage() {
       {/* Por que escolher o Instauto */}
       <section className="py-20 bg-gradient-to-b from-blue-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-4">
-              Por que escolher o Instauto?
-            </h2>
-            <p className="text-lg text-gray-600 font-sans max-w-2xl mx-auto">
-              Tecnologia moderna para encontrar as melhores oficinas
-            </p>
-          </div>
+          <FadeIn>
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-4">
+                Por que escolher o Instauto?
+              </h2>
+              <p className="text-lg text-gray-600 font-sans max-w-2xl mx-auto">
+                Tecnologia moderna para encontrar as melhores oficinas
+              </p>
+            </div>
+          </FadeIn>
 
-          <div className="grid md:grid-cols-3 gap-6 md:gap-8">
+          <StaggerContainer className="grid md:grid-cols-3 gap-6 md:gap-8" staggerDelay={0.1}>
             {/* Card 1 - Com Glassmorphism */}
-            <div className="bg-white/70 backdrop-blur-md border border-white/20 p-6 md:p-8 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+            <StaggerItem>
+              <GlassCard variant="default" hover className="p-6 md:p-8">
               <div className="w-14 h-14 md:w-16 md:h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-4 md:mb-6">
                 <Zap className="w-7 h-7 md:w-8 md:h-8 text-blue-600" />
               </div>
@@ -410,10 +419,12 @@ export default function HomePage() {
               <p className="hidden sm:block text-gray-600 font-sans leading-relaxed text-sm md:text-base">
                 Encontre oficinas em segundos. Interface simples e intuitiva para solicitar orçamentos sem complicação.
               </p>
-            </div>
+              </GlassCard>
+            </StaggerItem>
 
             {/* Card 2 - Com Glassmorphism */}
-            <div className="bg-white/70 backdrop-blur-md border border-white/20 p-6 md:p-8 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+            <StaggerItem>
+              <GlassCard variant="default" hover className="p-6 md:p-8">
               <div className="w-14 h-14 md:w-16 md:h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-4 md:mb-6">
                 <Shield className="w-7 h-7 md:w-8 md:h-8 text-blue-600" />
               </div>
@@ -423,10 +434,12 @@ export default function HomePage() {
               <p className="hidden sm:block text-gray-600 font-sans leading-relaxed text-sm md:text-base">
                 Seus dados protegidos com criptografia de ponta. Backup automático diário.
               </p>
-            </div>
+              </GlassCard>
+            </StaggerItem>
 
             {/* Card 3 - Com Glassmorphism */}
-            <div className="bg-white/70 backdrop-blur-md border border-white/20 p-6 md:p-8 rounded-2xl hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+            <StaggerItem>
+              <GlassCard variant="default" hover className="p-6 md:p-8">
               <div className="w-14 h-14 md:w-16 md:h-16 bg-yellow-100 rounded-2xl flex items-center justify-center mb-4 md:mb-6">
                 <BarChart3 className="w-7 h-7 md:w-8 md:h-8 text-yellow-600" />
               </div>
@@ -436,8 +449,9 @@ export default function HomePage() {
               <p className="hidden sm:block text-gray-600 font-sans leading-relaxed text-sm md:text-base">
                 Acompanhe o desempenho da sua oficina com gráficos e relatórios em tempo real.
               </p>
-            </div>
-          </div>
+              </GlassCard>
+            </StaggerItem>
+          </StaggerContainer>
         </div>
       </section>
 
