@@ -10,6 +10,7 @@ import Footer from "@/components/layout/Footer";
 import { CheckCircle2, AlertCircle, Loader2, Upload, X, Car } from "lucide-react";
 import Image from "next/image";
 import { toast } from "sonner";
+import { FadeIn } from "@/components/ui/motion";
 
 function SolicitarOrcamentoContent() {
   const searchParams = useSearchParams();

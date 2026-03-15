@@ -3,7 +3,7 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Car, FileText, Clock, Search, Plus, TrendingUp, Sparkles, Users, Tag, Gift, Star, MapPin, Wrench, ChevronRight, Zap, ArrowUp, MoreHorizontal, Download, Fuel, AlertCircle, Bell } from "lucide-react";
+import { Car, FileText, Clock, Search, Plus, TrendingUp, Sparkles, Users, Tag, Gift, Star, MapPin, Wrench, ChevronRight, Zap, ArrowUp, MoreHorizontal, Download, Fuel, AlertCircle, Bell, Phone, Truck } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase";
 import Image from "next/image";
@@ -399,8 +399,100 @@ export default function MotoristaDashboard() {
                 </GlassCard>
               </FadeIn>
 
-              {/* Dicas de Manutenção */}
+              {/* Socorro 24h - NOVO */}
               <FadeIn delay={0.5}>
+                <GlassCard variant="default" className="p-5 bg-gradient-to-br from-red-50 to-orange-50 border-red-200">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center">
+                      <Phone className="w-6 h-6 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-bold text-base text-gray-900">Socorro 24h</h3>
+                      <p className="text-xs text-gray-600">Emergência na estrada</p>
+                    </div>
+                  </div>
+                  <a
+                    href="tel:08007771234"
+                    className="block w-full py-3 bg-red-600 hover:bg-red-700 text-white text-center font-semibold rounded-xl transition-colors"
+                  >
+                    <div className="flex items-center justify-center gap-2">
+                      <Phone className="w-4 h-4" />
+                      Ligar Agora
+                    </div>
+                  </a>
+                  <p className="text-xs text-center text-gray-500 mt-2">
+                    0800 777 1234 - Disponível 24h
+                  </p>
+                </GlassCard>
+              </FadeIn>
+
+              {/* Guincho - NOVO */}
+              <FadeIn delay={0.55}>
+                <GlassCard variant="default" className="p-5 bg-gradient-to-br from-orange-50 to-yellow-50 border-orange-200">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-12 h-12 bg-orange-600 rounded-xl flex items-center justify-center">
+                      <Truck className="w-6 h-6 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-bold text-base text-gray-900">Solicitar Guincho</h3>
+                      <p className="text-xs text-gray-600">Reboque e assistência</p>
+                    </div>
+                  </div>
+                  <a
+                    href="tel:08007775678"
+                    className="block w-full py-3 bg-orange-600 hover:bg-orange-700 text-white text-center font-semibold rounded-xl transition-colors"
+                  >
+                    <div className="flex items-center justify-center gap-2">
+                      <Truck className="w-4 h-4" />
+                      Encontrar Guincho
+                    </div>
+                  </a>
+                  <p className="text-xs text-center text-gray-500 mt-2">
+                    0800 777 5678 - Atendimento rápido
+                  </p>
+                </GlassCard>
+              </FadeIn>
+
+              {/* Limite de Veículos - NOVO */}
+              <FadeIn delay={0.6}>
+                <GlassCard variant="default" className="p-5 bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <Car className="w-5 h-5 text-blue-600" />
+                      <h3 className="font-bold text-base text-gray-900">Veículos</h3>
+                    </div>
+                    <span className="text-lg font-bold text-blue-600">
+                      {stats.vehicles}/3
+                    </span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2 mb-3">
+                    <div 
+                      className="bg-blue-600 rounded-full h-2 transition-all"
+                      style={{ width: `${Math.min((stats.vehicles / 3) * 100, 100)}%` }}
+                    />
+                  </div>
+                  {stats.vehicles >= 3 ? (
+                    <>
+                      <p className="text-xs text-red-600 font-medium mb-3">
+                        ⚠️ Limite atingido! Faça upgrade para adicionar mais veículos.
+                      </p>
+                      <Link
+                        href="/motorista/planos"
+                        className="block w-full py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-center text-sm font-semibold rounded-lg transition-colors"
+                      >
+                        Fazer Upgrade PRO
+                      </Link>
+                    </>
+                  ) : (
+                    <p className="text-xs text-gray-600">
+                      Plano FREE: até 3 veículos. Upgrade para ilimitado.
+                    </p>
+                  )}
+                </GlassCard>
+              </FadeIn>
+
+              {/* Dicas de Manutenção */}
+              <FadeIn delay={0.65}>
                 <GlassCard variant="highlighted" className="p-5">
                 <div className="flex items-center gap-2 mb-3">
                   <Zap className="w-5 h-5 text-blue-600" />
@@ -419,7 +511,7 @@ export default function MotoristaDashboard() {
               </FadeIn>
 
               {/* Próximo Lembrete Premium */}
-              <FadeIn delay={0.6}>
+              <FadeIn delay={0.7}>
                 <GlassCard variant="default" className="p-5">
                 <h3 className="font-bold text-base text-gray-900 mb-4 flex items-center gap-2">
                   <Bell className="w-5 h-5 text-blue-600" />

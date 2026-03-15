@@ -8,6 +8,8 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { MapPin, Phone, Mail, Star, CheckCircle2, MessageCircle, Clock, Award, TrendingUp } from "lucide-react";
 import Link from "next/link";
+import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/motion";
+import { GlassCard } from "@/components/ui/glass-card";
 
 export default function OficinaDetalhesPage() {
   const params = useParams();
