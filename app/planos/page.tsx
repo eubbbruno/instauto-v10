@@ -29,7 +29,7 @@ export default function PlanosPage() {
             </h1>
             <p className="text-xl md:text-2xl text-blue-100 font-sans leading-relaxed">
               Escolha o plano ideal para sua oficina. Comece grátis ou teste o PRO
-              por 14 dias.
+              por 7 dias.
             </p>
           </div>
         </div>
@@ -248,10 +248,10 @@ export default function PlanosPage() {
                 <Shield className="h-8 w-8 text-blue-600 flex-shrink-0 mt-1" />
                 <div>
                   <h4 className="text-lg font-heading font-bold text-gray-900 mb-2">
-                    Garantia de 14 dias - Risco Zero
+                    Garantia de 7 dias - Risco Zero
                   </h4>
                   <p className="text-gray-700 font-sans leading-relaxed">
-                    Teste o plano PRO por 14 dias sem compromisso. Se não gostar,
+                    Teste o plano PRO por 7 dias sem compromisso. Se não gostar,
                     não paga nada. Você pode voltar para o plano FREE a qualquer
                     momento e seus dados ficam salvos.
                   </p>
@@ -443,7 +443,7 @@ export default function PlanosPage() {
               <summary className="font-heading font-bold text-lg text-gray-900 cursor-pointer list-none flex items-center justify-between">
                 <span className="flex items-center gap-3">
                   <HelpCircle className="h-5 w-5 text-blue-600" />
-                  O que acontece após os 14 dias de teste?
+                  O que acontece após os 7 dias de teste?
                 </span>
                 <span className="text-blue-600 group-open:rotate-180 transition-transform">
                   ▼
@@ -498,7 +498,7 @@ export default function PlanosPage() {
             Pronto para começar?
           </h2>
           <p className="text-xl text-blue-100 font-sans mb-10 max-w-2xl mx-auto">
-            Teste o plano PRO por 14 dias sem compromisso
+            Teste o plano PRO por 7 dias sem compromisso
           </p>
           <Link href="/login">
             <Button

@@ -393,7 +393,7 @@ export default function PlanosPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
-                <p className="text-xs font-semibold text-blue-900 mb-1">Trial de 14 dias</p>
+                <p className="text-xs font-semibold text-blue-900 mb-1">Trial de 7 dias</p>
                 <p className="text-xs text-blue-700">Teste todos os recursos gratuitamente</p>
               </div>
               <ul className="space-y-3">
@@ -550,7 +550,7 @@ export default function PlanosPage() {
           />
           <FAQItem
             question="Como funciona o trial gratuito?"
-            answer="Você tem 14 dias de trial gratuito com todas as funcionalidades do plano FREE. Após esse período, você pode fazer upgrade para PRO ou continuar no plano FREE."
+            answer="Você tem 7 dias de trial gratuito com todas as funcionalidades do plano FREE. Após esse período, você pode fazer upgrade para PRO ou continuar no plano FREE."
           />
           <FAQItem
             question="Meus dados estão seguros?"

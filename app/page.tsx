@@ -571,7 +571,7 @@ export default function HomePage() {
                   href="/login?tipo=oficina"
                   className="inline-flex items-center justify-center gap-2 px-6 py-4 bg-yellow-400 text-gray-900 font-semibold rounded-xl hover:bg-yellow-300 transition-all"
                 >
-                  Começar Teste Grátis (14 dias)
+                  Começar Teste Grátis (7 dias)
                   <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>

@@ -110,7 +110,7 @@ export default function UserTypeModal({
                 Sistema completo de gestão para minha oficina mecânica
               </p>
               <div className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-sans font-bold text-center">
-                14 dias grátis
+                7 dias grátis
               </div>
             </div>
           </Link>

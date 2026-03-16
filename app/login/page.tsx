@@ -165,7 +165,7 @@ export default function LoginPage() {
             name: name || "Minha Oficina",
             plan_type: "free",
             subscription_status: "trial",
-            trial_ends_at: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
+            trial_ends_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
             is_public: true,
             accepts_quotes: true,
           });

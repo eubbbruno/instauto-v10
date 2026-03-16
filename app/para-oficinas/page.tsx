@@ -80,7 +80,7 @@ export default function OficinasPage() {
               <div className="flex flex-wrap gap-6 text-sm text-white/90 font-sans">
                 <div className="flex items-center gap-2">
                   <CheckCircle className="w-5 h-5 text-green-400" />
-                  <span>14 dias grátis</span>
+                  <span>7 dias grátis</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle className="w-5 h-5 text-green-400" />
@@ -337,7 +337,7 @@ export default function OficinasPage() {
               Escolha o plano ideal para sua oficina
             </h2>
             <p className="text-lg text-gray-600 font-sans max-w-2xl mx-auto">
-              Comece grátis ou teste o PRO por 14 dias sem compromisso
+              Comece grátis ou teste o PRO por 7 dias sem compromisso
             </p>
           </div>
 
@@ -398,7 +398,7 @@ export default function OficinasPage() {
                   <span className="text-4xl font-heading font-bold">R$ 97</span>
                   <span className="text-blue-200 font-sans">/mês</span>
                 </div>
-                <p className="text-blue-200 font-sans mt-2">Sistema completo + 14 dias grátis</p>
+                <p className="text-blue-200 font-sans mt-2">Sistema completo + 7 dias grátis</p>
               </div>
               
               <ul className="space-y-4 mb-8">
@@ -439,9 +439,9 @@ export default function OficinasPage() {
                 <Shield className="w-6 h-6 text-blue-600" />
               </div>
               <div>
-                <h4 className="font-heading font-bold text-gray-900">Garantia de 14 dias — Risco Zero</h4>
+                <h4 className="font-heading font-bold text-gray-900">Garantia de 7 dias — Risco Zero</h4>
                 <p className="text-gray-600 font-sans mt-1">
-                  Teste o plano PRO por 14 dias sem compromisso. Se não gostar, não paga nada. Simples assim.
+                  Teste o plano PRO por 7 dias sem compromisso. Se não gostar, não paga nada. Simples assim.
                 </p>
               </div>
             </div>
@@ -470,8 +470,8 @@ export default function OficinasPage() {
           <div className="space-y-4">
             {[
               {
-                q: "Como funciona o teste grátis de 14 dias?",
-                a: "Você cria sua conta, tem acesso a TODAS as funcionalidades do plano PRO por 14 dias. Não pedimos cartão de crédito. Se gostar, você escolhe um plano. Se não gostar, sua conta vira FREE automaticamente."
+                q: "Como funciona o teste grátis de 7 dias?",
+                a: "Você cria sua conta, tem acesso a TODAS as funcionalidades do plano PRO por 7 dias. Não pedimos cartão de crédito. Se gostar, você escolhe um plano. Se não gostar, sua conta vira FREE automaticamente."
               },
               {
                 q: "Posso cancelar a qualquer momento?",
