@@ -121,14 +121,16 @@ export default function OficinaDetalhesPage() {
       <Header />
       
       {/* Header com Gradiente */}
-      <div className="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 h-40 sm:h-56 pt-20 sm:pt-24" />
+      <div className="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 h-32 sm:h-40 md:h-56 pt-20 sm:pt-24" />
       
       {/* Conteúdo Principal */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 -mt-16 sm:-mt-24 pb-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 -mt-12 sm:-mt-16 md:-mt-24 pb-8 sm:pb-12">
         
         {/* Cards de Destaque (Stats) */}
+        <StaggerContainer>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
           {/* Avaliação Média */}
+          <StaggerItem>
           <div className="bg-white/90 backdrop-blur-md border border-white/20 rounded-xl sm:rounded-2xl p-4 sm:p-5 shadow-lg">
             <div className="flex items-center gap-2 mb-2">
               <Star className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400 fill-yellow-400" />
@@ -141,8 +143,10 @@ export default function OficinaDetalhesPage() {
               {workshop.reviews_count || 0} {workshop.reviews_count === 1 ? "review" : "reviews"}
             </p>
           </div>
+          </StaggerItem>
           
           {/* Tempo de Resposta */}
+          <StaggerItem>
           <div className="bg-white/90 backdrop-blur-md border border-white/20 rounded-xl sm:rounded-2xl p-4 sm:p-5 shadow-lg">
             <div className="flex items-center gap-2 mb-2">
               <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
@@ -151,8 +155,10 @@ export default function OficinaDetalhesPage() {
             <p className="text-2xl sm:text-3xl font-bold text-gray-900">~24h</p>
             <p className="text-xs text-gray-500 mt-1">tempo médio</p>
           </div>
+          </StaggerItem>
           
           {/* Orçamentos */}
+          <StaggerItem>
           <div className="bg-white/90 backdrop-blur-md border border-white/20 rounded-xl sm:rounded-2xl p-4 sm:p-5 shadow-lg">
             <div className="flex items-center gap-2 mb-2">
               <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
@@ -161,8 +167,10 @@ export default function OficinaDetalhesPage() {
             <p className="text-2xl sm:text-3xl font-bold text-gray-900">100+</p>
             <p className="text-xs text-gray-500 mt-1">realizados</p>
           </div>
+          </StaggerItem>
           
           {/* Experiência */}
+          <StaggerItem>
           <div className="bg-white/90 backdrop-blur-md border border-white/20 rounded-xl sm:rounded-2xl p-4 sm:p-5 shadow-lg">
             <div className="flex items-center gap-2 mb-2">
               <Award className="w-4 h-4 sm:w-5 sm:h-5 text-purple-600" />
@@ -171,14 +179,18 @@ export default function OficinaDetalhesPage() {
             <p className="text-2xl sm:text-3xl font-bold text-gray-900">✓</p>
             <p className="text-xs text-gray-500 mt-1">verificado</p>
           </div>
+          </StaggerItem>
         </div>
+        </StaggerContainer>
 
         {/* Grid Principal */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Coluna Principal */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-4 sm:space-y-6">
             {/* Sobre a Oficina */}
-            <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-6 sm:p-8">
+            <FadeIn delay={0.2}>
+            <GlassCard>
+            <div className="p-6 sm:p-8">
               <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
                 Sobre a Oficina
               </h2>
@@ -192,10 +204,14 @@ export default function OficinaDetalhesPage() {
                 </p>
               )}
             </div>
+            </GlassCard>
+            </FadeIn>
 
             {/* Serviços Oferecidos */}
             {workshop.services && workshop.services.length > 0 && (
-              <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-6 sm:p-8">
+              <FadeIn delay={0.3}>
+              <GlassCard>
+              <div className="p-6 sm:p-8">
                 <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
                   Serviços Oferecidos
                 </h2>
@@ -208,10 +224,14 @@ export default function OficinaDetalhesPage() {
                   ))}
                 </div>
               </div>
+              </GlassCard>
+              </FadeIn>
             )}
 
             {/* Avaliações dos Clientes */}
-            <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-6 sm:p-8">
+            <FadeIn delay={0.4}>
+            <GlassCard>
+            <div className="p-6 sm:p-8">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
                   Avaliações dos Clientes
@@ -299,12 +319,16 @@ export default function OficinaDetalhesPage() {
                 </div>
               )}
             </div>
+            </GlassCard>
+            </FadeIn>
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             {/* Localização */}
-            <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-6">
+            <FadeIn delay={0.5}>
+            <GlassCard>
+            <div className="p-6">
               <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <MapPin className="w-5 h-5 text-blue-600" />
                 Localização
@@ -321,9 +345,13 @@ export default function OficinaDetalhesPage() {
                 )}
               </div>
             </div>
+            </GlassCard>
+            </FadeIn>
 
             {/* Contato */}
-            <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-6">
+            <FadeIn delay={0.6}>
+            <GlassCard>
+            <div className="p-6">
               <h3 className="text-lg font-bold text-gray-900 mb-4">
                 Contato
               </h3>
@@ -342,9 +370,13 @@ export default function OficinaDetalhesPage() {
                 )}
               </div>
             </div>
+            </GlassCard>
+            </FadeIn>
 
             {/* Horário de Funcionamento */}
-            <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-6">
+            <FadeIn delay={0.7}>
+            <GlassCard>
+            <div className="p-6">
               <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <Clock className="w-5 h-5 text-blue-600" />
                 Horário
@@ -364,8 +396,11 @@ export default function OficinaDetalhesPage() {
                 </div>
               </div>
             </div>
+            </GlassCard>
+            </FadeIn>
 
             {/* CTA Avaliar */}
+            <FadeIn delay={0.8}>
             <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl sm:rounded-2xl border-2 border-yellow-200 p-6">
               <h3 className="text-lg font-bold text-gray-900 mb-2">
                 Já foi cliente?
@@ -380,6 +415,7 @@ export default function OficinaDetalhesPage() {
                 ⭐ Deixar Avaliação
               </Link>
             </div>
+            </FadeIn>
           </div>
         </div>
       </div>

@@ -41,6 +41,7 @@ export default function OficinasPage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 pb-20">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Conteúdo */}
+            <FadeIn>
             <div className="text-white">
               {/* Badge */}
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-sans font-semibold mb-6">
@@ -49,13 +50,13 @@ export default function OficinasPage() {
               </div>
 
               {/* Título */}
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-6">
+              <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-4 sm:mb-6">
                 Gestão completa{" "}
                 <span className="text-yellow-400">para sua oficina</span>
               </h1>
 
               {/* Subtítulo */}
-              <p className="text-lg md:text-xl text-blue-100 font-sans mb-8 max-w-xl">
+              <p className="text-base sm:text-lg md:text-xl text-blue-100 font-sans mb-6 sm:mb-8 max-w-xl">
                 Sistema completo de gestão que organiza sua oficina, aumenta o faturamento e libera seu tempo.
               </p>
 
@@ -92,8 +93,10 @@ export default function OficinasPage() {
                 </div>
               </div>
             </div>
+            </FadeIn>
 
             {/* Imagem */}
+            <FadeIn delay={0.2}>
             <div className="hidden lg:flex justify-center items-center">
               <div className="relative">
                 <Image
@@ -140,6 +143,7 @@ export default function OficinasPage() {
                 </div>
               </div>
             </div>
+            </FadeIn>
           </div>
         </div>
 
@@ -155,19 +159,19 @@ export default function OficinasPage() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Título */}
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-4">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-xl sm:text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-3 sm:mb-4 px-4">
               Você está perdendo dinheiro sem perceber
             </h2>
-            <p className="text-lg text-gray-600 font-sans max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg text-gray-600 font-sans max-w-2xl mx-auto px-4">
               Veja como a desorganização está custando caro para sua oficina
             </p>
           </div>
 
           {/* Comparativo */}
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-4 sm:gap-8 max-w-5xl mx-auto">
             {/* Sem Sistema */}
-            <div className="bg-gradient-to-br from-red-50 to-orange-50 rounded-3xl p-8 border-2 border-red-100">
+            <div className="bg-gradient-to-br from-red-50 to-orange-50 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 border-2 border-red-100">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
                   <X className="w-6 h-6 text-red-600" />
@@ -193,7 +197,7 @@ export default function OficinasPage() {
             </div>
 
             {/* Com Instauto */}
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-3xl p-8 border-2 border-blue-200 shadow-lg relative">
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 border-2 border-blue-200 shadow-lg relative">
               {/* Badge Recomendado */}
               <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-yellow-500 text-yellow-900 text-sm font-sans font-semibold rounded-full">
                 RECOMENDADO
@@ -241,16 +245,19 @@ export default function OficinasPage() {
       <section id="funcionalidades" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Título */}
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-4">
+          <FadeIn>
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-xl sm:text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-3 sm:mb-4 px-4">
               Tudo que você precisa em um só sistema
             </h2>
-            <p className="text-lg text-gray-600 font-sans max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg text-gray-600 font-sans max-w-2xl mx-auto px-4">
               8 módulos completos para gerenciar sua oficina do início ao fim
             </p>
           </div>
+          </FadeIn>
 
           {/* Grid */}
+          <StaggerContainer>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {[
               { 
@@ -302,9 +309,10 @@ export default function OficinasPage() {
                 colorClass: "bg-teal-100 text-teal-600"
               },
             ].map((item) => (
+              <StaggerItem key={item.title}>
+              <GlassCard hover>
               <div 
-                key={item.title}
-                className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-100 group"
+                className="p-6"
               >
                 <div className={`w-14 h-14 ${item.colorClass} rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
                   <item.icon className="w-7 h-7" />
@@ -312,8 +320,11 @@ export default function OficinasPage() {
                 <h3 className="font-heading font-bold text-gray-900 mb-2">{item.title}</h3>
                 <p className="text-sm text-gray-600 font-sans">{item.desc}</p>
               </div>
+              </GlassCard>
+              </StaggerItem>
             ))}
           </div>
+          </StaggerContainer>
 
           {/* CTA */}
           <div className="text-center mt-12">
@@ -332,19 +343,24 @@ export default function OficinasPage() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Título */}
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-4">
+          <FadeIn>
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-xl sm:text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-3 sm:mb-4 px-4">
               Escolha o plano ideal para sua oficina
             </h2>
-            <p className="text-lg text-gray-600 font-sans max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg text-gray-600 font-sans max-w-2xl mx-auto px-4">
               Comece grátis ou teste o PRO por 7 dias sem compromisso
             </p>
           </div>
+          </FadeIn>
 
           {/* Cards de Preço */}
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+          <StaggerContainer>
+          <div className="grid md:grid-cols-2 gap-4 sm:gap-8 max-w-4xl mx-auto">
             {/* Plano FREE */}
-            <div className="bg-white rounded-3xl p-8 border-2 border-gray-200 hover:border-gray-300 transition-all">
+            <StaggerItem>
+            <GlassCard>
+            <div className="p-4 sm:p-6 md:p-8">
               <div className="mb-6">
                 <h3 className="text-xl font-heading font-bold text-gray-900">FREE</h3>
                 <div className="mt-4">
@@ -384,9 +400,12 @@ export default function OficinasPage() {
                 Começar Grátis
               </Link>
             </div>
+            </GlassCard>
+            </StaggerItem>
 
             {/* Plano PRO */}
-            <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-3xl p-8 text-white relative shadow-2xl scale-105">
+            <StaggerItem>
+            <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 text-white relative shadow-2xl md:scale-105">
               {/* Badge */}
               <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-yellow-400 text-gray-900 text-sm font-sans font-bold rounded-full">
                 ⭐ MAIS POPULAR
@@ -430,7 +449,9 @@ export default function OficinasPage() {
                 Sem cartão de crédito • Cancele quando quiser
               </p>
             </div>
+            </StaggerItem>
           </div>
+          </StaggerContainer>
 
           {/* Garantia */}
           <div className="max-w-2xl mx-auto mt-12">

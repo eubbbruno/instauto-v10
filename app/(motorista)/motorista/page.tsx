@@ -214,9 +214,9 @@ export default function MotoristaDashboard() {
       <OnboardingModal steps={motoristaSteps} storageKey="onboarding_motorista_done" />
       
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-gray-50">
-        <div className="p-6">
+        <div className="p-4 sm:p-6">
           {/* Header */}
-          <div className="mb-4">
+          <div className="mb-3 sm:mb-4">
             <p className="text-xs sm:text-sm text-gray-500 mb-1">
               {new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' })}
             </p>
@@ -226,7 +226,7 @@ export default function MotoristaDashboard() {
           </div>
 
           {/* Stats Cards com animação em sequência */}
-          <StaggerContainer className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4" staggerDelay={0.1}>
+          <StaggerContainer className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 mb-3 sm:mb-4" staggerDelay={0.1}>
             <StaggerItem>
               <StatCard
                 title="Veículos"
@@ -270,12 +270,12 @@ export default function MotoristaDashboard() {
           </StaggerContainer>
 
           {/* Grid Principal */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4 mb-3 sm:mb-4">
             {/* Coluna Principal - 2/3 */}
-            <div className="lg:col-span-2 space-y-4">
+            <div className="lg:col-span-2 space-y-3 sm:space-y-4">
               {/* Meus Veículos Premium */}
               <FadeIn delay={0.2}>
-                <GlassCard variant="default" className="p-5 sm:p-6">
+                <GlassCard variant="default" className="p-4 sm:p-5 md:p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-base sm:text-lg font-bold text-gray-900 flex items-center gap-2">
                     <Car className="w-5 h-5 text-blue-600" />
@@ -317,7 +317,7 @@ export default function MotoristaDashboard() {
 
               {/* Últimos Orçamentos Premium */}
               <FadeIn delay={0.3}>
-                <GlassCard variant="default" className="p-5 sm:p-6">
+                <GlassCard variant="default" className="p-4 sm:p-5 md:p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-base sm:text-lg font-bold text-gray-900 flex items-center gap-2">
                     <FileText className="w-5 h-5 text-blue-600" />

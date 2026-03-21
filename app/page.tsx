@@ -62,7 +62,7 @@ export default function HomePage() {
                 </div>
 
                 {/* Título */}
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-4 sm:mb-6">
+                <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-4 sm:mb-6">
                   Encontre a melhor{" "}
                   <span className="text-yellow-400">oficina mecânica</span>{" "}
                   perto de você
@@ -240,10 +240,10 @@ export default function HomePage() {
         }} />
         <div className="container mx-auto px-4 relative">
           <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-4xl font-heading font-bold text-gray-900 mb-4">
+            <h2 className="text-xl sm:text-2xl md:text-4xl font-heading font-bold text-gray-900 mb-4">
               Oficinas para todos os tipos de veículos
             </h2>
-            <p className="text-lg text-gray-600 font-sans max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg text-gray-600 font-sans max-w-2xl mx-auto px-4">
               Carros, motos, caminhões e mais. Encontre especialistas para cada tipo de manutenção automotiva.
             </p>
           </div>
@@ -311,20 +311,20 @@ export default function HomePage() {
       </section>
 
       {/* Como Funciona */}
-      <section className="py-20 bg-white">
+      <section className="py-12 sm:py-20 bg-white">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-5xl font-heading font-bold text-gray-900 mb-4">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-xl sm:text-3xl md:text-5xl font-heading font-bold text-gray-900 mb-3 sm:mb-4">
               Como solicitar orçamento de oficina mecânica?
             </h2>
-            <p className="text-xl text-gray-600 font-sans max-w-2xl mx-auto">
+            <p className="text-base sm:text-xl text-gray-600 font-sans max-w-2xl mx-auto px-4">
               Encontre oficinas mecânicas confiáveis em 3 passos simples
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-12 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-8 sm:gap-12 max-w-6xl mx-auto">
             {/* Passo 1 */}
-            <div className="relative text-center bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all">
+            <div className="relative text-center bg-white p-4 sm:p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all">
               <div className="mb-6 flex justify-center">
                 <Image
                   src="/images/passo-01.png"
@@ -346,7 +346,7 @@ export default function HomePage() {
             </div>
 
             {/* Passo 2 */}
-            <div className="relative text-center bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all">
+            <div className="relative text-center bg-white p-4 sm:p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all">
               <div className="mb-6 flex justify-center">
                 <Image
                   src="/images/passo-02.png"
@@ -368,7 +368,7 @@ export default function HomePage() {
             </div>
 
             {/* Passo 3 */}
-            <div className="relative text-center bg-white p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all">
+            <div className="relative text-center bg-white p-4 sm:p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all">
               <div className="mb-6 flex justify-center">
                 <Image
                   src="/images/passo-03.png"
@@ -396,27 +396,27 @@ export default function HomePage() {
       <section className="py-20 bg-gradient-to-b from-blue-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeIn>
-            <div className="text-center mb-16">
-              <h2 className="text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-4">
+            <div className="text-center mb-12 sm:mb-16">
+              <h2 className="text-xl sm:text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-3 sm:mb-4 px-4">
                 Por que escolher o Instauto?
               </h2>
-              <p className="text-lg text-gray-600 font-sans max-w-2xl mx-auto">
+              <p className="text-base sm:text-lg text-gray-600 font-sans max-w-2xl mx-auto px-4">
                 Tecnologia moderna para encontrar as melhores oficinas
               </p>
             </div>
           </FadeIn>
 
-          <StaggerContainer className="grid md:grid-cols-3 gap-6 md:gap-8" staggerDelay={0.1}>
+          <StaggerContainer className="grid md:grid-cols-3 gap-4 sm:gap-6 md:gap-8" staggerDelay={0.1}>
             {/* Card 1 - Com Glassmorphism */}
             <StaggerItem>
-              <GlassCard variant="default" hover className="p-6 md:p-8">
-              <div className="w-14 h-14 md:w-16 md:h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-4 md:mb-6">
-                <Zap className="w-7 h-7 md:w-8 md:h-8 text-blue-600" />
+              <GlassCard variant="default" hover className="p-4 sm:p-6 md:p-8">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-3 sm:mb-4 md:mb-6">
+                <Zap className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-blue-600" />
               </div>
-              <h3 className="text-lg md:text-xl font-heading font-bold text-gray-900 mb-2 md:mb-3">
+              <h3 className="text-base sm:text-lg md:text-xl font-heading font-bold text-gray-900 mb-2 md:mb-3">
                 Rápido e Fácil
               </h3>
-              <p className="hidden sm:block text-gray-600 font-sans leading-relaxed text-sm md:text-base">
+              <p className="text-sm sm:text-base text-gray-600 font-sans leading-relaxed">
                 Encontre oficinas em segundos. Interface simples e intuitiva para solicitar orçamentos sem complicação.
               </p>
               </GlassCard>
@@ -424,14 +424,14 @@ export default function HomePage() {
 
             {/* Card 2 - Com Glassmorphism */}
             <StaggerItem>
-              <GlassCard variant="default" hover className="p-6 md:p-8">
-              <div className="w-14 h-14 md:w-16 md:h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-4 md:mb-6">
-                <Shield className="w-7 h-7 md:w-8 md:h-8 text-blue-600" />
+              <GlassCard variant="default" hover className="p-4 sm:p-6 md:p-8">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-3 sm:mb-4 md:mb-6">
+                <Shield className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-blue-600" />
               </div>
-              <h3 className="text-lg md:text-xl font-heading font-bold text-gray-900 mb-2 md:mb-3">
+              <h3 className="text-base sm:text-lg md:text-xl font-heading font-bold text-gray-900 mb-2 md:mb-3">
                 Seguro e Confiável
               </h3>
-              <p className="hidden sm:block text-gray-600 font-sans leading-relaxed text-sm md:text-base">
+              <p className="text-sm sm:text-base text-gray-600 font-sans leading-relaxed">
                 Seus dados protegidos com criptografia de ponta. Backup automático diário.
               </p>
               </GlassCard>
@@ -439,14 +439,14 @@ export default function HomePage() {
 
             {/* Card 3 - Com Glassmorphism */}
             <StaggerItem>
-              <GlassCard variant="default" hover className="p-6 md:p-8">
-              <div className="w-14 h-14 md:w-16 md:h-16 bg-yellow-100 rounded-2xl flex items-center justify-center mb-4 md:mb-6">
-                <BarChart3 className="w-7 h-7 md:w-8 md:h-8 text-yellow-600" />
+              <GlassCard variant="default" hover className="p-4 sm:p-6 md:p-8">
+              <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-yellow-100 rounded-2xl flex items-center justify-center mb-3 sm:mb-4 md:mb-6">
+                <BarChart3 className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-yellow-600" />
               </div>
-              <h3 className="text-lg md:text-xl font-heading font-bold text-gray-900 mb-2 md:mb-3">
+              <h3 className="text-base sm:text-lg md:text-xl font-heading font-bold text-gray-900 mb-2 md:mb-3">
                 Relatórios Inteligentes
               </h3>
-              <p className="hidden sm:block text-gray-600 font-sans leading-relaxed text-sm md:text-base">
+              <p className="text-sm sm:text-base text-gray-600 font-sans leading-relaxed">
                 Acompanhe o desempenho da sua oficina com gráficos e relatórios em tempo real.
               </p>
               </GlassCard>
@@ -464,13 +464,13 @@ export default function HomePage() {
         </div>
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 items-center">
             {/* Conteúdo */}
             <div>
-              <h2 className="text-3xl md:text-4xl font-heading font-bold mb-6">
+              <h2 className="text-xl sm:text-3xl md:text-4xl font-heading font-bold mb-4 sm:mb-6">
                 Presente em todo o Brasil
               </h2>
-              <p className="text-blue-100 text-lg mb-10">
+              <p className="text-blue-100 text-base sm:text-lg mb-6 sm:mb-10">
                 Oficinas de norte a sul do país já confiam no Instauto para gerenciar seus negócios e aumentar o faturamento.
               </p>
               <div className="grid grid-cols-2 gap-6">
@@ -543,19 +543,19 @@ export default function HomePage() {
         <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-yellow-400/5 rounded-full blur-3xl" />
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 items-center">
             {/* Conteúdo */}
             <div>
               {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-400/20 rounded-full text-yellow-400 text-sm font-medium mb-6">
-                <Wrench className="w-4 h-4" />
+              <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-yellow-400/20 rounded-full text-yellow-400 text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+                <Wrench className="w-3 h-3 sm:w-4 sm:h-4" />
                 Para Oficinas Mecânicas
               </div>
               
-              <h2 className="text-3xl md:text-4xl font-heading font-bold text-white mb-6">
+              <h2 className="text-xl sm:text-3xl md:text-4xl font-heading font-bold text-white mb-4 sm:mb-6">
                 Você é dono de oficina mecânica?
               </h2>
-              <p className="text-gray-400 text-lg mb-8">
+              <p className="text-gray-400 text-base sm:text-lg mb-6 sm:mb-8">
                 Tenha um sistema completo de gestão e apareça no marketplace para milhares de motoristas. Aumente seu faturamento com tecnologia.
               </p>
               

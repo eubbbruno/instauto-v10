@@ -485,9 +485,9 @@ export default function OficinaDashboard() {
       <OnboardingModal steps={oficinaSteps} storageKey="onboarding_oficina_done" />
       
       <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-gray-50">
-        <div className="p-6">
+        <div className="p-4 sm:p-6">
           {/* Header */}
-          <div className="mb-4">
+          <div className="mb-3 sm:mb-4">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs sm:text-sm text-gray-500 mb-1">
@@ -501,7 +501,7 @@ export default function OficinaDashboard() {
           </div>
 
         {/* Stats Cards com animação em sequência */}
-        <StaggerContainer className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4" staggerDelay={0.1}>
+        <StaggerContainer className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3 mb-3 sm:mb-4" staggerDelay={0.1}>
           <StaggerItem>
             <StatCard
               title="Orçamentos"
@@ -549,12 +549,12 @@ export default function OficinaDashboard() {
         </StaggerContainer>
 
         {/* Grid Principal - 2/3 + 1/3 */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4 mb-3 sm:mb-4">
 
           {/* Coluna Esquerda - 2/3 */}
-          <div className="lg:col-span-2 space-y-4">
+          <div className="lg:col-span-2 space-y-3 sm:space-y-4">
             {/* Orçamentos Pendentes */}
-            <div className="group bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl shadow-sm hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-200/50 transition-all duration-300 p-5 sm:p-6">
+            <div className="group bg-white/80 backdrop-blur-sm border border-gray-100 rounded-2xl shadow-sm hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-200/50 transition-all duration-300 p-4 sm:p-5 md:p-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-base sm:text-lg font-bold text-gray-900 flex items-center gap-2">
                   <FileText className="w-5 h-5 text-blue-600" />

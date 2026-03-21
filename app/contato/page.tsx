@@ -4,6 +4,8 @@ import { useState } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { FadeIn } from "@/components/ui/motion";
+import { GlassCard } from "@/components/ui/glass-card";
 
 export default function ContatoPage() {
   const [formData, setFormData] = useState({
@@ -37,23 +39,24 @@ export default function ContatoPage() {
       <Header />
 
       {/* Hero simples */}
-      <section className="bg-gradient-to-br from-blue-600 to-blue-500 py-20 pt-32 sm:pt-36">
+      <section className="bg-gradient-to-br from-blue-600 to-blue-500 py-12 sm:py-20 pt-24 sm:pt-32 md:pt-36">
         <div className="max-w-4xl mx-auto px-4 text-center text-white">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Entre em Contato</h1>
-          <p className="text-xl text-blue-100">
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">Entre em Contato</h1>
+          <p className="text-base sm:text-xl text-blue-100">
             Estamos aqui para ajudar. Envie sua mensagem!
           </p>
         </div>
       </section>
 
       {/* Conteúdo */}
-      <section className="py-16">
+      <section className="py-8 sm:py-16">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12">
+          <div className="grid md:grid-cols-2 gap-8 sm:gap-12">
             {/* Informações de Contato */}
+            <FadeIn>
             <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">Fale Conosco</h2>
-              <p className="text-gray-600 mb-8">
+              <h2 className="text-xl sm:text-3xl font-bold text-gray-900 mb-4 sm:mb-6">Fale Conosco</h2>
+              <p className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8">
                 Tem alguma dúvida, sugestão ou precisa de ajuda? Entre em contato pelos canais abaixo
                 ou preencha o formulário. Respondemos em até 24 horas.
               </p>
@@ -121,10 +124,12 @@ export default function ContatoPage() {
                 </div>
               </div>
             </div>
+            </FadeIn>
 
             {/* Formulário */}
-            <div>
-              <div className="bg-white border-2 border-gray-100 rounded-2xl p-8 shadow-sm">
+            <FadeIn delay={0.2}>
+            <GlassCard>
+            <div className="p-8">
                 <h3 className="text-2xl font-bold text-gray-900 mb-6">Envie sua Mensagem</h3>
 
                 {submitStatus === "success" && (
@@ -223,7 +228,7 @@ export default function ContatoPage() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-bold rounded-xl transition-all"
+                    className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-bold rounded-xl transition-all min-h-[48px]"
                   >
                     {isSubmitting ? (
                       "Enviando..."
@@ -236,7 +241,8 @@ export default function ContatoPage() {
                   </button>
                 </form>
               </div>
-            </div>
+            </GlassCard>
+            </FadeIn>
           </div>
         </div>
       </section>

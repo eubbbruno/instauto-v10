@@ -420,9 +420,10 @@ function SolicitarOrcamentoContent() {
 
       <section className="flex-1 py-12 pt-24 sm:pt-28">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            {/* Header */}
+          <FadeIn>
+          <div className="mb-6 sm:mb-8">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2">
               Solicitar Orçamento
             </h1>
             {workshop && (
@@ -431,8 +432,10 @@ function SolicitarOrcamentoContent() {
               </p>
             )}
           </div>
+          </FadeIn>
 
           {/* Formulário */}
+          <FadeIn delay={0.1}>
           <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 space-y-6">
             {/* Dados do Motorista (readonly) */}
             <div className="bg-blue-50 border-2 border-blue-100 rounded-xl p-4">
@@ -655,7 +658,7 @@ function SolicitarOrcamentoContent() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="flex-1 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+                className="flex-1 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors disabled:opacity-50 flex items-center justify-center gap-2 min-h-[48px]"
               >
                 {submitting ? (
                   <>
@@ -668,6 +671,7 @@ function SolicitarOrcamentoContent() {
               </button>
             </div>
           </form>
+          </FadeIn>
         </div>
       </section>
 

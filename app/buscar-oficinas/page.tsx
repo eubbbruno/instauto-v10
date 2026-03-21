@@ -185,10 +185,10 @@ export default function BuscarOficinasPage() {
               <Search className="h-4 w-4" />
               Marketplace de Oficinas
             </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 leading-tight">
               Encontre a <span className="text-yellow-400">Oficina Ideal</span>
             </h1>
-            <p className="text-xl md:text-2xl text-blue-100 mb-10 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-xl md:text-2xl text-blue-100 mb-6 sm:mb-10 max-w-3xl mx-auto leading-relaxed">
               Compare preços, veja avaliações reais e solicite orçamentos grátis
             </p>
 

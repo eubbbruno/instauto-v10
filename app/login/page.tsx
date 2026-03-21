@@ -356,10 +356,10 @@ export default function LoginPage() {
               </div>
             ) : (
               <>
-                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 text-center mb-2">
+                <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 text-center mb-2">
                   {isLogin ? "Entrar" : "Criar conta"}
                 </h1>
-                <p className="text-gray-500 text-center mb-8">
+                <p className="text-sm sm:text-base text-gray-500 text-center mb-6 sm:mb-8">
                   {isLogin ? "Bem-vindo de volta!" : "Comece a usar o Instauto"}
                 </p>
 
@@ -395,7 +395,7 @@ export default function LoginPage() {
             <button
               onClick={handleGoogleLogin}
               disabled={googleLoading}
-              className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white border-2 border-gray-200 rounded-xl hover:bg-gray-50 transition-colors mb-4 disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-3 px-4 py-3.5 sm:py-3 bg-white border-2 border-gray-200 rounded-xl hover:bg-gray-50 transition-colors mb-4 disabled:opacity-50 min-h-[48px]"
             >
               {googleLoading ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
@@ -482,7 +482,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-blue-500/30 mt-6"
+                className="w-full py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-blue-500/30 mt-6 min-h-[48px]"
               >
                 {loading && <Loader2 className="w-5 h-5 animate-spin" />}
                 {isLogin ? "Entrar" : "Criar conta"}

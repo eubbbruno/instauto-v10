@@ -7,6 +7,8 @@ import { Workshop } from "@/types/database";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Star, CheckCircle2, AlertCircle } from "lucide-react";
+import { FadeIn } from "@/components/ui/motion";
+import { GlassCard } from "@/components/ui/glass-card";
 
 function AvaliarOficinaContent() {
   const searchParams = useSearchParams();
@@ -194,10 +196,12 @@ function AvaliarOficinaContent() {
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
 
-      <section className="flex-1 py-12">
+      <section className="flex-1 py-12 pt-24 sm:pt-28">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <FadeIn>
+          <GlassCard>
+          <div className="p-6 sm:p-8">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
               Avaliar Oficina
             </h1>
             {workshop && (
@@ -344,13 +348,15 @@ function AvaliarOficinaContent() {
                 <button
                   type="submit"
                   disabled={loading || rating === 0}
-                  className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 disabled:cursor-not-allowed min-h-[48px]"
                 >
                   {loading ? "Enviando..." : "Enviar Avaliação"}
                 </button>
               </div>
             </form>
           </div>
+          </GlassCard>
+          </FadeIn>
         </div>
       </section>
 
