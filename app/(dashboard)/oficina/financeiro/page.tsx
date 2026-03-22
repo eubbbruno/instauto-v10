@@ -29,6 +29,8 @@ import { ptBR } from "date-fns/locale";
 import TransactionModal from "@/components/financeiro/TransactionModal";
 import TransactionList from "@/components/financeiro/TransactionList";
 import FinanceStats from "@/components/financeiro/FinanceStats";
+import BillModal from "@/components/financeiro/BillModal";
+import ReceivableModal from "@/components/financeiro/ReceivableModal";
 
 type TransactionType = "income" | "expense";
 
@@ -95,6 +97,16 @@ export default function FinanceiroPage() {
   const [transactionType, setTransactionType] = useState<TransactionType>("income");
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
 
+  const [showBillModal, setShowBillModal] = useState(false);
+  const [editingBill, setEditingBill] = useState<Bill | null>(null);
+
+  const [showReceivableModal, setShowReceivableModal] = useState(false);
+  const [editingReceivable, setEditingReceivable] = useState<Receivable | null>(null);
+
+  const [filterType, setFilterType] = useState<"all" | TransactionType>("all");
+  const [filterPeriod, setFilterPeriod] = useState<"today" | "week" | "month" | "all">("month");
+  const [filterCategory, setFilterCategory] = useState<string>("all");
+
   const supabase = createClient();
 
   useEffect(() => {
@@ -156,6 +168,112 @@ export default function FinanceiroPage() {
       console.error("Erro ao excluir transação:", error);
       toast.error("Erro ao excluir transação");
     }
+  };
+
+  const handleMarkBillAsPaid = async (bill: Bill) => {
+    try {
+      const { error } = await supabase
+        .from("bills")
+        .update({
+          status: "paid",
+          paid_date: new Date().toISOString().split("T")[0],
+        })
+        .eq("id", bill.id);
+
+      if (error) throw error;
+
+      toast.success("Conta marcada como paga!");
+      loadData();
+    } catch (error) {
+      console.error("Erro ao marcar conta como paga:", error);
+      toast.error("Erro ao atualizar conta");
+    }
+  };
+
+  const handleDeleteBill = async (id: string) => {
+    try {
+      const { error } = await supabase.from("bills").delete().eq("id", id);
+
+      if (error) throw error;
+
+      toast.success("Conta excluída com sucesso!");
+      loadData();
+    } catch (error) {
+      console.error("Erro ao excluir conta:", error);
+      toast.error("Erro ao excluir conta");
+    }
+  };
+
+  const handleMarkReceivableAsReceived = async (receivable: Receivable) => {
+    try {
+      const { error } = await supabase
+        .from("receivables")
+        .update({
+          status: "received",
+          received_date: new Date().toISOString().split("T")[0],
+        })
+        .eq("id", receivable.id);
+
+      if (error) throw error;
+
+      toast.success("Conta marcada como recebida!");
+      loadData();
+    } catch (error) {
+      console.error("Erro ao marcar conta como recebida:", error);
+      toast.error("Erro ao atualizar conta");
+    }
+  };
+
+  const handleDeleteReceivable = async (id: string) => {
+    try {
+      const { error } = await supabase.from("receivables").delete().eq("id", id);
+
+      if (error) throw error;
+
+      toast.success("Conta excluída com sucesso!");
+      loadData();
+    } catch (error) {
+      console.error("Erro ao excluir conta:", error);
+      toast.error("Erro ao excluir conta");
+    }
+  };
+
+  const getFilteredTransactions = () => {
+    let filtered = [...transactions];
+
+    if (filterType !== "all") {
+      filtered = filtered.filter((t) => t.type === filterType);
+    }
+
+    if (filterCategory !== "all") {
+      filtered = filtered.filter((t) => t.category === filterCategory);
+    }
+
+    const now = new Date();
+    if (filterPeriod === "today") {
+      filtered = filtered.filter((t) => {
+        const tDate = new Date(t.date);
+        return tDate.toDateString() === now.toDateString();
+      });
+    } else if (filterPeriod === "week") {
+      const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+      filtered = filtered.filter((t) => new Date(t.date) >= weekAgo);
+    } else if (filterPeriod === "month") {
+      filtered = filtered.filter((t) => {
+        const tDate = new Date(t.date);
+        return (
+          tDate.getMonth() === now.getMonth() &&
+          tDate.getFullYear() === now.getFullYear()
+        );
+      });
+    }
+
+    return filtered;
+  };
+
+  const isOverdue = (dueDate: string, status: string) => {
+    if (status === "paid" || status === "received") return false;
+    return new Date(dueDate) < new Date();
   };
 
   const thisMonthTransactions = transactions.filter((t) => {
@@ -434,41 +552,227 @@ export default function FinanceiroPage() {
       )}
 
       {activeTab === "transacoes" && (
-        <FadeIn delay={0.2}>
-          <GlassCard className="p-4 sm:p-6">
-            <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4">Todas as Transações</h2>
-            <TransactionList
-              transactions={transactions}
-              onEdit={(t) => {
-                setEditingTransaction(t);
-                setTransactionType(t.type);
-                setShowTransactionModal(true);
-              }}
-              onDelete={(t) => {
-                if (confirm("Tem certeza que deseja excluir esta transação?")) {
-                  handleDeleteTransaction(t.id);
-                }
-              }}
-            />
-          </GlassCard>
-        </FadeIn>
+        <>
+          {/* Filtros */}
+          <FadeIn delay={0.2}>
+            <GlassCard className="p-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                    Tipo
+                  </label>
+                  <select
+                    value={filterType}
+                    onChange={(e) => setFilterType(e.target.value as any)}
+                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="all">Todos</option>
+                    <option value="income">Receitas</option>
+                    <option value="expense">Despesas</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                    Período
+                  </label>
+                  <select
+                    value={filterPeriod}
+                    onChange={(e) => setFilterPeriod(e.target.value as any)}
+                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="today">Hoje</option>
+                    <option value="week">Últimos 7 dias</option>
+                    <option value="month">Este mês</option>
+                    <option value="all">Todos</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                    Categoria
+                  </label>
+                  <select
+                    value={filterCategory}
+                    onChange={(e) => setFilterCategory(e.target.value)}
+                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="all">Todas</option>
+                    <optgroup label="Receitas">
+                      {["Serviço", "Venda de peças", "Outros"].map((cat) => (
+                        <option key={cat} value={cat}>
+                          {cat}
+                        </option>
+                      ))}
+                    </optgroup>
+                    <optgroup label="Despesas">
+                      {[
+                        "Peças/Fornecedores",
+                        "Aluguel",
+                        "Energia",
+                        "Água",
+                        "Salários",
+                        "Ferramentas",
+                        "Marketing",
+                        "Outros",
+                      ].map((cat) => (
+                        <option key={cat} value={cat}>
+                          {cat}
+                        </option>
+                      ))}
+                    </optgroup>
+                  </select>
+                </div>
+              </div>
+            </GlassCard>
+          </FadeIn>
+
+          <FadeIn delay={0.3}>
+            <GlassCard className="p-4 sm:p-6">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4">
+                Transações ({getFilteredTransactions().length})
+              </h2>
+              <TransactionList
+                transactions={getFilteredTransactions()}
+                onEdit={(t) => {
+                  setEditingTransaction(t);
+                  setTransactionType(t.type);
+                  setShowTransactionModal(true);
+                }}
+                onDelete={(t) => {
+                  if (confirm("Tem certeza que deseja excluir esta transação?")) {
+                    handleDeleteTransaction(t.id);
+                  }
+                }}
+              />
+            </GlassCard>
+          </FadeIn>
+        </>
       )}
 
       {activeTab === "pagar" && (
         <FadeIn delay={0.2}>
           <GlassCard className="p-4 sm:p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg sm:text-xl font-bold text-gray-900">Contas a Pagar</h2>
-              <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl flex items-center gap-2 transition-all text-sm">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900">
+                Contas a Pagar ({bills.filter((b) => b.status === "pending").length})
+              </h2>
+              <button
+                onClick={() => setShowBillModal(true)}
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl flex items-center gap-2 transition-all text-sm min-h-[44px]"
+              >
                 <Plus className="w-4 h-4" />
-                Nova Conta
+                <span className="hidden sm:inline">Nova Conta</span>
               </button>
             </div>
-            <div className="text-center py-12 text-gray-500">
-              <Calendar className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-              <p className="text-sm">Módulo de contas a pagar em desenvolvimento</p>
-              <p className="text-xs text-gray-400 mt-2">Em breve você poderá gerenciar todas as suas contas</p>
-            </div>
+
+            {bills.length > 0 ? (
+              <div className="space-y-2">
+                {bills.map((bill) => {
+                  const overdue = isOverdue(bill.due_date, bill.status);
+                  return (
+                    <div
+                      key={bill.id}
+                      className={`p-4 rounded-xl transition-colors ${
+                        bill.status === "paid"
+                          ? "bg-green-50 border border-green-200"
+                          : overdue
+                          ? "bg-red-50 border border-red-200"
+                          : "bg-gray-50 hover:bg-gray-100"
+                      }`}
+                    >
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-2">
+                            <p className="text-sm font-bold text-gray-900">{bill.description}</p>
+                            {bill.status === "paid" ? (
+                              <span className="px-2 py-0.5 bg-green-600 text-white text-xs font-medium rounded-full">
+                                Pago
+                              </span>
+                            ) : overdue ? (
+                              <span className="px-2 py-0.5 bg-red-600 text-white text-xs font-medium rounded-full">
+                                Vencido
+                              </span>
+                            ) : (
+                              <span className="px-2 py-0.5 bg-yellow-600 text-white text-xs font-medium rounded-full">
+                                Pendente
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-2 text-xs text-gray-600 flex-wrap">
+                            {bill.supplier && (
+                              <>
+                                <span>{bill.supplier}</span>
+                                <span>•</span>
+                              </>
+                            )}
+                            <span>Vencimento: {format(new Date(bill.due_date), "dd/MM/yyyy", { locale: ptBR })}</span>
+                            {bill.paid_date && (
+                              <>
+                                <span>•</span>
+                                <span>Pago em: {format(new Date(bill.paid_date), "dd/MM/yyyy", { locale: ptBR })}</span>
+                              </>
+                            )}
+                            {bill.category && (
+                              <>
+                                <span>•</span>
+                                <span>{bill.category}</span>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <p className="text-base font-bold text-red-600 whitespace-nowrap">
+                            {bill.amount.toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}
+                          </p>
+                          {bill.status === "pending" && (
+                            <div className="flex gap-1">
+                              <button
+                                onClick={() => handleMarkBillAsPaid(bill)}
+                                className="p-2 hover:bg-green-100 rounded-lg transition-colors"
+                                title="Marcar como pago"
+                              >
+                                <CheckCircle className="w-4 h-4 text-green-600" />
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setEditingBill(bill);
+                                  setShowBillModal(true);
+                                }}
+                                className="p-2 hover:bg-blue-100 rounded-lg transition-colors"
+                                title="Editar"
+                              >
+                                <Edit className="w-4 h-4 text-blue-600" />
+                              </button>
+                              <button
+                                onClick={() => {
+                                  if (confirm("Tem certeza que deseja excluir esta conta?")) {
+                                    handleDeleteBill(bill.id);
+                                  }
+                                }}
+                                className="p-2 hover:bg-red-100 rounded-lg transition-colors"
+                                title="Excluir"
+                              >
+                                <Trash2 className="w-4 h-4 text-red-600" />
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="text-center py-12 text-gray-500">
+                <Calendar className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                <p className="text-sm">Nenhuma conta a pagar cadastrada</p>
+                <p className="text-xs text-gray-400 mt-2">Clique em "Nova Conta" para adicionar</p>
+              </div>
+            )}
           </GlassCard>
         </FadeIn>
       )}
@@ -477,17 +781,119 @@ export default function FinanceiroPage() {
         <FadeIn delay={0.2}>
           <GlassCard className="p-4 sm:p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg sm:text-xl font-bold text-gray-900">Contas a Receber</h2>
-              <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl flex items-center gap-2 transition-all text-sm">
+              <h2 className="text-lg sm:text-xl font-bold text-gray-900">
+                Contas a Receber ({receivables.filter((r) => r.status === "pending").length})
+              </h2>
+              <button
+                onClick={() => setShowReceivableModal(true)}
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl flex items-center gap-2 transition-all text-sm min-h-[44px]"
+              >
                 <Plus className="w-4 h-4" />
-                Nova Conta
+                <span className="hidden sm:inline">Nova Conta</span>
               </button>
             </div>
-            <div className="text-center py-12 text-gray-500">
-              <CreditCard className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-              <p className="text-sm">Módulo de contas a receber em desenvolvimento</p>
-              <p className="text-xs text-gray-400 mt-2">Em breve você poderá gerenciar todos os recebimentos</p>
-            </div>
+
+            {receivables.length > 0 ? (
+              <div className="space-y-2">
+                {receivables.map((receivable) => {
+                  const overdue = isOverdue(receivable.due_date, receivable.status);
+                  return (
+                    <div
+                      key={receivable.id}
+                      className={`p-4 rounded-xl transition-colors ${
+                        receivable.status === "received"
+                          ? "bg-green-50 border border-green-200"
+                          : overdue
+                          ? "bg-red-50 border border-red-200"
+                          : "bg-gray-50 hover:bg-gray-100"
+                      }`}
+                    >
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-2">
+                            <p className="text-sm font-bold text-gray-900">{receivable.description}</p>
+                            {receivable.status === "received" ? (
+                              <span className="px-2 py-0.5 bg-green-600 text-white text-xs font-medium rounded-full">
+                                Recebido
+                              </span>
+                            ) : overdue ? (
+                              <span className="px-2 py-0.5 bg-red-600 text-white text-xs font-medium rounded-full">
+                                Vencido
+                              </span>
+                            ) : (
+                              <span className="px-2 py-0.5 bg-yellow-600 text-white text-xs font-medium rounded-full">
+                                Pendente
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex items-center gap-2 text-xs text-gray-600 flex-wrap">
+                            {receivable.client_name && (
+                              <>
+                                <span>{receivable.client_name}</span>
+                                <span>•</span>
+                              </>
+                            )}
+                            <span>Vencimento: {format(new Date(receivable.due_date), "dd/MM/yyyy", { locale: ptBR })}</span>
+                            {receivable.received_date && (
+                              <>
+                                <span>•</span>
+                                <span>Recebido em: {format(new Date(receivable.received_date), "dd/MM/yyyy", { locale: ptBR })}</span>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <p className="text-base font-bold text-green-600 whitespace-nowrap">
+                            {receivable.amount.toLocaleString("pt-BR", {
+                              style: "currency",
+                              currency: "BRL",
+                            })}
+                          </p>
+                          {receivable.status === "pending" && (
+                            <div className="flex gap-1">
+                              <button
+                                onClick={() => handleMarkReceivableAsReceived(receivable)}
+                                className="p-2 hover:bg-green-100 rounded-lg transition-colors"
+                                title="Marcar como recebido"
+                              >
+                                <CheckCircle className="w-4 h-4 text-green-600" />
+                              </button>
+                              <button
+                                onClick={() => {
+                                  setEditingReceivable(receivable);
+                                  setShowReceivableModal(true);
+                                }}
+                                className="p-2 hover:bg-blue-100 rounded-lg transition-colors"
+                                title="Editar"
+                              >
+                                <Edit className="w-4 h-4 text-blue-600" />
+                              </button>
+                              <button
+                                onClick={() => {
+                                  if (confirm("Tem certeza que deseja excluir esta conta?")) {
+                                    handleDeleteReceivable(receivable.id);
+                                  }
+                                }}
+                                className="p-2 hover:bg-red-100 rounded-lg transition-colors"
+                                title="Excluir"
+                              >
+                                <Trash2 className="w-4 h-4 text-red-600" />
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="text-center py-12 text-gray-500">
+                <CreditCard className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                <p className="text-sm">Nenhuma conta a receber cadastrada</p>
+                <p className="text-xs text-gray-400 mt-2">Clique em "Nova Conta" para adicionar</p>
+              </div>
+            )}
           </GlassCard>
         </FadeIn>
       )}
@@ -503,6 +909,30 @@ export default function FinanceiroPage() {
         type={transactionType}
         onSuccess={loadData}
         editingTransaction={editingTransaction}
+      />
+
+      {/* Modal Conta a Pagar */}
+      <BillModal
+        isOpen={showBillModal}
+        onClose={() => {
+          setShowBillModal(false);
+          setEditingBill(null);
+        }}
+        workshopId={workshopId || ""}
+        onSuccess={loadData}
+        editingBill={editingBill}
+      />
+
+      {/* Modal Conta a Receber */}
+      <ReceivableModal
+        isOpen={showReceivableModal}
+        onClose={() => {
+          setShowReceivableModal(false);
+          setEditingReceivable(null);
+        }}
+        workshopId={workshopId || ""}
+        onSuccess={loadData}
+        editingReceivable={editingReceivable}
       />
     </div>
   );
