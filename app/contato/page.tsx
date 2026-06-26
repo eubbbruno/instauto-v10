@@ -39,11 +39,14 @@ export default function ContatoPage() {
       <Header />
 
       {/* Hero simples */}
-      <section className="bg-gradient-to-br from-blue-600 to-blue-500 py-12 sm:py-20 pt-24 sm:pt-32 md:pt-36">
-        <div className="max-w-4xl mx-auto px-4 text-center text-white">
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">Entre em Contato</h1>
-          <p className="text-base sm:text-xl text-blue-100">
-            Estamos aqui para ajudar. Envie sua mensagem!
+      <section className="relative bg-aurora py-16 sm:py-24 pt-28 sm:pt-36 overflow-hidden">
+        <div className="absolute inset-0 bg-grid opacity-50" />
+        <div className="blob absolute -top-20 right-0 w-80 h-80 bg-yellow-400/25 pointer-events-none" />
+        <div className="relative max-w-4xl mx-auto px-4 text-center text-white">
+          <p className="text-eyebrow text-brand-yellow mb-3">Contato</p>
+          <h1 className="h-display mb-4">Vamos conversar</h1>
+          <p className="text-lg text-blue-100">
+            Dúvida, sugestão ou parceria? A gente responde em até 24h.
           </p>
         </div>
       </section>
@@ -55,7 +58,7 @@ export default function ContatoPage() {
             {/* Informações de Contato */}
             <FadeIn>
             <div>
-              <h2 className="text-xl sm:text-3xl font-bold text-gray-900 mb-4 sm:mb-6">Fale Conosco</h2>
+              <h2 className="h-section text-navy mb-5">Fale Conosco</h2>
               <p className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8">
                 Tem alguma dúvida, sugestão ou precisa de ajuda? Entre em contato pelos canais abaixo
                 ou preencha o formulário. Respondemos em até 24 horas.
@@ -228,7 +231,7 @@ export default function ContatoPage() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-bold rounded-xl transition-all min-h-[48px]"
+                    className="btn-epic-blue w-full flex items-center justify-center gap-2 px-6 py-4 rounded-xl min-h-[48px] disabled:opacity-60"
                   >
                     {isSubmitting ? (
                       "Enviando..."
