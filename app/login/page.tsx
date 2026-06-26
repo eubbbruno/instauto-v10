@@ -238,27 +238,27 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex">
       {/* Lado Esquerdo - Branding (Desktop) */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 text-white p-12 flex-col justify-center relative overflow-hidden">
-        {/* Decoração de fundo */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-20 w-64 h-64 bg-yellow-400 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-20 w-96 h-96 bg-blue-400 rounded-full blur-3xl"></div>
+      <div className="hidden lg:flex lg:w-1/2 bg-aurora text-white p-12 flex-col justify-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-grid opacity-50" />
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="blob absolute -top-20 -left-10 w-96 h-96 bg-blue-500/40" />
+          <div className="blob absolute -bottom-24 -right-10 w-80 h-80 bg-yellow-400/30" style={{ animationDelay: "5s" }} />
         </div>
 
         <div className="relative z-10">
           <Link href="/" className="inline-block mb-12">
             <Image
-              src="/images/logo.svg"
+              src="/images/instauto-amarelo-branco.svg"
               alt="Instauto"
               width={220}
               height={60}
-              className="h-14 w-auto"
+              className="h-12 w-auto"
             />
           </Link>
 
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+          <h1 className="font-heading text-4xl lg:text-5xl font-extrabold leading-[1.1] tracking-tight mb-6">
             Bem-vindo ao<br />
-            <span className="text-yellow-400">Instauto</span>
+            <span className="text-gradient-gold">Instauto</span>
           </h1>
           
           <p className="text-xl text-blue-100 mb-12">
@@ -267,7 +267,7 @@ export default function LoginPage() {
 
           <div className="space-y-5">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
+              <div className="w-12 h-12 glass-dark rounded-xl flex items-center justify-center flex-shrink-0">
                 <CheckCircle className="w-6 h-6 text-yellow-400" />
               </div>
               <div>
@@ -277,7 +277,7 @@ export default function LoginPage() {
             </div>
             
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
+              <div className="w-12 h-12 glass-dark rounded-xl flex items-center justify-center flex-shrink-0">
                 <CheckCircle className="w-6 h-6 text-yellow-400" />
               </div>
               <div>
@@ -287,7 +287,7 @@ export default function LoginPage() {
             </div>
             
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
+              <div className="w-12 h-12 glass-dark rounded-xl flex items-center justify-center flex-shrink-0">
                 <CheckCircle className="w-6 h-6 text-yellow-400" />
               </div>
               <div>
