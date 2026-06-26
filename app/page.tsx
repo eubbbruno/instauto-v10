@@ -9,6 +9,7 @@ import Footer from "@/components/layout/Footer";
 import AddressAutocomplete from "@/components/search/AddressAutocomplete";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/motion";
 import { GlassCard } from "@/components/ui/glass-card";
+import { Reveal } from "@/components/ui/Reveal";
 import {
   ArrowRight,
   CheckCircle2,
@@ -248,16 +249,17 @@ export default function HomePage() {
           backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
         }} />
         <div className="container mx-auto px-4 relative">
-          <div className="text-center mb-12">
-            <h2 className="text-xl sm:text-2xl md:text-4xl font-heading font-bold text-gray-900 mb-4">
-              Oficinas para todos os tipos de veículos
+          <Reveal className="text-center mb-12 max-w-2xl mx-auto">
+            <p className="text-eyebrow text-brand-gold mb-3">Para cada motor</p>
+            <h2 className="h-section text-navy mb-4">
+              Especialistas para todo tipo de veículo
             </h2>
-            <p className="text-base sm:text-lg text-gray-600 font-sans max-w-2xl mx-auto px-4">
-              Carros, motos, caminhões e mais. Encontre especialistas para cada tipo de manutenção automotiva.
+            <p className="text-lg text-navy/60 px-4">
+              Carro, moto ou caminhão — encontre oficinas que entendem exatamente do que o seu precisa.
             </p>
-          </div>
+          </Reveal>
 
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          <Reveal stagger={0.15} className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             {/* Carros */}
             <div className="bg-gradient-to-b from-blue-50 to-white p-8 rounded-3xl hover:shadow-xl hover:-translate-y-2 transition-all duration-300 cursor-pointer">
               <div className="flex justify-center mb-6">
@@ -315,7 +317,7 @@ export default function HomePage() {
                 Manutenção pesada, motor, transmissão e serviços para frotas
               </p>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 
