@@ -340,8 +340,8 @@ export default function OficinaDetalhesPage() {
                 <p className="text-gray-700">
                   {workshop.city}, {workshop.state}
                 </p>
-                {workshop.zip_code && (
-                  <p className="text-gray-600">CEP: {workshop.zip_code}</p>
+                {workshop.cep && (
+                  <p className="text-gray-600">CEP: {workshop.cep}</p>
                 )}
               </div>
             </div>

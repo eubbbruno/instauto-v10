@@ -1,4 +1,5 @@
-export type UserType = "oficina" | "motorista" | "admin";
+// Valores reais gravados em profiles.type no banco (não "oficina"/"motorista")
+export type UserType = "workshop" | "motorist" | "admin";
 
 export type PlanType = "free" | "pro";
 
@@ -24,7 +25,7 @@ export interface Workshop {
   address?: string;
   city?: string;
   state?: string;
-  zip_code?: string;
+  cep?: string;
   plan_type: PlanType;
   trial_ends_at?: string;
   mercadopago_subscription_id?: string;

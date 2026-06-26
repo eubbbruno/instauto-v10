@@ -75,7 +75,7 @@ export default function AdminOficinasPage() {
 
       if (error) throw error;
 
-      const workshopsWithEmail = data.map(w => ({
+      const workshopsWithEmail = data.map((w: any) => ({
         ...w,
         email: w.profiles.email
       }));

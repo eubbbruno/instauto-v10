@@ -76,7 +76,7 @@ export default function AdminMotoristasPage() {
 
       // Buscar contagem de veículos e orçamentos para cada motorista
       const motoristsWithCounts = await Promise.all(
-        data.map(async (m) => {
+        data.map(async (m: any) => {
           const { count: vehiclesCount } = await supabase
             .from("motorist_vehicles")
             .select("*", { count: "exact", head: true })

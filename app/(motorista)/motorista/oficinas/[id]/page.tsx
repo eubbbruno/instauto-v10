@@ -309,7 +309,7 @@ export default function WorkshopDetailsPage() {
                     <p className="text-sm text-gray-500 mb-1">Endereço</p>
                     <p className="font-medium text-gray-900">{workshop.address}</p>
                     <p className="text-sm text-gray-600">
-                      {workshop.city}, {workshop.state} - {workshop.zip_code}
+                      {workshop.city}, {workshop.state} - {workshop.cep}
                     </p>
                   </div>
                 </div>

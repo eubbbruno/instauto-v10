@@ -42,17 +42,16 @@ export default function AdminAvaliacoesPage() {
         .from("reviews")
         .select(`
           *,
-          workshops!inner(name),
-          profiles!inner(name)
+          workshops!inner(name)
         `)
         .order("created_at", { ascending: false });
 
       if (error) throw error;
 
-      const reviewsWithNames = data.map(r => ({
+      const reviewsWithNames = data.map((r: any) => ({
         ...r,
         workshop_name: r.workshops.name,
-        motorist_name: r.profiles.name
+        motorist_name: r.motorist_name || "Anônimo"
       }));
 
       setReviews(reviewsWithNames);

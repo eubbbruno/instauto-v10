@@ -55,7 +55,7 @@ export default function AdminOrcamentosPage() {
 
       if (error) throw error;
 
-      const quotesWithWorkshop = data.map(q => ({
+      const quotesWithWorkshop = data.map((q: any) => ({
         ...q,
         workshop_name: q.workshops.name
       }));

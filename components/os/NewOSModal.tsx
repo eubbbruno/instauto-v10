@@ -142,7 +142,7 @@ export default function NewOSModal({ isOpen, onClose, workshopId }: NewOSModalPr
 
       toast.success("OS criada com sucesso!");
       onClose();
-      router.push(`/oficina/ordens-servico/${order.id}`);
+      router.push(`/oficina/ordens/${order.id}`);
     } catch (error) {
       console.error("Erro ao criar OS:", error);
       toast.error("Erro ao criar OS");
