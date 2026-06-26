@@ -6,6 +6,16 @@ import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import UserTypeModal from "@/components/auth/UserTypeModal";
 
+const NAV_LINKS = [
+  { href: "/", label: "Início" },
+  { href: "/buscar-oficinas", label: "Buscar Oficinas" },
+  { href: "/para-oficinas", label: "Para Oficinas" },
+  { href: "/planos", label: "Planos" },
+  { href: "/como-funciona", label: "Como Funciona" },
+  { href: "/sobre", label: "Sobre" },
+  { href: "/contato", label: "Contato" },
+];
+
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -13,103 +23,61 @@ export default function Header() {
   const [modalAction, setModalAction] = useState<"login" | "cadastro">("login");
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const openModal = (action: "login" | "cadastro") => {
+    setModalAction(action);
+    setIsModalOpen(true);
+    setIsMobileMenuOpen(false);
+  };
 
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-blue-900 shadow-lg"
-          : "bg-blue-900/95 backdrop-blur-sm"
+          ? "bg-navy shadow-lg shadow-black/30"
+          : "bg-navy/90 backdrop-blur-md"
       }`}
     >
-      <nav className="container mx-auto px-4 py-4">
+      <nav className="container mx-auto px-4 py-3.5">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="relative z-10 flex items-center gap-3">
+          <Link href="/" className="relative z-10 flex items-center">
             <Image
               src="/images/logo.svg"
               alt="Instauto"
               width={160}
               height={45}
-              className="h-11 w-auto transition-transform hover:scale-105"
+              className="h-10 w-auto transition-transform hover:scale-105"
             />
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center gap-8">
-            <Link
-              href="/"
-              className="text-white hover:text-yellow-400 font-sans font-semibold transition-colors relative group text-[15px]"
-            >
-              Início
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
-            </Link>
-            <Link
-              href="/buscar-oficinas"
-              className="text-white hover:text-yellow-400 font-sans font-semibold transition-colors relative group text-[15px]"
-            >
-              Buscar Oficinas
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
-            </Link>
-            <Link
-              href="/para-oficinas"
-              className="text-white hover:text-yellow-400 font-sans font-semibold transition-colors relative group text-[15px]"
-            >
-              Para Oficinas
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
-            </Link>
-            <Link
-              href="/planos"
-              className="text-white hover:text-yellow-400 font-sans font-semibold transition-colors relative group text-[15px]"
-            >
-              Planos
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
-            </Link>
-            <Link
-              href="/como-funciona"
-              className="text-white hover:text-yellow-400 font-sans font-semibold transition-colors relative group text-[15px]"
-            >
-              Como Funciona
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
-            </Link>
-            <Link
-              href="/sobre"
-              className="text-white hover:text-yellow-400 font-sans font-semibold transition-colors relative group text-[15px]"
-            >
-              Sobre
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
-            </Link>
-            <Link
-              href="/contato"
-              className="text-white hover:text-yellow-400 font-sans font-semibold transition-colors relative group text-[15px]"
-            >
-              Contato
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-yellow-400 transition-all group-hover:w-full"></span>
-            </Link>
-            
-            <div className="h-6 w-px bg-white/30"></div>
-            
+          <div className="hidden lg:flex items-center gap-7">
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="nav-link text-[15px] font-semibold text-white/90 transition-colors hover:text-brand-yellow"
+              >
+                {link.label}
+              </Link>
+            ))}
+
+            <div className="h-6 w-px bg-white/20" />
+
             <button
-              onClick={() => {
-                setModalAction("login");
-                setIsModalOpen(true);
-              }}
-              className="text-white hover:text-yellow-400 font-sans font-semibold transition-colors text-[15px]"
+              onClick={() => openModal("login")}
+              className="text-[15px] font-semibold text-white/90 transition-colors hover:text-brand-yellow"
             >
               Entrar
             </button>
             <button
-              onClick={() => {
-                setModalAction("cadastro");
-                setIsModalOpen(true);
-              }}
-              className="bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 font-sans font-bold shadow-lg hover:shadow-xl transition-all hover:scale-105 text-[15px] px-6 py-2 rounded-lg"
+              onClick={() => openModal("cadastro")}
+              className="btn-epic rounded-xl px-6 py-2.5 text-[15px]"
             >
               Cadastrar
             </button>
@@ -117,90 +85,40 @@ export default function Header() {
 
           {/* Mobile Menu Button */}
           <button
-            className="lg:hidden p-2 text-white hover:text-yellow-400 transition-colors"
+            className="p-2 text-white transition-colors hover:text-brand-yellow lg:hidden"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Abrir menu"
           >
-            {isMobileMenuOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
+            {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
         </div>
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden absolute top-full left-0 right-0 bg-white shadow-2xl border-t border-gray-100 max-h-[calc(100vh-80px)] overflow-y-auto">
-            <div className="px-4 py-6 space-y-1">
-              <Link
-                href="/"
-                className="block text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-sans font-semibold py-3 px-4 rounded-lg transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Início
-              </Link>
-              <Link
-                href="/buscar-oficinas"
-                className="block text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-sans font-semibold py-3 px-4 rounded-lg transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Buscar Oficinas
-              </Link>
-              <Link
-                href="/para-oficinas"
-                className="block text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-sans font-semibold py-3 px-4 rounded-lg transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Para Oficinas
-              </Link>
-              <Link
-                href="/planos"
-                className="block text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-sans font-semibold py-3 px-4 rounded-lg transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Planos
-              </Link>
-              <Link
-                href="/como-funciona"
-                className="block text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-sans font-semibold py-3 px-4 rounded-lg transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Como Funciona
-              </Link>
-              <Link
-                href="/sobre"
-                className="block text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-sans font-semibold py-3 px-4 rounded-lg transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Sobre
-              </Link>
-              <Link
-                href="/contato"
-                className="block text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-sans font-semibold py-3 px-4 rounded-lg transition-colors"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Contato
-              </Link>
-              
-              <div className="border-t border-gray-200 my-3"></div>
-              
+          <div className="absolute left-0 right-0 top-full max-h-[calc(100vh-72px)] overflow-y-auto border-t border-white/10 bg-navy shadow-2xl lg:hidden">
+            <div className="space-y-1 px-4 py-6">
+              {NAV_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="block rounded-lg px-4 py-3 font-semibold text-white/90 transition-colors hover:bg-white/5 hover:text-brand-yellow"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              ))}
+
+              <div className="my-3 border-t border-white/10" />
+
               <button
-                onClick={() => {
-                  setModalAction("login");
-                  setIsModalOpen(true);
-                  setIsMobileMenuOpen(false);
-                }}
-                className="block w-full text-center text-gray-700 hover:bg-blue-50 hover:text-blue-600 font-sans font-semibold py-3 px-4 rounded-lg transition-colors"
+                onClick={() => openModal("login")}
+                className="block w-full rounded-lg px-4 py-3 text-center font-semibold text-white/90 transition-colors hover:bg-white/5 hover:text-brand-yellow"
               >
                 Entrar
               </button>
               <button
-                onClick={() => {
-                  setModalAction("cadastro");
-                  setIsModalOpen(true);
-                  setIsMobileMenuOpen(false);
-                }}
-                className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 font-sans font-bold shadow-lg py-6 text-base rounded-lg"
+                onClick={() => openModal("cadastro")}
+                className="btn-epic w-full rounded-xl py-3.5 text-base"
               >
                 Cadastrar
               </button>
@@ -209,7 +127,6 @@ export default function Header() {
         )}
       </nav>
 
-      {/* Modal de Seleção */}
       <UserTypeModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -218,4 +135,3 @@ export default function Header() {
     </header>
   );
 }
-

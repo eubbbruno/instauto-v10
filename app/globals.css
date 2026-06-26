@@ -217,6 +217,42 @@
     radial-gradient(60% 80% at 10% 90%, rgba(37, 99, 235, 0.4) 0%, transparent 60%);
 }
 
+/* ---- Tipografia uniforme (escala unica do site) ---- */
+.text-eyebrow {
+  font-family: var(--font-syne), system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 0.8125rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.h-display {
+  font-family: var(--font-syne), system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  font-size: clamp(2.5rem, 5.5vw, 4.5rem);
+}
+.h-section {
+  font-family: var(--font-syne), system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.12;
+  font-size: clamp(1.75rem, 3.6vw, 2.75rem);
+}
+.h-card {
+  font-family: var(--font-syne), system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+/* Link de navegacao com underline animado em ouro */
+.nav-link { position: relative; }
+.nav-link::after {
+  content: ""; position: absolute; left: 0; bottom: -4px; height: 2px; width: 0;
+  background: #facc15; transition: width 0.25s ease;
+}
+.nav-link:hover::after { width: 100%; }
+
 /* Reduz movimento p/ quem prefere */
 @media (prefers-reduced-motion: reduce) {
   .animate-float, .animate-float-slow, .animate-float-fast, .blob, .glow-pulse,
