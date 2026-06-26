@@ -37,17 +37,32 @@ export default function HomePage() {
     
     router.push(`/buscar-oficinas?${params.toString()}`);
   };
+
+  const partnerLogos = [
+    { src: "/images/uber-seeklogo.png", alt: "Uber" },
+    { src: "/images/rappi-seeklogo.png", alt: "Rappi" },
+    { src: "/images/mercado-livre-seeklogo.png", alt: "Mercado Livre" },
+    { src: "/images/mercedes-benz-seeklogo.png", alt: "Mercedes-Benz" },
+    { src: "/images/scania-seeklogo.png", alt: "Scania" },
+    { src: "/images/volvo-seeklogo.png", alt: "Volvo" },
+    { src: "/images/localiza-seeklogo.png", alt: "Localiza" },
+    { src: "/images/unidas-rent-a-car-seeklogo.png", alt: "Unidas" },
+    { src: "/images/correios-seeklogo.png", alt: "Correios" },
+  ];
+
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
       <Header />
 
       {/* Hero Section - Busca de Oficinas */}
-      <section className="relative min-h-[90vh] bg-gradient-to-br from-blue-600 via-blue-500 to-blue-600 overflow-hidden">
-        {/* Elementos decorativos de fundo */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-400/30 rounded-full blur-3xl" />
-          <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-yellow-400/20 rounded-full blur-3xl" />
+      <section className="relative min-h-[92vh] bg-aurora overflow-hidden">
+        <div className="absolute inset-0 bg-grid opacity-50" />
+        {/* Blobs decorativos em movimento */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="blob absolute -top-32 -right-24 w-[28rem] h-[28rem] bg-blue-500/40" />
+          <div className="blob absolute -bottom-40 -left-24 w-[26rem] h-[26rem] bg-yellow-400/30" style={{ animationDelay: "4s" }} />
+          <div className="blob absolute top-1/3 left-1/2 w-72 h-72 bg-blue-400/20" style={{ animationDelay: "8s" }} />
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20">
@@ -56,15 +71,15 @@ export default function HomePage() {
             <FadeIn>
               <div className="text-white">
                 {/* Badge com animação */}
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-sans font-semibold mb-6">
-                  <span className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse" />
+                <div className="glass-dark inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-sans font-semibold mb-6 text-white/90">
+                  <span className="w-2 h-2 bg-yellow-400 rounded-full glow-pulse" />
                   Mais de 500 oficinas cadastradas
                 </div>
 
                 {/* Título */}
-                <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-4 sm:mb-6">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold leading-[1.05] tracking-tight mb-4 sm:mb-6">
                   Encontre a melhor{" "}
-                  <span className="text-yellow-400">oficina mecânica</span>{" "}
+                  <span className="text-gradient-gold">oficina mecânica</span>{" "}
                   perto de você
                 </h1>
 
@@ -129,7 +144,7 @@ export default function HomePage() {
                   {/* Botão buscar */}
                   <button
                     type="submit"
-                    className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-yellow-900 font-bold rounded-xl transition-all shadow-lg shadow-yellow-500/30"
+                    className="btn-epic glow-pulse w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-base"
                   >
                     Buscar Oficinas
                     <ArrowRight className="w-5 h-5" />
@@ -159,17 +174,19 @@ export default function HomePage() {
             <FadeIn delay={0.2}>
               <div className="hidden lg:flex justify-center items-center">
               <div className="relative">
+                {/* halo de glow atrás da imagem 3D */}
+                <div className="absolute inset-0 -z-0 m-auto h-80 w-80 rounded-full bg-yellow-400/30 blur-3xl glow-pulse" />
                 <Image
                   src="/images/img-01.png"
                   alt="Mecânico Instauto"
                   width={550}
                   height={550}
-                  className="drop-shadow-2xl hover:scale-105 transition-transform duration-500"
+                  className="relative z-10 animate-float drop-shadow-2xl"
                   style={{ maxHeight: '500px', width: 'auto', height: 'auto' }}
                   priority
                 />
-                {/* Badge Estrela com nota 5.0 - Animação bounce */}
-                <div className="absolute -top-4 -left-4 w-20 h-20 bg-yellow-400 rounded-2xl flex flex-col items-center justify-center shadow-lg animate-bounce">
+                {/* Badge Estrela com nota 5.0 */}
+                <div className="absolute -top-4 -left-4 z-20 w-20 h-20 bg-yellow-400 rounded-2xl flex flex-col items-center justify-center glow-gold animate-float-slow">
                   <Star className="w-8 h-8 text-gray-900" fill="currentColor" />
                   <span className="text-gray-900 font-bold text-lg">5.0</span>
                 </div>
@@ -206,28 +223,20 @@ export default function HomePage() {
           <p className="text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider mb-6 sm:mb-8">
             Empresas que confiam em soluções automotivas
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-8 md:gap-12">
-            {[
-              { src: "/images/uber-seeklogo.png", alt: "Uber" },
-              { src: "/images/rappi-seeklogo.png", alt: "Rappi" },
-              { src: "/images/mercado-livre-seeklogo.png", alt: "Mercado Livre" },
-              { src: "/images/mercedes-benz-seeklogo.png", alt: "Mercedes-Benz" },
-              { src: "/images/scania-seeklogo.png", alt: "Scania" },
-              { src: "/images/volvo-seeklogo.png", alt: "Volvo" },
-              { src: "/images/localiza-seeklogo.png", alt: "Localiza" },
-              { src: "/images/unidas-rent-a-car-seeklogo.png", alt: "Unidas" },
-              { src: "/images/correios-seeklogo.png", alt: "Correios" },
-            ].map((logo) => (
-              <div key={logo.alt} className="grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
-                <Image
-                  src={logo.src}
-                  alt={logo.alt}
-                  width={120}
-                  height={40}
-                  className="h-8 md:h-10 w-auto object-contain"
-                />
-              </div>
-            ))}
+          <div className="marquee-mask overflow-hidden">
+            <div className="animate-marquee flex w-max items-center gap-10 sm:gap-14">
+              {[...partnerLogos, ...partnerLogos].map((logo, i) => (
+                <div key={logo.alt + i} className="shrink-0 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
+                  <Image
+                    src={logo.src}
+                    alt={logo.alt}
+                    width={120}
+                    height={40}
+                    className="h-8 md:h-10 w-auto object-contain"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -257,7 +266,7 @@ export default function HomePage() {
                   alt="Oficina Mecânica para Carros"
                   width={150}
                   height={150}
-                  className="object-contain hover:scale-110 transition-transform duration-300"
+                  className="object-contain animate-float drop-shadow-2xl"
                   style={{ maxHeight: '120px', width: 'auto', height: 'auto' }}
                 />
               </div>
@@ -277,7 +286,7 @@ export default function HomePage() {
                   alt="Oficina Mecânica para Motos"
                   width={150}
                   height={150}
-                  className="object-contain hover:scale-110 transition-transform duration-300"
+                  className="object-contain animate-float-slow drop-shadow-2xl"
                 />
               </div>
               <h3 className="text-xl font-heading font-bold text-gray-900 mb-2 text-center">
@@ -296,7 +305,7 @@ export default function HomePage() {
                   alt="Oficina Mecânica para Caminhões"
                   width={150}
                   height={150}
-                  className="object-contain hover:scale-110 transition-transform duration-300"
+                  className="object-contain animate-float-fast drop-shadow-2xl"
                 />
               </div>
               <h3 className="text-xl font-heading font-bold text-gray-900 mb-2 text-center">

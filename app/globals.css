@@ -171,3 +171,55 @@
   animation: shimmer 2.5s linear infinite;
 }
 
+/* ---- Glow turbinado + movimento (pedido: mais glow, mais movimento) ---- */
+.glow-gold-lg { box-shadow: 0 20px 70px -10px rgba(250, 204, 21, 0.65); }
+.glow-blue-lg { box-shadow: 0 20px 70px -10px rgba(37, 99, 235, 0.65); }
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 30px -6px rgba(250, 204, 21, 0.45); }
+  50% { box-shadow: 0 0 60px 2px rgba(250, 204, 21, 0.75); }
+}
+.glow-pulse { animation: glow-pulse 3.2s ease-in-out infinite; }
+
+/* Blobs decorativos que se mexem */
+@keyframes blob-morph {
+  0%, 100% { border-radius: 42% 58% 63% 37% / 42% 45% 55% 58%; transform: translate(0, 0) rotate(0deg); }
+  33% { border-radius: 60% 40% 34% 66% / 55% 60% 40% 45%; transform: translate(20px, -18px) rotate(8deg); }
+  66% { border-radius: 38% 62% 58% 42% / 60% 38% 62% 40%; transform: translate(-16px, 14px) rotate(-6deg); }
+}
+.blob { filter: blur(50px); animation: blob-morph 16s ease-in-out infinite; }
+
+/* Float em velocidades variadas (movimento orgânico) */
+.animate-float-slow { animation: float-y 9s ease-in-out infinite; }
+.animate-float-fast { animation: float-y 4s ease-in-out infinite; }
+
+/* Marquee contínuo (faixa de logos em movimento) */
+@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+.animate-marquee { animation: marquee 32s linear infinite; }
+.marquee-mask { -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+
+/* Borda em gradiente animado (anel épico ao redor de cards/imagens) */
+@keyframes ring-spin { to { transform: rotate(360deg); } }
+.ring-glow { position: relative; }
+.ring-glow::before {
+  content: ""; position: absolute; inset: -2px; border-radius: inherit; padding: 2px;
+  background: conic-gradient(from 0deg, #facc15, #3b82f6, #facc15);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  animation: ring-spin 6s linear infinite;
+}
+
+/* Variante de aurora dominante em ouro (variar fundo por seção) */
+.bg-aurora-gold {
+  background-color: var(--navy);
+  background-image:
+    radial-gradient(55% 70% at 85% 15%, rgba(250, 204, 21, 0.3) 0%, transparent 55%),
+    radial-gradient(60% 80% at 10% 90%, rgba(37, 99, 235, 0.4) 0%, transparent 60%);
+}
+
+/* Reduz movimento p/ quem prefere */
+@media (prefers-reduced-motion: reduce) {
+  .animate-float, .animate-float-slow, .animate-float-fast, .blob, .glow-pulse,
+  .animate-marquee, .ring-glow::before, .shimmer { animation: none !important; }
+}
+
