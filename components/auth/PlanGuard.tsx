@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
 import { Workshop } from "@/types/database";
+import { isProActive } from "@/lib/plan";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Crown, Lock, Loader2, Zap, TrendingUp, Shield } from "lucide-react";
@@ -44,15 +45,8 @@ export default function PlanGuard({ children, feature = "Gestão Completa" }: Pl
 
       setWorkshop(workshopData);
 
-      // Verificar acesso
-      const isPro = workshopData.plan_type === "pro";
-      const subscriptionActive = workshopData.subscription_status === "active";
-      const trialEndsAt = new Date(workshopData.trial_ends_at || 0);
-      const isTrialActive = trialEndsAt > new Date();
-
-      // Tem acesso se: é PRO com assinatura ativa OU está no trial
-      const access = (isPro && subscriptionActive) || isTrialActive;
-      setHasAccess(access);
+      // Fonte única de verdade do acesso PRO (PRO pago OU trial reverso ativo)
+      setHasAccess(isProActive(workshopData));
     } catch (error) {
       console.error("Erro ao verificar acesso:", error);
       setHasAccess(false);

@@ -4,6 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase";
+import { isProActive } from "@/lib/plan";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { StaggerContainer, StaggerItem, FadeIn, FloatingCard } from "@/components/ui/motion";
 import { GlassCard } from "@/components/ui/glass-card";
@@ -369,8 +370,8 @@ export default function OficinaDashboard() {
         });
       }
 
-      // Verificar plano FREE
-      if (workshop.plan_type === 'free') {
+      // Nag de upgrade só fora do trial (durante o trial a oficina já tem PRO)
+      if (!isProActive(workshop)) {
         newAlerts.push({
           id: 'upgrade-plan',
           type: 'info',
@@ -775,8 +776,8 @@ export default function OficinaDashboard() {
             </div>
           </div>
 
-          {/* Card PRO Discreto (apenas se FREE) */}
-          {workshop?.plan_type === "free" && (
+          {/* Card PRO Discreto (apenas fora do trial / Free) */}
+          {!isProActive(workshop) && (
             <div className="bg-gradient-to-br from-yellow-50 to-yellow-100 border border-yellow-200 rounded-2xl p-4 shadow-sm">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">

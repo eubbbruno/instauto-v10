@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
 import { Workshop } from "@/types/database";
+import { isProActive } from "@/lib/plan";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -247,7 +248,7 @@ export default function PlanosPage() {
                 ) : (
                   <>
                     <Zap className="h-6 w-6 text-blue-600" />
-                    <span className="text-blue-600">Plano FREE</span>
+                    <span className="text-blue-600">{isProActive(workshop) ? "Plano PRO (teste)" : "Plano FREE"}</span>
                   </>
                 )}
               </CardTitle>

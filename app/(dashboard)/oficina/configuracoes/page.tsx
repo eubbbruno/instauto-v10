@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
 import { Profile, Workshop } from "@/types/database";
+import { isProActive, trialDaysLeft } from "@/lib/plan";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -115,7 +116,9 @@ export default function ConfiguracoesPage() {
         city: workshopData.city || "",
         state: workshopData.state || "",
         description: workshopData.description || "",
-        specialties: workshopData.specialties || "",
+        specialties: Array.isArray(workshopData.specialties)
+          ? workshopData.specialties.join(", ")
+          : (workshopData.specialties || ""),
       });
     } catch (error) {
       console.error("Erro ao carregar dados:", error);
@@ -270,7 +273,9 @@ export default function ConfiguracoesPage() {
           city: workshopData.city || null,
           state: workshopData.state || null,
           description: workshopData.description || null,
-          specialties: workshopData.specialties || null,
+          specialties: workshopData.specialties
+            ? workshopData.specialties.split(",").map((s) => s.trim()).filter(Boolean)
+            : null,
         })
         .eq("id", workshop?.id);
 
@@ -705,12 +710,21 @@ export default function ConfiguracoesPage() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-2xl font-bold text-blue-600">
-                {workshop?.plan_type === "pro" ? "PRO" : "FREE"}
+                {workshop?.plan_type === "pro"
+                  ? "PRO"
+                  : isProActive(workshop)
+                  ? "PRO (teste)"
+                  : "FREE"}
               </p>
-              {workshop?.plan_type === "free" && workshop?.trial_ends_at && (
+              {workshop?.plan_type !== "pro" && isProActive(workshop) && (
                 <p className="text-sm text-gray-600 mt-1">
-                  Trial termina em:{" "}
-                  {new Date(workshop.trial_ends_at).toLocaleDateString("pt-BR")}
+                  Teste PRO • {trialDaysLeft(workshop)}{" "}
+                  {trialDaysLeft(workshop) === 1 ? "dia restante" : "dias restantes"}
+                </p>
+              )}
+              {workshop?.plan_type !== "pro" && !isProActive(workshop) && (
+                <p className="text-sm text-gray-600 mt-1">
+                  Seu período de teste terminou
                 </p>
               )}
               {workshop?.plan_type === "pro" && (
@@ -721,9 +735,9 @@ export default function ConfiguracoesPage() {
             </div>
             <Button
               onClick={() => (window.location.href = "/oficina/planos")}
-              variant={workshop?.plan_type === "free" ? "default" : "outline"}
+              variant={workshop?.plan_type === "pro" ? "outline" : "default"}
             >
-              {workshop?.plan_type === "free" ? "Fazer Upgrade" : "Ver Planos"}
+              {workshop?.plan_type === "pro" ? "Ver Planos" : "Assinar PRO"}
             </Button>
           </div>
         </CardContent>

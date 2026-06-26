@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase";
 import { useAuth } from "@/contexts/AuthContext";
 import { Client, Workshop } from "@/types/database";
+import { isProActive } from "@/lib/plan";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -155,7 +156,7 @@ function ClientesContent() {
   );
 
   // Mostrar alerta de limite próximo
-  const showLimitWarning = workshop?.plan_type === "free" && clients.length >= 8;
+  const showLimitWarning = !isProActive(workshop) && clients.length >= 8;
 
   return (
     <div className="p-4 sm:p-4 sm:p-6 lg:p-8">
@@ -171,7 +172,7 @@ function ClientesContent() {
                 <p className="text-gray-600">
                   Gerencie sua base de clientes
                 </p>
-                {workshop?.plan_type === "free" && (
+                {!isProActive(workshop) && (
                   <Badge className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white border-0 text-sm font-bold px-3 py-1 shadow-lg animate-pulse">
                     {clients.length}/10 clientes
                   </Badge>
