@@ -14,6 +14,17 @@ const config: Config = {
         heading: ["var(--font-syne)", "system-ui", "sans-serif"],
       },
       colors: {
+        brand: {
+          blue: "#2563eb",
+          "blue-deep": "#1e3a8a",
+          yellow: "#facc15",
+          gold: "#f59e0b",
+        },
+        navy: {
+          DEFAULT: "#0a1430",
+          800: "#0d1b44",
+          700: "#13235a",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

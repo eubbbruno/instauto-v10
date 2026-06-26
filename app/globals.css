@@ -69,3 +69,105 @@
   }
 }
 
+/* ============================================================
+   DESIGN SYSTEM ÉPICO — Instauto (azul + amarelo / Syne + Jakarta)
+   ============================================================ */
+:root {
+  /* Marca */
+  --brand-blue: #2563eb;
+  --brand-blue-deep: #1e3a8a;
+  --brand-yellow: #facc15;
+  --brand-gold: #f59e0b;
+  --navy: #0a1430;
+  --navy-2: #0d1b44;
+}
+
+/* Texto com gradiente */
+.text-gradient-gold {
+  background: linear-gradient(120deg, #fde047 0%, #facc15 45%, #f59e0b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.text-gradient-sky {
+  background: linear-gradient(120deg, #93c5fd 0%, #3b82f6 50%, #2563eb 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.text-gradient-mix {
+  background: linear-gradient(110deg, #60a5fa 0%, #fde047 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Glow / sombras épicas */
+.glow-gold { box-shadow: 0 10px 40px -8px rgba(250, 204, 21, 0.55); }
+.glow-blue { box-shadow: 0 10px 40px -8px rgba(37, 99, 235, 0.55); }
+.glow-soft { box-shadow: 0 20px 60px -20px rgba(15, 23, 42, 0.45); }
+
+/* Glassmorphism */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+.glass-dark {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Fundo aurora (seções dramáticas escuras) */
+.bg-aurora {
+  background-color: var(--navy);
+  background-image:
+    radial-gradient(60% 80% at 15% 10%, rgba(37, 99, 235, 0.45) 0%, transparent 60%),
+    radial-gradient(55% 70% at 90% 20%, rgba(250, 204, 21, 0.22) 0%, transparent 55%),
+    radial-gradient(70% 90% at 70% 100%, rgba(29, 78, 216, 0.4) 0%, transparent 60%);
+}
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+/* Botão épico (gradiente + glow + lift) */
+.btn-epic {
+  background: linear-gradient(120deg, #facc15, #f59e0b);
+  color: #422006;
+  font-weight: 700;
+  box-shadow: 0 10px 30px -8px rgba(245, 158, 11, 0.6);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+.btn-epic:hover { transform: translateY(-2px); box-shadow: 0 16px 40px -8px rgba(245, 158, 11, 0.7); filter: brightness(1.04); }
+.btn-epic:active { transform: translateY(0); }
+
+.btn-epic-blue {
+  background: linear-gradient(120deg, #3b82f6, #1d4ed8);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 10px 30px -8px rgba(37, 99, 235, 0.6);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+.btn-epic-blue:hover { transform: translateY(-2px); box-shadow: 0 16px 40px -8px rgba(37, 99, 235, 0.75); filter: brightness(1.06); }
+
+/* Card com hover lift */
+.card-lift { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.card-lift:hover { transform: translateY(-4px); box-shadow: 0 24px 60px -24px rgba(15, 23, 42, 0.5); }
+
+/* Animações */
+@keyframes float-y { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+.animate-float { animation: float-y 6s ease-in-out infinite; }
+@keyframes aurora-pan { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+.shimmer {
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.5) 50%, transparent 70%);
+  background-size: 200% 100%;
+  animation: shimmer 2.5s linear infinite;
+}
+
