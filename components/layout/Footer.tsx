@@ -59,7 +59,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <Image
-              src="/images/logo.svg"
+              src="/images/instauto-amarelo-branco.svg"
               alt="Instauto"
               width={160}
               height={45}

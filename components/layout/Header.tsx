@@ -47,11 +47,11 @@ export default function Header() {
           {/* Logo */}
           <Link href="/" className="relative z-10 flex items-center">
             <Image
-              src="/images/logo.svg"
+              src="/images/instauto-amarelo-branco.svg"
               alt="Instauto"
               width={160}
               height={45}
-              className="h-10 w-auto transition-transform hover:scale-105"
+              className="h-9 w-auto transition-transform hover:scale-105"
             />
           </Link>
 
