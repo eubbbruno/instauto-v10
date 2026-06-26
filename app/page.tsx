@@ -324,16 +324,17 @@ export default function HomePage() {
       {/* Como Funciona */}
       <section className="py-12 sm:py-20 bg-white">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-xl sm:text-3xl md:text-5xl font-heading font-bold text-gray-900 mb-3 sm:mb-4">
-              Como solicitar orçamento de oficina mecânica?
+          <Reveal className="text-center mb-12 sm:mb-16 max-w-2xl mx-auto">
+            <p className="text-eyebrow text-brand-gold mb-3">Simples assim</p>
+            <h2 className="h-section text-navy mb-4">
+              Orçamento de oficina em 3 passos
             </h2>
-            <p className="text-base sm:text-xl text-gray-600 font-sans max-w-2xl mx-auto px-4">
-              Encontre oficinas mecânicas confiáveis em 3 passos simples
+            <p className="text-lg text-navy/60 px-4">
+              Encontre oficinas confiáveis e compare preços sem sair de casa.
             </p>
-          </div>
+          </Reveal>
 
-          <div className="grid md:grid-cols-3 gap-8 sm:gap-12 max-w-6xl mx-auto">
+          <Reveal stagger={0.15} className="grid md:grid-cols-3 gap-8 sm:gap-12 max-w-6xl mx-auto">
             {/* Passo 1 */}
             <div className="relative text-center bg-white p-4 sm:p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all">
               <div className="mb-6 flex justify-center">
@@ -399,7 +400,7 @@ export default function HomePage() {
                 Escolha a melhor oficina mecânica, agende seu serviço e depois compartilhe sua experiência
               </p>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 
@@ -477,14 +478,15 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 items-center">
             {/* Conteúdo */}
-            <div>
-              <h2 className="text-xl sm:text-3xl md:text-4xl font-heading font-bold mb-4 sm:mb-6">
+            <Reveal>
+              <p className="text-eyebrow text-brand-yellow mb-3">De norte a sul</p>
+              <h2 className="h-section text-white mb-5">
                 Presente em todo o Brasil
               </h2>
-              <p className="text-blue-100 text-base sm:text-lg mb-6 sm:mb-10">
-                Oficinas de norte a sul do país já confiam no Instauto para gerenciar seus negócios e aumentar o faturamento.
+              <p className="text-blue-100 text-lg mb-8">
+                Oficinas do país inteiro já usam o Instauto para gerenciar o negócio e faturar mais.
               </p>
-              <div className="grid grid-cols-2 gap-6">
+              <Reveal stagger={0.1} className="grid grid-cols-2 gap-6">
                 <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                   <div className="text-4xl font-heading font-bold text-blue-600 mb-2">
                     500+
@@ -517,8 +519,8 @@ export default function HomePage() {
                     Satisfação
                   </p>
                 </div>
-              </div>
-            </div>
+              </Reveal>
+            </Reveal>
             {/* Mapa */}
             <div className="hidden lg:flex justify-center">
               <div className="relative">
@@ -556,14 +558,14 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 items-center">
             {/* Conteúdo */}
-            <div>
+            <Reveal>
               {/* Badge */}
               <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-yellow-400/20 rounded-full text-yellow-400 text-xs sm:text-sm font-medium mb-4 sm:mb-6">
                 <Wrench className="w-3 h-3 sm:w-4 sm:h-4" />
                 Para Oficinas Mecânicas
               </div>
               
-              <h2 className="text-xl sm:text-3xl md:text-4xl font-heading font-bold text-white mb-4 sm:mb-6">
+              <h2 className="h-section text-white mb-5">
                 Você é dono de oficina mecânica?
               </h2>
               <p className="text-gray-400 text-base sm:text-lg mb-6 sm:mb-8">
@@ -582,7 +584,7 @@ export default function HomePage() {
                   href="/login?tipo=oficina"
                   className="inline-flex items-center justify-center gap-2 px-6 py-4 bg-yellow-400 text-gray-900 font-semibold rounded-xl hover:bg-yellow-300 transition-all"
                 >
-                  Começar Teste Grátis (7 dias)
+                  Começar Teste Grátis (14 dias)
                   <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>
@@ -599,8 +601,8 @@ export default function HomePage() {
                   <Check className="w-4 h-4 text-green-500" /> Suporte dedicado
                 </span>
               </div>
-            </div>
-            
+            </Reveal>
+
             {/* Imagem */}
             <div className="hidden lg:flex justify-center">
               <Image
