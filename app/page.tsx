@@ -24,6 +24,9 @@ import {
   Check,
   DollarSign,
   Clock,
+  Search,
+  MessageSquare,
+  CalendarCheck,
 } from "lucide-react";
 
 export default function HomePage() {
@@ -318,88 +321,91 @@ export default function HomePage() {
       </section>
 
       {/* Como Funciona */}
-      <section className="py-12 sm:py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <Reveal className="text-center mb-12 sm:mb-16 max-w-2xl mx-auto">
+      <section className="band-dark py-20 relative overflow-hidden">
+        {/* blobs decorativos */}
+        <div className="blob w-[500px] h-[500px] bg-brand-blue/20 -top-32 -left-32 animate-float-slow" />
+        <div className="blob w-[400px] h-[400px] bg-brand-yellow/10 -bottom-24 -right-24 animate-float" />
+
+        <div className="container mx-auto px-4 relative z-10">
+          <Reveal className="text-center mb-16 max-w-2xl mx-auto">
             <p className="text-eyebrow text-brand-gold mb-3">Simples assim</p>
-            <h2 className="h-section text-navy mb-4">
-              Orçamento de oficina em 3 passos
+            <h2 className="h-section text-white mb-4">
+              Orçamento de oficina em <span className="text-brand-yellow">3 passos</span>
             </h2>
-            <p className="text-lg text-navy/60 px-4">
+            <p className="text-lg text-white/50 px-4">
               Encontre oficinas confiáveis e compare preços sem sair de casa.
             </p>
           </Reveal>
 
-          <Reveal stagger={0.15} className="grid md:grid-cols-3 gap-8 sm:gap-12 max-w-6xl mx-auto">
-            {/* Passo 1 */}
-            <div className="relative text-center bg-white p-4 sm:p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all">
-              <div className="mb-6 flex justify-center">
-                <Image
-                  src="/images/passo-01.png"
-                  alt="Buscar oficinas mecânicas próximas"
-                  width={180}
-                  height={180}
-                  className="object-contain"
-                />
-              </div>
-              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-yellow-400 text-gray-900 font-heading font-bold flex items-center justify-center shadow-lg">
-                1
-              </div>
-              <h3 className="text-xl font-heading font-bold text-gray-900 mb-3">
-                Busque oficinas próximas
-              </h3>
-              <p className="text-gray-600 font-sans leading-relaxed">
-                Digite seu CEP ou endereço e encontre oficinas mecânicas na sua região com avaliações reais de clientes
-              </p>
-            </div>
+          {/* Steps com linha conectora */}
+          <div className="relative max-w-5xl mx-auto">
+            {/* Linha conectora desktop */}
+            <div className="hidden md:block absolute top-[52px] left-[calc(16.67%+24px)] right-[calc(16.67%+24px)] h-px border-t-2 border-dashed border-white/15 z-0" />
 
-            {/* Passo 2 */}
-            <div className="relative text-center bg-white p-4 sm:p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all">
-              <div className="mb-6 flex justify-center">
-                <Image
-                  src="/images/passo-02.png"
-                  alt="Solicitar orçamento de oficina mecânica"
-                  width={180}
-                  height={180}
-                  className="object-contain"
-                />
-              </div>
-              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-yellow-400 text-gray-900 font-heading font-bold flex items-center justify-center shadow-lg">
-                2
-              </div>
-              <h3 className="text-xl font-heading font-bold text-gray-900 mb-3">
-                Solicite orçamentos grátis
-              </h3>
-              <p className="text-gray-600 font-sans leading-relaxed">
-                Compare preços, serviços oferecidos e avaliações. Peça orçamentos online sem compromisso
-              </p>
-            </div>
+            <Reveal stagger={0.18} className="grid md:grid-cols-3 gap-8">
+              {[
+                {
+                  num: "01",
+                  icon: Search,
+                  title: "Busque oficinas",
+                  desc: "Digite seu endereço e encontre oficinas verificadas na sua região, com nota real de outros motoristas.",
+                  color: "text-brand-yellow",
+                  ring: "ring-brand-yellow/30",
+                  bg: "bg-brand-yellow/10",
+                },
+                {
+                  num: "02",
+                  icon: MessageSquare,
+                  title: "Peça orçamentos",
+                  desc: "Compare preços e serviços de várias oficinas. Tudo online, sem precisar sair de casa.",
+                  color: "text-brand-blue",
+                  ring: "ring-brand-blue/30",
+                  bg: "bg-brand-blue/10",
+                },
+                {
+                  num: "03",
+                  icon: CalendarCheck,
+                  title: "Agende e avalie",
+                  desc: "Escolha a melhor opção, agende o serviço e compartilhe sua experiência com a comunidade.",
+                  color: "text-emerald-400",
+                  ring: "ring-emerald-400/30",
+                  bg: "bg-emerald-400/10",
+                },
+              ].map(({ num, icon: Icon, title, desc, color, ring, bg }) => (
+                <div key={num} className="relative flex flex-col items-center text-center z-10">
+                  {/* Ícone com número */}
+                  <div className={`relative w-[104px] h-[104px] rounded-full ${bg} ring-2 ${ring} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
+                    <Icon className={`w-10 h-10 ${color}`} strokeWidth={1.5} />
+                    {/* Número decorativo */}
+                    <span className="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-white/10 backdrop-blur-sm text-white/70 text-xs font-heading font-bold flex items-center justify-center ring-1 ring-white/20">
+                      {num.slice(1)}
+                    </span>
+                  </div>
+                  {/* Número grande decorativo de fundo */}
+                  <span className="absolute -top-4 left-1/2 -translate-x-1/2 text-[7rem] font-heading font-black text-white/[0.03] leading-none select-none pointer-events-none">
+                    {num}
+                  </span>
+                  <h3 className="h-card text-white mb-3">{title}</h3>
+                  <p className="text-white/50 font-sans text-sm leading-relaxed max-w-[240px]">
+                    {desc}
+                  </p>
+                </div>
+              ))}
+            </Reveal>
+          </div>
 
-            {/* Passo 3 */}
-            <div className="relative text-center bg-white p-4 sm:p-8 rounded-2xl shadow-sm hover:shadow-lg transition-all">
-              <div className="mb-6 flex justify-center">
-                <Image
-                  src="/images/passo-03.png"
-                  alt="Agendar serviço em oficina mecânica"
-                  width={180}
-                  height={180}
-                  className="object-contain"
-                />
-              </div>
-              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-yellow-400 text-gray-900 font-heading font-bold flex items-center justify-center shadow-lg">
-                3
-              </div>
-              <h3 className="text-xl font-heading font-bold text-gray-900 mb-3">
-                Agende e avalie o serviço
-              </h3>
-              <p className="text-gray-600 font-sans leading-relaxed">
-                Escolha a melhor oficina mecânica, agende seu serviço e depois compartilhe sua experiência
-              </p>
-            </div>
+          {/* CTA inline */}
+          <Reveal className="text-center mt-14">
+            <Link
+              href="/buscar-oficinas"
+              className="btn-epic inline-flex items-center gap-2 text-sm"
+            >
+              Buscar oficina agora
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </Reveal>
         </div>
       </section>
-
       {/* Por que escolher o Instauto */}
       <section className="py-20 sm:py-28 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
