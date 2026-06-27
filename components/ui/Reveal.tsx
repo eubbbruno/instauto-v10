@@ -2,11 +2,6 @@
 
 import { useLayoutEffect, useEffect, useRef } from "react";
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 // useLayoutEffect no cliente (evita flash), useEffect no SSR
 const useIso = typeof window !== "undefined" ? useLayoutEffect : useEffect;
@@ -21,9 +16,10 @@ type RevealProps = {
 };
 
 /**
- * Scroll-reveal premium com GSAP + ScrollTrigger.
- * - Sem `stagger`: anima o bloco inteiro ao entrar na viewport.
- * - Com `stagger`: anima os filhos diretos em cascata.
+ * Scroll-reveal premium com GSAP via IntersectionObserver.
+ * À prova de falhas: usa IO (recalcula layout nativamente), então conteúdo
+ * NUNCA fica preso invisível mesmo que imagens carreguem depois.
+ * Respeita prefers-reduced-motion (não esconde nada).
  */
 export function Reveal({ children, className, delay = 0, y = 28, stagger }: RevealProps) {
   const ref = useRef<HTMLDivElement>(null);
@@ -32,25 +28,41 @@ export function Reveal({ children, className, delay = 0, y = 28, stagger }: Reve
     const el = ref.current;
     if (!el) return;
 
-    const ctx = gsap.context(() => {
-      const targets: gsap.TweenTarget =
-        stagger != null ? Array.from(el.children) : el;
-      gsap.from(targets, {
-        opacity: 0,
-        y,
-        duration: 0.9,
-        ease: "power3.out",
-        delay,
-        stagger: stagger ?? 0,
-        scrollTrigger: {
-          trigger: el,
-          start: "top 85%",
-          once: true,
-        },
-      });
-    }, el);
+    const prefersReduced =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) return; // deixa visível, sem animação
 
-    return () => ctx.revert();
+    const targets: Element[] = stagger != null ? Array.from(el.children) : [el];
+    if (targets.length === 0) return;
+
+    gsap.set(targets, { opacity: 0, y });
+
+    const io = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            gsap.to(targets, {
+              opacity: 1,
+              y: 0,
+              duration: 0.9,
+              ease: "power3.out",
+              delay,
+              stagger: stagger ?? 0,
+            });
+            obs.disconnect();
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+    );
+
+    io.observe(el);
+
+    return () => {
+      io.disconnect();
+      gsap.set(targets, { clearProps: "all" });
+    };
   }, [delay, y, stagger]);
 
   return (

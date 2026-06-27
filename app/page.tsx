@@ -39,61 +39,41 @@ export default function HomePage() {
     router.push(`/buscar-oficinas?${params.toString()}`);
   };
 
-  const partnerLogos = [
-    { src: "/images/uber-seeklogo.png", alt: "Uber" },
-    { src: "/images/rappi-seeklogo.png", alt: "Rappi" },
-    { src: "/images/mercado-livre-seeklogo.png", alt: "Mercado Livre" },
-    { src: "/images/mercedes-benz-seeklogo.png", alt: "Mercedes-Benz" },
-    { src: "/images/scania-seeklogo.png", alt: "Scania" },
-    { src: "/images/volvo-seeklogo.png", alt: "Volvo" },
-    { src: "/images/localiza-seeklogo.png", alt: "Localiza" },
-    { src: "/images/unidas-rent-a-car-seeklogo.png", alt: "Unidas" },
-    { src: "/images/correios-seeklogo.png", alt: "Correios" },
-  ];
-
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
       <Header />
 
       {/* Hero Section - Busca de Oficinas */}
-      <section className="relative min-h-[92vh] bg-aurora overflow-hidden">
-        <div className="absolute inset-0 bg-grid opacity-50" />
-        {/* Blobs decorativos em movimento */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="blob absolute -top-32 -right-24 w-[28rem] h-[28rem] bg-blue-500/40" />
-          <div className="blob absolute -bottom-40 -left-24 w-[26rem] h-[26rem] bg-yellow-400/30" style={{ animationDelay: "4s" }} />
-          <div className="blob absolute top-1/3 left-1/2 w-72 h-72 bg-blue-400/20" style={{ animationDelay: "8s" }} />
-        </div>
+      <section className="relative overflow-hidden bg-white">
+        <div className="absolute inset-0 bg-gradient-to-b from-blue-50/60 to-white pointer-events-none" />
+        <div className="absolute -top-24 -right-24 w-[30rem] h-[30rem] bg-yellow-200/40 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-40 -left-24 w-80 h-80 bg-blue-200/40 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Conteúdo */}
             <FadeIn>
-              <div className="text-white">
-                {/* Badge com animação */}
-                <div className="glass-dark inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-sans font-semibold mb-6 text-white/90">
-                  <span className="w-2 h-2 bg-yellow-400 rounded-full glow-pulse" />
+              <div className="text-navy">
+                {/* Badge */}
+                <div className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-brand-blue mb-6">
+                  <span className="w-2 h-2 bg-brand-gold rounded-full" />
                   Mais de 500 oficinas cadastradas
                 </div>
 
-                {/* Título */}
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold leading-[1.05] tracking-tight mb-4 sm:mb-6">
-                  Encontre a melhor{" "}
-                  <span className="text-gradient-gold">oficina mecânica</span>{" "}
+                {/* Título pôster com marca-texto */}
+                <h1 className="font-heading text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-[1.02] tracking-tight mb-5">
+                  Encontre a oficina{" "}
+                  <span className="marker-underline">certa</span>{" "}
                   perto de você
                 </h1>
 
-              {/* Subtítulo */}
-              <p className="hidden sm:block text-lg md:text-xl text-blue-100 font-sans mb-6 sm:mb-8 max-w-xl">
-                Solicite orçamentos grátis, compare preços e avaliações de oficinas confiáveis na sua região.
-              </p>
-              <p className="block sm:hidden text-base text-blue-100 font-sans mb-6 max-w-xl">
-                Orçamentos grátis de oficinas confiáveis
-              </p>
+                <p className="text-lg md:text-xl text-navy/60 mb-8 max-w-xl">
+                  Peça orçamentos grátis, compare preços e avaliações de oficinas confiáveis na sua região — em minutos.
+                </p>
 
               {/* CAMPO DE BUSCA - PRINCIPAL com Glassmorphism */}
-              <div className="bg-white/90 backdrop-blur-md border border-white/20 rounded-2xl shadow-2xl p-4 mb-6 max-w-2xl">
+              <div className="bg-white border border-navy/10 rounded-2xl shadow-xl shadow-navy/5 p-4 mb-6 max-w-2xl">
                 <form onSubmit={handleSearch} className="flex flex-col gap-3">
                   <div className="flex flex-col sm:flex-row gap-3">
                     {/* Select de Estado */}
@@ -145,7 +125,7 @@ export default function HomePage() {
                   {/* Botão buscar */}
                   <button
                     type="submit"
-                    className="btn-epic glow-pulse w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-base"
+                    className="btn-epic-blue w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-full text-base"
                   >
                     Buscar Oficinas
                     <ArrowRight className="w-5 h-5" />
@@ -154,7 +134,7 @@ export default function HomePage() {
               </div>
 
               {/* Badges de benefícios */}
-              <div className="flex flex-wrap gap-4 sm:gap-6 text-sm text-white/90 font-sans">
+              <div className="flex flex-wrap gap-4 sm:gap-6 text-sm text-navy/70 font-sans">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-5 h-5 text-yellow-400 flex-shrink-0" />
                   <span>100% Grátis</span>
@@ -173,71 +153,54 @@ export default function HomePage() {
 
             {/* Imagem 3D com elementos decorativos */}
             <FadeIn delay={0.2}>
-              <div className="hidden lg:flex justify-center items-center">
-              <div className="relative">
-                {/* halo de glow atrás da imagem 3D */}
-                <div className="absolute inset-0 -z-0 m-auto h-80 w-80 rounded-full bg-yellow-400/30 blur-3xl glow-pulse" />
-                <Image
-                  src="/images/img-01.png"
-                  alt="Mecânico Instauto"
-                  width={550}
-                  height={550}
-                  className="relative z-10 animate-float drop-shadow-2xl"
-                  style={{ maxHeight: '500px', width: 'auto', height: 'auto' }}
-                  priority
-                />
-                {/* Badge Estrela com nota 5.0 */}
-                <div className="absolute -top-4 -left-4 z-20 w-20 h-20 bg-yellow-400 rounded-2xl flex flex-col items-center justify-center glow-gold animate-float-slow">
-                  <Star className="w-8 h-8 text-gray-900" fill="currentColor" />
-                  <span className="text-gray-900 font-bold text-lg">5.0</span>
+              <div className="relative mx-auto max-w-sm sm:max-w-md">
+                {/* halo suave atrás da foto */}
+                <div className="absolute -inset-5 rounded-[2.75rem] bg-gradient-to-tr from-brand-blue/25 to-brand-yellow/30 blur-2xl" />
+                <div className="relative overflow-hidden rounded-[2rem] ring-1 ring-navy/10 shadow-2xl">
+                  <Image
+                    src="/images/mecanico-hero.png"
+                    alt="Mecânico parceiro do Instauto em uma oficina"
+                    width={1133}
+                    height={1416}
+                    className="w-full h-auto object-cover"
+                    priority
+                  />
                 </div>
-                {/* Badge com números de usuários - Animação fade in/out */}
-                <div className="absolute -bottom-4 -right-4 px-5 py-3 bg-white rounded-xl shadow-lg animate-pulse">
-                  <div className="flex flex-col gap-1">
-                    <div className="flex items-center gap-2">
-                      <Users className="w-4 h-4 text-blue-600" />
-                      <span className="text-sm font-bold text-gray-900">+2.500 motoristas</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Wrench className="w-4 h-4 text-yellow-600" />
-                      <span className="text-sm font-bold text-gray-900">+500 oficinas</span>
-                    </div>
-                  </div>
+                {/* pílula 5,0 */}
+                <div className="absolute -top-4 -left-4 z-20 flex items-center gap-2 rounded-full bg-brand-yellow px-4 py-2 glow-gold animate-float-slow">
+                  <Star className="w-5 h-5 text-yellow-900" fill="currentColor" />
+                  <span className="font-bold text-yellow-900">5,0</span>
                 </div>
-              </div>
+                {/* pílula verificada */}
+                <div className="absolute -bottom-5 right-4 z-20 flex items-center gap-2 rounded-full bg-white px-4 py-2.5 shadow-xl ring-1 ring-navy/5 animate-float">
+                  <CheckCircle2 className="w-5 h-5 text-brand-blue" />
+                  <span className="text-sm font-bold text-navy">Oficina verificada</span>
+                </div>
               </div>
             </FadeIn>
           </div>
         </div>
 
-        {/* Wave no final */}
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-auto">
-            <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="white"/>
-          </svg>
-        </div>
       </section>
 
-      {/* Empresas Parceiras - Social Proof logo após Hero */}
-      <section className="py-12 sm:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-xs sm:text-sm font-medium text-gray-500 uppercase tracking-wider mb-6 sm:mb-8">
-            Empresas que confiam em soluções automotivas
-          </p>
-          <div className="marquee-mask overflow-hidden">
-            <div className="animate-marquee flex w-max items-center gap-10 sm:gap-14">
-              {[...partnerLogos, ...partnerLogos].map((logo, i) => (
-                <div key={logo.alt + i} className="shrink-0 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
-                  <Image
-                    src={logo.src}
-                    alt={logo.alt}
-                    width={120}
-                    height={40}
-                    className="h-8 md:h-10 w-auto object-contain"
-                  />
-                </div>
-              ))}
-            </div>
+      {/* Prova social honesta (sem implicar parcerias inexistentes) */}
+      <section className="border-y border-navy/5 bg-white py-8">
+        <div className="max-w-5xl mx-auto px-4 grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
+          <div>
+            <p className="font-heading text-3xl font-extrabold text-navy">+500</p>
+            <p className="text-sm text-navy/60">Oficinas cadastradas</p>
+          </div>
+          <div>
+            <p className="font-heading text-3xl font-extrabold text-navy">+2.500</p>
+            <p className="text-sm text-navy/60">Motoristas ativos</p>
+          </div>
+          <div>
+            <p className="font-heading text-3xl font-extrabold text-navy">15</p>
+            <p className="text-sm text-navy/60">Estados atendidos</p>
+          </div>
+          <div>
+            <p className="font-heading text-3xl font-extrabold text-navy">4,9★</p>
+            <p className="text-sm text-navy/60">Avaliação média</p>
           </div>
         </div>
       </section>

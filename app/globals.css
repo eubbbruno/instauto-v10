@@ -245,6 +245,26 @@
   font-size: 1.25rem;
 }
 
+/* ---- Personalidade estilo 7shifts: grifo / marca-texto amarelo ---- */
+/* Barra arredondada levemente torta SOB a palavra (underline de marcador) */
+.marker-underline { position: relative; display: inline-block; }
+.marker-underline::after {
+  content: ""; position: absolute; left: -3%; right: -3%; bottom: 0.02em;
+  height: 0.32em; background: #facc15; border-radius: 9999px;
+  transform: rotate(-1.4deg); z-index: -1;
+}
+/* Marca-texto ATRAS do texto (highlight) */
+.marker-hl {
+  background: linear-gradient(transparent 58%, rgba(250, 204, 21, 0.85) 58%, rgba(250, 204, 21, 0.85) 94%, transparent 94%);
+  padding: 0 0.08em;
+}
+
+/* Faixa full-bleed preta (contraste dramatico estilo 7shifts) */
+.band-dark { background: #0a1430; color: #fff; }
+
+/* Card pastel arredondado (cards girando do 7shifts) */
+.card-pastel { border-radius: 1.75rem; }
+
 /* Link de navegacao com underline animado em ouro */
 .nav-link { position: relative; }
 .nav-link::after {
