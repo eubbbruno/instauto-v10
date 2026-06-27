@@ -22,6 +22,8 @@ import {
   MapPin,
   Star,
   Check,
+  DollarSign,
+  Clock,
 } from "lucide-react";
 
 export default function HomePage() {
@@ -368,65 +370,34 @@ export default function HomePage() {
       </section>
 
       {/* Por que escolher o Instauto */}
-      <section className="py-20 bg-gradient-to-b from-blue-50 to-white">
+      <section className="py-20 sm:py-28 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <FadeIn>
-            <div className="text-center mb-12 sm:mb-16">
-              <h2 className="text-xl sm:text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-3 sm:mb-4 px-4">
-                Por que escolher o Instauto?
-              </h2>
-              <p className="text-base sm:text-lg text-gray-600 font-sans max-w-2xl mx-auto px-4">
-                Tecnologia moderna para encontrar as melhores oficinas
-              </p>
-            </div>
-          </FadeIn>
+          <Reveal className="text-center mb-12 sm:mb-16 max-w-2xl mx-auto">
+            <p className="text-eyebrow text-brand-gold mb-3">Por que Instauto</p>
+            <h2 className="h-section text-navy mb-4">
+              A forma mais fácil de cuidar do seu carro
+            </h2>
+            <p className="text-lg text-navy/60">
+              Tudo num lugar só: ache a oficina certa, peça orçamento e acompanhe seu veículo.
+            </p>
+          </Reveal>
 
-          <StaggerContainer className="grid md:grid-cols-3 gap-4 sm:gap-6 md:gap-8" staggerDelay={0.1}>
-            {/* Card 1 - Com Glassmorphism */}
-            <StaggerItem>
-              <GlassCard variant="default" hover className="p-4 sm:p-6 md:p-8">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-3 sm:mb-4 md:mb-6">
-                <Zap className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-blue-600" />
+          <Reveal stagger={0.12} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {[
+              { icon: DollarSign, tint: "bg-blue-50", ring: "ring-blue-100", ic: "text-brand-blue", title: "Orçamentos grátis", desc: "Peça e compare quantos quiser — sem pagar nada e sem compromisso." },
+              { icon: Star, tint: "bg-yellow-50", ring: "ring-yellow-100", ic: "text-brand-gold", title: "Avaliações reais", desc: "Veja nota e comentários de outros motoristas antes de escolher." },
+              { icon: Clock, tint: "bg-blue-50", ring: "ring-blue-100", ic: "text-brand-blue", title: "Resposta rápida", desc: "Receba respostas das oficinas direto no seu painel, em minutos." },
+              { icon: Car, tint: "bg-yellow-50", ring: "ring-yellow-100", ic: "text-brand-gold", title: "Garagem digital", desc: "Veículos, histórico de manutenção e lembretes num só lugar." },
+            ].map((c) => (
+              <div key={c.title} className={`card-lift card-pastel ${c.tint} ring-1 ${c.ring} p-6`}>
+                <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-sm">
+                  <c.icon className={`h-7 w-7 ${c.ic}`} />
+                </div>
+                <h3 className="h-card text-navy mb-2">{c.title}</h3>
+                <p className="text-navy/60 leading-relaxed">{c.desc}</p>
               </div>
-              <h3 className="text-base sm:text-lg md:text-xl font-heading font-bold text-gray-900 mb-2 md:mb-3">
-                Rápido e Fácil
-              </h3>
-              <p className="text-sm sm:text-base text-gray-600 font-sans leading-relaxed">
-                Encontre oficinas em segundos. Interface simples e intuitiva para solicitar orçamentos sem complicação.
-              </p>
-              </GlassCard>
-            </StaggerItem>
-
-            {/* Card 2 - Com Glassmorphism */}
-            <StaggerItem>
-              <GlassCard variant="default" hover className="p-4 sm:p-6 md:p-8">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-3 sm:mb-4 md:mb-6">
-                <Shield className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-blue-600" />
-              </div>
-              <h3 className="text-base sm:text-lg md:text-xl font-heading font-bold text-gray-900 mb-2 md:mb-3">
-                Seguro e Confiável
-              </h3>
-              <p className="text-sm sm:text-base text-gray-600 font-sans leading-relaxed">
-                Seus dados protegidos com criptografia de ponta. Backup automático diário.
-              </p>
-              </GlassCard>
-            </StaggerItem>
-
-            {/* Card 3 - Com Glassmorphism */}
-            <StaggerItem>
-              <GlassCard variant="default" hover className="p-4 sm:p-6 md:p-8">
-              <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-yellow-100 rounded-2xl flex items-center justify-center mb-3 sm:mb-4 md:mb-6">
-                <BarChart3 className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-yellow-600" />
-              </div>
-              <h3 className="text-base sm:text-lg md:text-xl font-heading font-bold text-gray-900 mb-2 md:mb-3">
-                Relatórios Inteligentes
-              </h3>
-              <p className="text-sm sm:text-base text-gray-600 font-sans leading-relaxed">
-                Acompanhe o desempenho da sua oficina com gráficos e relatórios em tempo real.
-              </p>
-              </GlassCard>
-            </StaggerItem>
-          </StaggerContainer>
+            ))}
+          </Reveal>
         </div>
       </section>
 
