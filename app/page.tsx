@@ -208,13 +208,10 @@ export default function HomePage() {
       </section>
 
       {/* Tipos de Veículos */}
-      <section className="py-16 bg-gray-50 relative">
-        {/* Pattern sutil */}
-        <div className="absolute inset-0 opacity-[0.03]" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
-        }} />
+      <section className="py-20 bg-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_-20%,_rgba(37,99,235,0.06)_0%,_transparent_60%)]" />
         <div className="container mx-auto px-4 relative">
-          <Reveal className="text-center mb-12 max-w-2xl mx-auto">
+          <Reveal className="text-center mb-4 max-w-2xl mx-auto">
             <p className="text-eyebrow text-brand-gold mb-3">Para cada motor</p>
             <h2 className="h-section text-navy mb-4">
               Especialistas para todo tipo de veículo
@@ -224,61 +221,95 @@ export default function HomePage() {
             </p>
           </Reveal>
 
-          <Reveal stagger={0.15} className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          {/* Hint interativo */}
+          <Reveal className="flex justify-center mb-10">
+            <span className="inline-flex items-center gap-2 text-xs text-navy/40 font-sans bg-gray-100 px-3 py-1.5 rounded-full">
+              <span className="w-1.5 h-1.5 rounded-full bg-brand-gold animate-pulse" />
+              Passe o mouse para ver a transformação
+            </span>
+          </Reveal>
+
+          <Reveal stagger={0.15} className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {/* Carros */}
-            <div className="bg-gradient-to-b from-blue-50 to-white p-8 rounded-3xl hover:shadow-xl hover:-translate-y-2 transition-all duration-300 cursor-pointer">
-              <div className="flex justify-center mb-6">
+            <div className="group card-lift bg-gradient-to-b from-blue-50/80 to-white border border-blue-100 p-8 rounded-3xl cursor-pointer relative overflow-hidden">
+              {/* Badge antes/depois */}
+              <div className="absolute top-4 right-4 flex items-center gap-1 text-[10px] font-sans font-semibold text-blue-400/70 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                ✓ Consertado
+              </div>
+              <div className="relative flex justify-center mb-6 h-[140px]">
+                {/* Batido (default) */}
                 <Image
-                  src="/images/car-3d.png"
-                  alt="Oficina Mecânica para Carros"
-                  width={150}
-                  height={150}
-                  className="object-contain animate-float drop-shadow-2xl"
-                  style={{ maxHeight: '120px', width: 'auto', height: 'auto' }}
+                  src="/images/carro-azul-batido.png"
+                  alt="Carro batido"
+                  width={200}
+                  height={140}
+                  className="object-contain drop-shadow-lg absolute inset-0 m-auto transition-all duration-500 group-hover:opacity-0 group-hover:scale-95"
+                />
+                {/* Novo (hover) */}
+                <Image
+                  src="/images/carro-azul.png"
+                  alt="Carro recuperado"
+                  width={200}
+                  height={140}
+                  className="object-contain drop-shadow-2xl absolute inset-0 m-auto opacity-0 scale-95 transition-all duration-500 group-hover:opacity-100 group-hover:scale-105 group-hover:drop-shadow-[0_0_24px_rgba(37,99,235,0.35)]"
                 />
               </div>
-              <h3 className="text-xl font-heading font-bold text-gray-900 mb-2 text-center">
-                Carros
-              </h3>
-              <p className="text-gray-600 font-sans text-sm text-center">
+              <h3 className="h-card text-navy mb-2 text-center">Carros</h3>
+              <p className="text-navy/60 font-sans text-sm text-center">
                 Manutenção preventiva, troca de óleo, freios, suspensão e muito mais
               </p>
             </div>
 
             {/* Motos */}
-            <div className="bg-gradient-to-b from-yellow-50 to-white p-8 rounded-3xl hover:shadow-xl hover:-translate-y-2 transition-all duration-300 cursor-pointer">
-              <div className="flex justify-center mb-6">
+            <div className="group card-lift bg-gradient-to-b from-yellow-50/80 to-white border border-yellow-100 p-8 rounded-3xl cursor-pointer relative overflow-hidden">
+              <div className="absolute top-4 right-4 flex items-center gap-1 text-[10px] font-sans font-semibold text-brand-gold/70 bg-yellow-50 px-2 py-0.5 rounded-full border border-yellow-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                ✓ Consertada
+              </div>
+              <div className="relative flex justify-center mb-6 h-[140px]">
                 <Image
-                  src="/images/moto-3d.png"
-                  alt="Oficina Mecânica para Motos"
-                  width={150}
-                  height={150}
-                  className="object-contain animate-float-slow drop-shadow-2xl"
+                  src="/images/moto-amarela-batida.png"
+                  alt="Moto batida"
+                  width={200}
+                  height={140}
+                  className="object-contain drop-shadow-lg absolute inset-0 m-auto transition-all duration-500 group-hover:opacity-0 group-hover:scale-95"
+                />
+                <Image
+                  src="/images/moto-amarela.png"
+                  alt="Moto recuperada"
+                  width={200}
+                  height={140}
+                  className="object-contain drop-shadow-2xl absolute inset-0 m-auto opacity-0 scale-95 transition-all duration-500 group-hover:opacity-100 group-hover:scale-105 group-hover:drop-shadow-[0_0_24px_rgba(234,179,8,0.45)]"
                 />
               </div>
-              <h3 className="text-xl font-heading font-bold text-gray-900 mb-2 text-center">
-                Motos
-              </h3>
-              <p className="text-gray-600 font-sans text-sm text-center">
+              <h3 className="h-card text-navy mb-2 text-center">Motos</h3>
+              <p className="text-navy/60 font-sans text-sm text-center">
                 Revisão completa, troca de corrente, pneus e serviços especializados
               </p>
             </div>
 
             {/* Caminhões */}
-            <div className="bg-gradient-to-b from-green-50 to-white p-8 rounded-3xl hover:shadow-xl hover:-translate-y-2 transition-all duration-300 cursor-pointer">
-              <div className="flex justify-center mb-6">
+            <div className="group card-lift bg-gradient-to-b from-slate-50/80 to-white border border-slate-100 p-8 rounded-3xl cursor-pointer relative overflow-hidden">
+              <div className="absolute top-4 right-4 flex items-center gap-1 text-[10px] font-sans font-semibold text-slate-400/70 bg-slate-50 px-2 py-0.5 rounded-full border border-slate-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                ✓ Consertado
+              </div>
+              <div className="relative flex justify-center mb-6 h-[140px]">
                 <Image
-                  src="/images/truck-3d.png"
-                  alt="Oficina Mecânica para Caminhões"
-                  width={150}
-                  height={150}
-                  className="object-contain animate-float-fast drop-shadow-2xl"
+                  src="/images/caminhao-branco-batido.png"
+                  alt="Caminhão batido"
+                  width={200}
+                  height={140}
+                  className="object-contain drop-shadow-lg absolute inset-0 m-auto transition-all duration-500 group-hover:opacity-0 group-hover:scale-95"
+                />
+                <Image
+                  src="/images/caminhao-branco.png"
+                  alt="Caminhão recuperado"
+                  width={200}
+                  height={140}
+                  className="object-contain drop-shadow-2xl absolute inset-0 m-auto opacity-0 scale-95 transition-all duration-500 group-hover:opacity-100 group-hover:scale-105 group-hover:drop-shadow-[0_0_24px_rgba(100,116,139,0.35)]"
                 />
               </div>
-              <h3 className="text-xl font-heading font-bold text-gray-900 mb-2 text-center">
-                Caminhões
-              </h3>
-              <p className="text-gray-600 font-sans text-sm text-center">
+              <h3 className="h-card text-navy mb-2 text-center">Caminhões</h3>
+              <p className="text-navy/60 font-sans text-sm text-center">
                 Manutenção pesada, motor, transmissão e serviços para frotas
               </p>
             </div>
