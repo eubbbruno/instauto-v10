@@ -401,42 +401,105 @@ export default function HomePage() {
             ))}
           </div>
 
-          <Reveal className="text-center mt-14">
+          <div className="text-center mt-12">
             <Link href="/buscar-oficinas" className="btn-epic inline-flex items-center gap-2">
               Buscar oficina agora <ArrowRight className="w-4 h-4" />
             </Link>
-          </Reveal>
+          </div>
         </div>
       </section>
-      {/* Por que escolher o Instauto */}
-      <section className="py-20 sm:py-28 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <Reveal className="text-center mb-12 sm:mb-16 max-w-2xl mx-auto">
+
+      {/* Por que Instauto — Bento Grid */}
+      <section className="py-24 bg-[#F8F9FB]">
+        <div className="max-w-6xl mx-auto px-4">
+          <Reveal className="mb-14">
             <p className="text-eyebrow text-brand-gold mb-3">Por que Instauto</p>
-            <h2 className="h-section text-navy mb-4">
-              A forma mais fácil de cuidar do seu carro
+            <h2 className="h-section text-navy leading-tight">
+              Sem enrolação.<br />Só o carro pronto.
             </h2>
-            <p className="text-lg text-navy/60">
-              Tudo num lugar só: ache a oficina certa, peça orçamento e acompanhe seu veículo.
-            </p>
           </Reveal>
 
-          <Reveal stagger={0.12} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {[
-              { icon: DollarSign, tint: "bg-blue-50", ring: "ring-blue-100", ic: "text-brand-blue", title: "Orçamentos grátis", desc: "Peça e compare quantos quiser — sem pagar nada e sem compromisso." },
-              { icon: Star, tint: "bg-yellow-50", ring: "ring-yellow-100", ic: "text-brand-gold", title: "Avaliações reais", desc: "Veja nota e comentários de outros motoristas antes de escolher." },
-              { icon: Clock, tint: "bg-blue-50", ring: "ring-blue-100", ic: "text-brand-blue", title: "Resposta rápida", desc: "Receba respostas das oficinas direto no seu painel, em minutos." },
-              { icon: Car, tint: "bg-yellow-50", ring: "ring-yellow-100", ic: "text-brand-gold", title: "Garagem digital", desc: "Veículos, histórico de manutenção e lembretes num só lugar." },
-            ].map((c) => (
-              <div key={c.title} className={`card-lift card-pastel ${c.tint} ring-1 ${c.ring} p-6`}>
-                <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-sm">
-                  <c.icon className={`h-7 w-7 ${c.ic}`} />
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+
+            {/* Card grande — orçamentos */}
+            <Reveal className="sm:col-span-2">
+              <div className="min-h-[240px] rounded-3xl bg-white border border-gray-100 p-8 flex flex-col justify-between overflow-hidden relative card-lift">
+                <div className="absolute -right-10 -top-10 w-48 h-48 rounded-full bg-brand-blue/5 pointer-events-none" />
+                <div>
+                  <span className="text-xs font-sans font-semibold text-brand-blue bg-blue-50 px-3 py-1 rounded-full">Grátis pra você</span>
+                  <h3 className="text-2xl font-heading font-bold text-navy mt-4 mb-1">Compare orçamentos<br/>sem ligar pra ninguém</h3>
+                  <p className="text-navy/50 text-sm">Peça para várias oficinas ao mesmo tempo. Receba no app, compare na hora.</p>
                 </div>
-                <h3 className="h-card text-navy mb-2">{c.title}</h3>
-                <p className="text-navy/60 leading-relaxed">{c.desc}</p>
+                <div className="flex gap-3 mt-6">
+                  {[
+                    { name: "Auto Silva", price: "R$ 280", tag: "Mais barata", accent: "bg-green-50 text-green-700 ring-1 ring-green-200" },
+                    { name: "Oficina JB",  price: "R$ 340", tag: "Mais próxima", accent: "bg-blue-50 text-brand-blue ring-1 ring-blue-200" },
+                  ].map(q => (
+                    <div key={q.name} className="flex-1 rounded-xl bg-gray-50 border border-gray-100 p-3">
+                      <p className="text-[11px] text-navy/40 font-sans mb-1">{q.name}</p>
+                      <p className="text-lg font-heading font-bold text-navy">{q.price}</p>
+                      <span className={`inline-block mt-1 text-[10px] font-semibold px-2 py-0.5 rounded-full ${q.accent}`}>{q.tag}</span>
+                    </div>
+                  ))}
+                  <div className="flex-1 rounded-xl bg-gray-50 border border-gray-100 p-3 flex items-center justify-center">
+                    <span className="text-navy/25 text-[11px] font-sans text-center">+3 oficinas<br/>responderam</span>
+                  </div>
+                </div>
               </div>
-            ))}
-          </Reveal>
+            </Reveal>
+
+            {/* Card — avaliações */}
+            <Reveal delay={0.1}>
+              <div className="min-h-[240px] rounded-3xl bg-brand-yellow p-8 flex flex-col justify-between card-lift">
+                <span className="text-xs font-sans font-semibold text-yellow-900/50">Avaliações reais</span>
+                <div>
+                  <div className="text-8xl font-heading font-black text-yellow-900 leading-none">4,9</div>
+                  <div className="flex gap-0.5 my-2">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-5 h-5 text-yellow-700" fill="currentColor" />
+                    ))}
+                  </div>
+                  <p className="text-yellow-900/55 text-sm font-sans">de 2.500+ avaliações de motoristas reais</p>
+                </div>
+              </div>
+            </Reveal>
+
+            {/* Card — grátis */}
+            <Reveal delay={0.15}>
+              <div className="min-h-[200px] rounded-3xl bg-navy p-8 flex flex-col justify-between card-lift relative overflow-hidden">
+                <div className="absolute -bottom-8 -right-8 w-32 h-32 rounded-full bg-brand-yellow/10 pointer-events-none" />
+                <span className="text-xs font-sans font-semibold text-white/40">Para motoristas</span>
+                <div>
+                  <div className="text-7xl font-heading font-black text-brand-yellow leading-none">R$0</div>
+                  <p className="text-white/50 text-sm font-sans mt-2">Motorista nunca paga nada. Sempre.</p>
+                </div>
+              </div>
+            </Reveal>
+
+            {/* Card grande — resposta rápida */}
+            <Reveal delay={0.2} className="sm:col-span-2">
+              <div className="min-h-[200px] rounded-3xl bg-white border border-gray-100 p-8 flex flex-col justify-between card-lift relative overflow-hidden">
+                <div className="absolute -left-10 -bottom-10 w-44 h-44 rounded-full bg-brand-blue/5 pointer-events-none" />
+                <div className="flex flex-col gap-2 mb-4">
+                  <div className="self-start bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-2 text-sm text-navy/70 max-w-[75%]">
+                    Qual o preço pra trocar o freio traseiro? 🚗
+                  </div>
+                  <div className="self-end bg-brand-blue rounded-2xl rounded-tr-sm px-4 py-2 text-sm text-white max-w-[75%]">
+                    Olá! R$ 320 com garantia. Agendar amanhã às 9h? ✓
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <Clock className="w-3.5 h-3.5 text-green-500" />
+                    <span className="text-xs text-green-600 font-sans font-medium">Respondido em 8 minutos</span>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-xl font-heading font-bold text-navy">Sem esperar. Sem telefonema.</p>
+                  <p className="text-navy/50 text-sm">A oficina responde direto no app, na hora.</p>
+                </div>
+              </div>
+            </Reveal>
+
+          </div>
         </div>
       </section>
 
