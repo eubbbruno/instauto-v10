@@ -211,8 +211,11 @@ export default function HomePage() {
       </section>
 
       {/* Tipos de Veículos */}
-      <section className="py-20 bg-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_-20%,_rgba(37,99,235,0.06)_0%,_transparent_60%)]" />
+      <section className="py-20 relative overflow-hidden" style={{background:"linear-gradient(135deg,#fffbeb 0%,#fef9c3 40%,#fefce8 100%)"}}>
+        {/* Blobs glassmorphism amarelos */}
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] rounded-full bg-yellow-300/30 blur-[80px] pointer-events-none" />
+        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] rounded-full bg-amber-200/40 blur-[60px] pointer-events-none" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_120%,_rgba(253,224,71,0.15)_0%,_transparent_70%)] pointer-events-none" />
         <div className="container mx-auto px-4 relative">
           <Reveal className="text-center mb-4 max-w-2xl mx-auto">
             <p className="text-eyebrow text-brand-gold mb-3">Para cada motor</p>
@@ -234,7 +237,7 @@ export default function HomePage() {
 
           <Reveal stagger={0.15} className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {/* Carros */}
-            <div className="group card-lift bg-gradient-to-b from-blue-50/80 to-white border border-blue-100 p-8 rounded-3xl cursor-pointer relative overflow-hidden">
+            <div className="group card-lift bg-white/60 backdrop-blur-md border border-white/80 shadow-lg p-8 rounded-3xl cursor-pointer relative overflow-hidden">
               {/* Badge antes/depois */}
               <div className="absolute top-4 right-4 flex items-center gap-1 text-[10px] font-sans font-semibold text-blue-400/70 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 ✓ Consertado
@@ -264,7 +267,7 @@ export default function HomePage() {
             </div>
 
             {/* Motos */}
-            <div className="group card-lift bg-gradient-to-b from-yellow-50/80 to-white border border-yellow-100 p-8 rounded-3xl cursor-pointer relative overflow-hidden">
+            <div className="group card-lift bg-white/60 backdrop-blur-md border border-white/80 shadow-lg p-8 rounded-3xl cursor-pointer relative overflow-hidden">
               <div className="absolute top-4 right-4 flex items-center gap-1 text-[10px] font-sans font-semibold text-brand-gold/70 bg-yellow-50 px-2 py-0.5 rounded-full border border-yellow-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 ✓ Consertada
               </div>
@@ -291,7 +294,7 @@ export default function HomePage() {
             </div>
 
             {/* Caminhões */}
-            <div className="group card-lift bg-gradient-to-b from-slate-50/80 to-white border border-slate-100 p-8 rounded-3xl cursor-pointer relative overflow-hidden">
+            <div className="group card-lift bg-white/60 backdrop-blur-md border border-white/80 shadow-lg p-8 rounded-3xl cursor-pointer relative overflow-hidden">
               <div className="absolute top-4 right-4 flex items-center gap-1 text-[10px] font-sans font-semibold text-slate-400/70 bg-slate-50 px-2 py-0.5 rounded-full border border-slate-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 ✓ Consertado
               </div>
@@ -566,16 +569,6 @@ export default function HomePage() {
               </div>
             </Reveal>
 
-            {/* CTAs do mapa — fora do stagger para sempre aparecer */}
-            <div className="flex flex-col sm:flex-row gap-3 mt-2">
-              <Link href="/para-oficinas" className="btn-epic inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold">
-                Cadastrar minha oficina <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link href="/buscar-oficinas" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold bg-white/10 text-white hover:bg-white/20 transition-colors ring-1 ring-white/20">
-                Buscar oficinas <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-
             {/* Mapa grande com dots premium */}
             <Reveal delay={0.2}>
               <div className="relative flex justify-center">
@@ -619,6 +612,16 @@ export default function HomePage() {
                 </div>
               </div>
             </Reveal>
+          </div>
+
+          {/* CTAs — abaixo do grid mapa+stats */}
+          <div className="flex flex-col sm:flex-row gap-3 mt-12 justify-center">
+            <Link href="/para-oficinas" className="btn-epic inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold">
+              Cadastrar minha oficina <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link href="/buscar-oficinas" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold bg-white/10 text-white hover:bg-white/20 transition-colors ring-1 ring-white/20">
+              Buscar oficinas <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         </div>
       </section>
