@@ -441,77 +441,92 @@ export default function HomePage() {
       </section>
 
       {/* Mapa do Brasil */}
-      <section className="py-20 bg-gradient-to-br from-blue-600 to-blue-700 text-white relative overflow-hidden">
-        {/* Decoração de fundo */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-0 left-0 w-64 h-64 bg-white rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-0 w-64 h-64 bg-yellow-400 rounded-full blur-3xl" />
-        </div>
-        
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 items-center">
-            {/* Conteúdo */}
-            <Reveal>
-              <p className="text-eyebrow text-brand-yellow mb-3">De norte a sul</p>
-              <h2 className="h-section text-white mb-5">
-                Presente em todo o Brasil
-              </h2>
-              <p className="text-blue-100 text-lg mb-8">
-                Oficinas do país inteiro já usam o Instauto para gerenciar o negócio e faturar mais.
-              </p>
-              <Reveal stagger={0.1} className="grid grid-cols-2 gap-6">
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                  <div className="text-4xl font-heading font-bold text-blue-600 mb-2">
-                    500+
-                  </div>
-                  <p className="text-gray-600 font-sans text-sm">
-                    Oficinas ativas
-                  </p>
+      <section className="band-dark py-20 relative overflow-hidden">
+        {/* Aurora glow */}
+        <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-brand-blue/20 blur-[120px]" />
+        <div className="absolute -bottom-40 -left-20 w-[400px] h-[400px] rounded-full bg-brand-yellow/10 blur-[100px]" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          {/* Header centralizado */}
+          <Reveal className="text-center mb-16 max-w-2xl mx-auto">
+            <p className="text-eyebrow text-brand-gold mb-3">De norte a sul</p>
+            <h2 className="h-section text-white mb-4">
+              Presente em todo o <span className="text-brand-yellow">Brasil</span>
+            </h2>
+            <p className="text-white/50 text-lg">
+              Oficinas de todo o país já usam o Instauto para crescer e faturar mais.
+            </p>
+          </Reveal>
+
+          {/* Layout: stats esquerda + mapa direita */}
+          <div className="grid lg:grid-cols-[1fr_1.4fr] gap-12 items-center">
+
+            {/* Stats tipográficos */}
+            <Reveal stagger={0.12} className="grid grid-cols-2 gap-x-8 gap-y-10">
+              {[
+                { val: "500+", label: "Oficinas ativas", color: "text-brand-yellow" },
+                { val: "15",   label: "Estados cobertos", color: "text-brand-yellow" },
+                { val: "50k+", label: "OS gerenciadas",  color: "text-white" },
+                { val: "98%",  label: "Satisfação",       color: "text-white" },
+              ].map(({ val, label, color }) => (
+                <div key={label} className="border-l-2 border-white/10 pl-5">
+                  <div className={`text-5xl font-heading font-black leading-none mb-1 ${color}`}>{val}</div>
+                  <p className="text-white/40 font-sans text-sm">{label}</p>
                 </div>
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                  <div className="text-4xl font-heading font-bold text-blue-600 mb-2">
-                    15
-                  </div>
-                  <p className="text-gray-600 font-sans text-sm">
-                    Estados brasileiros
-                  </p>
+              ))}
+
+              {/* Pill "crescendo todo dia" */}
+              <div className="col-span-2 mt-2">
+                <div className="inline-flex items-center gap-2 rounded-full bg-white/5 ring-1 ring-white/10 px-4 py-2 text-sm text-white/60">
+                  <span className="w-2 h-2 rounded-full bg-brand-yellow animate-pulse" />
+                  Novas oficinas entrando toda semana
                 </div>
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                  <div className="text-4xl font-heading font-bold text-blue-600 mb-2">
-                    50k+
-                  </div>
-                  <p className="text-gray-600 font-sans text-sm">
-                    OS gerenciadas
-                  </p>
-                </div>
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-                  <div className="text-4xl font-heading font-bold text-blue-600 mb-2">
-                    98%
-                  </div>
-                  <p className="text-gray-600 font-sans text-sm">
-                    Satisfação
-                  </p>
-                </div>
-              </Reveal>
-            </Reveal>
-            {/* Mapa */}
-            <div className="hidden lg:flex justify-center">
-              <div className="relative">
-                <Image
-                  src="/images/brazil-map.png"
-                  alt="Mapa do Brasil"
-                  width={450}
-                  height={500}
-                  className="opacity-90"
-                />
-                {/* Pontos pulsando nas cidades */}
-                <div className="absolute top-[30%] left-[60%] w-3 h-3 bg-yellow-400 rounded-full animate-ping" />
-                <div className="absolute top-[45%] left-[65%] w-3 h-3 bg-yellow-400 rounded-full animate-ping" style={{ animationDelay: '0.5s' }} />
-                <div className="absolute top-[55%] left-[55%] w-3 h-3 bg-yellow-400 rounded-full animate-ping" style={{ animationDelay: '1s' }} />
-                <div className="absolute top-[70%] left-[50%] w-3 h-3 bg-yellow-400 rounded-full animate-ping" style={{ animationDelay: '1.5s' }} />
-                <div className="absolute top-[75%] left-[45%] w-3 h-3 bg-yellow-400 rounded-full animate-ping" style={{ animationDelay: '2s' }} />
               </div>
-            </div>
+            </Reveal>
+
+            {/* Mapa grande com dots premium */}
+            <Reveal delay={0.2}>
+              <div className="relative flex justify-center">
+                {/* Glow atrás do mapa */}
+                <div className="absolute inset-0 bg-brand-blue/10 rounded-3xl blur-2xl" />
+                <div className="relative">
+                  <Image
+                    src="/images/brazil-map.png"
+                    alt="Mapa do Brasil — presença do Instauto"
+                    width={560}
+                    height={620}
+                    className="w-full max-w-[560px] opacity-80 drop-shadow-2xl"
+                  />
+                  {/* Dots com múltiplos anéis — cidades principais */}
+                  {[
+                    { top: "28%", left: "52%", delay: "0s",    city: "Belém" },
+                    { top: "30%", left: "67%", delay: "0.4s",  city: "Fortaleza" },
+                    { top: "40%", left: "72%", delay: "0.8s",  city: "Recife" },
+                    { top: "46%", left: "69%", delay: "0.2s",  city: "Salvador" },
+                    { top: "49%", left: "52%", delay: "1.2s",  city: "Brasília" },
+                    { top: "57%", left: "56%", delay: "0.6s",  city: "Goiânia" },
+                    { top: "60%", left: "68%", delay: "1.0s",  city: "BH" },
+                    { top: "65%", left: "70%", delay: "0.3s",  city: "Rio" },
+                    { top: "67%", left: "64%", delay: "0.9s",  city: "São Paulo" },
+                    { top: "76%", left: "57%", delay: "1.4s",  city: "Curitiba" },
+                    { top: "83%", left: "53%", delay: "0.7s",  city: "Porto Alegre" },
+                    { top: "32%", left: "36%", delay: "1.6s",  city: "Manaus" },
+                  ].map(({ top, left, delay, city }) => (
+                    <div key={city} className="absolute group" style={{ top, left }}>
+                      {/* Anéis pulsantes duplos */}
+                      <span className="absolute -inset-2 rounded-full bg-brand-yellow/20 animate-ping" style={{ animationDelay: delay }} />
+                      <span className="absolute -inset-1 rounded-full bg-brand-yellow/30 animate-ping" style={{ animationDelay: `calc(${delay} + 0.2s)`, animationDuration: "1.5s" }} />
+                      {/* Dot central */}
+                      <span className="relative block w-2.5 h-2.5 rounded-full bg-brand-yellow shadow-[0_0_8px_3px_rgba(253,224,71,0.6)]" />
+                      {/* Tooltip cidade */}
+                      <span className="absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap text-[10px] font-sans font-semibold text-white/0 group-hover:text-white/90 bg-navy/80 px-2 py-0.5 rounded-full transition-all duration-200 pointer-events-none">
+                        {city}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
           </div>
         </div>
       </section>
