@@ -321,83 +321,89 @@ export default function HomePage() {
       </section>
 
       {/* Como Funciona */}
-      <section className="band-dark py-20 relative overflow-hidden">
-        <div className="blob w-[500px] h-[500px] bg-brand-blue/20 -top-32 -left-32 animate-float-slow" />
-        <div className="blob w-[400px] h-[400px] bg-brand-yellow/10 -bottom-24 -right-24 animate-float" />
+      <section className="py-24 bg-gray-50 relative overflow-hidden">
+        {/* Grade sutil de fundo */}
+        <div className="absolute inset-0 opacity-[0.4]" style={{backgroundImage:"radial-gradient(circle,#e2e8f0 1px,transparent 1px)",backgroundSize:"32px 32px"}} />
 
-        <div className="container mx-auto px-4 relative z-10">
-          <Reveal className="text-center mb-14 max-w-2xl mx-auto">
-            <p className="text-eyebrow text-brand-gold mb-3">Simples assim</p>
-            <h2 className="h-section text-white mb-4">
-              Do orçamento à entrega em <span className="text-brand-yellow">4 passos</span>
+        <div className="container mx-auto px-4 relative">
+          <Reveal className="text-center mb-20 max-w-xl mx-auto">
+            <p className="text-eyebrow text-brand-gold mb-3">Como funciona</p>
+            <h2 className="h-section text-navy mb-4">
+              Tão fácil que parece mágica
             </h2>
-            <p className="text-lg text-white/50 px-4">
-              Encontre oficinas confiáveis e compare preços sem sair de casa.
-            </p>
           </Reveal>
 
-          <div className="relative max-w-6xl mx-auto">
-            {/* Linha conectora desktop */}
-            <div className="hidden lg:block absolute top-[100px] left-[12.5%] right-[12.5%] h-px border-t-2 border-dashed border-white/15 z-0" />
-
-            <Reveal stagger={0.15} className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-4">
-              {[
-                {
-                  num: "01",
-                  img: "/images/passo1.png",
-                  title: "Busque e compare",
-                  desc: "Encontre oficinas verificadas perto de você e veja avaliações reais de outros motoristas.",
-                },
-                {
-                  num: "02",
-                  img: "/images/passo2.png",
-                  title: "Fale com oficinas",
-                  desc: "Converse diretamente e receba orçamentos detalhados. Tudo pelo app, sem compromisso.",
-                },
-                {
-                  num: "03",
-                  img: "/images/passo3.png",
-                  title: "Agende o serviço",
-                  desc: "Escolha a data que preferir e confirme o horário com a oficina em segundos.",
-                },
-                {
-                  num: "04",
-                  img: "/images/passo4.png",
-                  title: "Pegue seu carro",
-                  desc: "Acompanhe o progresso pelo app e retire seu veículo pronto e revisado.",
-                },
-              ].map(({ num, img, title, desc }) => (
-                <div key={num} className="relative flex flex-col items-center text-center z-10 px-2">
+          {/* Zigzag steps */}
+          <div className="max-w-5xl mx-auto space-y-6">
+            {[
+              {
+                num: "01",
+                img: "/images/passo1.png",
+                label: "Encontre oficinas",
+                title: "Busque perto de você e veja quem é melhor avaliado",
+                desc: "Digite seu endereço e em segundos aparece uma lista de oficinas verificadas na sua região — com nota, especialidade e distância.",
+                accent: "bg-blue-50 border-blue-100",
+                tag: "text-brand-blue bg-blue-50 ring-blue-200",
+              },
+              {
+                num: "02",
+                img: "/images/passo2.png",
+                label: "Compare orçamentos",
+                title: "Peça preço para várias oficinas sem sair do app",
+                desc: "Mande a descrição do problema e receba orçamentos detalhados. Compare valores e serviços antes de decidir — sem pressão.",
+                accent: "bg-yellow-50 border-yellow-100",
+                tag: "text-amber-700 bg-yellow-50 ring-yellow-200",
+                reverse: true,
+              },
+              {
+                num: "03",
+                img: "/images/passo3.png",
+                label: "Agende o horário",
+                title: "Escolha o dia e confirme em segundos",
+                desc: "Com um toque você reserva o horário na oficina escolhida. Receba confirmação na hora e lembrete no dia.",
+                accent: "bg-emerald-50 border-emerald-100",
+                tag: "text-emerald-700 bg-emerald-50 ring-emerald-200",
+              },
+              {
+                num: "04",
+                img: "/images/passo4.png",
+                label: "Retire pronto",
+                title: "Acompanhe tudo e pegue seu carro consertado",
+                desc: "Receba atualizações do status do serviço em tempo real. Quando ficar pronto, o mecânico avisa — e você avalia.",
+                accent: "bg-purple-50 border-purple-100",
+                tag: "text-purple-700 bg-purple-50 ring-purple-200",
+                reverse: true,
+              },
+            ].map(({ num, img, label, title, desc, accent, tag, reverse }) => (
+              <Reveal key={num}>
+                <div className={`flex flex-col ${reverse ? "md:flex-row-reverse" : "md:flex-row"} items-center gap-8 md:gap-16 rounded-3xl border ${accent} p-8 md:p-12`}>
                   {/* Imagem */}
-                  <div className="relative w-full h-[160px] mb-5 flex items-end justify-center">
+                  <div className="flex-shrink-0 w-full md:w-[280px] flex justify-center">
                     <Image
                       src={img}
                       alt={title}
-                      width={160}
-                      height={160}
-                      className="object-contain h-full w-auto drop-shadow-2xl"
+                      width={280}
+                      height={280}
+                      className="object-contain w-[220px] md:w-[280px] h-auto"
                     />
-                    {/* Badge número */}
-                    <span className="absolute bottom-0 right-[calc(50%-52px)] w-7 h-7 rounded-full bg-brand-yellow text-navy text-xs font-heading font-black flex items-center justify-center shadow-lg ring-2 ring-navy/80">
-                      {num.slice(1)}
-                    </span>
                   </div>
-                  <h3 className="h-card text-white mb-2">{title}</h3>
-                  <p className="text-white/50 font-sans text-sm leading-relaxed">
-                    {desc}
-                  </p>
+                  {/* Texto */}
+                  <div className="flex-1 text-center md:text-left">
+                    <div className="flex items-center justify-center md:justify-start gap-3 mb-4">
+                      <span className="font-heading font-black text-5xl text-navy/8 leading-none select-none">{num}</span>
+                      <span className={`text-xs font-sans font-semibold px-3 py-1 rounded-full ring-1 ${tag}`}>{label}</span>
+                    </div>
+                    <h3 className="text-2xl md:text-3xl font-heading font-bold text-navy mb-3 leading-snug">{title}</h3>
+                    <p className="text-navy/55 font-sans leading-relaxed">{desc}</p>
+                  </div>
                 </div>
-              ))}
-            </Reveal>
+              </Reveal>
+            ))}
           </div>
 
-          <Reveal className="text-center mt-12">
-            <Link
-              href="/buscar-oficinas"
-              className="btn-epic inline-flex items-center gap-2 text-sm"
-            >
-              Buscar oficina agora
-              <ArrowRight className="w-4 h-4" />
+          <Reveal className="text-center mt-14">
+            <Link href="/buscar-oficinas" className="btn-epic inline-flex items-center gap-2">
+              Buscar oficina agora <ArrowRight className="w-4 h-4" />
             </Link>
           </Reveal>
         </div>
