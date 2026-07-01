@@ -401,9 +401,12 @@ export default function HomePage() {
             ))}
           </div>
 
-          <div className="text-center mt-12">
-            <Link href="/buscar-oficinas" className="btn-epic inline-flex items-center gap-2">
-              Buscar oficina agora <ArrowRight className="w-4 h-4" />
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12">
+            <Link href="/buscar-oficinas" className="btn-epic inline-flex items-center gap-2 px-8 py-4 rounded-xl text-sm font-bold">
+              Sou motorista — quero orçamento <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link href="/para-oficinas" className="btn-epic-blue inline-flex items-center gap-2 px-8 py-4 rounded-xl text-sm font-bold">
+              Tenho oficina — quero crescer <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
@@ -500,6 +503,22 @@ export default function HomePage() {
             </Reveal>
 
           </div>
+
+          {/* CTA duplo pós-bento */}
+          <Reveal className="mt-14 rounded-3xl bg-navy p-8 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div>
+              <p className="text-white font-heading font-bold text-xl mb-1">Pronto pra começar?</p>
+              <p className="text-white/50 text-sm">É grátis pra motorista. Pra oficina, 14 dias sem cartão.</p>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0">
+              <Link href="/buscar-oficinas" className="btn-epic inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold whitespace-nowrap">
+                Buscar oficina <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link href="/para-oficinas" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold whitespace-nowrap bg-white/10 text-white hover:bg-white/20 transition-colors ring-1 ring-white/20">
+                Sou dono de oficina <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </Reveal>
         </div>
       </section>
 
@@ -538,11 +557,19 @@ export default function HomePage() {
                 </div>
               ))}
 
-              {/* Pill "crescendo todo dia" */}
-              <div className="col-span-2 mt-2">
-                <div className="inline-flex items-center gap-2 rounded-full bg-white/5 ring-1 ring-white/10 px-4 py-2 text-sm text-white/60">
+              {/* Pill + CTAs */}
+              <div className="col-span-2 mt-2 flex flex-col gap-4">
+                <div className="inline-flex items-center gap-2 rounded-full bg-white/5 ring-1 ring-white/10 px-4 py-2 text-sm text-white/60 self-start">
                   <span className="w-2 h-2 rounded-full bg-brand-yellow animate-pulse" />
                   Novas oficinas entrando toda semana
+                </div>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Link href="/para-oficinas" className="btn-epic inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold">
+                    Cadastrar minha oficina <ArrowRight className="w-4 h-4" />
+                  </Link>
+                  <Link href="/buscar-oficinas" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold bg-white/10 text-white hover:bg-white/20 transition-colors ring-1 ring-white/20">
+                    Buscar oficinas <ArrowRight className="w-4 h-4" />
+                  </Link>
                 </div>
               </div>
             </Reveal>
