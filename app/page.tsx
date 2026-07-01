@@ -505,7 +505,7 @@ export default function HomePage() {
           </div>
 
           {/* CTA duplo pós-bento */}
-          <Reveal className="mt-14 rounded-3xl bg-navy p-8 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="mt-14 rounded-3xl bg-navy p-8 sm:p-10 flex flex-col sm:flex-row items-center justify-between gap-6">
             <div>
               <p className="text-white font-heading font-bold text-xl mb-1">Pronto pra começar?</p>
               <p className="text-white/50 text-sm">É grátis pra motorista. Pra oficina, 14 dias sem cartão.</p>
@@ -518,7 +518,7 @@ export default function HomePage() {
                 Sou dono de oficina <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
-          </Reveal>
+          </div>
         </div>
       </section>
 
@@ -557,22 +557,24 @@ export default function HomePage() {
                 </div>
               ))}
 
-              {/* Pill + CTAs */}
-              <div className="col-span-2 mt-2 flex flex-col gap-4">
-                <div className="inline-flex items-center gap-2 rounded-full bg-white/5 ring-1 ring-white/10 px-4 py-2 text-sm text-white/60 self-start">
+              {/* Pill */}
+              <div className="col-span-2 mt-2">
+                <div className="inline-flex items-center gap-2 rounded-full bg-white/5 ring-1 ring-white/10 px-4 py-2 text-sm text-white/60">
                   <span className="w-2 h-2 rounded-full bg-brand-yellow animate-pulse" />
                   Novas oficinas entrando toda semana
                 </div>
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <Link href="/para-oficinas" className="btn-epic inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold">
-                    Cadastrar minha oficina <ArrowRight className="w-4 h-4" />
-                  </Link>
-                  <Link href="/buscar-oficinas" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold bg-white/10 text-white hover:bg-white/20 transition-colors ring-1 ring-white/20">
-                    Buscar oficinas <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </div>
               </div>
             </Reveal>
+
+            {/* CTAs do mapa — fora do stagger para sempre aparecer */}
+            <div className="flex flex-col sm:flex-row gap-3 mt-2">
+              <Link href="/para-oficinas" className="btn-epic inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold">
+                Cadastrar minha oficina <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link href="/buscar-oficinas" className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold bg-white/10 text-white hover:bg-white/20 transition-colors ring-1 ring-white/20">
+                Buscar oficinas <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
 
             {/* Mapa grande com dots premium */}
             <Reveal delay={0.2}>

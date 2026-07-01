@@ -54,7 +54,7 @@ export function Reveal({ children, className, delay = 0, y = 28, stagger }: Reve
           }
         });
       },
-      { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }
+      { threshold: 0, rootMargin: "0px 0px -2% 0px" }
     );
 
     io.observe(el);
