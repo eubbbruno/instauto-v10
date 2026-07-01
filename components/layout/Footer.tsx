@@ -59,7 +59,7 @@ export default function Footer() {
 
       {/* Mini CTA banner */}
       <div className="relative border-b border-white/6">
-        <div className="container mx-auto px-4 py-14 text-center">
+        <div className="max-w-7xl mx-auto px-6 py-14 text-center">
           <p className="text-eyebrow text-brand-gold mb-3">Comece agora</p>
           <h3 className="text-3xl md:text-4xl font-heading font-black text-white mb-8 leading-tight">
             Faça parte da maior rede<br className="hidden sm:block" /> de oficinas e motoristas do Brasil
@@ -82,7 +82,7 @@ export default function Footer() {
       </div>
 
       {/* Main grid */}
-      <div className="relative container mx-auto px-4 py-14">
+      <div className="relative max-w-7xl mx-auto px-6 py-14">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr_1fr]">
 
           {/* Brand */}
@@ -154,16 +154,13 @@ export default function Footer() {
 
       {/* Bottom bar */}
       <div className="relative border-t border-white/6">
-        <div className="container mx-auto px-4 py-5">
+        <div className="max-w-7xl mx-auto px-6 py-5">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-[13px] text-white/25">
             <p>© {currentYear} Instauto Tecnologia. Todos os direitos reservados.</p>
             <div className="flex items-center gap-4">
               <Link href="/termos" className="hover:text-white/60 transition-colors">Termos</Link>
               <Link href="/privacidade" className="hover:text-white/60 transition-colors">Privacidade</Link>
-              <span className="text-white/15">·</span>
-              <span className="flex items-center gap-1.5">
-                Feito com <span className="text-red-400/70">♥</span> no Brasil 🇧🇷
-              </span>
+              <Link href="/cookies" className="hover:text-white/60 transition-colors">Cookies</Link>
             </div>
           </div>
         </div>
