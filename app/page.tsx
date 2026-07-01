@@ -361,8 +361,8 @@ export default function HomePage() {
                 label: "Agende o horário",
                 title: "Escolha o dia e confirme em segundos",
                 desc: "Com um toque você reserva o horário na oficina escolhida. Receba confirmação na hora e lembrete no dia.",
-                accent: "bg-emerald-50 border-emerald-100",
-                tag: "text-emerald-700 bg-emerald-50 ring-emerald-200",
+                accent: "bg-blue-50 border-blue-100",
+                tag: "text-brand-blue bg-blue-50 ring-blue-200",
               },
               {
                 num: "04",
@@ -370,8 +370,8 @@ export default function HomePage() {
                 label: "Retire pronto",
                 title: "Acompanhe tudo e pegue seu carro consertado",
                 desc: "Receba atualizações do status do serviço em tempo real. Quando ficar pronto, o mecânico avisa — e você avalia.",
-                accent: "bg-purple-50 border-purple-100",
-                tag: "text-purple-700 bg-purple-50 ring-purple-200",
+                accent: "bg-yellow-50 border-yellow-100",
+                tag: "text-amber-700 bg-yellow-50 ring-yellow-200",
                 reverse: true,
               },
             ].map(({ num, img, label, title, desc, accent, tag, reverse }) => (
