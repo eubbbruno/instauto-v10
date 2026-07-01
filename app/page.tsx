@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import FAQSection from "@/components/sections/FAQSection";
 import AddressAutocomplete from "@/components/search/AddressAutocomplete";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/motion";
 import { GlassCard } from "@/components/ui/glass-card";
@@ -28,6 +29,41 @@ import {
   MessageSquare,
   CalendarCheck,
 } from "lucide-react";
+
+function VehicleCard({
+  batidoSrc, fixedSrc, batidoAlt, fixedAlt,
+  title, desc, badgeLabel, badgeClass, glowClass,
+}: {
+  batidoSrc: string; fixedSrc: string; batidoAlt: string; fixedAlt: string;
+  title: string; desc: string; badgeLabel: string; badgeClass: string; glowClass: string;
+}) {
+  const [showFixed, setShowFixed] = useState(false);
+  return (
+    <div
+      className="group card-lift bg-white/60 backdrop-blur-md border border-white/80 shadow-lg p-8 pb-10 rounded-3xl cursor-pointer relative overflow-hidden select-none"
+      onClick={() => setShowFixed(v => !v)}
+    >
+      <div className={`absolute top-4 right-4 flex items-center gap-1 text-[10px] font-sans font-semibold px-2 py-0.5 rounded-full border transition-opacity duration-300 ${badgeClass} ${showFixed ? "opacity-100" : "opacity-0"} md:group-hover:opacity-100`}>
+        {badgeLabel}
+      </div>
+      <p className="absolute bottom-3 inset-x-0 text-center text-[10px] text-navy/40 font-sans md:hidden">
+        {showFixed ? "↺ toque para ver antes" : "toque para ver depois →"}
+      </p>
+      <div className="relative flex justify-center mb-6 h-[140px]">
+        <Image
+          src={batidoSrc} alt={batidoAlt} width={200} height={140}
+          className={`object-contain drop-shadow-lg absolute inset-0 m-auto transition-all duration-500 md:opacity-100 md:group-hover:opacity-0 md:group-hover:scale-95 ${showFixed ? "opacity-0 scale-95" : "opacity-100 scale-100"}`}
+        />
+        <Image
+          src={fixedSrc} alt={fixedAlt} width={200} height={140}
+          className={`object-contain drop-shadow-2xl absolute inset-0 m-auto transition-all duration-500 md:opacity-0 md:scale-95 md:group-hover:opacity-100 md:group-hover:scale-105 ${glowClass} ${showFixed ? "opacity-100 scale-105" : "opacity-0 scale-95"}`}
+        />
+      </div>
+      <h3 className="h-card text-navy mb-2 text-center">{title}</h3>
+      <p className="text-navy/60 font-sans text-sm text-center">{desc}</p>
+    </div>
+  );
+}
 
 export default function HomePage() {
   const router = useRouter();
@@ -237,89 +273,33 @@ export default function HomePage() {
           </Reveal>
 
           <Reveal stagger={0.15} className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {/* Carros */}
-            <div className="group card-lift bg-white/60 backdrop-blur-md border border-white/80 shadow-lg p-8 rounded-3xl cursor-pointer relative overflow-hidden">
-              {/* Badge antes/depois */}
-              <div className="absolute top-4 right-4 flex items-center gap-1 text-[10px] font-sans font-semibold text-blue-400/70 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                ✓ Consertado
-              </div>
-              <div className="relative flex justify-center mb-6 h-[140px]">
-                {/* Batido — oculto no mobile, visível no desktop antes do hover */}
-                <Image
-                  src="/images/carro-azul-batido.png"
-                  alt="Carro batido"
-                  width={200}
-                  height={140}
-                  className="object-contain drop-shadow-lg absolute inset-0 m-auto transition-all duration-500 hidden md:block md:group-hover:opacity-0 md:group-hover:scale-95"
-                />
-                {/* Consertado — visível no mobile sempre; no desktop aparece no hover */}
-                <Image
-                  src="/images/carro-azul.png"
-                  alt="Carro recuperado"
-                  width={200}
-                  height={140}
-                  className="object-contain drop-shadow-2xl absolute inset-0 m-auto transition-all duration-500 md:opacity-0 md:scale-95 md:group-hover:opacity-100 md:group-hover:scale-105 md:group-hover:drop-shadow-[0_0_24px_rgba(37,99,235,0.35)]"
-                />
-              </div>
-              <h3 className="h-card text-navy mb-2 text-center">Carros</h3>
-              <p className="text-navy/60 font-sans text-sm text-center">
-                Manutenção preventiva, troca de óleo, freios, suspensão e muito mais
-              </p>
-            </div>
-
-            {/* Motos */}
-            <div className="group card-lift bg-white/60 backdrop-blur-md border border-white/80 shadow-lg p-8 rounded-3xl cursor-pointer relative overflow-hidden">
-              <div className="absolute top-4 right-4 flex items-center gap-1 text-[10px] font-sans font-semibold text-brand-gold/70 bg-yellow-50 px-2 py-0.5 rounded-full border border-yellow-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                ✓ Consertada
-              </div>
-              <div className="relative flex justify-center mb-6 h-[140px]">
-                <Image
-                  src="/images/moto-amarela-batida.png"
-                  alt="Moto batida"
-                  width={200}
-                  height={140}
-                  className="object-contain drop-shadow-lg absolute inset-0 m-auto transition-all duration-500 hidden md:block md:group-hover:opacity-0 md:group-hover:scale-95"
-                />
-                <Image
-                  src="/images/moto-amarela.png"
-                  alt="Moto recuperada"
-                  width={200}
-                  height={140}
-                  className="object-contain drop-shadow-2xl absolute inset-0 m-auto transition-all duration-500 md:opacity-0 md:scale-95 md:group-hover:opacity-100 md:group-hover:scale-105 md:group-hover:drop-shadow-[0_0_24px_rgba(234,179,8,0.45)]"
-                />
-              </div>
-              <h3 className="h-card text-navy mb-2 text-center">Motos</h3>
-              <p className="text-navy/60 font-sans text-sm text-center">
-                Revisão completa, troca de corrente, pneus e serviços especializados
-              </p>
-            </div>
-
-            {/* Caminhões */}
-            <div className="group card-lift bg-white/60 backdrop-blur-md border border-white/80 shadow-lg p-8 rounded-3xl cursor-pointer relative overflow-hidden">
-              <div className="absolute top-4 right-4 flex items-center gap-1 text-[10px] font-sans font-semibold text-slate-400/70 bg-slate-50 px-2 py-0.5 rounded-full border border-slate-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                ✓ Consertado
-              </div>
-              <div className="relative flex justify-center mb-6 h-[140px]">
-                <Image
-                  src="/images/caminhao-branco-batido.png"
-                  alt="Caminhão batido"
-                  width={200}
-                  height={140}
-                  className="object-contain drop-shadow-lg absolute inset-0 m-auto transition-all duration-500 hidden md:block md:group-hover:opacity-0 md:group-hover:scale-95"
-                />
-                <Image
-                  src="/images/caminhao-branco.png"
-                  alt="Caminhão recuperado"
-                  width={200}
-                  height={140}
-                  className="object-contain drop-shadow-2xl absolute inset-0 m-auto transition-all duration-500 md:opacity-0 md:scale-95 md:group-hover:opacity-100 md:group-hover:scale-105 md:group-hover:drop-shadow-[0_0_24px_rgba(100,116,139,0.35)]"
-                />
-              </div>
-              <h3 className="h-card text-navy mb-2 text-center">Caminhões</h3>
-              <p className="text-navy/60 font-sans text-sm text-center">
-                Manutenção pesada, motor, transmissão e serviços para frotas
-              </p>
-            </div>
+            <VehicleCard
+              batidoSrc="/images/carro-azul-batido.png" batidoAlt="Carro batido"
+              fixedSrc="/images/carro-azul.png"         fixedAlt="Carro recuperado"
+              title="Carros"
+              desc="Manutenção preventiva, troca de óleo, freios, suspensão e muito mais"
+              badgeLabel="✓ Consertado"
+              badgeClass="text-blue-400/70 bg-blue-50 border-blue-100"
+              glowClass="md:group-hover:drop-shadow-[0_0_24px_rgba(37,99,235,0.35)]"
+            />
+            <VehicleCard
+              batidoSrc="/images/moto-amarela-batida.png" batidoAlt="Moto batida"
+              fixedSrc="/images/moto-amarela.png"         fixedAlt="Moto recuperada"
+              title="Motos"
+              desc="Revisão completa, troca de corrente, pneus e serviços especializados"
+              badgeLabel="✓ Consertada"
+              badgeClass="text-brand-gold/70 bg-yellow-50 border-yellow-100"
+              glowClass="md:group-hover:drop-shadow-[0_0_24px_rgba(234,179,8,0.45)]"
+            />
+            <VehicleCard
+              batidoSrc="/images/caminhao-branco-batido.png" batidoAlt="Caminhão batido"
+              fixedSrc="/images/caminhao-branco.png"         fixedAlt="Caminhão recuperado"
+              title="Caminhões"
+              desc="Manutenção pesada, motor, transmissão e serviços para frotas"
+              badgeLabel="✓ Consertado"
+              badgeClass="text-slate-400/70 bg-slate-50 border-slate-100"
+              glowClass="md:group-hover:drop-shadow-[0_0_24px_rgba(100,116,139,0.35)]"
+            />
           </Reveal>
         </div>
       </section>
@@ -718,6 +698,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* FAQ — SEO */}
+      <FAQSection />
 
       {/* Footer */}
       <Footer />
