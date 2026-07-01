@@ -627,75 +627,98 @@ export default function HomePage() {
       </section>
 
       {/* CTA para Oficinas */}
-      <section className="py-20 bg-[#0F172A] relative overflow-hidden">
-        {/* Gradiente sutil */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/50 to-transparent" />
-        
-        {/* Linha amarela decorativa no topo */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-yellow-400 to-transparent" />
-        
-        {/* Elementos decorativos amarelos */}
-        <div className="absolute -top-20 -right-20 w-96 h-96 bg-yellow-400/10 rounded-full blur-3xl" />
-        <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-yellow-400/5 rounded-full blur-3xl" />
-        
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 items-center">
-            {/* Conteúdo */}
+      <section className="py-24 bg-navy relative overflow-hidden">
+        {/* Aurora dourada subindo do fundo */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_110%,rgba(253,224,71,0.18),transparent_65%)] pointer-events-none" />
+        <div className="absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full bg-brand-blue/20 blur-[100px] pointer-events-none" />
+        {/* "14" decorativo gigante */}
+        <span className="absolute -right-8 top-0 text-[22rem] font-heading font-black text-white/[0.025] leading-none select-none pointer-events-none">14</span>
+
+        <div className="max-w-6xl mx-auto px-4 relative z-10">
+          <div className="grid lg:grid-cols-[1.2fr_1fr] gap-12 lg:gap-20 items-center">
+
+            {/* Esquerda — pitch */}
             <Reveal>
-              {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-yellow-400/20 rounded-full text-yellow-400 text-xs sm:text-sm font-medium mb-4 sm:mb-6">
-                <Wrench className="w-3 h-3 sm:w-4 sm:h-4" />
-                Para Oficinas Mecânicas
-              </div>
-              
-              <h2 className="h-section text-white mb-5">
-                Você é dono de oficina mecânica?
+              <span className="text-eyebrow text-brand-gold mb-4 block">Para donos de oficina</span>
+              <h2 className="text-4xl md:text-5xl font-heading font-black text-white leading-tight mb-6">
+                Gerencie tudo.<br/>
+                Fature <span className="text-brand-yellow">muito mais.</span>
               </h2>
-              <p className="text-gray-400 text-base sm:text-lg mb-6 sm:mb-8">
-                Tenha um sistema completo de gestão e apareça no marketplace para milhares de motoristas. Aumente seu faturamento com tecnologia.
+              <p className="text-white/50 text-lg mb-10 max-w-lg leading-relaxed">
+                Sistema completo de gestão + marketplace com milhares de motoristas buscando oficinas agora. 14 dias grátis, sem cartão.
               </p>
-              
-              {/* CTAs */}
-              <div className="flex flex-col sm:flex-row gap-4 mb-6">
-                <Link
-                  href="/para-oficinas"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-4 border-2 border-white text-white font-semibold rounded-xl hover:bg-white hover:text-gray-900 transition-all"
-                >
-                  Conhecer Sistema
+
+              <div className="flex flex-col sm:flex-row gap-4 mb-10">
+                <Link href="/login?tipo=oficina" className="btn-epic inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-bold">
+                  Testar 14 dias grátis <ArrowRight className="w-5 h-5" />
                 </Link>
-                <Link
-                  href="/login?tipo=oficina"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-4 bg-yellow-400 text-gray-900 font-semibold rounded-xl hover:bg-yellow-300 transition-all"
-                >
-                  Começar Teste Grátis (14 dias)
-                  <ArrowRight className="w-5 h-5" />
+                <Link href="/para-oficinas" className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-bold bg-white/8 text-white ring-1 ring-white/20 hover:bg-white/15 transition-colors">
+                  Ver como funciona
                 </Link>
               </div>
-              
-              {/* Benefícios */}
-              <div className="flex flex-wrap gap-4 text-sm text-gray-400">
-                <span className="flex items-center gap-1">
-                  <Check className="w-4 h-4 text-green-500" /> Sem cartão de crédito
-                </span>
-                <span className="flex items-center gap-1">
-                  <Check className="w-4 h-4 text-green-500" /> Cancele quando quiser
-                </span>
-                <span className="flex items-center gap-1">
-                  <Check className="w-4 h-4 text-green-500" /> Suporte dedicado
-                </span>
+
+              <div className="flex flex-wrap gap-x-6 gap-y-3">
+                {["Sem cartão de crédito", "Cancele quando quiser", "Suporte dedicado"].map(t => (
+                  <span key={t} className="flex items-center gap-2 text-sm text-white/45">
+                    <Check className="w-4 h-4 text-brand-yellow flex-shrink-0" /> {t}
+                  </span>
+                ))}
               </div>
             </Reveal>
 
-            {/* Imagem */}
-            <div className="hidden lg:flex justify-center">
-              <Image
-                src="/images/img-03.png"
-                alt="Mecânico"
-                width={400}
-                height={400}
-                className="drop-shadow-2xl"
-              />
-            </div>
+            {/* Direita — card PRO */}
+            <Reveal delay={0.2}>
+              <div className="relative">
+                {/* Glow atrás do card */}
+                <div className="absolute -inset-4 rounded-[2rem] bg-brand-yellow/10 blur-2xl" />
+                <div className="relative rounded-3xl bg-white/5 backdrop-blur-md ring-1 ring-white/12 p-8">
+                  {/* Header do card */}
+                  <div className="flex items-start justify-between mb-7">
+                    <div>
+                      <p className="text-eyebrow text-brand-gold text-xs mb-2">Plano PRO</p>
+                      <div className="flex items-end gap-1.5">
+                        <span className="text-5xl font-heading font-black text-white leading-none">R$97</span>
+                        <span className="text-white/35 text-sm pb-1.5">/mês</span>
+                      </div>
+                    </div>
+                    <span className="bg-brand-yellow text-navy text-xs font-heading font-black px-3 py-1.5 rounded-full animate-float-slow">
+                      14 dias grátis
+                    </span>
+                  </div>
+
+                  {/* Divider */}
+                  <div className="h-px bg-white/8 mb-7" />
+
+                  {/* Features */}
+                  <div className="space-y-3.5 mb-8">
+                    {[
+                      "Perfil no marketplace Instauto",
+                      "Gestão de ordens de serviço",
+                      "Orçamentos digitais online",
+                      "Clientes e histórico ilimitados",
+                      "Relatórios financeiros",
+                      "Suporte via WhatsApp",
+                    ].map(f => (
+                      <div key={f} className="flex items-center gap-3">
+                        <div className="w-5 h-5 rounded-full bg-brand-yellow/15 ring-1 ring-brand-yellow/30 flex items-center justify-center flex-shrink-0">
+                          <Check className="w-3 h-3 text-brand-yellow" />
+                        </div>
+                        <span className="text-white/65 text-sm font-sans">{f}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <Link
+                    href="/login?tipo=oficina"
+                    className="btn-epic w-full inline-flex items-center justify-center gap-2 py-4 rounded-xl text-sm font-bold"
+                  >
+                    Começar agora — é grátis <ArrowRight className="w-4 h-4" />
+                  </Link>
+                  <p className="text-center text-white/25 text-xs mt-3 font-sans">Sem cartão. Cancele a qualquer momento.</p>
+                </div>
+              </div>
+            </Reveal>
+
           </div>
         </div>
       </section>
