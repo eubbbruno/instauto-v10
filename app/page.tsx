@@ -67,7 +67,7 @@ export default function HomePage() {
                 </div>
 
                 {/* Título pôster com marca-texto */}
-                <h1 className="font-heading text-5xl sm:text-6xl lg:text-7xl font-extrabold leading-[1.02] tracking-tight mb-5">
+                <h1 className="font-heading text-[2.4rem] sm:text-5xl lg:text-7xl font-extrabold leading-[1.02] tracking-tight mb-5">
                   Encontre a oficina{" "}
                   <span className="marker-underline">certa</span>{" "}
                   perto de você
@@ -172,12 +172,12 @@ export default function HomePage() {
                   />
                 </div>
                 {/* pílula 5,0 */}
-                <div className="absolute -top-4 -left-4 z-20 flex items-center gap-2 rounded-full bg-brand-yellow px-4 py-2 glow-gold animate-float-slow">
+                <div className="absolute -top-4 -left-4 z-20 hidden sm:flex items-center gap-2 rounded-full bg-brand-yellow px-4 py-2 glow-gold animate-float-slow">
                   <Star className="w-5 h-5 text-yellow-900" fill="currentColor" />
                   <span className="font-bold text-yellow-900">5,0</span>
                 </div>
                 {/* pílula verificada */}
-                <div className="absolute -bottom-5 right-4 z-20 flex items-center gap-2 rounded-full bg-white px-4 py-2.5 shadow-xl ring-1 ring-navy/5 animate-float">
+                <div className="absolute -bottom-5 right-4 z-20 hidden sm:flex items-center gap-2 rounded-full bg-white px-4 py-2.5 shadow-xl ring-1 ring-navy/5 animate-float">
                   <CheckCircle2 className="w-5 h-5 text-brand-blue" />
                   <span className="text-sm font-bold text-navy">Oficina verificada</span>
                 </div>
@@ -211,12 +211,12 @@ export default function HomePage() {
       </section>
 
       {/* Tipos de Veículos */}
-      <section className="py-20 relative overflow-hidden" style={{background:"linear-gradient(135deg,#fffbeb 0%,#fef9c3 40%,#fefce8 100%)"}}>
+      <section className="py-14 md:py-20 relative overflow-hidden" style={{background:"linear-gradient(135deg,#fffbeb 0%,#fef9c3 40%,#fefce8 100%)"}}>
         {/* Blobs glassmorphism amarelos */}
         <div className="absolute top-0 left-1/4 w-[500px] h-[500px] rounded-full bg-yellow-300/30 blur-[80px] pointer-events-none" />
         <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] rounded-full bg-amber-200/40 blur-[60px] pointer-events-none" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_120%,_rgba(253,224,71,0.15)_0%,_transparent_70%)] pointer-events-none" />
-        <div className="container mx-auto px-4 relative">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
           <Reveal className="text-center mb-4 max-w-2xl mx-auto">
             <p className="text-eyebrow text-brand-gold mb-3">Para cada motor</p>
             <h2 className="h-section text-navy mb-4">
@@ -231,7 +231,8 @@ export default function HomePage() {
           <Reveal className="flex justify-center mb-10">
             <span className="inline-flex items-center gap-2 text-xs text-navy/40 font-sans bg-gray-100 px-3 py-1.5 rounded-full">
               <span className="w-1.5 h-1.5 rounded-full bg-brand-gold animate-pulse" />
-              Passe o mouse para ver a transformação
+              <span className="md:hidden">Toque no card para ver a transformação</span>
+              <span className="hidden md:inline">Passe o mouse para ver a transformação</span>
             </span>
           </Reveal>
 
@@ -243,21 +244,21 @@ export default function HomePage() {
                 ✓ Consertado
               </div>
               <div className="relative flex justify-center mb-6 h-[140px]">
-                {/* Batido (default) */}
+                {/* Batido — oculto no mobile, visível no desktop antes do hover */}
                 <Image
                   src="/images/carro-azul-batido.png"
                   alt="Carro batido"
                   width={200}
                   height={140}
-                  className="object-contain drop-shadow-lg absolute inset-0 m-auto transition-all duration-500 group-hover:opacity-0 group-hover:scale-95"
+                  className="object-contain drop-shadow-lg absolute inset-0 m-auto transition-all duration-500 hidden md:block md:group-hover:opacity-0 md:group-hover:scale-95"
                 />
-                {/* Novo (hover) */}
+                {/* Consertado — visível no mobile sempre; no desktop aparece no hover */}
                 <Image
                   src="/images/carro-azul.png"
                   alt="Carro recuperado"
                   width={200}
                   height={140}
-                  className="object-contain drop-shadow-2xl absolute inset-0 m-auto opacity-0 scale-95 transition-all duration-500 group-hover:opacity-100 group-hover:scale-105 group-hover:drop-shadow-[0_0_24px_rgba(37,99,235,0.35)]"
+                  className="object-contain drop-shadow-2xl absolute inset-0 m-auto transition-all duration-500 md:opacity-0 md:scale-95 md:group-hover:opacity-100 md:group-hover:scale-105 md:group-hover:drop-shadow-[0_0_24px_rgba(37,99,235,0.35)]"
                 />
               </div>
               <h3 className="h-card text-navy mb-2 text-center">Carros</h3>
@@ -277,14 +278,14 @@ export default function HomePage() {
                   alt="Moto batida"
                   width={200}
                   height={140}
-                  className="object-contain drop-shadow-lg absolute inset-0 m-auto transition-all duration-500 group-hover:opacity-0 group-hover:scale-95"
+                  className="object-contain drop-shadow-lg absolute inset-0 m-auto transition-all duration-500 hidden md:block md:group-hover:opacity-0 md:group-hover:scale-95"
                 />
                 <Image
                   src="/images/moto-amarela.png"
                   alt="Moto recuperada"
                   width={200}
                   height={140}
-                  className="object-contain drop-shadow-2xl absolute inset-0 m-auto opacity-0 scale-95 transition-all duration-500 group-hover:opacity-100 group-hover:scale-105 group-hover:drop-shadow-[0_0_24px_rgba(234,179,8,0.45)]"
+                  className="object-contain drop-shadow-2xl absolute inset-0 m-auto transition-all duration-500 md:opacity-0 md:scale-95 md:group-hover:opacity-100 md:group-hover:scale-105 md:group-hover:drop-shadow-[0_0_24px_rgba(234,179,8,0.45)]"
                 />
               </div>
               <h3 className="h-card text-navy mb-2 text-center">Motos</h3>
@@ -304,14 +305,14 @@ export default function HomePage() {
                   alt="Caminhão batido"
                   width={200}
                   height={140}
-                  className="object-contain drop-shadow-lg absolute inset-0 m-auto transition-all duration-500 group-hover:opacity-0 group-hover:scale-95"
+                  className="object-contain drop-shadow-lg absolute inset-0 m-auto transition-all duration-500 hidden md:block md:group-hover:opacity-0 md:group-hover:scale-95"
                 />
                 <Image
                   src="/images/caminhao-branco.png"
                   alt="Caminhão recuperado"
                   width={200}
                   height={140}
-                  className="object-contain drop-shadow-2xl absolute inset-0 m-auto opacity-0 scale-95 transition-all duration-500 group-hover:opacity-100 group-hover:scale-105 group-hover:drop-shadow-[0_0_24px_rgba(100,116,139,0.35)]"
+                  className="object-contain drop-shadow-2xl absolute inset-0 m-auto transition-all duration-500 md:opacity-0 md:scale-95 md:group-hover:opacity-100 md:group-hover:scale-105 md:group-hover:drop-shadow-[0_0_24px_rgba(100,116,139,0.35)]"
                 />
               </div>
               <h3 className="h-card text-navy mb-2 text-center">Caminhões</h3>
@@ -324,12 +325,12 @@ export default function HomePage() {
       </section>
 
       {/* Como Funciona */}
-      <section className="py-24 bg-gray-50 relative overflow-hidden">
+      <section className="py-16 md:py-24 bg-gray-50 relative overflow-hidden">
         {/* Grade sutil de fundo */}
         <div className="absolute inset-0 opacity-[0.4]" style={{backgroundImage:"radial-gradient(circle,#e2e8f0 1px,transparent 1px)",backgroundSize:"32px 32px"}} />
 
-        <div className="container mx-auto px-4 relative">
-          <Reveal className="text-center mb-20 max-w-xl mx-auto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
+          <Reveal className="text-center mb-12 md:mb-20 max-w-xl mx-auto">
             <p className="text-eyebrow text-brand-gold mb-3">Como funciona</p>
             <h2 className="h-section text-navy mb-4">
               Tão fácil que parece mágica
@@ -416,7 +417,7 @@ export default function HomePage() {
       </section>
 
       {/* Mapa do Brasil */}
-      <section className="band-dark py-20 relative overflow-hidden">
+      <section className="band-dark py-14 md:py-20 relative overflow-hidden">
         {/* Aurora glow */}
         <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-brand-blue/20 blur-[120px]" />
         <div className="absolute -bottom-40 -left-20 w-[400px] h-[400px] rounded-full bg-brand-yellow/10 blur-[100px]" />
@@ -437,7 +438,7 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-[1fr_1.4fr] gap-12 items-center">
 
             {/* Stats tipográficos */}
-            <Reveal stagger={0.12} className="grid grid-cols-2 gap-x-8 gap-y-10">
+            <Reveal stagger={0.12} className="grid grid-cols-2 gap-x-4 md:gap-x-8 gap-y-6 md:gap-y-10">
               {[
                 { val: "500+", label: "Oficinas ativas", color: "text-brand-yellow" },
                 { val: "15",   label: "Estados cobertos", color: "text-brand-yellow" },
@@ -512,7 +513,7 @@ export default function HomePage() {
       </section>
 
       {/* Por que Instauto — Bento Grid */}
-      <section className="py-24 bg-[#F8F9FB]">
+      <section className="py-16 md:py-24 bg-[#F8F9FB]">
         <div className="max-w-6xl mx-auto px-4">
           <Reveal className="mb-14">
             <p className="text-eyebrow text-brand-gold mb-3">Por que Instauto</p>
@@ -622,12 +623,12 @@ export default function HomePage() {
       </section>
 
       {/* CTA para Oficinas */}
-      <section className="py-24 bg-navy relative overflow-hidden">
+      <section className="py-16 md:py-24 bg-navy relative overflow-hidden">
         {/* Aurora dourada subindo do fundo */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_110%,rgba(253,224,71,0.18),transparent_65%)] pointer-events-none" />
         <div className="absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full bg-brand-blue/20 blur-[100px] pointer-events-none" />
         {/* "14" decorativo gigante */}
-        <span className="absolute -right-8 top-0 text-[22rem] font-heading font-black text-white/[0.025] leading-none select-none pointer-events-none">14</span>
+        <span className="absolute -right-8 top-0 text-[22rem] font-heading font-black text-white/[0.025] leading-none select-none pointer-events-none hidden md:block">14</span>
 
         <div className="max-w-6xl mx-auto px-4 relative z-10">
           <div className="grid lg:grid-cols-[1.2fr_1fr] gap-12 lg:gap-20 items-center">
@@ -635,7 +636,7 @@ export default function HomePage() {
             {/* Esquerda — pitch */}
             <Reveal>
               <span className="text-eyebrow text-brand-gold mb-4 block">Para donos de oficina</span>
-              <h2 className="text-4xl md:text-5xl font-heading font-black text-white leading-tight mb-6">
+              <h2 className="text-3xl md:text-5xl font-heading font-black text-white leading-tight mb-6">
                 Gerencie tudo.<br/>
                 Fature <span className="text-brand-yellow">muito mais.</span>
               </h2>
