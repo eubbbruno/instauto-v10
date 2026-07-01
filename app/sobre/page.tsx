@@ -12,10 +12,12 @@ export default function SobrePage() {
       <Header />
       
       {/* Hero */}
-      <section className="bg-gradient-to-br from-blue-600 to-blue-500 py-12 sm:py-20 pt-24 sm:pt-32 md:pt-36">
-        <div className="max-w-4xl mx-auto px-4 text-center text-white">
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4">Sobre o Instauto</h1>
-          <p className="text-base sm:text-xl text-blue-100">
+      <section className="band-dark py-16 pt-28 sm:py-24 sm:pt-36 relative overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-brand-blue/20 blur-[100px] pointer-events-none" />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+          <p className="text-eyebrow text-brand-gold mb-4">Sobre nós</p>
+          <h1 className="font-heading text-3xl sm:text-5xl font-black text-white mb-4 leading-tight">Sobre o Instauto</h1>
+          <p className="text-white/55 text-lg">
             Conectando motoristas e oficinas de forma simples e eficiente
           </p>
         </div>
@@ -122,7 +124,8 @@ export default function SobrePage() {
       </section>
 
       {/* Números */}
-      <section className="py-12 sm:py-20 bg-gradient-to-br from-blue-600 to-blue-700 text-white">
+      <section className="py-12 sm:py-20 band-dark relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_120%,rgba(253,224,71,0.1),transparent_60%)] pointer-events-none" />
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-8 sm:mb-12">
             <h2 className="text-xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">

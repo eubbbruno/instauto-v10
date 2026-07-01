@@ -39,13 +39,12 @@ export default function ContatoPage() {
       <Header />
 
       {/* Hero simples */}
-      <section className="relative bg-aurora py-16 sm:py-24 pt-28 sm:pt-36 overflow-hidden">
-        <div className="absolute inset-0 bg-grid opacity-50" />
-        <div className="blob absolute -top-20 right-0 w-80 h-80 bg-yellow-400/25 pointer-events-none" />
-        <div className="relative max-w-4xl mx-auto px-4 text-center text-white">
-          <p className="text-eyebrow text-brand-yellow mb-3">Contato</p>
-          <h1 className="h-display mb-4">Vamos conversar</h1>
-          <p className="text-lg text-blue-100">
+      <section className="band-dark py-16 sm:py-24 pt-28 sm:pt-36 relative overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-brand-blue/20 blur-[100px] pointer-events-none" />
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
+          <p className="text-eyebrow text-brand-gold mb-3">Contato</p>
+          <h1 className="font-heading text-4xl sm:text-5xl font-black text-white mb-4 leading-tight">Vamos conversar</h1>
+          <p className="text-white/55 text-lg">
             Dúvida, sugestão ou parceria? A gente responde em até 24h.
           </p>
         </div>

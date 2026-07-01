@@ -238,83 +238,66 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex">
       {/* Lado Esquerdo - Branding (Desktop) */}
-      <div className="hidden lg:flex lg:w-1/2 bg-aurora text-white p-12 flex-col justify-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-grid opacity-50" />
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="blob absolute -top-20 -left-10 w-96 h-96 bg-blue-500/40" />
-          <div className="blob absolute -bottom-24 -right-10 w-80 h-80 bg-yellow-400/30" style={{ animationDelay: "5s" }} />
-        </div>
+      <div className="hidden lg:flex lg:w-1/2 bg-navy text-white p-12 flex-col justify-center relative overflow-hidden">
+        <div className="absolute -top-40 -right-20 w-[500px] h-[500px] rounded-full bg-brand-blue/20 blur-[100px] pointer-events-none" />
+        <div className="absolute -bottom-40 -left-20 w-[400px] h-[400px] rounded-full bg-brand-yellow/8 blur-[80px] pointer-events-none" />
 
         <div className="relative z-10">
-          <Link href="/" className="inline-block mb-12">
+          <Link href="/" className="inline-block mb-14">
             <Image
               src="/images/instauto-amarelo-branco.svg"
               alt="Instauto"
-              width={220}
-              height={60}
-              className="h-12 w-auto"
+              width={160}
+              height={44}
+              className="h-10 w-auto"
             />
           </Link>
 
-          <h1 className="font-heading text-4xl lg:text-5xl font-extrabold leading-[1.1] tracking-tight mb-6">
-            Bem-vindo ao<br />
-            <span className="text-gradient-gold">Instauto</span>
+          <p className="text-eyebrow text-brand-gold mb-4">Para motoristas e oficinas</p>
+          <h1 className="font-heading text-4xl lg:text-5xl font-black leading-tight tracking-tight mb-6">
+            Bem-vindo de<br />
+            <span className="text-brand-yellow">volta.</span>
           </h1>
-          
-          <p className="text-xl text-blue-100 mb-12">
-            A plataforma que conecta motoristas e oficinas mecânicas de forma simples e eficiente.
+
+          <p className="text-white/55 text-lg mb-12 max-w-sm leading-relaxed">
+            A maior plataforma de oficinas mecânicas do Brasil. Encontre, compare e agende.
           </p>
 
           <div className="space-y-5">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 glass-dark rounded-xl flex items-center justify-center flex-shrink-0">
-                <CheckCircle className="w-6 h-6 text-yellow-400" />
+            {[
+              { title: "Oficinas Verificadas", sub: "Avaliações reais de motoristas" },
+              { title: "Orçamentos Grátis",    sub: "Compare preços sem compromisso" },
+              { title: "Gestão Completa",      sub: "Para donos de oficina crescerem" },
+            ].map(({ title, sub }) => (
+              <div key={title} className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-xl bg-brand-yellow/15 ring-1 ring-brand-yellow/25 flex items-center justify-center flex-shrink-0">
+                  <CheckCircle className="w-5 h-5 text-brand-yellow" />
+                </div>
+                <div>
+                  <p className="font-semibold text-white text-[15px]">{title}</p>
+                  <p className="text-white/45 text-sm">{sub}</p>
+                </div>
               </div>
-              <div>
-                <h3 className="font-semibold text-lg">Oficinas Verificadas</h3>
-                <p className="text-blue-200 text-sm">Encontre profissionais confiáveis</p>
-              </div>
-            </div>
-            
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 glass-dark rounded-xl flex items-center justify-center flex-shrink-0">
-                <CheckCircle className="w-6 h-6 text-yellow-400" />
-              </div>
-              <div>
-                <h3 className="font-semibold text-lg">Orçamentos Grátis</h3>
-                <p className="text-blue-200 text-sm">Compare preços sem compromisso</p>
-              </div>
-            </div>
-            
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 glass-dark rounded-xl flex items-center justify-center flex-shrink-0">
-                <CheckCircle className="w-6 h-6 text-yellow-400" />
-              </div>
-              <div>
-                <h3 className="font-semibold text-lg">Gestão Completa</h3>
-                <p className="text-blue-200 text-sm">Controle total dos seus veículos</p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
 
       {/* Lado Direito - Formulário */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 bg-gray-50">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 bg-[#F8F9FB]">
         <FadeIn className="w-full max-w-md">
           <div className="w-full max-w-md">
             {/* Logo Mobile */}
             <div className="lg:hidden text-center mb-8">
-              <Link href="/" className="inline-flex items-center gap-2">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center">
-                  <Car className="w-7 h-7 text-white" />
+              <Link href="/">
+                <div className="inline-flex items-center gap-2 bg-navy px-4 py-2 rounded-xl">
+                  <Image src="/images/instauto-amarelo-branco.svg" alt="Instauto" width={120} height={32} className="h-7 w-auto" />
                 </div>
-                <span className="text-2xl font-bold text-gray-900">Instauto</span>
               </Link>
             </div>
 
             {/* Card do Formulário */}
-            <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8">
+            <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 sm:p-8">
             {/* Mensagem de Confirmação de Email */}
             {showEmailConfirmation ? (
               <div className="text-center py-4">
@@ -365,30 +348,30 @@ export default function LoginPage() {
                 </p>
 
                 {/* Tabs Motorista/Oficina */}
-            <div className="flex bg-gray-100 rounded-xl p-1 mb-6">
+            <div className="flex bg-gray-100 rounded-2xl p-1 mb-6">
               <button
                 type="button"
                 onClick={() => setUserType("motorista")}
-                className={`flex-1 py-3 rounded-lg font-medium transition-all flex items-center justify-center gap-2 ${
+                className={`flex-1 py-3 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 ${
                   userType === "motorista"
-                    ? "bg-white shadow-sm text-blue-600"
-                    : "text-gray-500 hover:text-gray-700"
+                    ? "bg-navy text-white shadow-sm"
+                    : "text-navy/50 hover:text-navy"
                 }`}
               >
-                <Car className="w-5 h-5" />
-                <span>Motorista</span>
+                <Car className="w-4 h-4" />
+                Motorista
               </button>
               <button
                 type="button"
                 onClick={() => setUserType("oficina")}
-                className={`flex-1 py-3 rounded-lg font-medium transition-all flex items-center justify-center gap-2 ${
+                className={`flex-1 py-3 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2 ${
                   userType === "oficina"
-                    ? "bg-white shadow-sm text-yellow-600"
-                    : "text-gray-500 hover:text-gray-700"
+                    ? "bg-brand-yellow text-navy shadow-sm"
+                    : "text-navy/50 hover:text-navy"
                 }`}
               >
-                <Wrench className="w-5 h-5" />
-                <span>Oficina</span>
+                <Wrench className="w-4 h-4" />
+                Oficina
               </button>
             </div>
 
@@ -483,7 +466,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg shadow-blue-500/30 mt-6 min-h-[48px]"
+                className="w-full btn-epic-blue py-4 rounded-xl font-bold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mt-6 min-h-[48px]"
               >
                 {loading && <Loader2 className="w-5 h-5 animate-spin" />}
                 {isLogin ? "Entrar" : "Criar conta"}

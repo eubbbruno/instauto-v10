@@ -21,32 +21,19 @@ export default function PlanosPage() {
       <Header />
 
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 pt-36 pb-20 sm:pt-44 md:pb-32 overflow-hidden">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center text-white">
-            <h1 className="text-4xl md:text-6xl font-heading font-bold mb-6 leading-tight">
-              Planos e Preços
+      <section className="band-dark pt-32 pb-16 relative overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full bg-brand-blue/20 blur-[100px] pointer-events-none" />
+        <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-[600px] h-[200px] bg-brand-yellow/6 blur-[80px] pointer-events-none" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="max-w-2xl mx-auto text-center">
+            <p className="text-eyebrow text-brand-gold mb-4">Planos e Preços</p>
+            <h1 className="font-heading text-4xl sm:text-5xl font-black text-white leading-tight mb-4">
+              Simples, transparente,<br className="hidden sm:block" /> sem surpresas
             </h1>
-            <p className="text-xl md:text-2xl text-blue-100 font-sans leading-relaxed">
-              Escolha o plano ideal para sua oficina. Comece grátis ou teste o PRO
-              por 7 dias.
+            <p className="text-white/55 text-lg font-sans leading-relaxed">
+              Comece grátis e escale conforme sua oficina cresce. 14 dias de PRO completo sem cartão.
             </p>
           </div>
-        </div>
-
-        {/* Decorative wave */}
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg
-            viewBox="0 0 1440 120"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-full h-auto"
-          >
-            <path
-              d="M0 0L60 10C120 20 240 40 360 46.7C480 53 600 47 720 43.3C840 40 960 40 1080 46.7C1200 53 1320 67 1380 73.3L1440 80V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0V0Z"
-              fill="white"
-            />
-          </svg>
         </div>
       </section>
 

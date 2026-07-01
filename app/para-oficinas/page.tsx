@@ -31,32 +31,29 @@ export default function OficinasPage() {
       <Header />
 
       {/* Hero Section */}
-      <section className="relative min-h-[85vh] bg-gradient-to-br from-blue-600 via-blue-500 to-blue-600 overflow-hidden pt-20 sm:pt-24">
-        {/* Elementos decorativos */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-40 -right-40 w-96 h-96 bg-yellow-400/20 rounded-full blur-3xl" />
-          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-400/30 rounded-full blur-3xl" />
-        </div>
+      <section className="band-dark pt-28 pb-20 relative overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-brand-blue/20 blur-[120px] pointer-events-none" />
+        <div className="absolute -bottom-20 -left-20 w-[400px] h-[400px] rounded-full bg-brand-yellow/8 blur-[80px] pointer-events-none" />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 pb-20">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             {/* Conteúdo */}
             <FadeIn>
             <div className="text-white">
               {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-sans font-semibold mb-6">
-                <Wrench className="w-4 h-4" />
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/6 ring-1 ring-white/12 rounded-full text-sm font-sans font-semibold mb-6">
+                <Wrench className="w-4 h-4 text-brand-yellow" />
                 Sistema #1 para Oficinas no Brasil
               </div>
 
               {/* Título */}
-              <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold leading-tight mb-4 sm:mb-6">
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-heading font-black leading-tight mb-6">
                 Gestão completa{" "}
-                <span className="text-yellow-400">para sua oficina</span>
+                <span className="text-brand-yellow">para sua oficina</span>
               </h1>
 
               {/* Subtítulo */}
-              <p className="text-base sm:text-lg md:text-xl text-blue-100 font-sans mb-6 sm:mb-8 max-w-xl">
+              <p className="text-white/55 text-lg font-sans mb-8 max-w-xl leading-relaxed">
                 Sistema completo de gestão que organiza sua oficina, aumenta o faturamento e libera seu tempo.
               </p>
 
