@@ -71,32 +71,32 @@ export function StatCard({
   const colors = colorClasses[color];
   
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
       whileHover={{ y: -4, transition: { duration: 0.2 } }}
-      className={`relative bg-white/80 backdrop-blur-md border border-white/20 rounded-2xl p-4 md:p-5 shadow-lg ${colors.shadow} hover:shadow-xl transition-all duration-300 overflow-hidden group`}
+      className="relative bg-white/5 border border-white/8 rounded-2xl p-4 md:p-5 shadow-lg hover:shadow-xl hover:bg-white/8 transition-all duration-300 overflow-hidden group"
     >
       {/* Background decoration */}
-      <motion.div 
-        className={`absolute top-0 right-0 w-24 h-24 ${colors.bg} rounded-full blur-3xl opacity-40 -mr-12 -mt-12`}
-        animate={{ opacity: [0.4, 0.6, 0.4] }}
+      <motion.div
+        className={`absolute top-0 right-0 w-24 h-24 ${colors.bg} rounded-full blur-3xl opacity-10 -mr-12 -mt-12`}
+        animate={{ opacity: [0.1, 0.18, 0.1] }}
         transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
       />
-      
+
       <div className="relative">
         {/* Header com ícone */}
         <div className="flex items-start justify-between mb-3">
-          <div className={`w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center bg-gradient-to-br ${colors.gradient} shadow-md ${colors.shadow} group-hover:scale-105 transition-transform duration-300`}>
+          <div className={`w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center bg-gradient-to-br ${colors.gradient} shadow-md group-hover:scale-105 transition-transform duration-300`}>
             <Icon className="w-5 h-5 md:w-6 md:h-6 text-white" />
           </div>
-          
+
           {trend && (
             <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold ${
-              trend.positive 
-                ? "bg-green-100 text-green-700" 
-                : "bg-red-100 text-red-700"
+              trend.positive
+                ? "bg-green-400/10 text-green-400"
+                : "bg-red-400/10 text-red-400"
             }`}>
               {trend.positive ? (
                 <TrendingUp className="w-3 h-3" />
@@ -110,20 +110,20 @@ export function StatCard({
 
         {/* Conteúdo */}
         <div className="space-y-1">
-          <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+          <p className="text-xs font-semibold text-white/40 uppercase tracking-wide">
             {title}
           </p>
-          
+
           {loading ? (
-            <div className="h-8 md:h-10 w-24 bg-gray-200 animate-pulse rounded-lg" />
+            <div className="h-8 md:h-10 w-24 bg-white/10 animate-pulse rounded-lg" />
           ) : (
-            <p className="text-2xl md:text-3xl font-bold text-gray-900 tracking-tight">
+            <p className="text-2xl md:text-3xl font-bold text-white tracking-tight">
               {value}
             </p>
           )}
-          
+
           {description && (
-            <p className="text-xs text-gray-600 font-medium hidden sm:block">
+            <p className="text-xs text-white/40 font-medium hidden sm:block">
               {description}
             </p>
           )}
