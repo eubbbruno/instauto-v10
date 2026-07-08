@@ -28,33 +28,46 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const supabase = createClient();
 
   useEffect(() => {
-    const checkAdmin = async () => {
-      if (loading) return;
+    if (loading) return;
 
-      if (!user) {
-        router.push("/login");
-        return;
-      }
+    if (!user) {
+      router.push("/login");
+      return;
+    }
 
-      // Verificar se é admin
-      const { data: profileData } = await supabase
-        .from("profiles")
-        .select("role")
-        .eq("id", user.id)
-        .single();
-
-      if (profileData?.role !== "admin") {
+    // Reaproveita o profile já carregado pelo AuthContext (select * inclui role)
+    if (profile) {
+      if (profile.role === "admin") {
+        setIsAdmin(true);
+        setChecking(false);
+      } else {
         console.log("🚫 [Admin Layout] Acesso negado. Redirecionando...");
         router.push("/");
-        return;
       }
+      return;
+    }
 
-      setIsAdmin(true);
-      setChecking(false);
+    // Fallback: profile ainda não populou no contexto — consulta direta
+    let active = true;
+    supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .single()
+      .then(({ data }) => {
+        if (!active) return;
+        if (data?.role === "admin") {
+          setIsAdmin(true);
+          setChecking(false);
+        } else {
+          router.push("/");
+        }
+      });
+
+    return () => {
+      active = false;
     };
-
-    checkAdmin();
-  }, [user, loading, router, supabase]);
+  }, [user, profile, loading, router, supabase]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
