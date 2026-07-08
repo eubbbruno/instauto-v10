@@ -28,6 +28,7 @@ export async function middleware(req: NextRequest) {
   const publicRoutes = [
     "/",
     "/login",
+    "/cadastro",
     "/auth/callback",
     "/para-oficinas",
     "/sobre",
@@ -43,7 +44,8 @@ export async function middleware(req: NextRequest) {
     "/avaliar-oficina",
   ];
 
-  const isPublicRoute = publicRoutes.some(route => pathname === route) || 
+  const isPublicRoute = publicRoutes.some(route => pathname === route) ||
+                       pathname.startsWith("/cadastro") ||
                        pathname.startsWith("/api/") ||
                        pathname.startsWith("/_next/") ||
                        pathname.startsWith("/oficina-detalhes/") ||
