@@ -1,8 +1,8 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Mail, Lock, Eye, EyeOff, Loader2, CheckCircle } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, Loader2, CheckCircle, AlertTriangle } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { toast } from "sonner";
@@ -21,7 +21,51 @@ function LoginContent() {
   const [googleLoading, setGoogleLoading] = useState(false);
   const [facebookLoading, setFacebookLoading] = useState(false);
 
+  // Erro vindo do link de e-mail (chega como hash: #error=...&error_code=otp_expired)
+  const [linkError, setLinkError] = useState<string | null>(null);
+  const [resendLoading, setResendLoading] = useState(false);
+  const [resendSent, setResendSent] = useState(false);
+
   const supabase = createClient();
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const hash = window.location.hash;
+    if (hash && hash.includes("error")) {
+      const params = new URLSearchParams(hash.replace(/^#/, ""));
+      const code = params.get("error_code");
+      if (code === "otp_expired") {
+        setLinkError("O link de confirmação expirou ou já foi usado. Reenvie o e-mail para continuar.");
+      } else if (params.get("error")) {
+        setLinkError("Não foi possível confirmar sua conta. Reenvie o e-mail de confirmação.");
+      }
+      // Limpa o hash da URL sem recarregar
+      window.history.replaceState(null, "", window.location.pathname + window.location.search);
+    }
+  }, []);
+
+  const handleResendConfirmation = async () => {
+    if (!email) {
+      toast.error("Digite seu e-mail acima para reenviar a confirmação");
+      return;
+    }
+    setResendLoading(true);
+    try {
+      const { error } = await supabase.auth.resend({
+        type: "signup",
+        email,
+        options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+      });
+      if (error) throw error;
+      setResendSent(true);
+      toast.success("E-mail de confirmação reenviado!");
+    } catch (error: any) {
+      console.error("❌ [Resend] Erro:", error);
+      toast.error(error.message || "Erro ao reenviar e-mail");
+    } finally {
+      setResendLoading(false);
+    }
+  };
 
   const redirectByProfile = async (userId: string) => {
     const { data: profile, error } = await supabase
@@ -154,6 +198,33 @@ function LoginContent() {
               <p className="text-sm sm:text-base text-gray-500 text-center mb-6 sm:mb-8">
                 Bem-vindo de volta!
               </p>
+
+              {/* Erro do link de confirmação + reenvio */}
+              {linkError && (
+                <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl">
+                  <div className="flex items-start gap-3">
+                    <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                    <div className="flex-1">
+                      <p className="text-sm text-amber-800 mb-3">{linkError}</p>
+                      {resendSent ? (
+                        <p className="text-sm font-medium text-green-700">
+                          ✅ E-mail reenviado! Confira sua caixa de entrada.
+                        </p>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={handleResendConfirmation}
+                          disabled={resendLoading}
+                          className="inline-flex items-center gap-2 text-sm font-semibold text-amber-700 hover:text-amber-900 disabled:opacity-50"
+                        >
+                          {resendLoading && <Loader2 className="w-4 h-4 animate-spin" />}
+                          Reenviar e-mail de confirmação
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Botão Google */}
               <button

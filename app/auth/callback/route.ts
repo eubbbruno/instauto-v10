@@ -206,9 +206,9 @@ export async function GET(request: Request) {
         }
         
         console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-        console.log("🔀 [Callback] Redirecionando para /oficina");
-        
-        const response = NextResponse.redirect(new URL("/oficina", requestUrl.origin));
+        console.log("🔀 [Callback] Conta nova confirmada -> /bem-vindo (oficina)");
+
+        const response = NextResponse.redirect(new URL("/bem-vindo?next=/oficina", requestUrl.origin));
         response.cookies.delete("instauto_user_type");
         return response;
       } else {
@@ -246,9 +246,9 @@ export async function GET(request: Request) {
         }
         
         console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-        console.log("🔀 [Callback] Redirecionando para /motorista");
-        
-        const response = NextResponse.redirect(new URL("/motorista", requestUrl.origin));
+        console.log("🔀 [Callback] Conta nova confirmada -> /bem-vindo (motorista)");
+
+        const response = NextResponse.redirect(new URL("/bem-vindo?next=/motorista", requestUrl.origin));
         response.cookies.delete("instauto_user_type");
         return response;
       }

@@ -29,6 +29,7 @@ export async function middleware(req: NextRequest) {
     "/",
     "/login",
     "/cadastro",
+    "/bem-vindo",
     "/auth/callback",
     "/para-oficinas",
     "/sobre",
