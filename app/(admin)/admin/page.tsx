@@ -159,7 +159,7 @@ export default function AdminDashboard() {
       {/* Stats Grid - Compacto com Glassmorphism */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-6 md:mb-8">
         {/* Total Oficinas */}
-        <div className="bg-white/80 backdrop-blur-md border border-white/20 rounded-xl md:rounded-2xl p-4 md:p-5 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">
+        <div className="bg-white border border-[#0B1120]/8 rounded-xl md:rounded-2xl p-4 md:p-5 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">
           <div className="flex items-center justify-between mb-3 md:mb-4">
             <div className="w-10 h-10 md:w-12 md:h-12 bg-blue-100 rounded-lg md:rounded-xl flex items-center justify-center">
               <Building2 className="w-5 h-5 md:w-6 md:h-6 text-blue-600" />
@@ -173,7 +173,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Total Motoristas */}
-        <div className="bg-white/80 backdrop-blur-md border border-white/20 rounded-xl md:rounded-2xl p-4 md:p-5 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">
+        <div className="bg-white border border-[#0B1120]/8 rounded-xl md:rounded-2xl p-4 md:p-5 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">
           <div className="flex items-center justify-between mb-3 md:mb-4">
             <div className="w-10 h-10 md:w-12 md:h-12 bg-yellow-100 rounded-lg md:rounded-xl flex items-center justify-center">
               <Users className="w-5 h-5 md:w-6 md:h-6 text-yellow-600" />
@@ -185,7 +185,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Total Orçamentos */}
-        <div className="bg-white/80 backdrop-blur-md border border-white/20 rounded-xl md:rounded-2xl p-4 md:p-5 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">
+        <div className="bg-white border border-[#0B1120]/8 rounded-xl md:rounded-2xl p-4 md:p-5 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">
           <div className="flex items-center justify-between mb-3 md:mb-4">
             <div className="w-10 h-10 md:w-12 md:h-12 bg-blue-100 rounded-lg md:rounded-xl flex items-center justify-center">
               <FileText className="w-5 h-5 md:w-6 md:h-6 text-blue-600" />
@@ -199,7 +199,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Avaliações */}
-        <div className="bg-white/80 backdrop-blur-md border border-white/20 rounded-xl md:rounded-2xl p-4 md:p-5 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">
+        <div className="bg-white border border-[#0B1120]/8 rounded-xl md:rounded-2xl p-4 md:p-5 shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all">
           <div className="flex items-center justify-between mb-3 md:mb-4">
             <div className="w-10 h-10 md:w-12 md:h-12 bg-yellow-100 rounded-lg md:rounded-xl flex items-center justify-center">
               <Star className="w-5 h-5 md:w-6 md:h-6 text-yellow-600" />
@@ -216,21 +216,22 @@ export default function AdminDashboard() {
       {/* Cards Secundários - Com Glassmorphism */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
         {/* Novos Usuários */}
-        <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl md:rounded-2xl p-5 md:p-6 text-white shadow-lg backdrop-blur-sm">
-          <div className="flex items-center gap-3 md:gap-4 mb-3 md:mb-4">
-            <div className="w-12 h-12 md:w-14 md:h-14 bg-white/20 backdrop-blur-sm rounded-lg md:rounded-xl flex items-center justify-center">
-              <TrendingUp className="w-6 h-6 md:w-7 md:h-7" />
+        <div className="relative overflow-hidden bg-gradient-to-br from-[#0B1120] via-[#13224a] to-[#1e3a8a] rounded-xl md:rounded-2xl p-5 md:p-6 text-white shadow-lg">
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent" />
+          <div className="relative flex items-center gap-3 md:gap-4 mb-3 md:mb-4">
+            <div className="w-12 h-12 md:w-14 md:h-14 bg-yellow-400/20 rounded-lg md:rounded-xl flex items-center justify-center">
+              <TrendingUp className="w-6 h-6 md:w-7 md:h-7 text-yellow-400" />
             </div>
             <div>
-              <p className="text-xs md:text-sm text-blue-100">Últimos 7 dias</p>
+              <p className="text-xs md:text-sm text-white/50">Últimos 7 dias</p>
               <p className="text-2xl md:text-3xl font-bold">{stats.newUsersLast7Days}</p>
             </div>
           </div>
-          <p className="text-xs md:text-sm text-blue-100">Novos usuários cadastrados</p>
+          <p className="relative text-xs md:text-sm text-white/50">Novos usuários cadastrados</p>
         </div>
 
         {/* Status dos Orçamentos */}
-        <div className="bg-white/80 backdrop-blur-md border border-white/20 rounded-xl md:rounded-2xl p-5 md:p-6 shadow-lg">
+        <div className="bg-white border border-[#0B1120]/8 rounded-xl md:rounded-2xl p-5 md:p-6 shadow-lg">
           <h3 className="text-base md:text-lg font-bold text-gray-900 mb-3 md:mb-4 flex items-center gap-2">
             <Clock className="w-4 h-4 md:w-5 md:h-5 text-blue-600" />
             Status dos Orçamentos
@@ -259,7 +260,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* Planos - Com Glassmorphism */}
-      <div className="bg-white/80 backdrop-blur-md border border-white/20 rounded-xl md:rounded-2xl p-5 md:p-6 shadow-lg">
+      <div className="bg-white border border-[#0B1120]/8 rounded-xl md:rounded-2xl p-5 md:p-6 shadow-lg">
         <h3 className="text-base md:text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
           <Crown className="w-4 h-4 md:w-5 md:h-5 text-yellow-600" />
           Distribuição de Planos
