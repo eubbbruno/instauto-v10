@@ -25,7 +25,7 @@ function LoginContent() {
   const redirectByProfile = async (userId: string) => {
     const { data: profile, error } = await supabase
       .from("profiles")
-      .select("type")
+      .select("type, role")
       .eq("id", userId)
       .single();
 
@@ -33,6 +33,12 @@ function LoginContent() {
       console.error("❌ [Login] Erro ao buscar profile:", error);
       toast.error("Erro ao carregar perfil. Tente novamente.");
       setLoading(false);
+      return;
+    }
+
+    // Admin tem painel próprio, independente do type
+    if (profile?.role === "admin") {
+      router.push("/admin");
       return;
     }
 

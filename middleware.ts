@@ -58,6 +58,8 @@ export async function middleware(req: NextRequest) {
   // Rotas protegidas - precisa de auth
   if (!session) {
     const loginUrl = new URL("/login", req.url);
+    // Preserva o destino para voltar após o login (ex.: /admin)
+    loginUrl.searchParams.set("redirect", pathname);
     return NextResponse.redirect(loginUrl);
   }
 

@@ -53,8 +53,10 @@ export async function GET(request: Request) {
       }
 
       if (existingProfile) {
-        console.log("✅ [Callback] Profile JÁ existe, tipo:", existingProfile.type);
-        const redirectUrl = existingProfile.type === "workshop" ? "/oficina" : "/motorista";
+        console.log("✅ [Callback] Profile JÁ existe, tipo:", existingProfile.type, "role:", existingProfile.role);
+        const redirectUrl = existingProfile.role === "admin"
+          ? "/admin"
+          : existingProfile.type === "workshop" ? "/oficina" : "/motorista";
         console.log("🔀 [Callback] Redirecionando para:", redirectUrl);
         return NextResponse.redirect(new URL(redirectUrl, requestUrl.origin));
       }
