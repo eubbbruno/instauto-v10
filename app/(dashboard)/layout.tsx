@@ -173,10 +173,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   // Loading
   if (authLoading || dataLoading) {
     return (
-      <div className="min-h-screen bg-[#0B1120] flex items-center justify-center">
+      <div className="min-h-screen bg-[#F8F9FB] flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="h-12 w-12 animate-spin text-yellow-400 mx-auto mb-4" />
-          <p className="text-white/40">Carregando...</p>
+          <Loader2 className="h-12 w-12 animate-spin text-[#1e3a8a] mx-auto mb-4" />
+          <p className="text-gray-400">Carregando...</p>
         </div>
       </div>
     );
@@ -189,23 +189,28 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
 
   return (
-    <div className="min-h-screen bg-[#0B1120]">
+    <div className="min-h-screen bg-[#F8F9FB]">
       {/* Sidebar Mobile Overlay */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/60 z-40 lg:hidden"
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar - Blue gradient glassmorphism */}
       <aside className={`
-        fixed top-0 left-0 bottom-0 z-50 w-64 bg-[#060B14] border-r border-white/5 flex flex-col
-        transform transition-transform duration-300 lg:translate-x-0 shadow-2xl
+        fixed top-0 left-0 bottom-0 z-50 w-64 flex flex-col
+        bg-gradient-to-b from-[#0B1120] via-[#13224a] to-[#1e3a8a]
+        border-r border-white/10 shadow-2xl
+        transform transition-transform duration-300 lg:translate-x-0
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
       `}>
+        {/* Glass highlight overlay */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent" />
+
         {/* Logo */}
-        <div className="flex-shrink-0 p-5 border-b border-white/5">
+        <div className="relative flex-shrink-0 p-5 border-b border-white/10">
           <Link href="/oficina" className="flex items-center justify-center">
             <Image
               src="/images/instauto-amarelo-branco.svg"
@@ -218,7 +223,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 p-3 space-y-0.5 overflow-y-auto">
+        <nav className="relative flex-1 p-3 space-y-0.5 overflow-y-auto">
           {menuItems.map((item) => {
             const isActive = pathname === item.href;
             const showBadge = item.href === "/oficina/orcamentos" && pendingQuotes > 0;
@@ -231,8 +236,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 className={`
                   flex items-center gap-3 px-3 py-2 rounded-lg transition-colors
                   ${isActive
-                    ? "bg-yellow-400/10 text-white"
-                    : "text-white/40 hover:text-white hover:bg-white/5"
+                    ? "bg-white/10 text-white shadow-sm"
+                    : "text-white/50 hover:text-white hover:bg-white/5"
                   }
                 `}
               >
@@ -249,18 +254,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </nav>
 
         {/* User Card */}
-        <div className="flex-shrink-0 p-3 border-t border-white/5">
+        <div className="relative flex-shrink-0 p-3 border-t border-white/10">
           <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors cursor-pointer group">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-400 to-yellow-500 flex items-center justify-center text-[#0B1120] text-sm font-bold">
               {workshop?.name?.charAt(0) || "O"}
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-white truncate">{workshop?.name || "Oficina"}</p>
-              <p className="text-xs text-white/40 truncate">
+              <p className="text-xs text-white/50 truncate">
                 {workshop?.plan_type === "pro" ? "Plano Pro" : "Plano Free"}
               </p>
             </div>
-            <ChevronRight className="w-4 h-4 text-white/30 group-hover:text-white/60 transition-colors" />
+            <ChevronRight className="w-4 h-4 text-white/40 group-hover:text-white/70 transition-colors" />
           </div>
         </div>
       </aside>

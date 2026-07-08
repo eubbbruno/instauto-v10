@@ -391,7 +391,7 @@ export default function OficinaDashboard() {
   if ((authLoading || loading) && !forceLoaded) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-12 w-12 animate-spin text-yellow-400" />
+        <Loader2 className="h-12 w-12 animate-spin text-[#1e3a8a]" />
       </div>
     );
   }
@@ -409,10 +409,10 @@ export default function OficinaDashboard() {
 
   const getActivityColor = (type: string) => {
     switch (type) {
-      case 'order': return 'text-yellow-400 bg-yellow-400/10';
-      case 'quote': return 'text-blue-400 bg-blue-400/10';
-      case 'client': return 'text-blue-400 bg-blue-400/10';
-      default: return 'text-white/40 bg-white/5';
+      case 'order': return 'text-yellow-600 bg-yellow-100';
+      case 'quote': return 'text-[#1e3a8a] bg-blue-100';
+      case 'client': return 'text-[#1e3a8a] bg-blue-100';
+      default: return 'text-gray-600 bg-gray-100';
     }
   };
 
@@ -420,10 +420,10 @@ export default function OficinaDashboard() {
     if (!status) return null;
 
     const badges: Record<string, { label: string; color: string }> = {
-      pending: { label: 'Pendente', color: 'bg-yellow-400/10 text-yellow-400' },
-      in_progress: { label: 'Em Andamento', color: 'bg-blue-400/10 text-blue-400' },
-      completed: { label: 'Concluído', color: 'bg-green-400/10 text-green-400' },
-      responded: { label: 'Respondido', color: 'bg-green-400/10 text-green-400' },
+      pending: { label: 'Pendente', color: 'bg-yellow-100 text-yellow-800' },
+      in_progress: { label: 'Em Andamento', color: 'bg-blue-100 text-blue-800' },
+      completed: { label: 'Concluído', color: 'bg-green-100 text-green-800' },
+      responded: { label: 'Respondido', color: 'bg-green-100 text-green-800' },
     };
 
     const badge = badges[status] || { label: status, color: 'bg-gray-100 text-gray-800' };
@@ -474,9 +474,9 @@ export default function OficinaDashboard() {
 
   const getAlertColor = (type: string) => {
     switch (type) {
-      case 'warning': return 'border-yellow-400/20 bg-yellow-400/5';
-      case 'success': return 'border-green-400/20 bg-green-400/5';
-      default: return 'border-blue-400/20 bg-blue-400/5';
+      case 'warning': return 'border-yellow-200 bg-yellow-50';
+      case 'success': return 'border-green-200 bg-green-50';
+      default: return 'border-blue-200 bg-blue-50';
     }
   };
 
@@ -489,10 +489,10 @@ export default function OficinaDashboard() {
         <div className="p-4 sm:p-6">
           {/* Header */}
           <div className="mb-3 sm:mb-4">
-            <p className="text-xs sm:text-sm text-white/40 mb-1">
+            <p className="text-xs sm:text-sm text-gray-500 mb-1">
               {format(new Date(), "EEEE, dd 'de' MMMM", { locale: ptBR })}
             </p>
-            <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-white">
+            <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900">
               Olá, {workshop?.name || 'Oficina'}! 👋
             </h1>
           </div>
@@ -551,15 +551,15 @@ export default function OficinaDashboard() {
             {/* Coluna Esquerda - 2/3 */}
             <div className="lg:col-span-2 space-y-3 sm:space-y-4">
               {/* Orçamentos Pendentes */}
-              <div className="bg-white/5 border border-white/8 rounded-2xl p-4 sm:p-5 md:p-6 hover:bg-white/8 transition-all duration-300">
+              <div className="bg-white border border-[#0B1120]/8 rounded-2xl shadow-sm p-4 sm:p-5 md:p-6 hover:shadow-md hover:border-[#1e3a8a]/20 transition-all duration-300">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-                    <FileText className="w-5 h-5 text-yellow-400" />
+                  <h2 className="text-base sm:text-lg font-bold text-gray-900 flex items-center gap-2">
+                    <FileText className="w-5 h-5 text-[#1e3a8a]" />
                     Orçamentos Pendentes
                   </h2>
                   <Link
                     href="/oficina/orcamentos"
-                    className="text-sm text-yellow-400 hover:text-yellow-300 font-medium transition-colors"
+                    className="text-sm text-[#1e3a8a] hover:text-[#1e40af] font-medium transition-colors"
                   >
                     Ver todos
                   </Link>
@@ -569,69 +569,68 @@ export default function OficinaDashboard() {
                     .filter(a => a.type === 'quote' && a.status === 'pending')
                     .slice(0, 5)
                     .map((activity) => (
-                      <div key={activity.id} className="flex items-center gap-3 p-3 bg-white/5 rounded-xl hover:bg-white/10 transition-colors">
-                        <div className="w-10 h-10 rounded-lg bg-yellow-400/10 flex items-center justify-center flex-shrink-0">
-                          <FileText className="w-5 h-5 text-yellow-400" />
+                      <div key={activity.id} className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+                        <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
+                          <FileText className="w-5 h-5 text-[#1e3a8a]" />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-white truncate">{activity.title}</p>
-                          <p className="text-xs text-white/40 truncate">{activity.description}</p>
+                          <p className="text-sm font-medium text-gray-900 truncate">{activity.title}</p>
+                          <p className="text-xs text-gray-500 truncate">{activity.description}</p>
                         </div>
-                        <span className="text-xs text-white/30 flex-shrink-0">
+                        <span className="text-xs text-gray-400 flex-shrink-0">
                           {format(new Date(activity.time), "HH:mm")}
                         </span>
                       </div>
                     ))}
                   {recentActivities.filter(a => a.type === 'quote' && a.status === 'pending').length === 0 && (
                     <div className="text-center py-8">
-                      <FileText className="w-12 h-12 mx-auto mb-3 text-white/15" />
-                      <p className="text-sm text-white/40">Nenhum orçamento pendente</p>
+                      <FileText className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+                      <p className="text-sm text-gray-500">Nenhum orçamento pendente</p>
                     </div>
                   )}
                 </div>
               </div>
 
               {/* Gráfico de Receita */}
-              <div className="bg-white/5 border border-white/8 rounded-2xl p-5 sm:p-6 hidden sm:block hover:bg-white/8 transition-all duration-300">
-                <h2 className="text-base sm:text-lg font-bold text-white mb-4 flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5 text-yellow-400" />
+              <div className="bg-white border border-[#0B1120]/8 rounded-2xl shadow-sm p-5 sm:p-6 hidden sm:block hover:shadow-md hover:border-[#1e3a8a]/20 transition-all duration-300">
+                <h2 className="text-base sm:text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                  <TrendingUp className="w-5 h-5 text-[#1e3a8a]" />
                   Receita dos Últimos 7 Dias
                 </h2>
                 <ResponsiveContainer width="100%" height={120}>
                   <AreaChart data={revenueChart}>
                     <defs>
                       <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#FACC15" stopOpacity={0.25}/>
-                        <stop offset="95%" stopColor="#FACC15" stopOpacity={0}/>
+                        <stop offset="5%" stopColor="#1e3a8a" stopOpacity={0.3}/>
+                        <stop offset="95%" stopColor="#1e3a8a" stopOpacity={0}/>
                       </linearGradient>
                     </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.08)" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                     <XAxis
                       dataKey="day"
-                      tick={{ fontSize: 12, fill: 'rgba(255,255,255,0.4)' }}
-                      stroke="rgba(255,255,255,0.1)"
+                      tick={{ fontSize: 12, fill: '#6b7280' }}
+                      stroke="#9ca3af"
                     />
                     <YAxis
-                      tick={{ fontSize: 12, fill: 'rgba(255,255,255,0.4)' }}
-                      stroke="rgba(255,255,255,0.1)"
+                      tick={{ fontSize: 12, fill: '#6b7280' }}
+                      stroke="#9ca3af"
                     />
                     <Tooltip
                       contentStyle={{
-                        backgroundColor: '#111827',
-                        border: '1px solid rgba(255,255,255,0.1)',
+                        backgroundColor: 'white',
+                        border: '1px solid #e5e7eb',
                         borderRadius: '8px',
-                        fontSize: '12px',
-                        color: '#fff'
+                        fontSize: '12px'
                       }}
                       formatter={(value: any) => [`R$ ${value.toLocaleString('pt-BR')}`, 'Receita']}
                     />
                     <Area
                       type="monotone"
                       dataKey="value"
-                      stroke="#FACC15"
+                      stroke="#1e3a8a"
                       strokeWidth={2}
                       fill="url(#colorRevenue)"
-                      dot={{ fill: '#FACC15', r: 4 }}
+                      dot={{ fill: '#1e3a8a', r: 4 }}
                       activeDot={{ r: 6 }}
                     />
                   </AreaChart>
@@ -662,17 +661,17 @@ export default function OficinaDashboard() {
               </FadeIn>
 
               {/* Card WhatsApp */}
-              <div className="bg-green-500/8 border border-green-500/20 rounded-2xl p-5">
+              <div className="bg-green-50 border border-green-200 rounded-2xl p-5">
                 <div className="flex items-center gap-2 mb-3">
-                  <MessageCircle className="w-5 h-5 text-green-400" />
-                  <h3 className="font-bold text-base text-white">WhatsApp Business</h3>
+                  <MessageCircle className="w-5 h-5 text-green-600" />
+                  <h3 className="font-bold text-base text-gray-900">WhatsApp Business</h3>
                 </div>
-                <p className="text-sm text-white/50 mb-4">
+                <p className="text-sm text-gray-600 mb-4">
                   Integre seu WhatsApp e responda clientes direto da plataforma
                 </p>
                 <Link
                   href="/oficina/whatsapp"
-                  className="block w-full py-2.5 bg-green-500 text-white rounded-xl text-sm font-semibold text-center hover:bg-green-400 transition-colors"
+                  className="block w-full py-2.5 bg-green-600 text-white rounded-xl text-sm font-semibold text-center hover:bg-green-700 transition-colors"
                 >
                   Configurar WhatsApp
                 </Link>
@@ -680,22 +679,22 @@ export default function OficinaDashboard() {
 
               {/* Avaliações */}
               {workshop && (
-                <div className="bg-white/5 border border-white/8 rounded-2xl p-5 hover:bg-white/8 transition-all duration-300">
+                <div className="bg-white border border-[#0B1120]/8 rounded-2xl shadow-sm p-5 hover:shadow-md hover:border-[#1e3a8a]/20 transition-all duration-300">
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-3">
-                      <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+                      <Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />
                       <div>
-                        <span className="text-xl font-bold text-white">
+                        <span className="text-xl font-bold text-gray-900">
                           {workshop.rating?.toFixed(1) || "0.0"}
                         </span>
-                        <span className="text-white/40 text-sm ml-1">
+                        <span className="text-gray-500 text-sm ml-1">
                           ({workshop.reviews_count || 0})
                         </span>
                       </div>
                     </div>
                     <Link
                       href="/oficina/avaliacoes"
-                      className="text-sm text-yellow-400 hover:text-yellow-300 font-medium transition-colors"
+                      className="text-sm text-[#1e3a8a] hover:text-[#1e40af] font-medium transition-colors"
                     >
                       Ver todas
                     </Link>
@@ -712,17 +711,17 @@ export default function OficinaDashboard() {
                                   className={`w-3 h-3 ${
                                     star <= review.rating
                                       ? "text-yellow-400 fill-yellow-400"
-                                      : "text-white/20"
+                                      : "text-gray-300"
                                   }`}
                                 />
                               ))}
                             </div>
-                            <span className="text-xs text-white/40">
+                            <span className="text-xs text-gray-500">
                               {review.motorist_name}
                             </span>
                           </div>
                           {review.comment && (
-                            <p className="text-xs text-white/50 line-clamp-2">
+                            <p className="text-xs text-gray-600 line-clamp-2">
                               {review.comment}
                             </p>
                           )}
@@ -730,7 +729,7 @@ export default function OficinaDashboard() {
                       ))}
                     </div>
                   ) : (
-                    <p className="text-xs text-white/40 text-center py-4">
+                    <p className="text-xs text-gray-500 text-center py-4">
                       Ainda não há avaliações
                     </p>
                   )}
@@ -742,29 +741,29 @@ export default function OficinaDashboard() {
           {/* Rodapé - Full Width */}
           <div className="space-y-4">
             {/* Agenda da Semana */}
-            <div className="bg-white/5 border border-white/8 rounded-2xl p-5 hover:bg-white/8 transition-all duration-300">
+            <div className="bg-white border border-[#0B1120]/8 rounded-2xl shadow-sm p-5 hover:shadow-md hover:border-[#1e3a8a]/20 transition-all duration-300">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="font-bold text-base text-white flex items-center gap-2">
-                  <Calendar className="w-5 h-5 text-yellow-400" />
+                <h3 className="font-bold text-base text-gray-900 flex items-center gap-2">
+                  <Calendar className="w-5 h-5 text-[#1e3a8a]" />
                   Agenda da Semana
                 </h3>
-                <span className="text-xs text-yellow-400/60 font-medium">Em breve</span>
+                <span className="text-xs text-[#1e3a8a]/60 font-medium">Em breve</span>
               </div>
               <div className="grid grid-cols-7 gap-2 sm:gap-3">
                 {['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'].map((day, index) => {
                   const isToday = new Date().getDay() === (index + 1) % 7;
                   return (
                     <div key={day} className="text-center">
-                      <div className={`text-xs sm:text-sm font-medium mb-2 ${isToday ? 'text-yellow-400' : 'text-white/40'}`}>
+                      <div className={`text-xs sm:text-sm font-medium mb-2 ${isToday ? 'text-[#1e3a8a]' : 'text-gray-500'}`}>
                         {day}
                       </div>
                       <div className={`h-16 sm:h-20 rounded-lg border ${
                         isToday
-                          ? 'border-yellow-400/40 bg-yellow-400/5'
-                          : 'border-white/8 bg-white/3'
+                          ? 'border-[#1e3a8a]/40 bg-blue-50'
+                          : 'border-gray-200 bg-gray-50'
                       }`}>
                         <div className="h-full flex flex-col justify-center items-center">
-                          <div className={`w-2 h-2 rounded-full ${isToday ? 'bg-yellow-400' : 'bg-white/15'}`} />
+                          <div className={`w-2 h-2 rounded-full ${isToday ? 'bg-[#1e3a8a]' : 'bg-gray-300'}`} />
                         </div>
                       </div>
                     </div>
@@ -775,13 +774,13 @@ export default function OficinaDashboard() {
 
             {/* Card PRO (apenas fora do trial / Free) */}
             {!isProActive(workshop) && (
-              <div className="bg-yellow-400/8 border border-yellow-400/20 rounded-2xl p-4">
+              <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <Crown className="w-5 h-5 text-yellow-400" />
+                    <Crown className="w-5 h-5 text-yellow-600" />
                     <div>
-                      <h3 className="font-bold text-sm text-white">Upgrade para PRO</h3>
-                      <p className="text-xs text-white/40">Orçamentos ilimitados e mais recursos</p>
+                      <h3 className="font-bold text-sm text-gray-900">Upgrade para PRO</h3>
+                      <p className="text-xs text-gray-600">Orçamentos ilimitados e mais recursos</p>
                     </div>
                   </div>
                   <Link
