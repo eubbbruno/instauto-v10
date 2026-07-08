@@ -191,10 +191,10 @@ export default function MotoristaLayout({ children }: { children: React.ReactNod
   if (authLoading || dataLoading) {
     console.log("🚗 [Layout Motorista] Mostrando loading...", { authLoading, dataLoading });
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30 flex items-center justify-center">
+      <div className="min-h-screen bg-[#F8F9FB] flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="h-12 w-12 animate-spin text-blue-600 mx-auto mb-4" />
-          <p className="text-gray-500">Carregando...</p>
+          <Loader2 className="h-12 w-12 animate-spin text-[#1e3a8a] mx-auto mb-4" />
+          <p className="text-gray-400">Carregando...</p>
         </div>
       </div>
     );
@@ -209,41 +209,45 @@ export default function MotoristaLayout({ children }: { children: React.ReactNod
   console.log("🚗 [Layout Motorista] Renderizando layout completo");
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50/30">
+    <div className="min-h-screen bg-[#F8F9FB]">
       {/* Sidebar Mobile Overlay */}
       {sidebarOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
-      {/* Sidebar Premium - Card Flutuante */}
+      {/* Sidebar - Blue gradient glassmorphism */}
       <aside className={`
-        fixed top-3 left-3 bottom-3 z-50 w-64 bg-gradient-to-b from-[#1e3a8a] via-[#1e40af] to-[#1e3a8a]
-        rounded-r-2xl shadow-2xl border-r border-blue-600/30
+        fixed top-0 left-0 bottom-0 z-50 w-64 flex flex-col
+        bg-gradient-to-b from-[#0B1120] via-[#13224a] to-[#1e3a8a]
+        border-r border-white/10 shadow-2xl
         transform transition-transform duration-300 lg:translate-x-0
         ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
       `}>
+        {/* Glass highlight overlay */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent" />
+
         {/* Logo */}
-        <div className="p-4 border-b border-white/10">
+        <div className="relative flex-shrink-0 p-5 border-b border-white/10">
           <Link href="/motorista" className="flex items-center justify-center">
-            <Image 
-              src="/images/logo.svg" 
-              alt="Instauto" 
-              width={160} 
-              height={45}
-              className="h-9 w-auto"
+            <Image
+              src="/images/instauto-amarelo-branco.svg"
+              alt="Instauto"
+              width={140}
+              height={40}
+              className="h-8 w-auto"
             />
           </Link>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 p-3 space-y-0.5 overflow-hidden">
+        <nav className="relative flex-1 p-3 space-y-0.5 overflow-y-auto">
           {menuItems.map((item) => {
             const isActive = pathname === item.href;
             const showBadge = item.href === "/motorista/orcamentos" && pendingResponses > 0;
-            
+
             return (
               <Link
                 key={item.href}
@@ -251,9 +255,9 @@ export default function MotoristaLayout({ children }: { children: React.ReactNod
                 onClick={() => setSidebarOpen(false)}
                 className={`
                   flex items-center gap-3 px-3 py-2 rounded-lg transition-colors
-                  ${isActive 
-                    ? "bg-white/10 text-white" 
-                    : "text-blue-100/70 hover:text-white hover:bg-white/5"
+                  ${isActive
+                    ? "bg-white/10 text-white shadow-sm"
+                    : "text-white/50 hover:text-white hover:bg-white/5"
                   }
                 `}
               >
@@ -270,16 +274,16 @@ export default function MotoristaLayout({ children }: { children: React.ReactNod
         </nav>
 
         {/* User Card */}
-        <div className="absolute bottom-0 left-0 right-0 p-3 border-t border-white/10">
+        <div className="relative flex-shrink-0 p-3 border-t border-white/10">
           <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-white/5 transition-colors cursor-pointer group">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center text-white text-sm font-semibold">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-400 to-yellow-500 flex items-center justify-center text-[#0B1120] text-sm font-bold">
               {profile?.name?.charAt(0) || user?.email?.charAt(0).toUpperCase()}
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-white truncate">{profile?.name || user?.email?.split('@')[0]}</p>
-              <p className="text-xs text-blue-300/70 truncate">Motorista</p>
+              <p className="text-xs text-white/50 truncate">Motorista</p>
             </div>
-            <ChevronRight className="w-4 h-4 text-blue-300/50 group-hover:text-blue-300 transition-colors" />
+            <ChevronRight className="w-4 h-4 text-white/40 group-hover:text-white/70 transition-colors" />
           </div>
         </div>
       </aside>

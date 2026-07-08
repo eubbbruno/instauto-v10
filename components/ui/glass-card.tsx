@@ -13,9 +13,9 @@ interface GlassCardProps {
 }
 
 const variantStyles = {
-  default: "bg-white/80 backdrop-blur-sm border border-gray-100",
-  elevated: "bg-white/90 backdrop-blur-md border border-gray-200 shadow-lg",
-  highlighted: "bg-gradient-to-br from-blue-50/90 to-white/90 backdrop-blur-md border border-blue-200/50",
+  default: "bg-white border border-[#0B1120]/8 shadow-sm",
+  elevated: "bg-white border border-[#0B1120]/8 shadow-md",
+  highlighted: "bg-gradient-to-br from-blue-50 to-white border border-[#1e3a8a]/15",
 };
 
 export function GlassCard({ 
@@ -26,7 +26,7 @@ export function GlassCard({
   onClick 
 }: GlassCardProps) {
   const baseStyles = "rounded-2xl transition-all duration-300";
-  const hoverStyles = hover ? "hover:shadow-xl hover:shadow-blue-500/5 hover:border-blue-200/50 cursor-pointer" : "";
+  const hoverStyles = hover ? "hover:shadow-md hover:border-[#1e3a8a]/20 cursor-pointer" : "";
   
   if (hover) {
     return (

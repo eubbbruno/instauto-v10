@@ -116,10 +116,10 @@ export default function MotoristaDashboard() {
 
   if (loading && !forceLoaded) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-sky-50/30 to-blue-50/20 flex items-center justify-center">
+      <div className="min-h-screen bg-[#F8F9FB] flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-t-transparent border-sky-600 mx-auto mb-4"></div>
-          <p className="text-gray-600 font-medium text-lg">Carregando seu dashboard...</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-t-transparent border-[#1e3a8a] mx-auto mb-4"></div>
+          <p className="text-gray-500 font-medium text-lg">Carregando seu dashboard...</p>
         </div>
       </div>
     );
@@ -213,7 +213,7 @@ export default function MotoristaDashboard() {
       {/* Onboarding Modal */}
       <OnboardingModal steps={motoristaSteps} storageKey="onboarding_motorista_done" />
       
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50/30 to-gray-50">
+      <div className="min-h-screen">
         <div className="p-4 sm:p-6">
           {/* Header */}
           <div className="mb-3 sm:mb-4">
@@ -243,7 +243,7 @@ export default function MotoristaDashboard() {
                 value={stats.quotes}
                 description="solicitados"
                 icon={FileText}
-                color="blue"
+                color="yellow"
                 loading={statsLoading}
               />
             </StaggerItem>
@@ -253,7 +253,7 @@ export default function MotoristaDashboard() {
                 value={stats.maintenances}
                 description="agendadas"
                 icon={Wrench}
-                color="blue"
+                color="sky"
                 loading={statsLoading}
               />
             </StaggerItem>
@@ -263,7 +263,7 @@ export default function MotoristaDashboard() {
                 value="R$ 0"
                 description="este mês"
                 icon={TrendingUp}
-                color="blue"
+                color="green"
                 loading={statsLoading}
               />
             </StaggerItem>
