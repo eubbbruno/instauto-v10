@@ -60,7 +60,7 @@ export default function OficinasPage() {
               {/* CTAs */}
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
                 <Link
-                  href="/login?tipo=oficina"
+                  href="/cadastro/oficina"
                   className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-sans font-bold rounded-xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
                 >
                   Começar Teste Grátis
@@ -228,7 +228,7 @@ export default function OficinasPage() {
           {/* CTA */}
           <div className="text-center mt-12">
             <Link
-              href="/login?tipo=oficina"
+              href="/cadastro/oficina"
               className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-sans font-bold rounded-xl transition-all shadow-lg hover:shadow-xl"
             >
               Resolver Agora com 14 Dias Grátis
@@ -326,7 +326,7 @@ export default function OficinasPage() {
           {/* CTA */}
           <div className="text-center mt-12">
             <Link
-              href="/login?tipo=oficina"
+              href="/cadastro/oficina"
               className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-sans font-bold rounded-xl transition-all"
             >
               Testar Todas as Funcionalidades Grátis
@@ -391,7 +391,7 @@ export default function OficinasPage() {
               </ul>
               
               <Link
-                href="/login?tipo=oficina"
+                href="/cadastro/oficina"
                 className="block w-full py-4 text-center border-2 border-gray-300 text-gray-700 font-sans font-semibold rounded-xl hover:bg-gray-50 transition-all"
               >
                 Começar Grátis
@@ -436,7 +436,7 @@ export default function OficinasPage() {
               </ul>
               
               <Link
-                href="/login?tipo=oficina"
+                href="/cadastro/oficina"
                 className="block w-full py-4 text-center bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-sans font-bold rounded-xl transition-all"
               >
                 Começar Teste de 14 Dias 🎉
@@ -546,7 +546,7 @@ export default function OficinasPage() {
           </p>
 
           <Link
-                href="/login?tipo=oficina"
+                href="/cadastro/oficina"
             className="inline-flex items-center gap-2 px-10 py-5 bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-sans font-bold text-lg rounded-xl transition-all shadow-xl hover:shadow-2xl hover:-translate-y-1"
           >
             Começar Teste Grátis Agora

@@ -625,7 +625,7 @@ export default function HomePage() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 mb-10">
-                <Link href="/login?tipo=oficina" className="btn-epic inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-bold">
+                <Link href="/cadastro/oficina" className="btn-epic inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-bold">
                   Testar 14 dias grátis <ArrowRight className="w-5 h-5" />
                 </Link>
                 <Link href="/para-oficinas" className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-bold bg-white/8 text-white ring-1 ring-white/20 hover:bg-white/15 transition-colors">
@@ -685,7 +685,7 @@ export default function HomePage() {
                   </div>
 
                   <Link
-                    href="/login?tipo=oficina"
+                    href="/cadastro/oficina"
                     className="btn-epic w-full inline-flex items-center justify-center gap-2 py-4 rounded-xl text-sm font-bold"
                   >
                     Começar agora — é grátis <ArrowRight className="w-4 h-4" />

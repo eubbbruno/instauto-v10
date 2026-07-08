@@ -72,12 +72,12 @@ export default function Header() {
 
           {/* CTAs — desktop */}
           <div className="hidden lg:flex items-center gap-2">
-            <button
-              onClick={() => openModal("login")}
+            <Link
+              href="/login"
               className="px-4 py-2 text-[14px] font-semibold text-white/60 rounded-lg hover:text-white hover:bg-white/6 transition-all duration-150"
             >
               Entrar
-            </button>
+            </Link>
             <button
               onClick={() => openModal("cadastro")}
               className="btn-epic px-5 py-2.5 rounded-xl text-[14px] font-bold"
@@ -117,12 +117,13 @@ export default function Header() {
               >
                 Começar grátis
               </button>
-              <button
-                onClick={() => openModal("login")}
-                className="w-full py-3 rounded-xl text-[15px] font-semibold text-white/50 hover:text-white hover:bg-white/6 transition-all"
+              <Link
+                href="/login"
+                onClick={() => setMobileOpen(false)}
+                className="block text-center w-full py-3 rounded-xl text-[15px] font-semibold text-white/50 hover:text-white hover:bg-white/6 transition-all"
               >
                 Já tenho conta — Entrar
-              </button>
+              </Link>
             </div>
           </div>
         </div>

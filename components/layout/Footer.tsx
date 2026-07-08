@@ -33,8 +33,8 @@ const FOOTER_COLS = [
   {
     title: "Acesso",
     links: [
-      { href: "/login?tipo=oficina", label: "Cadastrar Oficina" },
-      { href: "/login?tipo=motorista", label: "Cadastrar Motorista" },
+      { href: "/cadastro/oficina", label: "Cadastrar Oficina" },
+      { href: "/cadastro/motorista", label: "Cadastrar Motorista" },
       { href: "/login", label: "Login Oficina" },
       { href: "/login", label: "Login Motorista" },
     ],
@@ -72,7 +72,7 @@ export default function Footer() {
               Buscar oficina grátis <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
-              href="/login?tipo=oficina"
+              href="/cadastro/oficina"
               className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-xl text-sm font-bold bg-white/8 text-white ring-1 ring-white/15 hover:bg-white/15 transition-colors"
             >
               Cadastrar minha oficina <ArrowRight className="w-4 h-4" />
