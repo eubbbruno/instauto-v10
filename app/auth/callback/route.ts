@@ -179,6 +179,9 @@ export async function GET(request: Request) {
           const workshopData = {
             profile_id: session.user.id,
             name: userName,
+            // Cidade/UF vêm do metadata do signUp (SignupForm de oficina)
+            city: session.user.user_metadata?.city || null,
+            state: session.user.user_metadata?.state || null,
             plan_type: "free",
             subscription_status: "trial",
             // Trial reverso: 14 dias de PRO completo, sem cartão (ver lib/plan.ts TRIAL_DAYS)

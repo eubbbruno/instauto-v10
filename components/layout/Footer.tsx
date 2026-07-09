@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Facebook, Instagram, Linkedin, Twitter, ArrowRight, MapPin, Mail } from "lucide-react";
+import { Facebook, Instagram, MessageCircle, ArrowRight, MapPin, Mail } from "lucide-react";
 
 const FOOTER_COLS = [
   {
@@ -42,10 +42,9 @@ const FOOTER_COLS = [
 ];
 
 const SOCIALS = [
-  { href: "https://instagram.com/instauto", Icon: Instagram, label: "Instagram" },
-  { href: "https://facebook.com/instauto", Icon: Facebook, label: "Facebook" },
-  { href: "https://linkedin.com/company/instauto", Icon: Linkedin, label: "LinkedIn" },
-  { href: "https://twitter.com/instauto", Icon: Twitter, label: "Twitter" },
+  { href: "https://www.instagram.com/instautobrasil", Icon: Instagram, label: "Instagram" },
+  { href: "https://www.facebook.com/instautobrasil", Icon: Facebook, label: "Facebook" },
+  { href: "https://wa.me/5543991852779", Icon: MessageCircle, label: "WhatsApp" },
 ];
 
 export default function Footer() {

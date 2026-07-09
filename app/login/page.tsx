@@ -90,6 +90,25 @@ function LoginContent() {
     router.push(profile?.type === "workshop" ? "/oficina" : "/motorista");
   };
 
+  // Traduz erros do Supabase para mensagens claras em PT
+  const friendlyAuthError = (error: any): string => {
+    const msg = (error?.message || "").toLowerCase();
+    const code = error?.code || "";
+    if (msg.includes("invalid login credentials") || code === "invalid_credentials") {
+      return "E-mail ou senha incorretos. Verifique os dados e tente novamente.";
+    }
+    if (msg.includes("email not confirmed") || code === "email_not_confirmed") {
+      return "Sua conta ainda não foi confirmada. Verifique seu e-mail (e a caixa de spam).";
+    }
+    if (msg.includes("too many requests") || code === "over_request_rate_limit") {
+      return "Muitas tentativas. Aguarde alguns minutos e tente de novo.";
+    }
+    if (msg.includes("network") || msg.includes("failed to fetch")) {
+      return "Falha de conexão. Verifique sua internet e tente novamente.";
+    }
+    return "Não foi possível entrar. Verifique seus dados e tente novamente.";
+  };
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -107,7 +126,7 @@ function LoginContent() {
       await redirectByProfile(data.user.id);
     } catch (error: any) {
       console.error("❌ [Login] Erro:", error);
-      toast.error(error.message || "Email ou senha incorretos");
+      toast.error(friendlyAuthError(error));
       setLoading(false);
     }
   };

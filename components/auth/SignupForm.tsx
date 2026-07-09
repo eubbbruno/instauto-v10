@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Car, Wrench, Mail, Lock, Eye, EyeOff, Loader2, CheckCircle, User } from "lucide-react";
+import { Car, Wrench, Mail, Lock, Eye, EyeOff, Loader2, CheckCircle, User, MapPin } from "lucide-react";
+
+const UF_LIST = ["AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"];
 import Link from "next/link";
 import Image from "next/image";
 import { toast } from "sonner";
@@ -52,6 +54,8 @@ export default function SignupForm({ userType }: { userType: UserType }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const [city, setCity] = useState("");
+  const [uf, setUf] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
@@ -72,6 +76,12 @@ export default function SignupForm({ userType }: { userType: UserType }) {
         return;
       }
 
+      if (userType === "oficina" && (!city.trim() || !uf)) {
+        toast.error("Informe a cidade e o estado da oficina");
+        setLoading(false);
+        return;
+      }
+
       const profileType = userType === "oficina" ? "workshop" : "motorist";
 
       // Salvar tipo no cookie ANTES do signUp (para o callback ler depois)
@@ -85,6 +95,8 @@ export default function SignupForm({ userType }: { userType: UserType }) {
           data: {
             name: name,
             user_type: profileType,
+            // Cidade/UF ficam no metadata para o callback criar o workshop já com localização
+            ...(userType === "oficina" ? { city: city.trim(), state: uf } : {}),
           },
         },
       });
@@ -114,6 +126,8 @@ export default function SignupForm({ userType }: { userType: UserType }) {
         const { error: workshopError } = await supabase.from("workshops").insert({
           profile_id: data.user.id,
           name: name || "Minha Oficina",
+          city: city.trim() || null,
+          state: uf || null,
           plan_type: "free",
           subscription_status: "trial",
           // Trial reverso: 14 dias de PRO completo, sem cartão (ver lib/plan.ts TRIAL_DAYS)
@@ -340,6 +354,38 @@ export default function SignupForm({ userType }: { userType: UserType }) {
                         />
                       </div>
                     </div>
+
+                    {/* Cidade + UF — só para oficina (essencial para aparecer nas buscas por cidade) */}
+                    {userType === "oficina" && (
+                      <div className="flex gap-3">
+                        <div className="flex-1">
+                          <label className="text-sm font-medium text-gray-700 mb-2 block">Cidade *</label>
+                          <div className="relative">
+                            <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                            <input
+                              type="text"
+                              value={city}
+                              onChange={(e) => setCity(e.target.value)}
+                              placeholder="Londrina"
+                              required
+                              className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                            />
+                          </div>
+                        </div>
+                        <div className="w-24">
+                          <label className="text-sm font-medium text-gray-700 mb-2 block">UF *</label>
+                          <select
+                            value={uf}
+                            onChange={(e) => setUf(e.target.value)}
+                            required
+                            className="w-full px-3 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                          >
+                            <option value="">--</option>
+                            {UF_LIST.map((u) => <option key={u} value={u}>{u}</option>)}
+                          </select>
+                        </div>
+                      </div>
+                    )}
 
                     <div>
                       <label className="text-sm font-medium text-gray-700 mb-2 block">Email *</label>
