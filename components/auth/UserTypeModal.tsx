@@ -2,9 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { X, Car, Wrench } from "lucide-react";
+import { X, Car, Wrench, ArrowRight, Check } from "lucide-react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 
 interface UserTypeModalProps {
   isOpen: boolean;
@@ -15,105 +14,114 @@ interface UserTypeModalProps {
 export default function UserTypeModal({
   isOpen,
   onClose,
-  action,
 }: UserTypeModalProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    
-    // Bloquear scroll quando modal abrir
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = isOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
   }, [isOpen]);
 
   if (!isOpen || !mounted) return null;
 
-  const title = action === "login" ? "Como você quer entrar?" : "Como você quer se cadastrar?";
-  const subtitle = action === "login" ? "Escolha o tipo de conta" : "Escolha o tipo de conta para criar";
-
   const modalContent = (
-    <div 
-      className="fixed z-[100] bg-black/60 backdrop-blur-sm"
-      style={{
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '1rem',
-        overflow: 'auto'
-      }}
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 overflow-y-auto"
+      onClick={onClose}
     >
-      <div className="relative bg-white rounded-2xl shadow-2xl max-w-2xl w-full p-8" style={{ margin: 'auto' }}>
-        {/* Close button */}
+      {/* Backdrop */}
+      <div className="absolute inset-0 bg-navy/80 backdrop-blur-sm animate-[fadeIn_0.2s_ease-out]" />
+
+      {/* Card */}
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-2xl my-auto bg-navy border border-white/10 rounded-3xl shadow-2xl overflow-hidden animate-[popIn_0.25s_cubic-bezier(0.16,1,0.3,1)]"
+      >
+        {/* Glow decor */}
+        <div className="pointer-events-none absolute -top-32 -right-24 w-[380px] h-[380px] rounded-full bg-brand-blue/20 blur-[100px]" />
+        <div className="pointer-events-none absolute -bottom-32 -left-24 w-[320px] h-[320px] rounded-full bg-brand-yellow/8 blur-[90px]" />
+
+        {/* Close */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+          className="absolute top-4 right-4 z-10 w-9 h-9 flex items-center justify-center rounded-full bg-white/5 text-white/50 hover:text-white hover:bg-white/10 transition-colors"
+          aria-label="Fechar"
         >
-          <X className="h-6 w-6" />
+          <X className="h-5 w-5" />
         </button>
 
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-heading font-bold text-gray-900 mb-2">
-            {title}
-          </h2>
-          <p className="text-gray-600 font-sans">{subtitle}</p>
-        </div>
+        <div className="relative p-6 sm:p-8">
+          {/* Header */}
+          <div className="text-center mb-7">
+            <p className="text-eyebrow text-brand-gold mb-2">Criar conta grátis</p>
+            <h2 className="font-heading text-2xl sm:text-3xl font-black text-white mb-2">
+              Como você quer usar o Instauto?
+            </h2>
+            <p className="text-white/50 text-sm sm:text-base">Escolha o tipo de conta para começar</p>
+          </div>
 
-        {/* Options */}
-        <div className="grid md:grid-cols-2 gap-6">
-          {/* Motorista */}
-          <Link
-            href="/cadastro/motorista"
-            onClick={onClose}
-          >
-            <div className="group bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl border-2 border-blue-200 hover:border-blue-400 transition-all cursor-pointer hover:shadow-xl">
-              <div className="w-16 h-16 bg-blue-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform mx-auto">
-                <Car className="h-8 w-8 text-white" />
+          {/* Cards */}
+          <div className="grid sm:grid-cols-2 gap-4">
+            {/* Motorista */}
+            <Link href="/cadastro/motorista" onClick={onClose} className="group">
+              <div className="h-full bg-white/5 border border-white/10 rounded-2xl p-5 sm:p-6 hover:bg-white/[0.08] hover:border-brand-blue/40 transition-all">
+                <div className="w-14 h-14 bg-brand-blue/20 ring-1 ring-brand-blue/30 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Car className="h-7 w-7 text-brand-blue" />
+                </div>
+                <h3 className="text-lg font-bold text-white mb-2">Sou Motorista</h3>
+                <ul className="space-y-1.5 mb-5">
+                  {["Orçamentos grátis", "Oficinas verificadas", "Garagem digital"].map((f) => (
+                    <li key={f} className="flex items-center gap-2 text-white/55 text-sm">
+                      <Check className="w-4 h-4 text-green-400 flex-shrink-0" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <div className="flex items-center justify-between">
+                  <span className="inline-block bg-green-500/15 text-green-400 px-3 py-1 rounded-full text-xs font-bold">
+                    100% Grátis
+                  </span>
+                  <ArrowRight className="w-5 h-5 text-white/30 group-hover:text-brand-blue group-hover:translate-x-1 transition-all" />
+                </div>
               </div>
-              <h3 className="text-2xl font-heading font-bold text-gray-900 mb-3 text-center">
-                Sou Motorista
-              </h3>
-              <p className="text-gray-700 font-sans text-center mb-4 text-sm">
-                Buscar oficinas, solicitar orçamentos e gerenciar meus veículos
-              </p>
-              <div className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-sans font-bold text-center">
-                100% Grátis
-              </div>
-            </div>
-          </Link>
+            </Link>
 
-          {/* Oficina */}
-          <Link
-            href="/cadastro/oficina"
-            onClick={onClose}
-          >
-            <div className="group bg-gradient-to-br from-yellow-50 to-yellow-100 p-8 rounded-2xl border-2 border-yellow-200 hover:border-yellow-400 transition-all cursor-pointer hover:shadow-xl">
-              <div className="w-16 h-16 bg-yellow-500 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform mx-auto">
-                <Wrench className="h-8 w-8 text-white" />
+            {/* Oficina */}
+            <Link href="/cadastro/oficina" onClick={onClose} className="group">
+              <div className="h-full bg-white/5 border border-white/10 rounded-2xl p-5 sm:p-6 hover:bg-white/[0.08] hover:border-brand-yellow/40 transition-all">
+                <div className="w-14 h-14 bg-brand-yellow/15 ring-1 ring-brand-yellow/30 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <Wrench className="h-7 w-7 text-brand-yellow" />
+                </div>
+                <h3 className="text-lg font-bold text-white mb-2">Sou Oficina</h3>
+                <ul className="space-y-1.5 mb-5">
+                  {["Gestão completa", "Novos clientes", "14 dias de PRO"].map((f) => (
+                    <li key={f} className="flex items-center gap-2 text-white/55 text-sm">
+                      <Check className="w-4 h-4 text-brand-yellow flex-shrink-0" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <div className="flex items-center justify-between">
+                  <span className="inline-block bg-brand-yellow/15 text-brand-yellow px-3 py-1 rounded-full text-xs font-bold">
+                    14 dias grátis
+                  </span>
+                  <ArrowRight className="w-5 h-5 text-white/30 group-hover:text-brand-yellow group-hover:translate-x-1 transition-all" />
+                </div>
               </div>
-              <h3 className="text-2xl font-heading font-bold text-gray-900 mb-3 text-center">
-                Sou Oficina
-              </h3>
-              <p className="text-gray-700 font-sans text-center mb-4 text-sm">
-                Sistema completo de gestão para minha oficina mecânica
-              </p>
-              <div className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-sans font-bold text-center">
-                7 dias grátis
-              </div>
-            </div>
-          </Link>
+            </Link>
+          </div>
+
+          {/* Footer */}
+          <p className="text-center text-white/40 text-sm mt-6">
+            Já tem conta?{" "}
+            <Link href="/login" onClick={onClose} className="text-brand-yellow font-semibold hover:underline">
+              Fazer login
+            </Link>
+          </p>
         </div>
       </div>
     </div>
@@ -121,4 +129,3 @@ export default function UserTypeModal({
 
   return createPortal(modalContent, document.body);
 }
-
