@@ -4,6 +4,7 @@ import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { Toaster } from "@/components/ui/toaster";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import CookieConsent from "@/components/legal/CookieConsent";
 
 const syne = Syne({ 
   subsets: ["latin"],
@@ -121,6 +122,7 @@ export default function RootLayout({
         <AuthProvider>
           {children}
           <Toaster />
+          <CookieConsent />
         </AuthProvider>
       </body>
     </html>

@@ -1,259 +1,119 @@
-import Link from "next/link";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import { Shield, ArrowLeft } from "lucide-react";
+import type { Metadata } from "next";
+import LegalPage from "@/components/legal/LegalPage";
+
+export const metadata: Metadata = {
+  title: "Política de Privacidade | Instauto",
+  description: "Como o Instauto coleta, usa e protege seus dados pessoais, em conformidade com a LGPD (Lei nº 13.709/2018).",
+  alternates: { canonical: "https://www.instauto.com.br/privacidade" },
+};
 
 export default function PrivacidadePage() {
   return (
-    <div className="min-h-screen bg-white">
-      <Header />
-
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800 pt-32 pb-20 md:pt-40 md:pb-24 overflow-hidden">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center text-white">
-            <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-6">
-              <Shield className="h-8 w-8" />
-            </div>
-            <h1 className="text-4xl md:text-5xl font-heading font-bold mb-4 leading-tight">
-              Política de Privacidade
-            </h1>
-            <p className="text-lg text-blue-100 font-sans">
-              Última atualização: 22 de dezembro de 2024
-            </p>
-          </div>
-        </div>
-
-        {/* Decorative wave */}
-        <div className="absolute bottom-0 left-0 right-0">
-          <svg
-            viewBox="0 0 1440 120"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-full h-auto"
-          >
-            <path
-              d="M0 0L60 10C120 20 240 40 360 46.7C480 53 600 47 720 43.3C840 40 960 40 1080 46.7C1200 53 1320 67 1380 73.3L1440 80V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0V0Z"
-              fill="white"
-            />
-          </svg>
-        </div>
-      </section>
-
-      {/* Content */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-sans font-semibold mb-8 transition-colors"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Voltar para o início
-            </Link>
-
-            <div className="prose prose-lg max-w-none">
-              <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-xl mb-8">
-                <p className="text-gray-800 font-sans leading-relaxed m-0">
-                  No Instauto, levamos sua privacidade a sério. Esta política descreve 
-                  como coletamos, usamos, armazenamos e protegemos suas informações pessoais.
-                </p>
-              </div>
-
-              <h2 className="text-2xl font-heading font-bold text-gray-900 mt-12 mb-4">
-                1. Informações que Coletamos
-              </h2>
-              
-              <h3 className="text-xl font-heading font-bold text-gray-900 mt-8 mb-3">
-                1.1. Informações Fornecidas por Você
-              </h3>
-              <p className="text-gray-700 font-sans leading-relaxed mb-4">
-                Coletamos informações que você nos fornece diretamente ao:
-              </p>
-              <ul className="list-disc list-inside text-gray-700 font-sans leading-relaxed mb-6 space-y-2">
-                <li>Criar uma conta (nome, e-mail, telefone, CPF/CNPJ)</li>
-                <li>Configurar sua oficina (nome da empresa, endereço, especialidades)</li>
-                <li>Cadastrar clientes e veículos</li>
-                <li>Criar ordens de serviço e registros financeiros</li>
-                <li>Entrar em contato com nosso suporte</li>
-              </ul>
-
-              <h3 className="text-xl font-heading font-bold text-gray-900 mt-8 mb-3">
-                1.2. Informações Coletadas Automaticamente
-              </h3>
-              <ul className="list-disc list-inside text-gray-700 font-sans leading-relaxed mb-6 space-y-2">
-                <li>Endereço IP e localização geográfica</li>
-                <li>Tipo de navegador e dispositivo</li>
-                <li>Páginas visitadas e tempo de uso</li>
-                <li>Cookies e tecnologias similares</li>
-              </ul>
-
-              <h2 className="text-2xl font-heading font-bold text-gray-900 mt-12 mb-4">
-                2. Como Usamos Suas Informações
-              </h2>
-              <p className="text-gray-700 font-sans leading-relaxed mb-4">
-                Utilizamos suas informações para:
-              </p>
-              <ul className="list-disc list-inside text-gray-700 font-sans leading-relaxed mb-6 space-y-2">
-                <li>Fornecer e melhorar nossos serviços</li>
-                <li>Processar pagamentos e gerenciar assinaturas</li>
-                <li>Enviar notificações importantes sobre sua conta</li>
-                <li>Oferecer suporte técnico e atendimento ao cliente</li>
-                <li>Personalizar sua experiência na plataforma</li>
-                <li>Analisar o uso da plataforma para melhorias</li>
-                <li>Cumprir obrigações legais e regulatórias</li>
-                <li>Prevenir fraudes e garantir a segurança</li>
-              </ul>
-
-              <h2 className="text-2xl font-heading font-bold text-gray-900 mt-12 mb-4">
-                3. Compartilhamento de Informações
-              </h2>
-              <p className="text-gray-700 font-sans leading-relaxed mb-4">
-                Não vendemos suas informações pessoais. Podemos compartilhar dados apenas com:
-              </p>
-              <ul className="list-disc list-inside text-gray-700 font-sans leading-relaxed mb-6 space-y-2">
-                <li><strong>Provedores de Serviço:</strong> MercadoPago (pagamentos), Supabase (banco de dados), OpenAI (IA)</li>
-                <li><strong>Autoridades Legais:</strong> Quando exigido por lei ou para proteger direitos</li>
-                <li><strong>Transferência de Negócio:</strong> Em caso de fusão, aquisição ou venda de ativos</li>
-              </ul>
-
-              <h2 className="text-2xl font-heading font-bold text-gray-900 mt-12 mb-4">
-                4. Segurança dos Dados
-              </h2>
-              <p className="text-gray-700 font-sans leading-relaxed mb-4">
-                Implementamos medidas de segurança técnicas e organizacionais para proteger 
-                suas informações:
-              </p>
-              <ul className="list-disc list-inside text-gray-700 font-sans leading-relaxed mb-6 space-y-2">
-                <li>Criptografia SSL/TLS para transmissão de dados</li>
-                <li>Criptografia de dados em repouso</li>
-                <li>Backup automático diário</li>
-                <li>Controle de acesso baseado em funções (RLS)</li>
-                <li>Monitoramento contínuo de segurança</li>
-                <li>Autenticação segura via Supabase Auth</li>
-              </ul>
-
-              <h2 className="text-2xl font-heading font-bold text-gray-900 mt-12 mb-4">
-                5. Seus Direitos (LGPD)
-              </h2>
-              <p className="text-gray-700 font-sans leading-relaxed mb-4">
-                De acordo com a Lei Geral de Proteção de Dados (LGPD), você tem direito a:
-              </p>
-              <ul className="list-disc list-inside text-gray-700 font-sans leading-relaxed mb-6 space-y-2">
-                <li><strong>Acesso:</strong> Solicitar cópia dos seus dados pessoais</li>
-                <li><strong>Correção:</strong> Atualizar informações incorretas ou incompletas</li>
-                <li><strong>Exclusão:</strong> Solicitar a remoção dos seus dados</li>
-                <li><strong>Portabilidade:</strong> Receber seus dados em formato estruturado</li>
-                <li><strong>Revogação:</strong> Retirar consentimento a qualquer momento</li>
-                <li><strong>Oposição:</strong> Opor-se ao processamento de dados</li>
-                <li><strong>Informação:</strong> Saber com quem compartilhamos seus dados</li>
-              </ul>
-              <p className="text-gray-700 font-sans leading-relaxed mb-6">
-                Para exercer seus direitos, entre em contato através de{" "}
-                <a href="mailto:privacidade@instauto.com.br" className="text-blue-600 hover:text-blue-700 font-semibold">
-                  privacidade@instauto.com.br
-                </a>
-              </p>
-
-              <h2 className="text-2xl font-heading font-bold text-gray-900 mt-12 mb-4">
-                6. Retenção de Dados
-              </h2>
-              <p className="text-gray-700 font-sans leading-relaxed mb-6">
-                Mantemos suas informações pelo tempo necessário para fornecer nossos serviços 
-                e cumprir obrigações legais. Após o cancelamento da conta, seus dados serão 
-                mantidos por até 5 anos para fins fiscais e legais, conforme exigido pela 
-                legislação brasileira.
-              </p>
-
-              <h2 className="text-2xl font-heading font-bold text-gray-900 mt-12 mb-4">
-                7. Cookies e Tecnologias Similares
-              </h2>
-              <p className="text-gray-700 font-sans leading-relaxed mb-4">
-                Utilizamos cookies para:
-              </p>
-              <ul className="list-disc list-inside text-gray-700 font-sans leading-relaxed mb-6 space-y-2">
-                <li>Manter você conectado à plataforma</li>
-                <li>Lembrar suas preferências</li>
-                <li>Analisar o uso do site</li>
-                <li>Melhorar a experiência do usuário</li>
-              </ul>
-              <p className="text-gray-700 font-sans leading-relaxed mb-6">
-                Você pode gerenciar cookies através das configurações do seu navegador.
-              </p>
-
-              <h2 className="text-2xl font-heading font-bold text-gray-900 mt-12 mb-4">
-                8. Transferência Internacional de Dados
-              </h2>
-              <p className="text-gray-700 font-sans leading-relaxed mb-6">
-                Alguns de nossos provedores de serviço (como Supabase e OpenAI) podem estar 
-                localizados fora do Brasil. Garantimos que essas transferências são feitas 
-                de acordo com a LGPD e com medidas de segurança adequadas.
-              </p>
-
-              <h2 className="text-2xl font-heading font-bold text-gray-900 mt-12 mb-4">
-                9. Privacidade de Menores
-              </h2>
-              <p className="text-gray-700 font-sans leading-relaxed mb-6">
-                Nossos serviços são destinados a empresas e profissionais. Não coletamos 
-                intencionalmente informações de menores de 18 anos. Se você acredita que 
-                coletamos dados de um menor, entre em contato imediatamente.
-              </p>
-
-              <h2 className="text-2xl font-heading font-bold text-gray-900 mt-12 mb-4">
-                10. Alterações nesta Política
-              </h2>
-              <p className="text-gray-700 font-sans leading-relaxed mb-6">
-                Podemos atualizar esta Política de Privacidade periodicamente. Notificaremos 
-                sobre mudanças significativas por e-mail ou através de um aviso na plataforma. 
-                A data da última atualização será sempre indicada no topo desta página.
-              </p>
-
-              <h2 className="text-2xl font-heading font-bold text-gray-900 mt-12 mb-4">
-                11. Encarregado de Dados (DPO)
-              </h2>
-              <p className="text-gray-700 font-sans leading-relaxed mb-4">
-                Nosso Encarregado de Proteção de Dados pode ser contatado em:
-              </p>
-              <ul className="list-none text-gray-700 font-sans leading-relaxed mb-6 space-y-2">
-                <li><strong>E-mail:</strong> privacidade@instauto.com.br</li>
-                <li><strong>Telefone:</strong> +55 (43) 99185-2779</li>
-              </ul>
-
-              <h2 className="text-2xl font-heading font-bold text-gray-900 mt-12 mb-4">
-                12. Contato
-              </h2>
-              <p className="text-gray-700 font-sans leading-relaxed mb-4">
-                Para dúvidas sobre esta Política de Privacidade ou sobre o tratamento 
-                dos seus dados pessoais:
-              </p>
-              <ul className="list-none text-gray-700 font-sans leading-relaxed mb-6 space-y-2">
-                <li><strong>E-mail:</strong> contato@instauto.com.br</li>
-                <li><strong>Telefone:</strong> +55 (43) 99185-2779</li>
-                <li><strong>Endereço:</strong> Londrina, PR - Brasil</li>
-              </ul>
-
-              <div className="bg-gray-50 border border-gray-200 p-6 rounded-xl mt-12">
-                <p className="text-gray-700 font-sans leading-relaxed m-0">
-                  <strong>Última atualização:</strong> 22 de dezembro de 2024<br />
-                  <strong>Versão:</strong> 1.0<br />
-                  <strong>Base Legal:</strong> Lei nº 13.709/2018 (LGPD)
-                </p>
-              </div>
-
-              <div className="bg-blue-50 border-l-4 border-blue-600 p-6 rounded-r-xl mt-8">
-                <p className="text-gray-800 font-sans leading-relaxed m-0">
-                  <strong>Compromisso com a Privacidade:</strong> No Instauto, respeitamos 
-                  sua privacidade e nos comprometemos a proteger seus dados pessoais. Se você 
-                  tiver qualquer dúvida ou preocupação, não hesite em nos contatar.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <Footer />
-    </div>
+    <LegalPage
+      title="Política de Privacidade"
+      updatedAt="9 de julho de 2026"
+      intro="A sua privacidade é prioridade para o Instauto. Esta Política explica como coletamos, utilizamos, armazenamos e protegemos seus dados pessoais, em conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018 - LGPD). Ao utilizar a plataforma, você declara estar ciente das práticas aqui descritas."
+      sections={[
+        {
+          heading: "Controlador dos dados",
+          blocks: [
+            { type: "p", text: "O Instauto é o controlador dos dados pessoais tratados na plataforma, responsável por decidir sobre as finalidades e os meios do tratamento. Para questões relativas à proteção de dados, entre em contato com nosso Encarregado (DPO) pelo e-mail privacidade@instauto.com.br." },
+          ],
+        },
+        {
+          heading: "Dados que coletamos",
+          blocks: [
+            { type: "p", text: "Coletamos apenas os dados necessários para prestar e melhorar nossos serviços:" },
+            { type: "ul", items: [
+              "Dados de cadastro: nome, e-mail, senha (armazenada de forma criptografada) e tipo de conta (motorista ou oficina).",
+              "Dados da oficina: nome do estabelecimento, cidade, estado, endereço, telefone, especialidades e demais informações do perfil público.",
+              "Dados de uso: veículos cadastrados, orçamentos solicitados, mensagens, avaliações e histórico de interações na plataforma.",
+              "Dados técnicos: endereço IP, tipo de dispositivo, navegador e dados de navegação coletados por cookies.",
+            ] },
+          ],
+        },
+        {
+          heading: "Finalidades do tratamento",
+          blocks: [
+            { type: "p", text: "Utilizamos seus dados para:" },
+            { type: "ul", items: [
+              "Criar e gerenciar sua conta e autenticar seu acesso.",
+              "Conectar motoristas e oficinas e viabilizar orçamentos e negociações.",
+              "Fornecer as ferramentas de gestão às oficinas (clientes, ordens de serviço, estoque, financeiro).",
+              "Exibir oficinas nas buscas por cidade e melhorar a relevância dos resultados.",
+              "Enviar comunicações operacionais e, mediante consentimento, comunicações de marketing.",
+              "Prevenir fraudes, garantir a segurança e cumprir obrigações legais e regulatórias.",
+            ] },
+          ],
+        },
+        {
+          heading: "Bases legais (art. 7º e 11 da LGPD)",
+          blocks: [
+            { type: "ul", items: [
+              "Execução de contrato: para prestar os serviços que você contrata ao usar a plataforma.",
+              "Consentimento: para envio de comunicações de marketing e uso de cookies não essenciais.",
+              "Legítimo interesse: para melhorar a plataforma, prevenir fraudes e garantir a segurança.",
+              "Cumprimento de obrigação legal ou regulatória: quando exigido por lei.",
+            ] },
+          ],
+        },
+        {
+          heading: "Compartilhamento de dados",
+          blocks: [
+            { type: "p", text: "Não vendemos seus dados pessoais. O compartilhamento ocorre apenas quando necessário:" },
+            { type: "ul", items: [
+              "Entre motoristas e oficinas, na medida necessária para viabilizar orçamentos e serviços.",
+              "Com fornecedores de tecnologia que operam a plataforma (hospedagem, autenticação, pagamentos), sob obrigações de confidencialidade e segurança.",
+              "Com autoridades públicas, quando exigido por lei ou ordem judicial.",
+            ] },
+          ],
+        },
+        {
+          heading: "Direitos do titular (art. 18 da LGPD)",
+          blocks: [
+            { type: "p", text: "Você tem direito a, a qualquer momento e mediante solicitação:" },
+            { type: "ul", items: [
+              "Confirmar a existência de tratamento e acessar seus dados.",
+              "Corrigir dados incompletos, inexatos ou desatualizados.",
+              "Solicitar a anonimização, o bloqueio ou a eliminação de dados desnecessários ou tratados em desconformidade com a lei.",
+              "Solicitar a portabilidade dos dados a outro fornecedor.",
+              "Revogar o consentimento e ser informado sobre as consequências da revogação.",
+              "Solicitar a eliminação dos dados tratados com base no consentimento.",
+            ] },
+            { type: "p", text: "Para exercer seus direitos, escreva para privacidade@instauto.com.br. Podemos solicitar informações para confirmar sua identidade antes de atender ao pedido." },
+          ],
+        },
+        {
+          heading: "Segurança da informação",
+          blocks: [
+            { type: "p", text: "Adotamos medidas técnicas e organizacionais para proteger seus dados contra acessos não autorizados, perda, alteração ou divulgação indevida, incluindo criptografia, controle de acesso e backups. Nenhum sistema é totalmente infalível, mas trabalhamos continuamente para mitigar riscos." },
+          ],
+        },
+        {
+          heading: "Retenção e eliminação",
+          blocks: [
+            { type: "p", text: "Mantemos seus dados apenas pelo tempo necessário para cumprir as finalidades descritas ou obrigações legais. Encerrada a relação e esgotados os prazos legais, os dados são eliminados ou anonimizados com segurança." },
+          ],
+        },
+        {
+          heading: "Cookies",
+          blocks: [
+            { type: "p", text: "Utilizamos cookies e tecnologias semelhantes para o funcionamento, a segurança e a melhoria da plataforma. Você pode gerenciar suas preferências a qualquer momento. Saiba mais na nossa Política de Cookies." },
+          ],
+        },
+        {
+          heading: "Transferência internacional",
+          blocks: [
+            { type: "p", text: "Alguns de nossos fornecedores de tecnologia podem armazenar dados em servidores localizados fora do Brasil. Nesses casos, adotamos salvaguardas para assegurar que o tratamento observe os padrões de proteção previstos na LGPD." },
+          ],
+        },
+        {
+          heading: "Alterações desta Política",
+          blocks: [
+            { type: "p", text: "Esta Política pode ser atualizada periodicamente. Alterações relevantes serão comunicadas pelos canais da plataforma. Recomendamos a revisão regular deste documento." },
+          ],
+        },
+      ]}
+    />
   );
 }
-
