@@ -47,6 +47,7 @@ export async function middleware(req: NextRequest) {
 
   const isPublicRoute = publicRoutes.some(route => pathname === route) ||
                        pathname.startsWith("/cadastro") ||
+                       pathname.startsWith("/oficinas") || // hub + páginas de cidade (público, ≠ /oficina dashboard)
                        pathname.startsWith("/api/") ||
                        pathname.startsWith("/_next/") ||
                        pathname.startsWith("/oficina-detalhes/") ||
