@@ -249,7 +249,7 @@ function VeiculosContent() {
         <FadeIn delay={0.2}>
         {loading ? (
           <div className="flex items-center justify-center py-12">
-            <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+            <Loader2 className="h-8 w-8 animate-spin text-[#1e3a8a]" />
           </div>
         ) : filteredVehicles.length === 0 ? (
           <div className="bg-white rounded-2xl sm:rounded-3xl p-8 sm:p-12 shadow-sm border border-gray-100 text-center">

@@ -139,7 +139,7 @@ export default function OrdensPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+        <Loader2 className="h-8 w-8 animate-spin text-[#1e3a8a]" />
       </div>
     );
   }
