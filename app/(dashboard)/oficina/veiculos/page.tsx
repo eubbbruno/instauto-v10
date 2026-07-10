@@ -252,7 +252,7 @@ function VeiculosContent() {
             <Loader2 className="h-8 w-8 animate-spin text-[#1e3a8a]" />
           </div>
         ) : filteredVehicles.length === 0 ? (
-          <div className="bg-white rounded-2xl sm:rounded-3xl p-8 sm:p-12 shadow-sm border border-gray-100 text-center">
+          <div className="bg-white rounded-2xl sm:rounded-3xl p-8 sm:p-12 shadow-sm border border-[#0B1120]/8 text-center">
             <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <CarIcon className="w-8 h-8 text-gray-400" />
             </div>
@@ -273,7 +273,7 @@ function VeiculosContent() {
             )}
           </div>
         ) : (
-          <div className="bg-white rounded-2xl sm:rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="bg-white rounded-2xl sm:rounded-3xl shadow-sm border border-[#0B1120]/8 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full min-w-[600px]">
                 <thead className="bg-gray-50">

@@ -34,7 +34,7 @@ const reportTypes: ReportConfig[] = [
     title: "Faturamento",
     description: "Receitas, despesas e lucro do período",
     icon: <DollarSign className="h-6 w-6" />,
-    color: "from-green-500 to-emerald-600",
+    color: "from-green-500 to-green-600",
   },
   {
     id: "clients",
@@ -48,14 +48,14 @@ const reportTypes: ReportConfig[] = [
     title: "Ordens de Serviço",
     description: "Detalhamento de todas as OS do período",
     icon: <FileText className="h-6 w-6" />,
-    color: "from-purple-500 to-purple-600",
+    color: "from-blue-500 to-blue-600",
   },
   {
     id: "inventory",
     title: "Estoque",
     description: "Inventário completo de peças e alertas",
     icon: <Package className="h-6 w-6" />,
-    color: "from-yellow-500 to-orange-600",
+    color: "from-yellow-500 to-amber-600",
   },
 ];
 
@@ -698,7 +698,7 @@ function RelatoriosContent() {
       </Card>
 
       {/* Informações */}
-      <Card className="border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-cyan-50">
+      <Card className="border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-blue-50">
         <CardHeader>
           <CardTitle className="text-lg flex items-center gap-2">
             <FileText className="h-5 w-5 text-blue-600" />

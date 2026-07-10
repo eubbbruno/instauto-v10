@@ -125,10 +125,10 @@ export default function OrcamentosOficinaPage() {
 
   const getStatusBadge = (status: string) => {
     const badges = {
-      pending: { icon: Clock, label: "Aguardando", className: "bg-gradient-to-r from-yellow-400 to-orange-400 text-white shadow-lg shadow-yellow-500/40" },
-      responded: { icon: CheckCircle2, label: "Respondido", className: "bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg shadow-green-500/40" },
-      accepted: { icon: CheckCircle2, label: "Aceito", className: "bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/40" },
-      rejected: { icon: XCircle, label: "Recusado", className: "bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-lg shadow-red-500/40" },
+      pending: { icon: Clock, label: "Aguardando", className: "bg-gradient-to-r from-yellow-400 to-amber-400 text-white shadow-lg shadow-yellow-500/40" },
+      responded: { icon: CheckCircle2, label: "Respondido", className: "bg-gradient-to-r from-green-500 to-green-500 text-white shadow-lg shadow-green-500/40" },
+      accepted: { icon: CheckCircle2, label: "Aceito", className: "bg-gradient-to-r from-blue-500 to-blue-500 text-white shadow-lg shadow-blue-500/40" },
+      rejected: { icon: XCircle, label: "Recusado", className: "bg-gradient-to-r from-red-500 to-red-500 text-white shadow-lg shadow-red-500/40" },
       cancelled: { icon: XCircle, label: "Cancelado", className: "bg-gradient-to-r from-gray-500 to-slate-500 text-white shadow-lg shadow-gray-500/40" },
     };
 
@@ -203,7 +203,7 @@ export default function OrcamentosOficinaPage() {
               <div className="flex items-center gap-3 flex-wrap">
                 <p className="text-gray-600">Gerencie as solicitações de orçamento</p>
                 {pendingCount > 0 && (
-                  <Badge className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white text-sm font-bold px-3 py-1 shadow-lg animate-pulse">
+                  <Badge className="bg-gradient-to-r from-yellow-400 to-amber-400 text-white text-sm font-bold px-3 py-1 shadow-lg animate-pulse">
                     {pendingCount} {pendingCount === 1 ? "novo" : "novos"}
                   </Badge>
                 )}
@@ -260,7 +260,7 @@ export default function OrcamentosOficinaPage() {
         {filteredQuotes.length === 0 ? (
           <Card className="border-2 shadow-xl bg-gradient-to-br from-white to-gray-50">
             <CardContent className="text-center py-16">
-              <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-100 to-purple-200 flex items-center justify-center">
+              <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center">
                 <FileText className="h-10 w-10 text-blue-600" />
               </div>
               <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2">
@@ -284,14 +284,14 @@ export default function OrcamentosOficinaPage() {
                 className="border-2 border-blue-100 hover:shadow-2xl hover:shadow-blue-200/50 hover:border-blue-400 transition-all duration-500 hover:scale-[1.02] overflow-hidden"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <CardHeader className="bg-gradient-to-r from-blue-50 via-purple-50/50 to-blue-50/30 border-b-2 border-blue-100 pb-6">
+                <CardHeader className="bg-gradient-to-r from-blue-50 via-blue-50/50 to-blue-50/30 border-b-2 border-blue-100 pb-6">
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-3">
                         {getStatusBadge(quote.status)}
                         {getUrgencyBadge(quote.urgency)}
                       </div>
-                      <CardTitle className="text-2xl font-bold mb-2 bg-gradient-to-r from-blue-700 to-purple-700 bg-clip-text text-transparent">
+                      <CardTitle className="text-2xl font-bold mb-2 bg-gradient-to-r from-blue-700 to-blue-700 bg-clip-text text-transparent">
                         {quote.service_type}
                       </CardTitle>
                       <CardDescription className="flex flex-col gap-1">
@@ -315,7 +315,7 @@ export default function OrcamentosOficinaPage() {
                           setSelectedQuote(quote);
                           setRespondDialogOpen(true);
                         }}
-                        className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 w-full sm:w-auto font-bold shadow-xl shadow-blue-600/40 hover:scale-105 transition-all duration-300 text-lg px-6 py-6"
+                        className="bg-gradient-to-r from-blue-600 to-blue-600 hover:from-blue-700 hover:to-blue-700 w-full sm:w-auto font-bold shadow-xl shadow-blue-600/40 hover:scale-105 transition-all duration-300 text-lg px-6 py-6"
                         size="lg"
                       >
                         <FileText className="mr-2 h-5 w-5" />
@@ -327,9 +327,9 @@ export default function OrcamentosOficinaPage() {
                 <CardContent className="space-y-5 pt-6">
                   {/* Veículo */}
                   {(quote.vehicle_brand || quote.vehicle_model) && (
-                    <div className="bg-gradient-to-r from-blue-50 to-cyan-50 border-2 border-blue-200 rounded-xl p-5 shadow-md hover:shadow-lg transition-shadow">
+                    <div className="bg-gradient-to-r from-blue-50 to-blue-50 border-2 border-blue-200 rounded-xl p-5 shadow-md hover:shadow-lg transition-shadow">
                       <div className="flex items-center gap-3 mb-3">
-                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center shadow-lg">
+                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-blue-500 flex items-center justify-center shadow-lg">
                           <Car className="h-5 w-5 text-white" />
                         </div>
                         <span className="font-bold text-gray-900 text-lg">Veículo</span>
@@ -349,12 +349,12 @@ export default function OrcamentosOficinaPage() {
 
                   {/* Resposta */}
                   {quote.workshop_response && (
-                    <div className="bg-gradient-to-r from-green-50 to-emerald-50 border-2 border-green-300 rounded-xl p-5 shadow-lg">
+                    <div className="bg-gradient-to-r from-green-50 to-green-50 border-2 border-green-300 rounded-xl p-5 shadow-lg">
                       <p className="text-sm font-bold text-green-900 mb-3 uppercase tracking-wide">✅ Sua Resposta:</p>
                       <p className="text-green-900 mb-3 font-medium leading-relaxed">{quote.workshop_response}</p>
                       {quote.estimated_price && (
                         <div className="bg-white rounded-lg p-4 border-2 border-green-200 mt-3">
-                          <p className="text-2xl font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                          <p className="text-2xl font-bold bg-gradient-to-r from-green-600 to-green-600 bg-clip-text text-transparent">
                             Valor Estimado: R$ {quote.estimated_price.toFixed(2)}
                           </p>
                         </div>

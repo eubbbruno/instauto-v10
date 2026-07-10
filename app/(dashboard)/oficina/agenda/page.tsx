@@ -362,7 +362,7 @@ export default function AgendaPage() {
       in_progress: { label: "Em Andamento", color: "bg-yellow-100 text-yellow-800", icon: AlertCircle },
       completed: { label: "Concluído", color: "bg-green-100 text-green-800", icon: CheckCircle },
       cancelled: { label: "Cancelado", color: "bg-red-100 text-red-800", icon: XCircle },
-      no_show: { label: "Não Compareceu", color: "bg-orange-100 text-orange-800", icon: XCircle },
+      no_show: { label: "Não Compareceu", color: "bg-amber-100 text-amber-800", icon: XCircle },
     };
 
     const badge = badges[status];
@@ -466,7 +466,7 @@ export default function AgendaPage() {
               <CardTitle className="text-sm font-medium text-gray-600">
                 Esta Semana
               </CardTitle>
-              <Clock className="h-4 w-4 text-purple-600" />
+              <Clock className="h-4 w-4 text-blue-600" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-gray-900">{appointmentsThisWeek.length}</div>

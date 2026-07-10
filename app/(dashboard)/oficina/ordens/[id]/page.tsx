@@ -80,9 +80,9 @@ const STATUS_CONFIG = {
   pending: { label: "Aguardando", color: "bg-gray-100 text-gray-700 border-gray-300" },
   approved: { label: "Aprovado", color: "bg-blue-100 text-blue-700 border-blue-300" },
   in_progress: { label: "Em Andamento", color: "bg-yellow-100 text-yellow-700 border-yellow-300" },
-  waiting_parts: { label: "Aguard. Peças", color: "bg-orange-100 text-orange-700 border-orange-300" },
+  waiting_parts: { label: "Aguard. Peças", color: "bg-amber-100 text-amber-700 border-amber-300" },
   completed: { label: "Finalizado", color: "bg-green-100 text-green-700 border-green-300" },
-  delivered: { label: "Entregue", color: "bg-emerald-100 text-emerald-700 border-emerald-300" },
+  delivered: { label: "Entregue", color: "bg-green-100 text-green-700 border-green-300" },
   cancelled: { label: "Cancelado", color: "bg-red-100 text-red-700 border-red-300" },
 };
 
@@ -528,7 +528,7 @@ export default function OSDetailsPage({ params }: { params: { id: string } }) {
                   {order.status !== "delivered" && (
                     <button
                       onClick={() => handleStatusChange("delivered")}
-                      className="w-full px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-xl flex items-center justify-center gap-2 transition-all"
+                      className="w-full px-4 py-2.5 bg-green-600 hover:bg-green-700 text-white font-medium rounded-xl flex items-center justify-center gap-2 transition-all"
                     >
                       <CheckCircle className="w-4 h-4" />
                       Marcar como Entregue

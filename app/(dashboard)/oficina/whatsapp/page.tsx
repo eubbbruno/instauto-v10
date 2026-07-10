@@ -375,7 +375,7 @@ function WhatsAppContent() {
           <Card className="border-2">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <Zap className="h-6 w-6 text-purple-600" />
+                <Zap className="h-6 w-6 text-blue-600" />
                 Templates de Mensagens
               </CardTitle>
               <CardDescription>
@@ -389,8 +389,8 @@ function WhatsAppContent() {
                     key={template.id}
                     className={`cursor-pointer transition-all border-2 hover:shadow-lg ${
                       selectedTemplate === template.id
-                        ? "border-purple-500 bg-purple-50"
-                        : "border-gray-200 hover:border-purple-300"
+                        ? "border-blue-500 bg-blue-50"
+                        : "border-gray-200 hover:border-blue-300"
                     }`}
                     onClick={() => handleTemplateChange(template.id)}
                   >

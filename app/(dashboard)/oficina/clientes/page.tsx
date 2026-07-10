@@ -173,7 +173,7 @@ function ClientesContent() {
                   Gerencie sua base de clientes
                 </p>
                 {!isProActive(workshop) && (
-                  <Badge className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white border-0 text-sm font-bold px-3 py-1 shadow-lg animate-pulse">
+                  <Badge className="bg-gradient-to-r from-yellow-400 to-amber-400 text-white border-0 text-sm font-bold px-3 py-1 shadow-lg animate-pulse">
                     {clients.length}/10 clientes
                   </Badge>
                 )}
@@ -196,7 +196,7 @@ function ClientesContent() {
         {/* Alerta de limite próximo */}
         {showLimitWarning && (
           <FadeIn delay={0.1}>
-          <Card className="border-2 border-yellow-200 bg-gradient-to-br from-yellow-50 to-orange-50 shadow-xl">
+          <Card className="border-2 border-yellow-200 bg-gradient-to-br from-yellow-50 to-amber-50 shadow-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-yellow-900 font-bold text-lg">
                 <AlertCircle className="h-6 w-6 text-yellow-600" />
@@ -208,7 +208,7 @@ function ClientesContent() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-bold shadow-lg shadow-yellow-500/40 hover:scale-105 transition-transform">
+              <Button className="bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-600 hover:to-amber-600 text-white font-bold shadow-lg shadow-yellow-500/40 hover:scale-105 transition-transform">
                 <Crown className="mr-2 h-5 w-5" />
                 Fazer Upgrade para PRO
               </Button>
@@ -241,7 +241,7 @@ function ClientesContent() {
             <Loader2 className="h-8 w-8 animate-spin text-[#1e3a8a]" />
           </div>
         ) : filteredClients.length === 0 ? (
-          <div className="bg-white rounded-2xl sm:rounded-3xl p-8 sm:p-12 shadow-sm border border-gray-100 text-center">
+          <div className="bg-white rounded-2xl sm:rounded-3xl p-8 sm:p-12 shadow-sm border border-[#0B1120]/8 text-center">
             <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <Users className="w-8 h-8 text-gray-400" />
             </div>
@@ -262,7 +262,7 @@ function ClientesContent() {
             )}
           </div>
         ) : (
-          <div className="bg-white rounded-2xl sm:rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="bg-white rounded-2xl sm:rounded-3xl shadow-sm border border-[#0B1120]/8 overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full min-w-[600px]">
                 <thead className="bg-gray-50">

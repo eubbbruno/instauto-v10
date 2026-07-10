@@ -401,7 +401,7 @@ export default function ConfiguracoesPage() {
 
       {/* Assistente de Perfil com IA */}
       <FadeIn delay={0.2}>
-        <div className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl sm:rounded-2xl p-6 sm:p-8 text-white shadow-xl mb-6">
+        <div className="bg-gradient-to-r from-blue-600 to-blue-600 rounded-xl sm:rounded-2xl p-6 sm:p-8 text-white shadow-xl mb-6">
         <div className="flex items-center gap-3 mb-4">
           <div className="p-2.5 bg-white/20 backdrop-blur-sm rounded-xl">
             <Sparkles className="w-6 h-6" />
@@ -699,7 +699,7 @@ export default function ConfiguracoesPage() {
 
       {/* Informações do Plano */}
       <FadeIn delay={0.4}>
-        <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
+        <Card className="bg-gradient-to-r from-blue-50 to-blue-50 border-blue-200">
         <CardHeader>
           <CardTitle>Plano Atual</CardTitle>
           <CardDescription>

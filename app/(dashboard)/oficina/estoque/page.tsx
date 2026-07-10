@@ -358,20 +358,20 @@ export default function EstoquePage() {
   const getStockBadge = (item: Inventory) => {
     if (item.quantity === 0) {
       return (
-        <Badge className="bg-gradient-to-r from-red-500 to-pink-500 text-white border-0 px-3 py-1.5 text-sm font-bold shadow-lg shadow-red-500/40">
+        <Badge className="bg-gradient-to-r from-red-500 to-red-500 text-white border-0 px-3 py-1.5 text-sm font-bold shadow-lg shadow-red-500/40">
           🚫 Zerado
         </Badge>
       );
     }
     if (item.quantity <= item.min_quantity) {
       return (
-        <Badge className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white border-0 px-3 py-1.5 text-sm font-bold shadow-lg shadow-yellow-500/40 animate-pulse">
+        <Badge className="bg-gradient-to-r from-yellow-400 to-amber-400 text-white border-0 px-3 py-1.5 text-sm font-bold shadow-lg shadow-yellow-500/40 animate-pulse">
           ⚠️ Baixo ({item.quantity})
         </Badge>
       );
     }
     return (
-      <Badge className="bg-gradient-to-r from-green-500 to-emerald-500 text-white border-0 px-3 py-1.5 text-sm font-bold shadow-lg shadow-green-500/40">
+      <Badge className="bg-gradient-to-r from-green-500 to-green-500 text-white border-0 px-3 py-1.5 text-sm font-bold shadow-lg shadow-green-500/40">
         ✅ OK ({item.quantity})
       </Badge>
     );
@@ -401,7 +401,7 @@ export default function EstoquePage() {
                     {totalItems} itens
                   </Badge>
                   {lowStockItems > 0 && (
-                    <Badge className="bg-gradient-to-r from-yellow-400 to-orange-400 text-white text-sm font-bold px-3 py-1 shadow-lg animate-pulse">
+                    <Badge className="bg-gradient-to-r from-yellow-400 to-amber-400 text-white text-sm font-bold px-3 py-1 shadow-lg animate-pulse">
                       ⚠️ {lowStockItems} baixo
                     </Badge>
                   )}
@@ -419,13 +419,13 @@ export default function EstoquePage() {
 
           {/* Cards de Resumo Premium */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:p-6">
-            <Card className="relative bg-white rounded-2xl p-4 sm:p-6 border-2 border-orange-200 shadow-lg shadow-orange-500/20 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 overflow-hidden group">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-orange-400/20 to-amber-400/20 rounded-full blur-3xl -mr-16 -mt-16" />
+            <Card className="relative bg-white rounded-2xl p-4 sm:p-6 border-2 border-amber-200 shadow-lg shadow-amber-500/20 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 overflow-hidden group">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-amber-400/20 to-amber-400/20 rounded-full blur-3xl -mr-16 -mt-16" />
               <CardHeader className="flex flex-row items-center justify-between pb-2 relative">
                 <CardTitle className="text-sm font-bold text-gray-600 uppercase tracking-wide">
                   Total de Itens
                 </CardTitle>
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center shadow-lg shadow-orange-500/30 group-hover:scale-110 transition-transform">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/30 group-hover:scale-110 transition-transform">
                   <Package className="h-6 w-6 text-white" />
                 </div>
               </CardHeader>
@@ -438,12 +438,12 @@ export default function EstoquePage() {
             </Card>
 
             <Card className="relative bg-white rounded-2xl p-4 sm:p-6 border-2 border-yellow-200 shadow-lg shadow-yellow-500/20 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 overflow-hidden group">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-yellow-400/20 to-orange-400/20 rounded-full blur-3xl -mr-16 -mt-16" />
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-yellow-400/20 to-amber-400/20 rounded-full blur-3xl -mr-16 -mt-16" />
               <CardHeader className="flex flex-row items-center justify-between pb-2 relative">
                 <CardTitle className="text-sm font-bold text-gray-600 uppercase tracking-wide">
                   Estoque Baixo
                 </CardTitle>
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-500 to-orange-600 flex items-center justify-center shadow-lg shadow-yellow-500/30 group-hover:scale-110 transition-transform">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-yellow-500 to-amber-600 flex items-center justify-center shadow-lg shadow-yellow-500/30 group-hover:scale-110 transition-transform">
                   <AlertTriangle className="h-6 w-6 text-white" />
                 </div>
               </CardHeader>
@@ -456,12 +456,12 @@ export default function EstoquePage() {
             </Card>
 
             <Card className="relative bg-white rounded-2xl p-4 sm:p-6 border-2 border-green-200 shadow-lg shadow-green-500/20 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 overflow-hidden group">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-400/20 to-emerald-400/20 rounded-full blur-3xl -mr-16 -mt-16" />
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-green-400/20 to-green-400/20 rounded-full blur-3xl -mr-16 -mt-16" />
               <CardHeader className="flex flex-row items-center justify-between pb-2 relative">
                 <CardTitle className="text-sm font-bold text-gray-600 uppercase tracking-wide">
                   Valor Total
                 </CardTitle>
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-green-500/30 group-hover:scale-110 transition-transform">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center shadow-lg shadow-green-500/30 group-hover:scale-110 transition-transform">
                   <DollarSign className="h-6 w-6 text-white" />
                 </div>
               </CardHeader>
@@ -488,7 +488,7 @@ export default function EstoquePage() {
                   placeholder="Buscar por nome, código ou categoria..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-12 h-12 border-2 text-base focus:ring-2 focus:ring-orange-500"
+                  className="pl-12 h-12 border-2 text-base focus:ring-2 focus:ring-amber-500"
                 />
               </div>
             </CardContent>
@@ -498,8 +498,8 @@ export default function EstoquePage() {
           {filteredItems.length === 0 ? (
             <Card className="border-2 shadow-xl bg-gradient-to-br from-white to-gray-50">
               <CardContent className="text-center py-16">
-                <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-orange-100 to-amber-200 flex items-center justify-center">
-                  <Package className="h-10 w-10 text-orange-600" />
+                <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center">
+                  <Package className="h-10 w-10 text-amber-600" />
                 </div>
                 <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-2">
                   {searchTerm ? "Nenhuma peça encontrada" : "Nenhuma peça cadastrada"}
@@ -512,7 +512,7 @@ export default function EstoquePage() {
                 {!searchTerm && (
                   <Button 
                     onClick={openCreateDialog}
-                    className="bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 font-bold shadow-lg shadow-orange-600/30 hover:scale-105 transition-transform"
+                    className="bg-gradient-to-r from-amber-600 to-amber-600 hover:from-amber-700 hover:to-amber-700 font-bold shadow-lg shadow-amber-600/30 hover:scale-105 transition-transform"
                     size="lg"
                   >
                     <Plus className="mr-2 h-5 w-5" />
@@ -522,14 +522,14 @@ export default function EstoquePage() {
               </CardContent>
             </Card>
           ) : (
-            <Card className="border-2 border-orange-100 shadow-2xl hover:shadow-orange-200/50 transition-all duration-300 overflow-hidden">
-              <CardHeader className="border-b-2 border-orange-100 bg-gradient-to-r from-orange-50 via-amber-50 to-orange-50/50 py-6">
+            <Card className="border-2 border-amber-100 shadow-2xl hover:shadow-amber-200/50 transition-all duration-300 overflow-hidden">
+              <CardHeader className="border-b-2 border-amber-100 bg-gradient-to-r from-amber-50 via-amber-50 to-amber-50/50 py-6">
                 <CardTitle className="flex items-center gap-3 text-2xl">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center shadow-lg shadow-orange-500/30">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/30">
                     <Package className="h-6 w-6 text-white" />
                   </div>
                   <span className="font-bold text-gray-900">Itens do Estoque</span>
-                  <Badge className="ml-auto bg-gradient-to-r from-orange-500 to-amber-500 text-white border-0 text-base px-4 py-2 shadow-lg">
+                  <Badge className="ml-auto bg-gradient-to-r from-amber-500 to-amber-500 text-white border-0 text-base px-4 py-2 shadow-lg">
                     {filteredItems.length} {filteredItems.length === 1 ? 'peça' : 'peças'}
                   </Badge>
                 </CardTitle>
@@ -538,7 +538,7 @@ export default function EstoquePage() {
                 <div className="overflow-x-auto">
                   <Table>
                     <TableHeader>
-                      <TableRow className="bg-gradient-to-r from-gray-50 to-orange-50/30 border-b-2 border-orange-100">
+                      <TableRow className="bg-gradient-to-r from-gray-50 to-amber-50/30 border-b-2 border-amber-100">
                         <TableHead className="font-bold text-gray-900 text-base py-4">Nome</TableHead>
                         <TableHead className="font-bold text-gray-900 text-base py-4">Código</TableHead>
                         <TableHead className="font-bold text-gray-900 text-base py-4">Categoria</TableHead>
@@ -553,10 +553,10 @@ export default function EstoquePage() {
                       {filteredItems.map((item, index) => (
                         <TableRow 
                           key={item.id}
-                          className="group hover:bg-gradient-to-r hover:from-orange-50 hover:to-amber-50/30 transition-all duration-300 border-b border-gray-100 hover:border-orange-200"
+                          className="group hover:bg-gradient-to-r hover:from-amber-50 hover:to-amber-50/30 transition-all duration-300 border-b border-gray-100 hover:border-amber-200"
                           style={{ animationDelay: `${index * 50}ms` }}
                         >
-                          <TableCell className="font-bold text-gray-900 py-4 group-hover:text-orange-700 transition-colors">
+                          <TableCell className="font-bold text-gray-900 py-4 group-hover:text-amber-700 transition-colors">
                             {item.name}
                           </TableCell>
                           <TableCell className="text-gray-600 py-4 font-medium group-hover:text-gray-900 transition-colors">
@@ -564,7 +564,7 @@ export default function EstoquePage() {
                           </TableCell>
                           <TableCell className="py-4">
                             {item.category ? (
-                              <Badge className="bg-orange-100 text-orange-800 border-orange-300 font-medium">
+                              <Badge className="bg-amber-100 text-amber-800 border-amber-300 font-medium">
                                 {item.category}
                               </Badge>
                             ) : "-"}

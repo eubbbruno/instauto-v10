@@ -234,7 +234,7 @@ export default function PlanosPage() {
       {/* Plano Atual */}
       <Card className={cn(
         "border-2",
-        isPro ? "bg-gradient-to-r from-purple-50 to-indigo-50 border-purple-300" : "bg-gradient-to-r from-blue-50 to-cyan-50 border-blue-300"
+        isPro ? "bg-gradient-to-r from-blue-50 to-blue-50 border-blue-300" : "bg-gradient-to-r from-blue-50 to-blue-50 border-blue-300"
       )}>
         <CardHeader>
           <div className="flex items-center justify-between">
@@ -242,8 +242,8 @@ export default function PlanosPage() {
               <CardTitle className="flex items-center gap-2">
                 {isPro ? (
                   <>
-                    <Crown className="h-6 w-6 text-purple-600" />
-                    <span className="text-purple-600">Plano PRO Ativo</span>
+                    <Crown className="h-6 w-6 text-blue-600" />
+                    <span className="text-blue-600">Plano PRO Ativo</span>
                   </>
                 ) : (
                   <>
@@ -267,7 +267,7 @@ export default function PlanosPage() {
                 onClick={handleUpgrade} 
                 size="lg" 
                 disabled={upgradeLoading}
-                className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700"
+                className="bg-gradient-to-r from-blue-600 to-blue-600 hover:from-blue-700 hover:to-blue-700"
               >
                 {upgradeLoading ? (
                   <>
@@ -421,20 +421,20 @@ export default function PlanosPage() {
           {/* Plano PRO */}
           <Card className={cn(
             "border-2 transition-all relative overflow-hidden",
-            isPro ? "border-purple-500 shadow-lg" : "border-gray-200"
+            isPro ? "border-blue-500 shadow-lg" : "border-gray-200"
           )}>
             {/* Badge Recomendado */}
-            <div className="absolute top-0 right-0 bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-4 py-1 text-xs font-semibold">
+            <div className="absolute top-0 right-0 bg-gradient-to-r from-blue-600 to-blue-600 text-white px-4 py-1 text-xs font-semibold">
               RECOMENDADO
             </div>
             <CardHeader className="pt-8">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-2xl flex items-center gap-2">
-                  <Crown className="h-6 w-6 text-purple-600" />
+                  <Crown className="h-6 w-6 text-blue-600" />
                   PRO
                 </CardTitle>
                 {isPro && (
-                  <span className="px-3 py-1 bg-purple-100 text-purple-800 text-xs font-semibold rounded-full">
+                  <span className="px-3 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded-full">
                     Plano Atual
                   </span>
                 )}
@@ -448,9 +448,9 @@ export default function PlanosPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="mb-4 p-3 bg-purple-50 rounded-lg border border-purple-200">
-                <p className="text-xs font-semibold text-purple-900 mb-1">✨ Recursos Premium</p>
-                <p className="text-xs text-purple-700">Tudo que você precisa para crescer</p>
+              <div className="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                <p className="text-xs font-semibold text-blue-900 mb-1">✨ Recursos Premium</p>
+                <p className="text-xs text-blue-700">Tudo que você precisa para crescer</p>
               </div>
               <ul className="space-y-3">
                 <FeatureItem included highlight>
@@ -478,7 +478,7 @@ export default function PlanosPage() {
                 <Button
                   onClick={handleUpgrade}
                   disabled={upgradeLoading}
-                  className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700"
+                  className="w-full bg-gradient-to-r from-blue-600 to-blue-600 hover:from-blue-700 hover:to-blue-700"
                   size="lg"
                 >
                   {upgradeLoading ? (
@@ -510,27 +510,27 @@ export default function PlanosPage() {
 
       {/* Benefícios do PRO */}
       {!isPro && (
-        <Card className="bg-gradient-to-r from-purple-50 to-indigo-50 border-purple-200">
+        <Card className="bg-gradient-to-r from-blue-50 to-blue-50 border-blue-200">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Shield className="h-6 w-6 text-purple-600" />
+              <Shield className="h-6 w-6 text-blue-600" />
               Por que fazer upgrade para PRO?
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:p-6">
               <BenefitCard
-                icon={<TrendingUp className="h-8 w-8 text-purple-600" />}
+                icon={<TrendingUp className="h-8 w-8 text-blue-600" />}
                 title="Cresça sem limites"
                 description="Cadastre quantos clientes e OS precisar, sem restrições"
               />
               <BenefitCard
-                icon={<Zap className="h-8 w-8 text-purple-600" />}
+                icon={<Zap className="h-8 w-8 text-blue-600" />}
                 title="Recursos avançados"
                 description="Acesso a relatórios completos e dashboard avançado"
               />
               <BenefitCard
-                icon={<Shield className="h-8 w-8 text-purple-600" />}
+                icon={<Shield className="h-8 w-8 text-blue-600" />}
                 title="Suporte prioritário"
                 description="Atendimento rápido e backup automático dos seus dados"
               />
@@ -582,7 +582,7 @@ function FeatureItem({
       {included ? (
         <Check className={cn(
           "h-5 w-5 flex-shrink-0 mt-0.5",
-          highlight ? "text-purple-600" : "text-green-600"
+          highlight ? "text-blue-600" : "text-green-600"
         )} />
       ) : (
         <X className="h-5 w-5 flex-shrink-0 text-gray-400 mt-0.5" />

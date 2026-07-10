@@ -258,7 +258,7 @@ function DiagnosticoContent() {
       <Card className="border-2">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-base sm:text-lg font-bold">
-            <Sparkles className="h-6 w-6 text-purple-600" />
+            <Sparkles className="h-6 w-6 text-blue-600" />
             Novo Diagnóstico
           </CardTitle>
           <CardDescription>
@@ -327,7 +327,7 @@ Exemplo: 'O carro está fazendo um barulho de rangido ao frear, principalmente e
           <Button
             onClick={handleDiagnose}
             disabled={loading || !symptoms.trim()}
-            className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 font-bold h-12 text-lg shadow-lg"
+            className="w-full bg-gradient-to-r from-blue-600 to-blue-600 hover:from-blue-700 hover:to-blue-700 font-bold h-12 text-lg shadow-lg"
           >
             {loading ? (
               <>
@@ -346,15 +346,15 @@ Exemplo: 'O carro está fazendo um barulho de rangido ao frear, principalmente e
 
       {/* Resultado do Diagnóstico */}
       {diagnosisResult && (
-        <Card className="border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-blue-50">
+        <Card className="border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-blue-50">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-base sm:text-lg font-bold text-purple-900">
+            <CardTitle className="flex items-center gap-2 text-base sm:text-lg font-bold text-blue-900">
               <Sparkles className="h-6 w-6" />
               Diagnóstico Gerado
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="bg-white rounded-lg p-4 sm:p-6 border-2 border-purple-200 shadow-lg">
+            <div className="bg-white rounded-lg p-4 sm:p-6 border-2 border-blue-200 shadow-lg">
               <div className="prose max-w-none">
                 <div className="whitespace-pre-wrap text-gray-800 leading-relaxed">
                   {diagnosisResult.diagnosis}
@@ -362,7 +362,7 @@ Exemplo: 'O carro está fazendo um barulho de rangido ao frear, principalmente e
               </div>
 
               {/* Metadados */}
-              <div className="mt-6 pt-6 border-t border-purple-200 flex flex-wrap gap-4">
+              <div className="mt-6 pt-6 border-t border-blue-200 flex flex-wrap gap-4">
                 {diagnosisResult.metadata.severity && (
                   <div className={`px-4 py-2 rounded-lg border-2 font-bold ${getSeverityColor(diagnosisResult.metadata.severity)}`}>
                     <AlertTriangle className="h-4 w-4 inline mr-2" />
@@ -407,7 +407,7 @@ Exemplo: 'O carro está fazendo um barulho de rangido ao frear, principalmente e
         <CardContent>
           {loadingHistory ? (
             <div className="text-center py-12">
-              <Loader2 className="h-8 w-8 animate-spin text-purple-600 mx-auto mb-4" />
+              <Loader2 className="h-8 w-8 animate-spin text-blue-600 mx-auto mb-4" />
               <p className="text-gray-600">Carregando histórico...</p>
             </div>
           ) : diagnostics.length === 0 ? (
@@ -423,7 +423,7 @@ Exemplo: 'O carro está fazendo um barulho de rangido ao frear, principalmente e
               {diagnostics.map((diagnostic) => (
                 <div
                   key={diagnostic.id}
-                  className="p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border-2 border-gray-200 hover:border-purple-300 transition-all"
+                  className="p-4 bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg border-2 border-gray-200 hover:border-blue-300 transition-all"
                 >
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex-1">
@@ -472,7 +472,7 @@ Exemplo: 'O carro está fazendo um barulho de rangido ao frear, principalmente e
         <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-purple-600" />
+              <Sparkles className="h-5 w-5 text-blue-600" />
               Diagnóstico Completo
             </DialogTitle>
             <DialogDescription>
@@ -490,7 +490,7 @@ Exemplo: 'O carro está fazendo um barulho de rangido ao frear, principalmente e
 
               <div>
                 <h4 className="font-bold text-gray-900 mb-2">Diagnóstico:</h4>
-                <div className="prose max-w-none bg-purple-50 p-4 rounded-lg border-2 border-purple-200">
+                <div className="prose max-w-none bg-blue-50 p-4 rounded-lg border-2 border-blue-200">
                   <div className="whitespace-pre-wrap text-gray-800 leading-relaxed">
                     {viewingDiagnostic.diagnosis}
                   </div>

@@ -173,7 +173,7 @@ export default function AvaliacoesPage() {
       </div>
 
       {/* Summary Card */}
-      <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 sm:p-8 shadow-sm border border-gray-100 mb-6">
+      <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 sm:p-8 shadow-sm border border-[#0B1120]/8 mb-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Average Rating */}
           <div className="text-center md:border-r border-gray-200">
@@ -214,7 +214,7 @@ export default function AvaliacoesPage() {
 
       {/* Reviews List */}
       {reviews.length === 0 ? (
-        <div className="bg-white rounded-2xl sm:rounded-3xl p-8 sm:p-12 shadow-sm border border-gray-100 text-center">
+        <div className="bg-white rounded-2xl sm:rounded-3xl p-8 sm:p-12 shadow-sm border border-[#0B1120]/8 text-center">
           <div className="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
             <Star className="w-8 h-8 text-gray-400" />
           </div>
@@ -228,7 +228,7 @@ export default function AvaliacoesPage() {
           {reviews.map((review) => (
             <div
               key={review.id}
-              className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm border border-gray-100"
+              className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-sm border border-[#0B1120]/8"
             >
               {/* Review Header */}
               <div className="flex items-start justify-between mb-4">
