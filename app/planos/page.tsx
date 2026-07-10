@@ -121,10 +121,10 @@ export default function PlanosPage() {
                 </li>
               </ul>
 
-              <Link href="/login">
+              <Link href="/cadastro/oficina">
                 <Button
                   variant="outline"
-                  className="w-full border-2 border-gray-300 text-gray-700 hover:border-blue-600 hover:text-blue-600 font-sans font-bold py-6 rounded-xl"
+                  className="w-full border-2 border-gray-300 text-gray-700 hover:border-navy hover:text-navy font-sans font-bold py-6 rounded-xl"
                 >
                   Começar Grátis
                 </Button>
@@ -132,97 +132,98 @@ export default function PlanosPage() {
             </div>
 
             {/* Plano PRO */}
-            <div className="bg-gradient-to-br from-blue-600 to-blue-700 border-2 border-blue-600 rounded-2xl p-8 relative shadow-2xl transform md:scale-105">
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-yellow-400 text-gray-900 px-6 py-2 rounded-full text-sm font-sans font-bold shadow-lg">
+            <div className="bg-navy rounded-2xl p-8 relative shadow-2xl transform md:scale-105 overflow-hidden">
+              <div className="pointer-events-none absolute -top-24 -right-16 w-[300px] h-[300px] rounded-full bg-brand-blue/20 blur-[80px]" />
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-brand-yellow text-navy px-6 py-2 rounded-full text-sm font-sans font-bold shadow-lg z-10">
                 RECOMENDADO
               </div>
 
-              <div className="text-center mb-8">
+              <div className="relative text-center mb-8">
                 <h3 className="text-2xl font-heading font-bold text-white mb-2">
                   PRO
                 </h3>
                 <div className="flex items-baseline justify-center gap-2 mb-4">
-                  <span className="text-5xl font-heading font-bold text-white">
+                  <span className="text-5xl font-heading font-bold text-brand-yellow">
                     R$ 97
                   </span>
-                  <span className="text-blue-200 font-sans">/mês</span>
+                  <span className="text-white/50 font-sans">/mês</span>
                 </div>
-                <p className="text-blue-100 font-sans">
+                <p className="text-white/55 font-sans">
                   Sistema completo de gestão
                 </p>
               </div>
 
-              <ul className="space-y-4 mb-8">
+              <ul className="relative space-y-4 mb-8">
                 <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-5 w-5 text-brand-yellow mt-0.5 flex-shrink-0" />
                   <span className="text-white font-sans">
                     <strong>Tudo do FREE</strong> +
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-5 w-5 text-brand-yellow mt-0.5 flex-shrink-0" />
                   <span className="text-white font-sans">
                     <strong>Clientes ilimitados</strong> com histórico completo
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-5 w-5 text-brand-yellow mt-0.5 flex-shrink-0" />
                   <span className="text-white font-sans">
                     <strong>Veículos ilimitados</strong> por cliente
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-5 w-5 text-brand-yellow mt-0.5 flex-shrink-0" />
                   <span className="text-white font-sans">
                     <strong>Ordens de serviço ilimitadas</strong> por mês
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-5 w-5 text-brand-yellow mt-0.5 flex-shrink-0" />
                   <span className="text-white font-sans">
                     Controle de <strong>estoque</strong> com alertas
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-5 w-5 text-brand-yellow mt-0.5 flex-shrink-0" />
                   <span className="text-white font-sans">
                     Gestão <strong>financeira</strong> completa
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-5 w-5 text-brand-yellow mt-0.5 flex-shrink-0" />
                   <span className="text-white font-sans">
                     <strong>Agenda</strong> de compromissos
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-5 w-5 text-brand-yellow mt-0.5 flex-shrink-0" />
                   <span className="text-white font-sans">
                     <strong>Relatórios</strong> em PDF com gráficos
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-5 w-5 text-brand-yellow mt-0.5 flex-shrink-0" />
                   <span className="text-white font-sans">
                     <strong>Diagnóstico IA</strong> com GPT-4
                   </span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-yellow-400 mt-0.5 flex-shrink-0" />
+                  <CheckCircle2 className="h-5 w-5 text-brand-yellow mt-0.5 flex-shrink-0" />
                   <span className="text-white font-sans">
                     Integração <strong>WhatsApp</strong>
                   </span>
                 </li>
               </ul>
 
-              <Link href="/login">
-                <Button className="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-sans font-bold py-6 rounded-xl shadow-xl text-lg">
+              <Link href="/cadastro/oficina" className="relative block">
+                <Button className="btn-epic w-full font-sans font-bold py-6 rounded-xl text-lg">
                   Começar Teste de 14 Dias
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
 
-              <p className="text-center text-blue-100 text-sm font-sans mt-4">
+              <p className="relative text-center text-white/40 text-sm font-sans mt-4">
                 Sem cartão de crédito • Cancele quando quiser
               </p>
             </div>
@@ -235,10 +236,10 @@ export default function PlanosPage() {
                 <Shield className="h-8 w-8 text-blue-600 flex-shrink-0 mt-1" />
                 <div>
                   <h4 className="text-lg font-heading font-bold text-gray-900 mb-2">
-                    Garantia de 7 dias - Risco Zero
+                    Garantia de 14 dias - Risco Zero
                   </h4>
                   <p className="text-gray-700 font-sans leading-relaxed">
-                    Teste o plano PRO por 7 dias sem compromisso. Se não gostar,
+                    Teste o plano PRO por 14 dias sem compromisso. Se não gostar,
                     não paga nada. Você pode voltar para o plano FREE a qualquer
                     momento e seus dados ficam salvos.
                   </p>
@@ -430,7 +431,7 @@ export default function PlanosPage() {
               <summary className="font-heading font-bold text-lg text-gray-900 cursor-pointer list-none flex items-center justify-between">
                 <span className="flex items-center gap-3">
                   <HelpCircle className="h-5 w-5 text-blue-600" />
-                  O que acontece após os 7 dias de teste?
+                  O que acontece após os 14 dias de teste?
                 </span>
                 <span className="text-blue-600 group-open:rotate-180 transition-transform">
                   ▼
@@ -479,18 +480,19 @@ export default function PlanosPage() {
       </section>
 
       {/* CTA Final */}
-      <section className="py-20 bg-gradient-to-br from-blue-600 to-blue-800">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-5xl font-heading font-bold text-white mb-6">
+      <section className="band-dark py-20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_120%,rgba(253,224,71,0.1),transparent_60%)] pointer-events-none" />
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
+          <h2 className="text-3xl md:text-5xl font-heading font-black text-white mb-6">
             Pronto para começar?
           </h2>
-          <p className="text-xl text-blue-100 font-sans mb-10 max-w-2xl mx-auto">
-            Teste o plano PRO por 7 dias sem compromisso
+          <p className="text-xl text-white/55 font-sans mb-10 max-w-2xl mx-auto">
+            Teste o plano PRO por 14 dias sem compromisso
           </p>
-          <Link href="/login">
+          <Link href="/cadastro/oficina">
             <Button
               size="lg"
-              className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-sans font-bold text-lg px-10 py-6 rounded-xl shadow-xl hover:shadow-2xl transition-all"
+              className="btn-epic font-sans font-bold text-lg px-10 py-6 rounded-xl"
             >
               Começar Teste Grátis Agora
               <ArrowRight className="ml-2 h-5 w-5" />

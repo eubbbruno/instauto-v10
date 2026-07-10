@@ -182,8 +182,8 @@ export default function SobrePage() {
                 Encontre oficinas próximas, compare preços e agende serviços sem sair de casa.
               </p>
               <Link
-                href="/login"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-all"
+                href="/cadastro/motorista"
+                className="btn-epic-blue inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold"
               >
                 Cadastrar como Motorista
                 <ArrowRight className="w-5 h-5" />
@@ -203,8 +203,8 @@ export default function SobrePage() {
                 e coloca sua oficina no mapa para milhares de motoristas. Aumente seu faturamento.
               </p>
               <Link
-                href="/login"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-semibold rounded-xl transition-all"
+                href="/cadastro/oficina"
+                className="btn-epic inline-flex items-center gap-2 px-6 py-3 rounded-xl font-bold"
               >
                 Cadastrar Minha Oficina
                 <ArrowRight className="w-5 h-5" />
@@ -217,25 +217,26 @@ export default function SobrePage() {
       </section>
 
       {/* CTA Final */}
-      <section className="py-20 bg-gray-900 text-white">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Faça Parte da Nossa História
+      <section className="band-dark py-20 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_120%,rgba(253,224,71,0.1),transparent_60%)] pointer-events-none" />
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
+          <h2 className="font-heading text-3xl md:text-4xl font-black text-white mb-6">
+            Faça parte da nossa história
           </h2>
-          <p className="text-xl text-gray-400 mb-10">
+          <p className="text-xl text-white/55 mb-10">
             Junte-se a milhares de usuários que já confiam no Instauto
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
               href="/cadastro/motorista"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all"
+              className="btn-epic-blue inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold"
             >
               Cadastrar como Motorista
               <ArrowRight className="w-5 h-5" />
             </Link>
             <Link
               href="/cadastro/oficina"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-bold rounded-xl transition-all"
+              className="btn-epic inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold"
             >
               Cadastrar Minha Oficina
               <ArrowRight className="w-5 h-5" />
