@@ -116,10 +116,36 @@ export default function OficinaDetalhesPage() {
     );
   }
 
+  const w = workshop as any;
+  const autoRepairLd = {
+    "@context": "https://schema.org",
+    "@type": "AutoRepair",
+    name: w.name,
+    url: `https://www.instauto.com.br/oficina-detalhes/${w.id}`,
+    ...(w.description ? { description: w.description } : {}),
+    ...(w.address || w.city
+      ? {
+          address: {
+            "@type": "PostalAddress",
+            ...(w.address ? { streetAddress: w.address } : {}),
+            ...(w.city ? { addressLocality: w.city } : {}),
+            ...(w.state ? { addressRegion: w.state } : {}),
+            addressCountry: "BR",
+          },
+        }
+      : {}),
+    ...(w.phone ? { telephone: w.phone } : {}),
+    ...(Array.isArray(w.specialties) && w.specialties.length ? { knowsAbout: w.specialties } : {}),
+    ...(w.rating && w.reviews_count
+      ? { aggregateRating: { "@type": "AggregateRating", ratingValue: w.rating, reviewCount: w.reviews_count } }
+      : {}),
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
-      
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(autoRepairLd) }} />
+
       {/* Header com Gradiente */}
       <div className="bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800 h-32 sm:h-40 md:h-56 pt-20 sm:pt-24" />
       
