@@ -17,7 +17,7 @@ export default function PrivacidadePage() {
         {
           heading: "Controlador dos dados",
           blocks: [
-            { type: "p", text: "O Instauto é o controlador dos dados pessoais tratados na plataforma, responsável por decidir sobre as finalidades e os meios do tratamento. Para questões relativas à proteção de dados, entre em contato com nosso Encarregado (DPO) pelo e-mail privacidade@instauto.com.br." },
+            { type: "p", text: "O Instauto é o controlador dos dados pessoais tratados na plataforma, responsável por decidir sobre as finalidades e os meios do tratamento. Para questões relativas à proteção de dados, entre em contato com nosso Encarregado (DPO) pelo e-mail contato@instauto.com.br." },
           ],
         },
         {
@@ -80,7 +80,7 @@ export default function PrivacidadePage() {
               "Revogar o consentimento e ser informado sobre as consequências da revogação.",
               "Solicitar a eliminação dos dados tratados com base no consentimento.",
             ] },
-            { type: "p", text: "Para exercer seus direitos, escreva para privacidade@instauto.com.br. Podemos solicitar informações para confirmar sua identidade antes de atender ao pedido." },
+            { type: "p", text: "Para exercer seus direitos, escreva para contato@instauto.com.br. Podemos solicitar informações para confirmar sua identidade antes de atender ao pedido." },
           ],
         },
         {
