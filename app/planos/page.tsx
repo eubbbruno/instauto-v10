@@ -12,6 +12,8 @@ import {
   X,
   Shield,
   HelpCircle,
+  Users,
+  Building2,
 } from "lucide-react";
 
 export default function PlanosPage() {
@@ -149,7 +151,7 @@ export default function PlanosPage() {
                   <span className="text-white/50 font-sans">/mês</span>
                 </div>
                 <p className="text-white/55 font-sans">
-                  Sistema completo de gestão
+                  Gestão completa · 1 usuário
                 </p>
               </div>
 
@@ -243,6 +245,64 @@ export default function PlanosPage() {
                     não paga nada. Você pode voltar para o plano FREE a qualquer
                     momento e seus dados ficam salvos.
                   </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Planos de equipe (multi-usuário) */}
+          <div className="max-w-5xl mx-auto mt-16">
+            <div className="text-center mb-8">
+              <p className="text-eyebrow text-brand-gold mb-2">Para equipes</p>
+              <h3 className="text-2xl sm:text-3xl font-heading font-black text-navy tracking-tight">
+                Sua oficina tem mais de uma pessoa?
+              </h3>
+              <p className="text-gray-600 mt-2">
+                Dê acesso ao dashboard para o seu time — todos veem tudo.
+              </p>
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-5">
+              {/* Equipe */}
+              <div className="rounded-2xl border border-navy/10 bg-white p-6 sm:p-8">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-navy/5 flex items-center justify-center">
+                    <Users className="w-5 h-5 text-navy" />
+                  </div>
+                  <h4 className="text-lg font-heading font-bold text-navy">Equipe</h4>
+                </div>
+                <p className="text-3xl font-heading font-black text-navy mb-1">Sob consulta</p>
+                <p className="text-gray-600 mb-6">Dono + 3 usuários · gestão completa (tudo do PRO)</p>
+                <a
+                  href="https://wa.me/5543991852779?text=Ol%C3%A1!%20Tenho%20interesse%20no%20plano%20Equipe%20do%20Instauto."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-epic-blue block w-full text-center py-3.5 rounded-xl font-bold"
+                >
+                  Falar com vendas
+                </a>
+              </div>
+
+              {/* Empresarial */}
+              <div className="rounded-2xl bg-navy text-white p-6 sm:p-8 relative overflow-hidden">
+                <div className="pointer-events-none absolute -top-24 -right-16 w-[300px] h-[300px] rounded-full bg-brand-blue/20 blur-[80px]" />
+                <div className="relative">
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="w-10 h-10 rounded-xl bg-brand-yellow/15 flex items-center justify-center">
+                      <Building2 className="w-5 h-5 text-brand-yellow" />
+                    </div>
+                    <h4 className="text-lg font-heading font-bold">Empresarial</h4>
+                  </div>
+                  <p className="text-3xl font-heading font-black text-brand-yellow mb-1">Fale conosco</p>
+                  <p className="text-white/55 mb-6">Mais de 4 usuários · plano sob medida para sua rede</p>
+                  <a
+                    href="https://wa.me/5543991852779?text=Ol%C3%A1!%20Preciso%20de%20um%20plano%20Empresarial%20do%20Instauto%20(mais%20usu%C3%A1rios)."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-epic block w-full text-center py-3.5 rounded-xl font-bold"
+                  >
+                    Entre em contato
+                  </a>
                 </div>
               </div>
             </div>
