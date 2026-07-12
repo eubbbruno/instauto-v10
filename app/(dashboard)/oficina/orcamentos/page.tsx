@@ -199,7 +199,7 @@ export default function OrcamentosOficinaPage() {
             <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Orçamentos</p>
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
               <div>
-                <h1 className="text-base sm:text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">Orçamentos Recebidos</h1>
+                <h1 className="font-heading text-2xl sm:text-3xl font-black text-navy tracking-tight mb-2">Orçamentos Recebidos</h1>
               <div className="flex items-center gap-3 flex-wrap">
                 <p className="text-gray-600">Gerencie as solicitações de orçamento</p>
                 {pendingCount > 0 && (

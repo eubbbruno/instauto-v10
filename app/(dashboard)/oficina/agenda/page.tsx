@@ -415,7 +415,7 @@ export default function AgendaPage() {
             <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Agenda</p>
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <h1 className="text-base sm:text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900">Agenda</h1>
+                <h1 className="font-heading text-2xl sm:text-3xl font-black text-navy tracking-tight">Agenda</h1>
                 <p className="text-gray-600">Gerencie os agendamentos da oficina</p>
               </div>
               <div className="flex flex-wrap gap-2">

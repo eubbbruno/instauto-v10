@@ -150,7 +150,7 @@ export default function OrdensPage() {
       <FadeIn>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
+            <h1 className="font-heading text-2xl sm:text-3xl font-black text-navy tracking-tight">
               Ordens de Serviço
             </h1>
             <p className="text-sm text-gray-600 mt-1">
@@ -159,7 +159,7 @@ export default function OrdensPage() {
           </div>
           <button
             onClick={() => setShowNewOSModal(true)}
-            className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl flex items-center justify-center gap-2 transition-all min-h-[44px] shadow-lg"
+            className="px-6 py-2.5 btn-epic-blue font-bold rounded-xl flex items-center justify-center gap-2 transition-all min-h-[44px] shadow-lg"
           >
             <Plus className="w-5 h-5" />
             Nova OS
@@ -272,7 +272,7 @@ export default function OrdensPage() {
             {!searchTerm && filterStatus === "all" && (
               <button
                 onClick={() => setShowNewOSModal(true)}
-                className="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl inline-flex items-center gap-2 transition-all"
+                className="px-6 py-2.5 btn-epic-blue font-bold rounded-xl inline-flex items-center gap-2 transition-all"
               >
                 <Plus className="w-5 h-5" />
                 Criar Primeira OS

@@ -169,7 +169,7 @@ export default function AvaliacoesPage() {
       {/* Header */}
       <div className="mb-6 sm:mb-8">
         <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Avaliações</p>
-        <h1 className="text-base sm:text-lg sm:text-2xl lg:text-3xl font-bold text-gray-900">Avaliações dos Clientes</h1>
+        <h1 className="font-heading text-2xl sm:text-3xl font-black text-navy tracking-tight">Avaliações dos Clientes</h1>
       </div>
 
       {/* Summary Card */}

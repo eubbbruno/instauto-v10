@@ -342,7 +342,7 @@ export default function FinanceiroPage() {
       <FadeIn>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
+            <h1 className="font-heading text-2xl sm:text-3xl font-black text-navy tracking-tight">
               Financeiro
             </h1>
             <p className="text-sm text-gray-600 mt-1">

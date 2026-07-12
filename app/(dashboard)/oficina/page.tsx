@@ -492,7 +492,7 @@ export default function OficinaDashboard() {
             <p className="text-xs sm:text-sm text-gray-500 mb-1">
               {format(new Date(), "EEEE, dd 'de' MMMM", { locale: ptBR })}
             </p>
-            <h1 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900">
+            <h1 className="font-heading text-2xl sm:text-3xl font-black text-navy tracking-tight">
               Olá, {workshop?.name || 'Oficina'}! 👋
             </h1>
           </div>
