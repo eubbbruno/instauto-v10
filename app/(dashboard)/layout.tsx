@@ -6,6 +6,7 @@ import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase";
+import { resolveWorkshop } from "@/lib/workshop";
 import { TopBar } from "@/components/layout/TopBar";
 import {
   LayoutDashboard, Users, Car, FileText, Package, DollarSign,
@@ -104,15 +105,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           }
         }
 
-        console.log("🏠 [Layout] Carregando workshop...");
-        // Carregar workshop
-        const { data: workshopData, error: workshopError } = await supabase
-          .from("workshops")
-          .select("*")
-          .eq("profile_id", user.id)
-          .single();
+        console.log("🏠 [Layout] Carregando workshop (dono ou membro)...");
+        // Resolve a oficina do usuário — dono OU membro (via workshop_members)
+        let workshopData = await resolveWorkshop(supabase, user.id);
 
         if (!workshopData) {
+          // Nenhuma oficina (nem dono, nem membro) → dono novo: cria a oficina e o vínculo de dono
           const { data: newWorkshop } = await supabase
             .from("workshops")
             .insert({
@@ -124,13 +122,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             })
             .select()
             .single();
-          
+
           if (newWorkshop) {
-            setWorkshop(newWorkshop);
+            await supabase.from("workshop_members").insert({
+              workshop_id: newWorkshop.id,
+              profile_id: user.id,
+              role: "owner",
+            });
+            workshopData = newWorkshop;
           }
-        } else {
-          setWorkshop(workshopData);
         }
+
+        setWorkshop(workshopData);
 
         if (profileData) {
           const { data: notifications } = await supabase

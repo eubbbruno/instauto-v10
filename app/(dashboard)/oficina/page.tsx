@@ -4,6 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase";
+import { resolveWorkshop } from "@/lib/workshop";
 import { isProActive } from "@/lib/plan";
 import { StatCard } from "@/components/dashboard/StatCard";
 import { StaggerContainer, StaggerItem, FadeIn, FloatingCard } from "@/components/ui/motion";
@@ -102,19 +103,14 @@ export default function OficinaDashboard() {
     }
 
     if (user) {
-      supabase
-        .from("workshops")
-        .select("*")
-        .eq("profile_id", user.id)
-        .single()
-        .then(({ data }) => {
-          if (!data) {
-            router.push("/completar-cadastro");
-          } else {
-            setWorkshop(data);
-          }
-          setLoading(false);
-        });
+      resolveWorkshop(supabase, user.id).then((data) => {
+        if (!data) {
+          router.push("/completar-cadastro");
+        } else {
+          setWorkshop(data);
+        }
+        setLoading(false);
+      });
     }
   }, [user, authLoading, router]);
 
