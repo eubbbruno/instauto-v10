@@ -315,7 +315,7 @@ export default function ConfiguracoesPage() {
         <FadeIn>
           <div className="mb-6 sm:mb-8">
             <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Configurações</p>
-            <h1 className="font-heading text-2xl sm:text-3xl font-black text-navy tracking-tight mb-2">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
               Configurações ⚙️
             </h1>
             <p className="text-gray-600">Gerencie seus dados pessoais e da oficina</p>

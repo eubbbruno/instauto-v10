@@ -242,7 +242,7 @@ export default function OSDetailsPage({ params }: { params: { id: string } }) {
           </button>
           <div className="flex-1">
             <div className="flex items-center gap-3 mb-2">
-              <h1 className="font-heading text-2xl sm:text-3xl font-black text-navy tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
                 OS #{order.order_number?.toString().padStart(4, "0")}
               </h1>
               <span className={`px-3 py-1 text-xs font-medium rounded-full border ${statusConfig.color}`}>

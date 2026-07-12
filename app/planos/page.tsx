@@ -271,16 +271,17 @@ export default function PlanosPage() {
                   </div>
                   <h4 className="text-lg font-heading font-bold text-navy">Equipe</h4>
                 </div>
-                <p className="text-3xl font-heading font-black text-navy mb-1">Sob consulta</p>
-                <p className="text-gray-600 mb-6">Dono + 3 usuários · gestão completa (tudo do PRO)</p>
-                <a
-                  href="https://wa.me/5543991852779?text=Ol%C3%A1!%20Tenho%20interesse%20no%20plano%20Equipe%20do%20Instauto."
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <div className="flex items-baseline gap-2 mb-1">
+                  <span className="text-4xl font-heading font-black text-navy">R$ 147</span>
+                  <span className="text-gray-500 font-sans">/mês</span>
+                </div>
+                <p className="text-gray-600 mb-6">Dono + 3 usuários · tudo do PRO</p>
+                <Link
+                  href="/cadastro/oficina"
                   className="btn-epic-blue block w-full text-center py-3.5 rounded-xl font-bold"
                 >
-                  Falar com vendas
-                </a>
+                  Assinar Equipe
+                </Link>
               </div>
 
               {/* Empresarial */}

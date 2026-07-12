@@ -394,7 +394,7 @@ export default function EstoquePage() {
             <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Estoque</p>
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div>
-                <h1 className="font-heading text-2xl sm:text-3xl font-black text-navy tracking-tight mb-2">Estoque de Peças</h1>
+                <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Estoque de Peças</h1>
                 <div className="flex items-center gap-3 flex-wrap">
                   <p className="text-gray-600">Gerencie o inventário da sua oficina</p>
                   <Badge className="bg-blue-100 text-blue-700 text-sm font-medium px-3 py-1 rounded-full">
