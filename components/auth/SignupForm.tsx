@@ -9,6 +9,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase";
+import { FACEBOOK_LOGIN_ENABLED } from "@/lib/config";
 import { FadeIn } from "@/components/ui/motion";
 
 type UserType = "motorista" | "oficina";
@@ -312,7 +313,8 @@ export default function SignupForm({ userType }: { userType: UserType }) {
                     </span>
                   </button>
 
-                  {/* Botão Facebook */}
+                  {/* Botão Facebook — oculto até a Meta liberar o app (Business Verification) */}
+                  {FACEBOOK_LOGIN_ENABLED && (
                   <button
                     onClick={() => handleOAuthSignup("facebook")}
                     disabled={googleLoading || facebookLoading}
@@ -329,6 +331,7 @@ export default function SignupForm({ userType }: { userType: UserType }) {
                       {facebookLoading ? "Conectando..." : "Continuar com Facebook"}
                     </span>
                   </button>
+                  )}
 
                   <div className="flex items-center gap-4 my-6">
                     <div className="flex-1 h-px bg-gray-200" />

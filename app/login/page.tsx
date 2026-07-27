@@ -7,6 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase";
+import { FACEBOOK_LOGIN_ENABLED } from "@/lib/config";
 import { FadeIn } from "@/components/ui/motion";
 
 function LoginContent() {
@@ -266,7 +267,8 @@ function LoginContent() {
                 </span>
               </button>
 
-              {/* Botão Facebook */}
+              {/* Botão Facebook — oculto até a Meta liberar o app (Business Verification) */}
+              {FACEBOOK_LOGIN_ENABLED && (
               <button
                 onClick={() => handleOAuthLogin("facebook")}
                 disabled={googleLoading || facebookLoading}
@@ -283,6 +285,7 @@ function LoginContent() {
                   {facebookLoading ? "Conectando..." : "Continuar com Facebook"}
                 </span>
               </button>
+              )}
 
               <div className="flex items-center gap-4 my-6">
                 <div className="flex-1 h-px bg-gray-200" />
