@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { createClient } from "@/lib/supabase";
+import { resolveWorkshop } from "@/lib/workshop";
 import { useAuth } from "@/contexts/AuthContext";
 import { Appointment, AppointmentStatus } from "@/types/database";
 import { Button } from "@/components/ui/button";
@@ -108,16 +109,11 @@ export default function AgendaPage() {
       try {
         setLoading(true);
 
-        const { data: workshop, error: workshopError } = await supabase
-          .from("workshops")
-          .select("id")
-          .eq("profile_id", profile.id)
-          .abortSignal(abortController.signal)
-          .single();
+        const workshop = await resolveWorkshop(supabase, profile.id);
 
-        if (workshopError) throw workshopError;
+        if (!workshop) throw new Error("Oficina não encontrada");
         if (!mounted) return;
-        
+
         setWorkshopId(workshop.id);
 
         // Carregar clientes

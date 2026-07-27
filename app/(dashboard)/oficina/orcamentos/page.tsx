@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase";
+import { resolveWorkshop } from "@/lib/workshop";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -73,15 +74,10 @@ export default function OrcamentosOficinaPage() {
     setLoading(true);
     try {
       // Buscar oficina
-      const { data: workshop, error: workshopError } = await supabase
-        .from("workshops")
-        .select("id")
-        .eq("profile_id", profile.id)
-        .single();
+      const workshop = await resolveWorkshop(supabase, profile.id);
 
-      console.log("🔍 [Orçamentos] Workshop:", { workshop, workshopError });
+      console.log("🔍 [Orçamentos] Workshop:", workshop);
 
-      if (workshopError) throw workshopError;
       if (!workshop) {
         console.error("🔍 [Orçamentos] Workshop não encontrado!");
         router.push("/completar-cadastro");

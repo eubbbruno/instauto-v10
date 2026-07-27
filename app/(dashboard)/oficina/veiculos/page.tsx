@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase";
+import { resolveWorkshop } from "@/lib/workshop";
 import { useAuth } from "@/contexts/AuthContext";
 import { Vehicle, Workshop } from "@/types/database";
 import { Button } from "@/components/ui/button";
@@ -83,13 +84,9 @@ function VeiculosContent() {
 
   const loadWorkshop = async () => {
     try {
-      const { data, error } = await supabase
-        .from("workshops")
-        .select("*")
-        .eq("profile_id", profile?.id)
-        .single();
+      const data = await resolveWorkshop(supabase, profile?.id);
 
-      if (error) throw error;
+      if (!data) throw new Error("Oficina não encontrada");
       setWorkshop(data);
     } catch (error) {
       console.error("Erro ao carregar oficina:", error);

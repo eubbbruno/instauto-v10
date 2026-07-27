@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase";
+import { resolveWorkshop } from "@/lib/workshop";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -104,11 +105,7 @@ function WhatsAppContent() {
   const loadData = async () => {
     try {
       // Buscar workshop
-      const { data: workshopData } = await supabase
-        .from("workshops")
-        .select("*")
-        .eq("profile_id", profile?.id)
-        .single();
+      const workshopData = await resolveWorkshop(supabase, profile?.id);
 
       if (workshopData) {
         setWorkshop(workshopData);

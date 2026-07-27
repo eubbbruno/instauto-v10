@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase";
+import { resolveWorkshop } from "@/lib/workshop";
 import { useAuth } from "@/contexts/AuthContext";
 import { Profile, Workshop } from "@/types/database";
 import { isProActive, trialDaysLeft } from "@/lib/plan";
@@ -98,13 +99,9 @@ export default function ConfiguracoesPage() {
       setAvatarUrl(profile?.avatar_url || null);
 
       // Carregar dados da oficina
-      const { data: workshopData, error } = await supabase
-        .from("workshops")
-        .select("*")
-        .eq("profile_id", profile?.id)
-        .single();
+      const workshopData = await resolveWorkshop(supabase, profile?.id);
 
-      if (error) throw error;
+      if (!workshopData) throw new Error("Oficina não encontrada");
 
       setWorkshop(workshopData);
       setWorkshopData({

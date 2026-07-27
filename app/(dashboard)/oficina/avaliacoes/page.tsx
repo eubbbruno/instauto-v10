@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { createClient } from "@/lib/supabase";
+import { resolveWorkshop } from "@/lib/workshop";
 import { StarRating } from "@/components/ui/StarRating";
 import { Star, MessageSquare, Loader2, User } from "lucide-react";
 import { format } from "date-fns";
@@ -54,11 +55,7 @@ export default function AvaliacoesPage() {
       setLoading(true);
 
       // Buscar workshop
-      const { data: workshopData } = await supabase
-        .from("workshops")
-        .select("*")
-        .eq("profile_id", profile?.id)
-        .single();
+      const workshopData = await resolveWorkshop(supabase, profile?.id);
 
       if (!workshopData) {
         console.error("Workshop não encontrado");

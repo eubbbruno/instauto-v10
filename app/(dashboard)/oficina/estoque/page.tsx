@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase";
+import { resolveWorkshop } from "@/lib/workshop";
 import { useAuth } from "@/contexts/AuthContext";
 import { Inventory } from "@/types/database";
 import { Button } from "@/components/ui/button";
@@ -82,17 +83,10 @@ export default function EstoquePage() {
     try {
       setLoading(true);
 
-      // Buscar workshop
-      let query1 = supabase
-        .from("workshops")
-        .select("id")
-        .eq("profile_id", profile?.id);
+      // Buscar workshop (dono ou membro)
+      const workshop = await resolveWorkshop(supabase, profile?.id);
 
-      if (signal) query1 = query1.abortSignal(signal);
-
-      const { data: workshop, error: workshopError } = await query1.single();
-
-      if (workshopError) throw workshopError;
+      if (!workshop) throw new Error("Oficina não encontrada");
       setWorkshopId(workshop.id);
 
       // Buscar itens do estoque
@@ -131,15 +125,10 @@ export default function EstoquePage() {
       try {
         setLoading(true);
 
-        // Buscar workshop
-        const { data: workshop, error: workshopError } = await supabase
-          .from("workshops")
-          .select("id")
-          .eq("profile_id", profile.id)
-          .abortSignal(abortController.signal)
-          .single();
+        // Buscar workshop (dono ou membro)
+        const workshop = await resolveWorkshop(supabase, profile.id);
 
-        if (workshopError) throw workshopError;
+        if (!workshop) throw new Error("Oficina não encontrada");
         if (!mounted) return;
         
         setWorkshopId(workshop.id);

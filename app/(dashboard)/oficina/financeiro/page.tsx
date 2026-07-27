@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase";
+import { resolveWorkshop } from "@/lib/workshop";
 import { useAuth } from "@/contexts/AuthContext";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/motion";
 import { GlassCard } from "@/components/ui/glass-card";
@@ -118,13 +119,8 @@ export default function FinanceiroPage() {
     try {
       setLoading(true);
 
-      const { data: workshop, error: workshopError } = await supabase
-        .from("workshops")
-        .select("id")
-        .eq("profile_id", profile?.id)
-        .single();
-
-      if (workshopError) throw workshopError;
+      const workshop = await resolveWorkshop(supabase, profile?.id);
+      if (!workshop) throw new Error("Oficina não encontrada");
       setWorkshopId(workshop.id);
 
       const [transactionsRes, billsRes, receivablesRes] = await Promise.all([

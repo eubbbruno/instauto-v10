@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase";
+import { resolveWorkshop } from "@/lib/workshop";
 import { useAuth } from "@/contexts/AuthContext";
 import { Client, Workshop } from "@/types/database";
 import { isProActive } from "@/lib/plan";
@@ -69,13 +70,8 @@ function ClientesContent() {
 
   const loadWorkshop = async () => {
     try {
-      const { data, error } = await supabase
-        .from("workshops")
-        .select("*")
-        .eq("profile_id", profile?.id)
-        .single();
-
-      if (error) throw error;
+      const data = await resolveWorkshop(supabase, profile?.id);
+      if (!data) throw new Error("Oficina não encontrada");
       setWorkshop(data);
     } catch (error) {
       console.error("Erro ao carregar oficina:", error);

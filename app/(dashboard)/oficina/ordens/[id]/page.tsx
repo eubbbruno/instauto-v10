@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase";
+import { resolveWorkshop } from "@/lib/workshop";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/motion";
@@ -114,11 +115,7 @@ export default function OSDetailsPage({ params }: { params: { id: string } }) {
     try {
       setLoading(true);
 
-      const { data: workshop } = await supabase
-        .from("workshops")
-        .select("id")
-        .eq("profile_id", profile?.id)
-        .single();
+      const workshop = await resolveWorkshop(supabase, profile?.id);
 
       if (!workshop) throw new Error("Oficina não encontrada");
 
