@@ -7,6 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase";
 import { resolveWorkshop } from "@/lib/workshop";
+import { canAccessModule } from "@/lib/permissions";
 import { TopBar } from "@/components/layout/TopBar";
 import {
   LayoutDashboard, Users, Car, FileText, Package, DollarSign,
@@ -42,6 +43,7 @@ const menuItems = [
   { href: "/oficina/diagnostico", label: "Diagnóstico IA", icon: Stethoscope },
   { href: "/oficina/relatorios", label: "Relatórios", icon: FileText },
   { href: "/oficina/whatsapp", label: "WhatsApp", icon: MessageSquare },
+  { href: "/oficina/equipe", label: "Equipe", icon: Users },
   { href: "/oficina/configuracoes", label: "Configurações", icon: Settings },
   { href: "/oficina/planos", label: "Planos", icon: CreditCard },
 ];
@@ -54,7 +56,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const [pendingQuotes, setPendingQuotes] = useState(0);
-  
+  const [memberRole, setMemberRole] = useState<string>("owner");
+  const [memberPermissions, setMemberPermissions] = useState<Record<string, boolean> | null>(null);
+
   const router = useRouter();
   const pathname = usePathname();
   const supabase = createClient();
@@ -96,21 +100,25 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         } else {
           console.log("✅ Profile encontrado:", profileData.type);
           setProfile(profileData);
-          
-          // Verificar se é workshop
-          if (profileData.type !== "workshop") {
-            console.log("⚠️ Tipo não é workshop, redirecionando...");
-            router.push("/motorista");
-            return;
-          }
         }
+
+        // Aceita convites de equipe pendentes (vincula o membro à oficina, se houver)
+        await supabase.rpc("accept_my_invites");
+
+        const profileType = profileData?.type ?? "workshop";
 
         console.log("🏠 [Layout] Carregando workshop (dono ou membro)...");
         // Resolve a oficina do usuário — dono OU membro (via workshop_members)
         let workshopData = await resolveWorkshop(supabase, user.id);
 
         if (!workshopData) {
-          // Nenhuma oficina (nem dono, nem membro) → dono novo: cria a oficina e o vínculo de dono
+          // Sem vínculo com oficina. Se for motorista, este não é o lugar dele.
+          if (profileType !== "workshop") {
+            console.log("⚠️ Motorista sem oficina, redirecionando...");
+            router.push("/motorista");
+            return;
+          }
+          // Dono novo (type workshop, sem oficina): cria a oficina e o vínculo de dono
           const { data: newWorkshop } = await supabase
             .from("workshops")
             .insert({
@@ -134,6 +142,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         }
 
         setWorkshop(workshopData);
+
+        // Papel + permissões do usuário atual nessa oficina (para filtrar o menu)
+        if (workshopData?.id) {
+          const { data: myMembership } = await supabase
+            .from("workshop_members")
+            .select("role, permissions")
+            .eq("workshop_id", workshopData.id)
+            .eq("profile_id", user.id)
+            .maybeSingle();
+          setMemberRole(myMembership?.role ?? "owner");
+          setMemberPermissions((myMembership?.permissions as Record<string, boolean>) ?? null);
+        }
 
         if (profileData) {
           const { data: notifications } = await supabase
@@ -190,6 +210,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     return null;
   }
 
+  // Menu visível conforme papel/permissões.
+  // Dono vê tudo. Membro: Dashboard + módulos liberados + Configurações (Equipe/Planos são do dono).
+  const OWNER_ONLY = ["/oficina/equipe", "/oficina/planos"];
+  const visibleMenu = memberRole === "owner"
+    ? menuItems
+    : menuItems.filter((item) => {
+        if (OWNER_ONLY.includes(item.href)) return false;
+        if (item.href === "/oficina" || item.href === "/oficina/configuracoes") return true;
+        const key = item.href.split("/").pop() || "";
+        return canAccessModule(memberPermissions, key);
+      });
 
   return (
     <div className="min-h-screen bg-[#F8F9FB]">
@@ -227,7 +258,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
         {/* Navigation */}
         <nav className="relative flex-1 p-3 space-y-0.5 overflow-y-auto">
-          {menuItems.map((item) => {
+          {visibleMenu.map((item) => {
             const isActive = pathname === item.href;
             const showBadge = item.href === "/oficina/orcamentos" && pendingQuotes > 0;
 

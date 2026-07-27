@@ -7,6 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase";
+import { resolveWorkshop } from "@/lib/workshop";
 import { FACEBOOK_LOGIN_ENABLED } from "@/lib/config";
 import { FadeIn } from "@/components/ui/motion";
 
@@ -85,6 +86,14 @@ function LoginContent() {
     // Admin tem painel próprio, independente do type
     if (profile?.role === "admin") {
       router.push("/admin");
+      return;
+    }
+
+    // Aceita convites de equipe pendentes e verifica vínculo com oficina (dono ou membro)
+    await supabase.rpc("accept_my_invites");
+    const ws = await resolveWorkshop(supabase, userId);
+    if (ws) {
+      router.push("/oficina");
       return;
     }
 
