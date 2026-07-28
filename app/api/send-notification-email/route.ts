@@ -295,6 +295,52 @@ export async function POST(request: NextRequest) {
       `;
     }
 
+    if (type === 'team_invite') {
+      const inviter = data?.inviterName ? ` por ${data.inviterName}` : '';
+      html = `
+        <!DOCTYPE html>
+        <html lang="pt-BR">
+        <head>
+          <meta charset="utf-8">
+          <meta name="color-scheme" content="light only">
+        </head>
+        <body style="margin:0;padding:0;background-color:#F3F4F6;font-family:Arial,Helvetica,sans-serif;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#F3F4F6">
+            <tr><td align="center" style="padding:32px 16px;">
+              <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#FFFFFF;border-radius:16px;overflow:hidden;">
+                <tr><td align="center" bgcolor="#0B1120" style="background:#0B1120;padding:36px 20px;">
+                  <span style="font-size:32px;font-weight:bold;">
+                    <span style="color:#FFFFFF;">Inst</span><span style="color:#FCD34D;">auto</span>
+                  </span>
+                </td></tr>
+                <tr><td style="padding:40px 32px;">
+                  <h2 style="margin:0 0 16px 0;color:#111827;font-size:22px;">Você foi convidado para uma equipe 👥</h2>
+                  <p style="color:#4B5563;font-size:16px;line-height:1.6;margin:0 0 16px;">
+                    A oficina <strong style="color:#111827;">${data?.workshopName || 'no Instauto'}</strong> convidou você${inviter} para fazer parte da equipe dela no Instauto.
+                  </p>
+                  <p style="color:#4B5563;font-size:16px;line-height:1.6;margin:0 0 24px;">
+                    Para entrar, acesse o Instauto com <strong>este mesmo e-mail</strong> (${to}). Se ainda não tem conta, crie uma — o vínculo com a oficina é feito automaticamente no primeiro acesso.
+                  </p>
+                  <table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:8px auto 24px;">
+                    <tr><td align="center" bgcolor="#FCD34D" style="background:#FCD34D;border-radius:12px;">
+                      <a href="https://www.instauto.com.br/login" target="_blank" style="display:inline-block;padding:16px 36px;font-size:16px;font-weight:bold;color:#0B1120;text-decoration:none;border-radius:12px;">
+                        Acessar o Instauto
+                      </a>
+                    </td></tr>
+                  </table>
+                  <p style="color:#6B7280;font-size:13px;line-height:1.6;margin:0;">Se você não esperava este convite, pode ignorar este e-mail.</p>
+                </td></tr>
+                <tr><td align="center" bgcolor="#F9FAFB" style="background:#F9FAFB;padding:24px;border-top:1px solid #E5E7EB;">
+                  <p style="margin:0;color:#6B7280;font-size:13px;">© 2026 Instauto · <a href="https://www.instauto.com.br" style="color:#2563EB;text-decoration:none;">www.instauto.com.br</a></p>
+                </td></tr>
+              </table>
+            </td></tr>
+          </table>
+        </body>
+        </html>
+      `;
+    }
+
     console.log("📨 [Email API] Preparando envio via Resend...");
     console.log("📨 [Email API] From: Instauto <noreply@instauto.com.br>");
     console.log("📨 [Email API] To:", to);

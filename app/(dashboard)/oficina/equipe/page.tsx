@@ -129,7 +129,19 @@ export default function EquipePage() {
 
       if (error) throw error;
 
-      toast({ title: "Convite enviado!", description: `${email} vai entrar na equipe ao acessar o Instauto com esse e-mail.` });
+      // Dispara o e-mail de convite (não bloqueia o fluxo se falhar)
+      fetch("/api/send-notification-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          to: email,
+          subject: `Você foi convidado para a equipe da ${workshop?.name || "oficina"} no Instauto`,
+          type: "team_invite",
+          data: { workshopName: workshop?.name, inviterName: profile?.name },
+        }),
+      }).catch((err) => console.error("Falha ao enviar e-mail de convite:", err));
+
+      toast({ title: "Convite enviado!", description: `Enviamos um e-mail para ${email}. Ele entra na equipe ao acessar o Instauto com esse e-mail.` });
       setInviteEmail("");
       setInvitePerms(allPermissions());
       load();
