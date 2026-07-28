@@ -1,7 +1,7 @@
 // Valores reais gravados em profiles.type no banco (não "oficina"/"motorista")
 export type UserType = "workshop" | "motorist" | "admin";
 
-export type PlanType = "free" | "pro";
+export type PlanType = "free" | "pro" | "equipe";
 
 export type ServiceOrderStatus = "pending" | "approved" | "in_progress" | "completed" | "cancelled";
 

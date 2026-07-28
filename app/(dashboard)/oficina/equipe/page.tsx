@@ -104,6 +104,18 @@ export default function EquipePage() {
         return;
       }
 
+      // Limite de assentos do plano (membros + convites pendentes)
+      const maxSeats = workshop?.max_seats || 1;
+      if (members.length + invites.length >= maxSeats) {
+        toast({
+          variant: "destructive",
+          title: "Limite do plano atingido",
+          description: `Seu plano permite ${maxSeats} ${maxSeats === 1 ? "usuário" : "usuários"}. Faça upgrade para o plano Equipe para adicionar mais.`,
+        });
+        setInviting(false);
+        return;
+      }
+
       const { error } = await supabase.from("workshop_invites").upsert(
         {
           workshop_id: workshop.id,
@@ -177,6 +189,8 @@ export default function EquipePage() {
   }
 
   const seatsUsed = members.length;
+  const maxSeats = workshop?.max_seats || 1;
+  const seatsFull = members.length + invites.length >= maxSeats;
 
   return (
     <div className="p-4 sm:p-6 space-y-6">
@@ -193,12 +207,17 @@ export default function EquipePage() {
             <Users className="w-5 h-5 text-[#1e3a8a]" />
           </div>
           <div>
-            <p className="font-bold text-gray-900">{seatsUsed} {seatsUsed === 1 ? "usuário" : "usuários"} na equipe</p>
+            <p className="font-bold text-gray-900">{seatsUsed} de {maxSeats} {maxSeats === 1 ? "assento" : "assentos"} usados</p>
             <p className="text-sm text-gray-500">
               Plano {workshop?.plan_type === "equipe" ? "Equipe (dono + 3)" : workshop?.plan_type === "pro" ? "PRO (1 usuário)" : "atual"}
             </p>
           </div>
         </div>
+        {seatsFull && (
+          <a href="/oficina/planos" className="text-sm font-semibold text-[#1e3a8a] hover:underline">
+            Fazer upgrade →
+          </a>
+        )}
       </div>
 
       {/* Convidar */}

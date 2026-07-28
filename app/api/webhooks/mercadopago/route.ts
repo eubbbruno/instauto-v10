@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { getSubscriptionStatus, mapSubscriptionStatus } from "@/lib/mercadopago";
+import { planByAmount } from "@/lib/plans";
 
 export async function POST(request: NextRequest) {
   try {
@@ -72,33 +73,33 @@ export async function POST(request: NextRequest) {
 
     console.log("✅ Oficina encontrada:", workshop.name, `(ID: ${workshop.id})`);
 
-    // Determinar plan_type baseado no status
+    // Determinar plan_type + assentos baseado no status e no valor da assinatura
     let planType = workshop.plan_type;
+    let maxSeats = workshop.max_seats ?? 1;
     const oldPlanType = planType;
-    
+
+    // Descobre qual plano foi contratado pelo valor cobrado (97=PRO, 147=Equipe)
+    const paidPlan = planByAmount(subscriptionData.autoRecurring?.transaction_amount);
+
     console.log("🔄 Determinando novo plan_type...");
-    console.log("  Status atual:", newStatus);
-    console.log("  Plan atual:", planType);
-    
+    console.log("  Status:", newStatus, "| Valor:", subscriptionData.autoRecurring?.transaction_amount, "| Plano detectado:", paidPlan?.id);
+
     if (newStatus === "active") {
-      planType = "pro";
-      console.log("  ✅ Pagamento aprovado → PRO");
+      planType = paidPlan?.id || "pro";
+      maxSeats = paidPlan?.maxSeats || 1;
+      console.log(`  ✅ Pagamento aprovado → ${planType} (${maxSeats} assentos)`);
     } else if (newStatus === "cancelled" || newStatus === "paused") {
-      // Verificar se o trial ainda está ativo
       const trialEndsAt = new Date(workshop.trial_ends_at || 0);
-      const now = new Date();
-      console.log("  Trial ends at:", trialEndsAt);
-      console.log("  Now:", now);
-      
-      if (trialEndsAt < now) {
+      if (trialEndsAt < new Date()) {
         planType = "free";
+        maxSeats = 1;
         console.log("  ❌ Assinatura cancelada + trial expirado → FREE");
       } else {
-        console.log("  ⏳ Assinatura cancelada mas trial ainda ativo → mantém plano atual");
+        console.log("  ⏳ Assinatura cancelada mas trial ainda ativo → mantém plano");
       }
     }
 
-    console.log("  Plan final:", planType);
+    console.log("  Plan final:", planType, "| Assentos:", maxSeats);
 
     // Atualizar oficina
     console.log("💾 Atualizando oficina no banco...");
@@ -107,6 +108,7 @@ export async function POST(request: NextRequest) {
       .update({
         subscription_status: newStatus,
         plan_type: planType,
+        max_seats: maxSeats,
         updated_at: new Date().toISOString(),
       })
       .eq("id", workshop.id);

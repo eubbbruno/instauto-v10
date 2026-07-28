@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase";
+import { resolveWorkshop } from "@/lib/workshop";
 import { useAuth } from "@/contexts/AuthContext";
 import { Workshop } from "@/types/database";
 import { isProActive } from "@/lib/plan";
+import { PAID_PLANS } from "@/lib/plans";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -51,20 +53,10 @@ export default function PlanosPage() {
     try {
       setLoading(true);
 
-      // Carregar dados da oficina
-      console.log("🔍 Buscando workshop no Supabase...");
-      const { data: workshopData, error: workshopError } = await supabase
-        .from("workshops")
-        .select("*")
-        .eq("profile_id", profile?.id)
-        .single();
+      // Carregar dados da oficina (dono ou membro)
+      const workshopData = await resolveWorkshop(supabase, profile?.id);
+      if (!workshopData) throw new Error("Oficina não encontrada");
 
-      console.log("📦 Resposta do Supabase:");
-      console.log("  workshopData:", workshopData);
-      console.log("  workshopError:", workshopError);
-
-      if (workshopError) throw workshopError;
-      
       setWorkshop(workshopData);
       console.log("✅ Workshop setado no state:", workshopData);
 
@@ -108,8 +100,8 @@ export default function PlanosPage() {
     }
   };
 
-  const handleUpgrade = async () => {
-    console.log("=== handleUpgrade CHAMADO ===");
+  const handleUpgrade = async (plan: "pro" | "equipe" = "pro") => {
+    console.log("=== handleUpgrade CHAMADO ===", plan);
     console.log("workshop no handleUpgrade:", workshop);
     console.log("workshop?.id:", workshop?.id);
     console.log("user no handleUpgrade:", user);
@@ -150,6 +142,7 @@ export default function PlanosPage() {
         workshopId: workshop.id,
         userEmail: userEmail,
         userName: workshop.name,
+        plan,
       };
       
       console.log("📤 Enviando para API:");
@@ -212,7 +205,7 @@ export default function PlanosPage() {
     );
   }
 
-  const isPro = workshop?.plan_type === "pro";
+  const isPro = workshop?.plan_type === "pro" || workshop?.plan_type === "equipe";
   const daysUntilTrialEnd = workshop?.trial_ends_at
     ? Math.ceil(
         (new Date(workshop.trial_ends_at).getTime() - new Date().getTime()) /
@@ -264,7 +257,7 @@ export default function PlanosPage() {
             </div>
             {!isPro && (
               <Button 
-                onClick={handleUpgrade} 
+                onClick={() => handleUpgrade("pro")} 
                 size="lg" 
                 disabled={upgradeLoading}
                 className="bg-gradient-to-r from-blue-600 to-blue-600 hover:from-blue-700 hover:to-blue-700"
@@ -394,7 +387,7 @@ export default function PlanosPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
-                <p className="text-xs font-semibold text-blue-900 mb-1">Trial de 7 dias</p>
+                <p className="text-xs font-semibold text-blue-900 mb-1">Trial de 14 dias</p>
                 <p className="text-xs text-blue-700">Teste todos os recursos gratuitamente</p>
               </div>
               <ul className="space-y-3">
@@ -476,7 +469,7 @@ export default function PlanosPage() {
               </ul>
               {!isPro ? (
                 <Button
-                  onClick={handleUpgrade}
+                  onClick={() => handleUpgrade("pro")}
                   disabled={upgradeLoading}
                   className="w-full bg-gradient-to-r from-blue-600 to-blue-600 hover:from-blue-700 hover:to-blue-700"
                   size="lg"
@@ -507,6 +500,35 @@ export default function PlanosPage() {
           </Card>
         </div>
       </div>
+
+      {/* Upgrade para Equipe (mais usuários) */}
+      {workshop?.plan_type !== "equipe" && (
+        <Card className="border-2 border-[#1e3a8a]/15">
+          <CardContent className="p-6 flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
+            <div>
+              <h3 className="font-bold text-gray-900 flex items-center gap-2">
+                <Crown className="h-5 w-5 text-[#1e3a8a]" /> Plano Equipe
+              </h3>
+              <p className="text-sm text-gray-600 mt-1">
+                Dono + 3 usuários · tudo do PRO · <strong>R$ {PAID_PLANS.equipe.price}/mês</strong>
+              </p>
+            </div>
+            <Button
+              onClick={() => handleUpgrade("equipe")}
+              disabled={upgradeLoading}
+              size="lg"
+              className="bg-[#1e3a8a] hover:bg-[#1e40af] flex-shrink-0"
+            >
+              {upgradeLoading ? (
+                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+              ) : (
+                <TrendingUp className="mr-2 h-5 w-5" />
+              )}
+              Assinar Equipe
+            </Button>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Benefícios do PRO */}
       {!isPro && (
@@ -551,7 +573,7 @@ export default function PlanosPage() {
           />
           <FAQItem
             question="Como funciona o trial gratuito?"
-            answer="Você tem 7 dias de trial gratuito com todas as funcionalidades do plano FREE. Após esse período, você pode fazer upgrade para PRO ou continuar no plano FREE."
+            answer="Você tem 14 dias de trial gratuito com todas as funcionalidades do plano PRO. Após esse período, você pode fazer upgrade ou continuar no plano FREE."
           />
           <FAQItem
             question="Meus dados estão seguros?"

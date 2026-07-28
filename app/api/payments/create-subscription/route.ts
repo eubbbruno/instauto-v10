@@ -1,19 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { createSubscription } from "@/lib/mercadopago";
+import { PAID_PLANS, isPaidPlan } from "@/lib/plans";
 
 export async function POST(request: NextRequest) {
   try {
     // Log do body completo
     const body = await request.json();
-    
+
     console.log("=== API CREATE-SUBSCRIPTION ===");
     console.log("Body recebido:", JSON.stringify(body, null, 2));
     console.log("Campos do body:", Object.keys(body));
-    
+
     // Aceitar tanto 'email' quanto 'userEmail'
-    const { workshopId, email, userEmail, userName } = body;
+    const { workshopId, email, userEmail, userName, plan } = body;
     const finalEmail = email || userEmail;
+    const planId = isPaidPlan(plan) ? plan : "pro";
+    const planConfig = PAID_PLANS[planId];
     
     console.log("Valores extraídos:");
     console.log("  workshopId:", workshopId);
@@ -73,11 +76,11 @@ export async function POST(request: NextRequest) {
       workshopId: workshop.id,
       workshopName: workshop.name,
       email: finalEmail,
-      reason: `Plano PRO - ${workshop.name}`,
+      reason: `Plano ${planConfig.name} - ${workshop.name}`,
       autoRecurring: {
         frequency: 1,
         frequencyType: "months" as const,
-        transactionAmount: 97.0,
+        transactionAmount: planConfig.price,
         currencyId: "BRL" as const,
       },
       backUrl: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/oficina/planos?status=success`,

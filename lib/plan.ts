@@ -17,7 +17,8 @@ export function isTrialActive(w?: PlanFields | null): boolean {
  */
 export function isProActive(w?: PlanFields | null): boolean {
   if (!w) return false;
-  const paid = w.plan_type === "pro" && w.subscription_status === "active";
+  // PRO e Equipe têm todas as ferramentas de gestão; trial reverso também libera.
+  const paid = (w.plan_type === "pro" || w.plan_type === "equipe") && w.subscription_status === "active";
   return paid || isTrialActive(w);
 }
 
