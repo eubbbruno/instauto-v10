@@ -1,7 +1,38 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import crypto from "crypto";
 import { getSubscriptionStatus, mapSubscriptionStatus } from "@/lib/mercadopago";
 import { planByAmount } from "@/lib/plans";
+
+/**
+ * Valida a assinatura do webhook (x-signature) do MercadoPago.
+ * Só valida se MERCADOPAGO_WEBHOOK_SECRET estiver configurado — caso contrário
+ * retorna true (validação desativada até você adicionar o secret no Vercel).
+ */
+function validateSignature(request: NextRequest, dataId: string): boolean {
+  const secret = process.env.MERCADOPAGO_WEBHOOK_SECRET;
+  if (!secret) {
+    console.warn("⚠️ MERCADOPAGO_WEBHOOK_SECRET não configurado — validação de assinatura desativada.");
+    return true;
+  }
+  try {
+    const xSignature = request.headers.get("x-signature") || "";
+    const xRequestId = request.headers.get("x-request-id") || "";
+    const parts = Object.fromEntries(
+      xSignature.split(",").map((p) => p.split("=").map((s) => s.trim()))
+    );
+    const ts = parts["ts"];
+    const v1 = parts["v1"];
+    if (!ts || !v1) return false;
+
+    const manifest = `id:${dataId};request-id:${xRequestId};ts:${ts};`;
+    const hmac = crypto.createHmac("sha256", secret).update(manifest).digest("hex");
+    return hmac === v1;
+  } catch (e) {
+    console.error("Erro ao validar assinatura do webhook:", e);
+    return false;
+  }
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -27,6 +58,12 @@ export async function POST(request: NextRequest) {
     }
 
     console.log("📋 Subscription ID:", subscriptionId);
+
+    // Validar assinatura do webhook (proteção contra requisições forjadas)
+    if (!validateSignature(request, String(subscriptionId))) {
+      console.warn("🚫 Assinatura do webhook inválida — requisição rejeitada.");
+      return NextResponse.json({ received: true, error: "invalid_signature" }, { status: 401 });
+    }
 
     // Buscar status atualizado da assinatura no MercadoPago
     console.log("🔍 Buscando status da assinatura no MercadoPago...");

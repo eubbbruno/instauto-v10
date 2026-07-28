@@ -9,9 +9,9 @@ const FOOTER_COLS = [
     title: "Produto",
     links: [
       { href: "/buscar-oficinas", label: "Buscar Oficinas" },
+      { href: "/para-motoristas", label: "Para Motoristas" },
       { href: "/para-oficinas", label: "Para Oficinas" },
       { href: "/planos", label: "Planos e Preços" },
-      { href: "/como-funciona", label: "Como Funciona" },
     ],
   },
   {

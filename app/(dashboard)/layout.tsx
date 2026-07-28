@@ -8,7 +8,7 @@ import Image from "next/image";
 import { createClient } from "@/lib/supabase";
 import { resolveWorkshop } from "@/lib/workshop";
 import { isProActive } from "@/lib/plan";
-import { canAccessModule } from "@/lib/permissions";
+import { canAccessModule, PERMISSION_MODULES } from "@/lib/permissions";
 import { TopBar } from "@/components/layout/TopBar";
 import {
   LayoutDashboard, Users, Car, FileText, Package, DollarSign,
@@ -193,6 +193,24 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
     loadData();
   }, [user, authLoading, router, supabase]);
+
+  // Guard de permissão por página para MEMBROS (bloqueia acesso por URL direta).
+  useEffect(() => {
+    if (dataLoading || memberRole === "owner") return;
+
+    // Membro não acessa Equipe/Planos (nível dono)
+    if (pathname === "/oficina/equipe" || pathname === "/oficina/planos") {
+      router.push("/oficina");
+      return;
+    }
+
+    // Módulos: /oficina/<modulo>...
+    const seg = pathname.split("/")[2] || "";
+    const isModule = PERMISSION_MODULES.some((m) => m.key === seg);
+    if (isModule && !canAccessModule(memberPermissions, seg)) {
+      router.push("/oficina");
+    }
+  }, [pathname, memberRole, memberPermissions, dataLoading, router]);
 
   // Loading
   if (authLoading || dataLoading) {
