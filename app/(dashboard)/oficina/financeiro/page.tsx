@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase";
 import { resolveWorkshop } from "@/lib/workshop";
+import PlanGuard from "@/components/auth/PlanGuard";
 import { useAuth } from "@/contexts/AuthContext";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/motion";
 import { GlassCard } from "@/components/ui/glass-card";
@@ -85,6 +86,14 @@ const EXPENSE_CATEGORIES = [
 const PAYMENT_METHODS = ["Dinheiro", "Cartão Débito", "Cartão Crédito", "PIX", "Boleto", "Outros"];
 
 export default function FinanceiroPage() {
+  return (
+    <PlanGuard feature="Financeiro">
+      <FinanceiroPageContent />
+    </PlanGuard>
+  );
+}
+
+function FinanceiroPageContent() {
   const { profile } = useAuth();
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"resumo" | "transacoes" | "pagar" | "receber">("resumo");

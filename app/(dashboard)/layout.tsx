@@ -7,6 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase";
 import { resolveWorkshop } from "@/lib/workshop";
+import { isProActive } from "@/lib/plan";
 import { canAccessModule } from "@/lib/permissions";
 import { TopBar } from "@/components/layout/TopBar";
 import {
@@ -210,17 +211,28 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     return null;
   }
 
-  // Menu visível conforme papel/permissões.
-  // Dono vê tudo. Membro: Dashboard + módulos liberados + Configurações (Equipe/Planos são do dono).
-  const OWNER_ONLY = ["/oficina/equipe", "/oficina/planos"];
-  const visibleMenu = memberRole === "owner"
-    ? menuItems
-    : menuItems.filter((item) => {
-        if (OWNER_ONLY.includes(item.href)) return false;
-        if (item.href === "/oficina" || item.href === "/oficina/configuracoes") return true;
-        const key = item.href.split("/").pop() || "";
-        return canAccessModule(memberPermissions, key);
-      });
+  // Menu visível conforme PLANO e papel/permissões.
+  const proActive = isProActive(workshop as any);
+  // No FREE (trial expirado, sem pagar) só ficam: Dashboard, Orçamentos (marketplace),
+  // Configurações e Planos. Todo o resto é gestão (PRO/Equipe/trial).
+  const FREE_ALLOWED = ["/oficina", "/oficina/orcamentos", "/oficina/configuracoes", "/oficina/planos"];
+
+  let visibleMenu = menuItems;
+
+  if (!proActive) {
+    visibleMenu = visibleMenu.filter((item) => FREE_ALLOWED.includes(item.href));
+  }
+
+  // Membro (não dono): esconde Equipe/Planos e os módulos sem permissão.
+  if (memberRole !== "owner") {
+    const OWNER_ONLY = ["/oficina/equipe", "/oficina/planos"];
+    visibleMenu = visibleMenu.filter((item) => {
+      if (OWNER_ONLY.includes(item.href)) return false;
+      if (item.href === "/oficina" || item.href === "/oficina/configuracoes") return true;
+      const key = item.href.split("/").pop() || "";
+      return canAccessModule(memberPermissions, key);
+    });
+  }
 
   return (
     <div className="min-h-screen bg-[#F8F9FB]">

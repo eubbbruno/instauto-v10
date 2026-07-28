@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase";
+import { resolveWorkshop } from "@/lib/workshop";
 import { useAuth } from "@/contexts/AuthContext";
 import { Workshop } from "@/types/database";
 import { isProActive } from "@/lib/plan";
@@ -34,18 +35,13 @@ export default function PlanGuard({ children, feature = "Gestão Completa" }: Pl
     try {
       setLoading(true);
 
-      // Buscar dados da oficina
-      const { data: workshopData, error } = await supabase
-        .from("workshops")
-        .select("*")
-        .eq("profile_id", profile?.id)
-        .single();
-
-      if (error) throw error;
+      // Buscar dados da oficina (dono ou membro)
+      const workshopData = await resolveWorkshop(supabase, profile?.id);
+      if (!workshopData) throw new Error("Oficina não encontrada");
 
       setWorkshop(workshopData);
 
-      // Fonte única de verdade do acesso PRO (PRO pago OU trial reverso ativo)
+      // Fonte única de verdade do acesso PRO (PRO/Equipe pago OU trial reverso ativo)
       setHasAccess(isProActive(workshopData));
     } catch (error) {
       console.error("Erro ao verificar acesso:", error);

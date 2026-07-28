@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase";
 import { resolveWorkshop } from "@/lib/workshop";
+import PlanGuard from "@/components/auth/PlanGuard";
 import { useAuth } from "@/contexts/AuthContext";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/motion";
 import { GlassCard } from "@/components/ui/glass-card";
@@ -46,6 +47,14 @@ const STATUS_CONFIG = {
 };
 
 export default function OrdensPage() {
+  return (
+    <PlanGuard feature="Ordens de Serviço">
+      <OrdensPageContent />
+    </PlanGuard>
+  );
+}
+
+function OrdensPageContent() {
   const { profile } = useAuth();
   const [loading, setLoading] = useState(true);
   const [orders, setOrders] = useState<ServiceOrder[]>([]);

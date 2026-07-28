@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase";
 import { resolveWorkshop } from "@/lib/workshop";
+import PlanGuard from "@/components/auth/PlanGuard";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/motion";
@@ -88,6 +89,14 @@ const STATUS_CONFIG = {
 };
 
 export default function OSDetailsPage({ params }: { params: { id: string } }) {
+  return (
+    <PlanGuard feature="Ordens de Serviço">
+      <OSDetailsPageContent params={params} />
+    </PlanGuard>
+  );
+}
+
+function OSDetailsPageContent({ params }: { params: { id: string } }) {
   const { profile } = useAuth();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
