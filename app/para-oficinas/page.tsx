@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Sistema de Gestão para Oficinas Mecânicas | Instauto",
+  title: "Sistema de Gestão para Oficinas Mecânicas",
   description:
     "O sistema completo para sua oficina: clientes, ordens de serviço, estoque, financeiro, agenda e diagnóstico com IA. 14 dias de PRO grátis, sem cartão.",
   alternates: { canonical: "https://www.instauto.com.br/para-oficinas" },

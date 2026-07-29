@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Para Motoristas — encontre oficinas de confiança | Instauto",
+  title: "Para Motoristas — encontre oficinas de confiança",
   description:
     "Encontre oficinas mecânicas perto de você, compare avaliações, peça orçamentos grátis e organize as manutenções do seu carro. 100% gratuito.",
   alternates: { canonical: "https://www.instauto.com.br/para-motoristas" },

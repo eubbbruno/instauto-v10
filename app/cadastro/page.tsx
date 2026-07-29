@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Car, Wrench, ArrowRight } from "lucide-react";
 
 export const metadata = {
-  title: "Criar conta | Instauto",
+  title: "Criar conta",
   description: "Escolha o tipo de conta para começar: motorista ou oficina.",
 };
 

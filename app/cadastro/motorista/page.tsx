@@ -1,7 +1,7 @@
 import SignupForm from "@/components/auth/SignupForm";
 
 export const metadata = {
-  title: "Criar conta de motorista | Instauto",
+  title: "Criar conta de motorista",
   description: "Cadastre-se grátis e encontre oficinas de confiança, peça orçamentos e organize as manutenções do seu veículo.",
 };
 

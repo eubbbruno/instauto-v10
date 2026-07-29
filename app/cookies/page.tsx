@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import LegalPage from "@/components/legal/LegalPage";
 
 export const metadata: Metadata = {
-  title: "Política de Cookies | Instauto",
+  title: "Política de Cookies",
   description: "Como o Instauto utiliza cookies e como você pode gerenciar suas preferências.",
   alternates: { canonical: "https://www.instauto.com.br/cookies" },
 };

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import LegalPage from "@/components/legal/LegalPage";
 
 export const metadata: Metadata = {
-  title: "Termos de Uso | Instauto",
+  title: "Termos de Uso",
   description: "Termos e condições de uso da plataforma Instauto para motoristas e oficinas.",
   alternates: { canonical: "https://www.instauto.com.br/termos" },
 };

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import LegalPage from "@/components/legal/LegalPage";
 
 export const metadata: Metadata = {
-  title: "Política de Privacidade | Instauto",
+  title: "Política de Privacidade",
   description: "Como o Instauto coleta, usa e protege seus dados pessoais, em conformidade com a LGPD (Lei nº 13.709/2018).",
   alternates: { canonical: "https://www.instauto.com.br/privacidade" },
 };

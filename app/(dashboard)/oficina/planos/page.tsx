@@ -26,29 +26,14 @@ export default function PlanosPage() {
   });
   const supabase = createClient();
 
-  // DEBUG: Log inicial
-  console.log("=== DEBUG PLANOS - RENDER ===");
-  console.log("profile:", profile);
-  console.log("user:", user);
-  console.log("workshop:", workshop);
-  console.log("loading:", loading);
-
   useEffect(() => {
-    console.log("=== useEffect DISPAROU ===");
-    console.log("profile?.id:", profile?.id);
-    
     if (profile?.id) {
-      console.log("✅ profile.id existe, chamando loadData()");
       loadData();
-    } else {
-      console.log("❌ profile.id NÃO existe ainda");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile?.id]);
 
   const loadData = async () => {
-    console.log("=== loadData INICIOU ===");
-    console.log("profile?.id na loadData:", profile?.id);
     
     try {
       setLoading(true);
@@ -58,7 +43,6 @@ export default function PlanosPage() {
       if (!workshopData) throw new Error("Oficina não encontrada");
 
       setWorkshop(workshopData);
-      console.log("✅ Workshop setado no state:", workshopData);
 
       // Carregar estatísticas de uso
       const { count: clientsCount } = await supabase
@@ -86,7 +70,6 @@ export default function PlanosPage() {
         ordersThisMonth: ordersCount || 0,
       });
       
-      console.log("📊 Stats carregadas:", { clients: clientsCount, orders: ordersCount });
     } catch (error) {
       console.error("❌ ERRO ao carregar dados:", error);
       toast({
@@ -96,16 +79,10 @@ export default function PlanosPage() {
       });
     } finally {
       setLoading(false);
-      console.log("=== loadData FINALIZADA ===");
     }
   };
 
   const handleUpgrade = async (plan: "pro" | "equipe" = "pro") => {
-    console.log("=== handleUpgrade CHAMADO ===", plan);
-    console.log("workshop no handleUpgrade:", workshop);
-    console.log("workshop?.id:", workshop?.id);
-    console.log("user no handleUpgrade:", user);
-    console.log("profile no handleUpgrade:", profile);
     
     // Validações detalhadas
     if (!workshop?.id) {
@@ -120,9 +97,6 @@ export default function PlanosPage() {
     }
 
     const userEmail = user?.email || profile?.email;
-    console.log("📧 Email detectado:", userEmail);
-    console.log("  user?.email:", user?.email);
-    console.log("  profile?.email:", profile?.email);
     
     if (!userEmail) {
       console.error("❌ ERRO: Email não encontrado!");
@@ -145,9 +119,6 @@ export default function PlanosPage() {
         plan,
       };
       
-      console.log("📤 Enviando para API:");
-      console.log("  URL: /api/payments/create-subscription");
-      console.log("  Payload:", payload);
 
       const response = await fetch("/api/payments/create-subscription", {
         method: "POST",
@@ -155,11 +126,9 @@ export default function PlanosPage() {
         body: JSON.stringify(payload),
       });
 
-      console.log("📥 Resposta HTTP status:", response.status);
       
       const data = await response.json();
 
-      console.log("📥 Resposta da API:", data);
 
       if (data.error) {
         throw new Error(data.error);

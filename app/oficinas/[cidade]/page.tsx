@@ -45,7 +45,7 @@ export async function generateMetadata({ params }: { params: Promise<{ cidade: s
   const local = state ? `${cityName} - ${state}` : cityName;
   const count = workshops.length;
 
-  const title = `Oficinas Mecânicas em ${cityName}${state ? ` - ${state}` : ""} | Instauto`;
+  const title = `Oficinas Mecânicas em ${cityName}${state ? ` - ${state}` : ""}`;
   const description = count > 0
     ? `Encontre as ${count} melhores oficinas mecânicas em ${local}. Compare avaliações, peça orçamento grátis e agende serviços no Instauto.`
     : `Oficinas mecânicas em ${local}. Peça orçamento grátis e encontre profissionais de confiança no Instauto.`;

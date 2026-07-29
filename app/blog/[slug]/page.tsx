@@ -15,10 +15,10 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const post = getPostBySlug(slug);
-  if (!post) return { title: "Artigo não encontrado | Instauto" };
+  if (!post) return { title: "Artigo não encontrado" };
 
   return {
-    title: `${post.title} | Blog Instauto`,
+    title: `${post.title} | Blog`,
     description: post.excerpt,
     alternates: { canonical: `${BASE_URL}/blog/${post.slug}` },
     openGraph: {

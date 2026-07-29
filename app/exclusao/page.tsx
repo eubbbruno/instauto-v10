@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import LegalPage from "@/components/legal/LegalPage";
 
 export const metadata: Metadata = {
-  title: "Exclusão de dados | Instauto",
+  title: "Exclusão de dados",
   description: "Como solicitar a exclusão da sua conta e dos seus dados pessoais no Instauto.",
   alternates: { canonical: "https://www.instauto.com.br/exclusao" },
 };

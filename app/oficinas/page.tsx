@@ -9,7 +9,7 @@ import { slugify } from "@/lib/slug";
 const BASE_URL = "https://www.instauto.com.br";
 
 export const metadata: Metadata = {
-  title: "Oficinas Mecânicas por Cidade | Instauto",
+  title: "Oficinas Mecânicas por Cidade",
   description: "Encontre oficinas mecânicas de confiança na sua cidade. Compare avaliações e peça orçamento grátis no Instauto.",
   alternates: { canonical: `${BASE_URL}/oficinas` },
 };
