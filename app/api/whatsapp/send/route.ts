@@ -18,14 +18,30 @@ export async function POST(request: NextRequest) {
     // Normaliza o número (só dígitos)
     const cleanNumber = String(number).replace(/\D/g, "");
 
-    const result = await sendText(workshopId, cleanNumber, text);
-
-    // Registra a mensagem enviada
     const admin = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
       process.env.SUPABASE_SERVICE_ROLE_KEY!,
       { auth: { autoRefreshToken: false, persistSession: false } }
     );
+
+    // Rate limit: no máx. 20 mensagens enviadas por minuto por oficina
+    // (proteção contra loops/bugs que gerariam envio infinito e ban do número).
+    const oneMinAgo = new Date(Date.now() - 60_000).toISOString();
+    const { count } = await admin
+      .from("whatsapp_messages")
+      .select("*", { count: "exact", head: true })
+      .eq("workshop_id", workshopId)
+      .eq("from_me", true)
+      .gte("created_at", oneMinAgo);
+
+    if ((count || 0) >= 20) {
+      return NextResponse.json(
+        { error: "Limite de envios por minuto atingido. Aguarde um pouco." },
+        { status: 429 }
+      );
+    }
+
+    const result = await sendText(workshopId, cleanNumber, text);
     await admin.from("whatsapp_messages").insert({
       workshop_id: workshopId,
       remote_jid: `${cleanNumber}@s.whatsapp.net`,
