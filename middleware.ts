@@ -28,6 +28,7 @@ export async function middleware(req: NextRequest) {
   const publicRoutes = [
     "/",
     "/login",
+    "/entrar",
     "/cadastro",
     "/bem-vindo",
     "/auth/callback",

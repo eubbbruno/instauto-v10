@@ -1,18 +1,16 @@
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Mail, Lock, Eye, EyeOff, Loader2, CheckCircle, AlertTriangle } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase";
-import { resolveWorkshop } from "@/lib/workshop";
 import { FACEBOOK_LOGIN_ENABLED } from "@/lib/config";
 import { FadeIn } from "@/components/ui/motion";
 
 function LoginContent() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const redirectUrl = searchParams.get("redirect");
 
@@ -69,37 +67,6 @@ function LoginContent() {
     }
   };
 
-  const redirectByProfile = async (userId: string) => {
-    const { data: profile, error } = await supabase
-      .from("profiles")
-      .select("type, role")
-      .eq("id", userId)
-      .single();
-
-    if (error) {
-      console.error("❌ [Login] Erro ao buscar profile:", error);
-      toast.error("Erro ao carregar perfil. Tente novamente.");
-      setLoading(false);
-      return;
-    }
-
-    // Admin tem painel próprio, independente do type
-    if (profile?.role === "admin") {
-      router.push("/admin");
-      return;
-    }
-
-    // Aceita convites de equipe pendentes e verifica vínculo com oficina (dono ou membro)
-    await supabase.rpc("accept_my_invites");
-    const ws = await resolveWorkshop(supabase, userId);
-    if (ws) {
-      router.push("/oficina");
-      return;
-    }
-
-    router.push(profile?.type === "workshop" ? "/oficina" : "/motorista");
-  };
-
   // Traduz erros do Supabase para mensagens claras em PT
   const friendlyAuthError = (error: any): string => {
     const msg = (error?.message || "").toLowerCase();
@@ -124,16 +91,13 @@ function LoginContent() {
     setLoading(true);
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
 
-      // Redirect explícito tem prioridade (ex.: solicitar-orçamento)
-      if (redirectUrl) {
-        router.push(redirectUrl);
-        return;
-      }
-
-      await redirectByProfile(data.user.id);
+      // Navegação DURA (recarrega a página) para evitar o deadlock do lock de auth
+      // ao consultar o Supabase logo após o sign-in no mesmo client.
+      // A rota /entrar decide o destino (admin / oficina / motorista) numa página limpa.
+      window.location.href = redirectUrl || "/entrar";
     } catch (error: any) {
       console.error("❌ [Login] Erro:", error);
       toast.error(friendlyAuthError(error));
