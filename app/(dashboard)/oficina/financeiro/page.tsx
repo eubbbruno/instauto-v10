@@ -342,7 +342,7 @@ function FinanceiroPageContent() {
   }
 
   return (
-    <div className="p-4 sm:p-6 space-y-6">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
       {/* Header */}
       <FadeIn>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -441,7 +441,7 @@ function FinanceiroPageContent() {
         <>
           {/* Gráfico */}
           <FadeIn delay={0.3}>
-            <GlassCard className="p-4 sm:p-6">
+            <GlassCard className="p-4 sm:p-6 lg:p-8">
               <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <TrendingUp className="w-5 h-5 text-blue-600" />
                 Fluxo de Caixa (Últimos 6 Meses)
@@ -475,7 +475,7 @@ function FinanceiroPageContent() {
           {/* Resumo Rápido */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FadeIn delay={0.4}>
-              <GlassCard className="p-4 sm:p-6">
+              <GlassCard className="p-4 sm:p-6 lg:p-8">
                 <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
                   <FileText className="w-5 h-5 text-blue-600" />
                   Últimas Transações
@@ -513,7 +513,7 @@ function FinanceiroPageContent() {
             </FadeIn>
 
             <FadeIn delay={0.5}>
-              <GlassCard className="p-4 sm:p-6">
+              <GlassCard className="p-4 sm:p-6 lg:p-8">
                 <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
                   <AlertCircle className="w-5 h-5 text-yellow-600" />
                   Contas Pendentes
@@ -634,7 +634,7 @@ function FinanceiroPageContent() {
           </FadeIn>
 
           <FadeIn delay={0.3}>
-            <GlassCard className="p-4 sm:p-6">
+            <GlassCard className="p-4 sm:p-6 lg:p-8">
               <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-4">
                 Transações ({getFilteredTransactions().length})
               </h2>
@@ -658,7 +658,7 @@ function FinanceiroPageContent() {
 
       {activeTab === "pagar" && (
         <FadeIn delay={0.2}>
-          <GlassCard className="p-4 sm:p-6">
+          <GlassCard className="p-4 sm:p-6 lg:p-8">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg sm:text-xl font-bold text-gray-900">
                 Contas a Pagar ({bills.filter((b) => b.status === "pending").length})
@@ -785,7 +785,7 @@ function FinanceiroPageContent() {
 
       {activeTab === "receber" && (
         <FadeIn delay={0.2}>
-          <GlassCard className="p-4 sm:p-6">
+          <GlassCard className="p-4 sm:p-6 lg:p-8">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg sm:text-xl font-bold text-gray-900">
                 Contas a Receber ({receivables.filter((r) => r.status === "pending").length})

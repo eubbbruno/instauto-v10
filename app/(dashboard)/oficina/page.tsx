@@ -482,7 +482,7 @@ export default function OficinaDashboard() {
       <OnboardingModal steps={oficinaSteps} storageKey="onboarding_oficina_done" />
 
       <div className="min-h-screen">
-        <div className="p-4 sm:p-6">
+        <div className="p-4 sm:p-6 lg:p-8">
           {/* Header */}
           <div className="mb-3 sm:mb-4">
             <p className="text-xs sm:text-sm text-gray-500 mb-1">

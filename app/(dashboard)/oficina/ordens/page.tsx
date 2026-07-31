@@ -150,7 +150,7 @@ function OrdensPageContent() {
   }
 
   return (
-    <div className="p-4 sm:p-6 space-y-6">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
       {/* Header */}
       <FadeIn>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -252,7 +252,7 @@ function OrdensPageContent() {
           </StaggerContainer>
         ) : (
           <FadeIn delay={0.2}>
-            <GlassCard className="p-4 sm:p-6">
+            <GlassCard className="p-4 sm:p-6 lg:p-8">
               <div className="space-y-2">
                 {filteredOrders.map((order) => (
                   <OSCard key={order.id} order={order} />

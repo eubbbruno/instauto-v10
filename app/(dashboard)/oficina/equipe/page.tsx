@@ -187,7 +187,7 @@ export default function EquipePage() {
 
   if (!isOwner) {
     return (
-      <div className="p-4 sm:p-6 space-y-6">
+      <div className="p-4 sm:p-6 lg:p-8 space-y-6">
         <div>
           <p className="text-xs sm:text-sm text-gray-400 mb-1">Dashboard / Equipe</p>
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Equipe</h1>
@@ -205,7 +205,7 @@ export default function EquipePage() {
   const seatsFull = members.length + invites.length >= maxSeats;
 
   return (
-    <div className="p-4 sm:p-6 space-y-6">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
       <div>
         <p className="text-xs sm:text-sm text-gray-400 mb-1">Dashboard / Equipe</p>
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Equipe</h1>

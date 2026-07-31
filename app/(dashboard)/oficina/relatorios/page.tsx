@@ -567,7 +567,7 @@ function RelatoriosContent() {
   };
 
   return (
-    <div className="p-4 sm:p-4 sm:p-6 lg:p-8">
+    <div className="p-4 sm:p-6 lg:p-8">
       <div className="space-y-6 sm:space-y-8">
         <div className="mb-6 sm:mb-8">
           <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Relatórios</p>
