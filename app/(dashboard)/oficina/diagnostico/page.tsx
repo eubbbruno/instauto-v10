@@ -144,6 +144,7 @@ function DiagnosticoContent() {
         body: JSON.stringify({
           symptoms,
           vehicleInfo,
+          workshopId: workshop?.id,
         }),
       });
 

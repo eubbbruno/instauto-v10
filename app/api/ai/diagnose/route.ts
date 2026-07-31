@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
+import { getWorkshopAccess } from "@/lib/api-auth";
+import { checkAndIncrementAiUsage } from "@/lib/ai-quota";
 
 // Inicializar OpenAI apenas se a API key estiver configurada
-const openai = process.env.OPENAI_API_KEY 
+const openai = process.env.OPENAI_API_KEY
   ? new OpenAI({
       apiKey: process.env.OPENAI_API_KEY,
     })
@@ -10,13 +12,32 @@ const openai = process.env.OPENAI_API_KEY
 
 export async function POST(request: NextRequest) {
   try {
-    const { symptoms, vehicleInfo } = await request.json();
+    const { symptoms, vehicleInfo, workshopId } = await request.json();
 
     if (!symptoms) {
       return NextResponse.json(
         { error: "Sintomas são obrigatórios" },
         { status: 400 }
       );
+    }
+
+    if (!workshopId) {
+      return NextResponse.json({ error: "workshopId obrigatório" }, { status: 400 });
+    }
+
+    // Segurança: só dono/membro da oficina
+    const access = await getWorkshopAccess(workshopId);
+    if (!access.ok) {
+      return NextResponse.json({ error: "Sem permissão" }, { status: 403 });
+    }
+
+    // Guardrail de custo: cota mensal por plano
+    const quota = await checkAndIncrementAiUsage(workshopId, "diagnostico");
+    if (!quota.allowed) {
+      const msg = quota.reason === "no_plan"
+        ? "Diagnóstico com IA é um recurso dos planos pagos."
+        : `Você atingiu o limite mensal de diagnósticos com IA (${quota.limit}). O limite renova no início do próximo mês.`;
+      return NextResponse.json({ error: msg, quota }, { status: 429 });
     }
 
     // Verificar se a API key está configurada
@@ -66,7 +87,7 @@ Responda em português brasileiro de forma clara, profissional e objetiva.`;
     console.log("🤖 Enviando request para OpenAI...");
     
     const completion = await openai.chat.completions.create({
-      model: "gpt-4",
+      model: "gpt-4o-mini",
       messages: [
         {
           role: "system",
@@ -102,7 +123,7 @@ Responda em português brasileiro de forma clara, profissional e objetiva.`;
         severity: severity === "baixa" ? "low" : severity === "média" ? "medium" : severity === "alta" ? "high" : null,
         safeToDrive,
         estimatedCost,
-        model: "gpt-4",
+        model: "gpt-4o-mini",
       }
     });
   } catch (error: any) {
