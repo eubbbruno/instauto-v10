@@ -45,6 +45,7 @@ function DiagnosticoContent() {
   const [diagnosisResult, setDiagnosisResult] = useState<any>(null);
   
   const [viewingDiagnostic, setViewingDiagnostic] = useState<Diagnostic | null>(null);
+  const [aiUsage, setAiUsage] = useState<{ used: number; limit: number } | null>(null);
 
   useEffect(() => {
     if (profile) {
@@ -53,6 +54,14 @@ function DiagnosticoContent() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile]);
 
+  const loadAiUsage = async (id: string) => {
+    try {
+      const res = await fetch(`/api/ai/usage?workshopId=${id}`);
+      const data = await res.json();
+      if (data?.diagnostico) setAiUsage(data.diagnostico);
+    } catch { /* silencioso */ }
+  };
+
   const loadData = async () => {
     try {
       // Buscar workshop
@@ -60,6 +69,7 @@ function DiagnosticoContent() {
 
       if (workshopData) {
         setWorkshop(workshopData);
+        loadAiUsage(workshopData.id);
 
         // Buscar clientes
         const { data: clientsData } = await supabase
@@ -155,6 +165,9 @@ function DiagnosticoContent() {
       }
 
       setDiagnosisResult(data);
+
+      // Atualizar cota de IA (o endpoint já incrementou)
+      if (workshop?.id) loadAiUsage(workshop.id);
 
       // Salvar no banco de dados
       const { error: saveError } = await supabase
@@ -321,10 +334,26 @@ Exemplo: 'O carro está fazendo um barulho de rangido ao frear, principalmente e
             </p>
           </div>
 
+          {/* Cota de IA */}
+          {aiUsage && aiUsage.limit > 0 && (
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-gray-600">
+                Diagnósticos com IA este mês
+              </span>
+              <span
+                className={`font-semibold ${
+                  aiUsage.used >= aiUsage.limit ? "text-red-600" : "text-gray-700"
+                }`}
+              >
+                {aiUsage.used} de {aiUsage.limit}
+              </span>
+            </div>
+          )}
+
           {/* Botão */}
           <Button
             onClick={handleDiagnose}
-            disabled={loading || !symptoms.trim()}
+            disabled={loading || !symptoms.trim() || (!!aiUsage && aiUsage.limit > 0 && aiUsage.used >= aiUsage.limit)}
             className="w-full bg-gradient-to-r from-blue-600 to-blue-600 hover:from-blue-700 hover:to-blue-700 font-bold h-12 text-lg shadow-lg"
           >
             {loading ? (
