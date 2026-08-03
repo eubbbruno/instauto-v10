@@ -362,7 +362,7 @@ function WhatsAppContent() {
           {/* Layout de conversas */}
           <div className="bg-white border border-[#0B1120]/8 rounded-2xl shadow-sm overflow-hidden grid grid-cols-1 md:grid-cols-[320px_1fr] h-[600px]">
             {/* Lista de contatos */}
-            <div className={`border-r border-gray-100 flex-col ${active ? "hidden md:flex" : "flex"}`}>
+            <div className={`border-r border-gray-100 flex-col min-h-0 overflow-hidden ${active ? "hidden md:flex" : "flex"}`}>
               <div className="p-3 border-b border-gray-100 flex items-center gap-2">
                 <div className="relative flex-1">
                   <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
@@ -381,7 +381,7 @@ function WhatsAppContent() {
                   <RefreshCw className="w-4 h-4" />
                 </button>
               </div>
-              <div className="flex-1 overflow-y-auto divide-y divide-gray-50">
+              <div className="flex-1 min-h-0 overflow-y-auto divide-y divide-gray-50">
                 {filtered.length === 0 ? (
                   <div className="p-8 text-center text-gray-400">
                     <MessageSquare className="w-10 h-10 mx-auto mb-2 text-gray-200" />
@@ -410,7 +410,7 @@ function WhatsAppContent() {
             </div>
 
             {/* Thread */}
-            <div className={`flex-col ${active ? "flex" : "hidden md:flex"}`}>
+            <div className={`flex-col min-h-0 overflow-hidden ${active ? "flex" : "hidden md:flex"}`}>
               {!active ? (
                 <div className="flex-1 flex flex-col items-center justify-center text-gray-400 p-8">
                   <MessageSquare className="w-12 h-12 mb-3 text-gray-200" />
@@ -440,7 +440,7 @@ function WhatsAppContent() {
                   </div>
 
                   {/* Mensagens */}
-                  <div className="flex-1 overflow-y-auto p-4 space-y-2 bg-gray-50/50">
+                  <div className="flex-1 min-h-0 overflow-y-auto p-4 space-y-2 bg-gray-50/50">
                     {active.messages.map((m) => (
                       <div key={m.id} className={`flex ${m.from_me ? "justify-end" : "justify-start"}`}>
                         <div className={`max-w-[75%] rounded-2xl px-3.5 py-2 ${m.from_me ? "bg-[#1e3a8a] text-white" : "bg-white border border-gray-100 text-gray-900"}`}>

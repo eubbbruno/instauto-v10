@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getWorkshopAccess } from "@/lib/api-auth";
-import { createInstance, connectInstance } from "@/lib/evolution";
+import { createInstance, connectInstance, setWebhook } from "@/lib/evolution";
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://www.instauto.com.br";
 
@@ -28,6 +28,9 @@ export async function POST(request: NextRequest) {
       const conn = await connectInstance(workshopId);
       qr = conn?.base64 || conn?.qrcode?.base64 || conn?.code || null;
     }
+
+    // Garante que o webhook está registrado (mesmo se a instância já existia).
+    await setWebhook(workshopId, webhookUrl).catch(() => {});
 
     return NextResponse.json({ success: true, qrcode: qr });
   } catch (error: any) {

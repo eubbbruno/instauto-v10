@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getWorkshopAccess } from "@/lib/api-auth";
-import { connectionState } from "@/lib/evolution";
+import { connectionState, setWebhook } from "@/lib/evolution";
+
+const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://www.instauto.com.br";
 
 export async function GET(request: NextRequest) {
   try {
@@ -18,6 +20,13 @@ export async function GET(request: NextRequest) {
       const state = await connectionState(workshopId);
       // Evolution retorna { instance: { state: "open" | "connecting" | "close" } }
       const connectionStatus = state?.instance?.state || state?.state || "close";
+
+      // Se conectado, garante que o webhook está registrado (o Evolution perde
+      // essa config ao reiniciar). Idempotente e não bloqueia a resposta.
+      if (connectionStatus === "open") {
+        setWebhook(workshopId, `${APP_URL}/api/webhooks/evolution`).catch(() => {});
+      }
+
       return NextResponse.json({ connected: connectionStatus === "open", state: connectionStatus });
     } catch (e) {
       // instância ainda não existe

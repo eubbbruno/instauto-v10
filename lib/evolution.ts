@@ -65,6 +65,26 @@ export async function connectInstance(workshopId: string) {
   return evo(`/instance/connect/${instanceName(workshopId)}`, { method: "GET" });
 }
 
+/**
+ * (Re)registra o webhook da instância. Idempotente — pode ser chamado sempre.
+ * Necessário porque o Evolution às vezes perde a config do webhook ao reiniciar,
+ * e a criação da instância só acontece uma vez.
+ */
+export async function setWebhook(workshopId: string, webhookUrl: string) {
+  return evo(`/webhook/set/${instanceName(workshopId)}`, {
+    method: "POST",
+    body: JSON.stringify({
+      webhook: {
+        enabled: true,
+        url: webhookUrl,
+        byEvents: false,
+        base64: true,
+        events: ["MESSAGES_UPSERT", "CONNECTION_UPDATE"],
+      },
+    }),
+  });
+}
+
 /** Estado da conexão: open (conectado) | connecting | close. */
 export async function connectionState(workshopId: string) {
   return evo(`/instance/connectionState/${instanceName(workshopId)}`, { method: "GET" });
