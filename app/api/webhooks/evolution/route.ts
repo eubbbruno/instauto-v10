@@ -20,6 +20,41 @@ function admin() {
   );
 }
 
+/** Monta o prompt de sistema com o "conhecimento" e o comportamento da oficina. */
+function buildSystemPrompt(w: any): string {
+  const name = w?.name || "nossa oficina";
+  const local = [w?.address, w?.city, w?.state].filter(Boolean).join(", ");
+  const specialties = Array.isArray(w?.specialties)
+    ? w.specialties.join(", ")
+    : w?.specialties || "";
+
+  const persona =
+    (w?.ai_persona && String(w.ai_persona).trim()) ||
+    "cordial, prestativo e objetivo";
+
+  const facts: string[] = [];
+  if (local) facts.push(`Endereço: ${local}.`);
+  if (w?.phone) facts.push(`Telefone: ${w.phone}.`);
+  if (specialties) facts.push(`Especialidades: ${specialties}.`);
+  if (w?.ai_business_hours) facts.push(`Horário de atendimento: ${w.ai_business_hours}.`);
+  if (w?.description) facts.push(`Sobre a oficina: ${w.description}.`);
+
+  const knowledge = w?.ai_instructions
+    ? `\n\nInformações e instruções da oficina (use como base para responder):\n${w.ai_instructions}`
+    : "";
+
+  return `Você é o atendente virtual da oficina mecânica "${name}" no WhatsApp. Seu tom deve ser ${persona}. Responda sempre em português brasileiro, de forma breve (no máximo 3 frases curtas).
+
+Dados da oficina:
+${facts.length ? facts.join("\n") : "- (poucos dados cadastrados)"}${knowledge}
+
+Regras importantes:
+- Ajude com dúvidas sobre serviços, horários, localização e agendamento.
+- NUNCA invente preços, prazos ou informações que não foram fornecidas. Se não souber, diga que um atendente humano vai responder em breve.
+- Para fechar orçamento, confirmar valores ou agendar de fato, diga que um atendente vai dar sequência.
+- Não repita saudações a cada mensagem se a conversa já começou.`;
+}
+
 /**
  * Auto-resposta de IA (opt-in por oficina). Guardrails:
  * - só se whatsapp_ai_autoreply = true
@@ -38,7 +73,7 @@ async function maybeAutoReply(
 
   const { data: workshop } = await db
     .from("workshops")
-    .select("name, whatsapp_ai_autoreply")
+    .select("name, whatsapp_ai_autoreply, ai_persona, ai_instructions, ai_business_hours, address, city, state, phone, specialties, description")
     .eq("id", workshopId)
     .single();
 
@@ -76,7 +111,7 @@ async function maybeAutoReply(
   const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [
     {
       role: "system",
-      content: `Você é o atendente virtual da oficina mecânica "${workshop.name || "nossa oficina"}" no WhatsApp. Responda de forma breve, cordial e objetiva, em português brasileiro. Ajude o cliente com dúvidas sobre serviços, horários e agendamento. Se não souber ou for algo que precise de uma pessoa (orçamento fechado, valores exatos, confirmação), diga que um atendente vai responder em breve. Nunca invente preços. Máximo de 3 frases curtas.`,
+      content: buildSystemPrompt(workshop),
     },
     ...ordered.map((m) => ({
       role: (m.from_me ? "assistant" : "user") as "assistant" | "user",

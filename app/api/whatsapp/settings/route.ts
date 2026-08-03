@@ -21,11 +21,16 @@ export async function GET(request: NextRequest) {
 
     const { data } = await admin()
       .from("workshops")
-      .select("whatsapp_ai_autoreply")
+      .select("whatsapp_ai_autoreply, ai_persona, ai_instructions, ai_business_hours")
       .eq("id", workshopId)
       .single();
 
-    return NextResponse.json({ aiAutoreply: !!data?.whatsapp_ai_autoreply });
+    return NextResponse.json({
+      aiAutoreply: !!data?.whatsapp_ai_autoreply,
+      aiPersona: data?.ai_persona || "",
+      aiInstructions: data?.ai_instructions || "",
+      aiBusinessHours: data?.ai_business_hours || "",
+    });
   } catch (error: any) {
     console.error("❌ [whatsapp/settings GET]", error);
     return NextResponse.json({ error: error.message || "Erro" }, { status: 500 });
@@ -34,19 +39,28 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { workshopId, aiAutoreply } = await request.json();
+    const body = await request.json();
+    const { workshopId } = body;
     if (!workshopId) {
       return NextResponse.json({ error: "workshopId obrigatório" }, { status: 400 });
     }
     const access = await getWorkshopAccess(workshopId);
     if (!access.ok) return NextResponse.json({ error: "Sem permissão" }, { status: 403 });
 
-    await admin()
-      .from("workshops")
-      .update({ whatsapp_ai_autoreply: !!aiAutoreply })
-      .eq("id", workshopId);
+    // Atualiza só os campos enviados (patch parcial)
+    const patch: Record<string, any> = {};
+    if ("aiAutoreply" in body) patch.whatsapp_ai_autoreply = !!body.aiAutoreply;
+    if ("aiPersona" in body) patch.ai_persona = body.aiPersona || null;
+    if ("aiInstructions" in body) patch.ai_instructions = body.aiInstructions || null;
+    if ("aiBusinessHours" in body) patch.ai_business_hours = body.aiBusinessHours || null;
 
-    return NextResponse.json({ success: true, aiAutoreply: !!aiAutoreply });
+    if (Object.keys(patch).length === 0) {
+      return NextResponse.json({ error: "Nada para atualizar" }, { status: 400 });
+    }
+
+    await admin().from("workshops").update(patch).eq("id", workshopId);
+
+    return NextResponse.json({ success: true });
   } catch (error: any) {
     console.error("❌ [whatsapp/settings POST]", error);
     return NextResponse.json({ error: error.message || "Erro" }, { status: 500 });

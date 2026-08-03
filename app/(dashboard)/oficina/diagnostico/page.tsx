@@ -257,12 +257,39 @@ function DiagnosticoContent() {
   return (
     <div className="p-4 sm:p-6 lg:p-8">
       <div className="space-y-6 sm:space-y-8">
-        <div className="mb-6 sm:mb-8">
-          <p className="text-xs sm:text-sm text-gray-500 mb-1">Dashboard / Diagnóstico</p>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-            Diagnóstico com IA 🤖
-          </h1>
-          <p className="text-gray-600">Use inteligência artificial para diagnosticar problemas em veículos</p>
+        {/* Header com banner */}
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0B1120] via-[#13224a] to-[#1e3a8a] p-6 sm:p-7 text-white shadow-xl">
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-transparent" />
+          <div className="relative flex items-start justify-between gap-4 flex-wrap">
+            <div className="flex items-start gap-4">
+              <div className="w-12 h-12 rounded-xl bg-yellow-400/20 flex items-center justify-center shrink-0">
+                <Sparkles className="w-6 h-6 text-yellow-400" />
+              </div>
+              <div>
+                <p className="text-xs text-white/50 mb-1">Dashboard / Diagnóstico</p>
+                <h1 className="text-2xl sm:text-3xl font-bold">Diagnóstico com IA</h1>
+                <p className="text-white/70 text-sm mt-1 max-w-lg">
+                  Descreva os sintomas e a IA sugere causas prováveis, gravidade e faixa de custo.
+                </p>
+              </div>
+            </div>
+            {aiUsage && aiUsage.limit > 0 && (
+              <div className="bg-white/10 backdrop-blur-sm rounded-xl px-4 py-3 min-w-[180px]">
+                <div className="flex items-center justify-between text-xs text-white/60 mb-1.5">
+                  <span>Cota deste mês</span>
+                  <span className={`font-semibold ${aiUsage.used >= aiUsage.limit ? "text-red-300" : "text-white"}`}>
+                    {aiUsage.used}/{aiUsage.limit}
+                  </span>
+                </div>
+                <div className="h-1.5 w-full bg-white/15 rounded-full overflow-hidden">
+                  <div
+                    className={`h-full rounded-full transition-all ${aiUsage.used >= aiUsage.limit ? "bg-red-400" : "bg-yellow-400"}`}
+                    style={{ width: `${Math.min(100, (aiUsage.used / aiUsage.limit) * 100)}%` }}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
       {/* Formulário de Diagnóstico */}
@@ -334,18 +361,13 @@ Exemplo: 'O carro está fazendo um barulho de rangido ao frear, principalmente e
             </p>
           </div>
 
-          {/* Cota de IA */}
-          {aiUsage && aiUsage.limit > 0 && (
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-gray-600">
-                Diagnósticos com IA este mês
-              </span>
-              <span
-                className={`font-semibold ${
-                  aiUsage.used >= aiUsage.limit ? "text-red-600" : "text-gray-700"
-                }`}
-              >
-                {aiUsage.used} de {aiUsage.limit}
+          {/* Aviso de cota esgotada */}
+          {aiUsage && aiUsage.limit > 0 && aiUsage.used >= aiUsage.limit && (
+            <div className="flex items-start gap-2 p-3 rounded-xl bg-red-50 border border-red-200 text-sm text-red-700">
+              <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
+              <span>
+                Você atingiu o limite de {aiUsage.limit} diagnósticos com IA deste mês.
+                O limite renova no início do próximo mês.
               </span>
             </div>
           )}

@@ -11,11 +11,12 @@ import {
   Building2, 
   Users, 
   FileText, 
-  Star, 
+  Star,
   ArrowLeft,
   LogOut,
   Menu,
-  X
+  X,
+  Bot
 } from "lucide-react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -95,6 +96,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { href: "/admin/motoristas", icon: Users, label: "Motoristas" },
     { href: "/admin/orcamentos", icon: FileText, label: "Orçamentos" },
     { href: "/admin/avaliacoes", icon: Star, label: "Avaliações" },
+    { href: "/admin/ia", icon: Bot, label: "Uso de IA" },
   ];
 
   return (

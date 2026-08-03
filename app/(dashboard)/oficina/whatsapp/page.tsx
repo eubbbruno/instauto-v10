@@ -6,9 +6,10 @@ import { resolveWorkshop } from "@/lib/workshop";
 import { useAuth } from "@/contexts/AuthContext";
 import PlanGuard from "@/components/auth/PlanGuard";
 import { useToast } from "@/components/ui/use-toast";
+import Link from "next/link";
 import {
   Loader2, MessageSquare, Send, Smartphone, CheckCircle2, RefreshCw, QrCode,
-  Sparkles, ArrowLeft, Search,
+  Bot, ArrowLeft, Search, Settings2,
 } from "lucide-react";
 
 export default function WhatsAppPage() {
@@ -110,7 +111,7 @@ function WhatsAppContent() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profile?.id]);
 
-  // Auto-refresh das mensagens quando conectado
+  // Auto-refresh das mensagens quando conectado (fallback do realtime)
   useEffect(() => {
     if (!workshopId || !connected) return;
     if (msgPollRef.current) clearInterval(msgPollRef.current);
@@ -120,6 +121,23 @@ function WhatsAppContent() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [workshopId, connected]);
+
+  // Realtime: reage a novas mensagens (enviadas ou recebidas) na hora
+  useEffect(() => {
+    if (!workshopId) return;
+    const channel = supabase
+      .channel(`wpp-${workshopId}`)
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "whatsapp_messages", filter: `workshop_id=eq.${workshopId}` },
+        () => loadMessages(workshopId)
+      )
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [workshopId]);
 
   const conversations = useMemo(() => groupConversations(messages), [messages]);
   const filtered = useMemo(() => {
@@ -318,11 +336,16 @@ function WhatsAppContent() {
           <div className="bg-white border border-[#0B1120]/8 rounded-2xl p-4 sm:p-5 shadow-sm flex items-center justify-between gap-4 flex-wrap">
             <div className="flex items-center gap-3">
               <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${aiAutoreply ? "bg-yellow-100" : "bg-gray-100"}`}>
-                <Sparkles className={`w-5 h-5 ${aiAutoreply ? "text-yellow-600" : "text-gray-400"}`} />
+                <Bot className={`w-5 h-5 ${aiAutoreply ? "text-yellow-600" : "text-gray-400"}`} />
               </div>
               <div>
                 <p className="font-bold text-gray-900">Resposta automática com IA</p>
-                <p className="text-sm text-gray-500">A IA responde novas mensagens automaticamente (dentro da sua cota mensal).</p>
+                <p className="text-sm text-gray-500">
+                  A IA responde novas mensagens automaticamente.{" "}
+                  <Link href="/oficina/ia" className="text-[#1e3a8a] font-medium hover:underline inline-flex items-center gap-1">
+                    <Settings2 className="w-3.5 h-3.5" /> Configurar
+                  </Link>
+                </p>
               </div>
             </div>
             <button
@@ -340,8 +363,8 @@ function WhatsAppContent() {
           <div className="bg-white border border-[#0B1120]/8 rounded-2xl shadow-sm overflow-hidden grid grid-cols-1 md:grid-cols-[320px_1fr] h-[600px]">
             {/* Lista de contatos */}
             <div className={`border-r border-gray-100 flex-col ${active ? "hidden md:flex" : "flex"}`}>
-              <div className="p-3 border-b border-gray-100">
-                <div className="relative">
+              <div className="p-3 border-b border-gray-100 flex items-center gap-2">
+                <div className="relative flex-1">
                   <Search className="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
                   <input
                     value={search}
@@ -350,6 +373,13 @@ function WhatsAppContent() {
                     className="w-full pl-9 pr-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-transparent"
                   />
                 </div>
+                <button
+                  onClick={() => workshopId && loadMessages(workshopId)}
+                  className="p-2 rounded-xl border border-gray-200 text-gray-500 hover:bg-gray-50 shrink-0"
+                  title="Atualizar conversas"
+                >
+                  <RefreshCw className="w-4 h-4" />
+                </button>
               </div>
               <div className="flex-1 overflow-y-auto divide-y divide-gray-50">
                 {filtered.length === 0 ? (
