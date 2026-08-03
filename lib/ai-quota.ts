@@ -9,8 +9,8 @@ export type AiFeature = "diagnostico" | "chat";
  * Bruno calibra depois vendo o uso real.
  */
 const QUOTAS: Record<string, Record<AiFeature, number>> = {
-  pro: { diagnostico: 30, chat: 100 },
-  equipe: { diagnostico: 100, chat: 400 },
+  pro: { diagnostico: 30, chat: 200 },
+  equipe: { diagnostico: 100, chat: 500 },
 };
 
 interface WorkshopPlan {
