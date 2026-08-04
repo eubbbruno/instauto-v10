@@ -13,7 +13,7 @@ export const PAID_PLANS: Record<PaidPlanId, PlanConfig> = {
   pro: {
     id: "pro",
     name: "PRO",
-    price: 97,
+    price: 1, // ⚠️ TESTE TEMPORÁRIO — reverter para 97 após validar o pagamento
     maxSeats: 1,
     description: "Gestão completa · 1 usuário",
   },
