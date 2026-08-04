@@ -102,3 +102,8 @@ export async function sendText(workshopId: string, number: string, text: string)
 export async function logoutInstance(workshopId: string) {
   return evo(`/instance/logout/${instanceName(workshopId)}`, { method: "DELETE" });
 }
+
+/** Apaga a instância por completo (usado para resetar um estado travado). */
+export async function deleteInstance(workshopId: string) {
+  return evo(`/instance/delete/${instanceName(workshopId)}`, { method: "DELETE" });
+}

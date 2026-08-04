@@ -225,7 +225,7 @@ function WhatsAppContent() {
     setMessages((data as Message[]) || []);
   };
 
-  const handleConnect = async () => {
+  const handleConnect = async (reset = false) => {
     if (!workshopId) return;
     setConnecting(true);
     setQr(null);
@@ -233,7 +233,7 @@ function WhatsAppContent() {
       const res = await fetch("/api/whatsapp/connect", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ workshopId }),
+        body: JSON.stringify({ workshopId, reset }),
       });
       const data = await res.json();
       if (data.error) throw new Error(data.error);
@@ -303,7 +303,7 @@ function WhatsAppContent() {
               <CheckCircle2 className="w-4 h-4" /> Conectado
             </span>
             <button
-              onClick={handleConnect}
+              onClick={() => handleConnect(true)}
               disabled={connecting}
               className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-[#1e3a8a] disabled:opacity-60"
               title="Gerar novo QR e reconectar (use se parar de enviar/receber)"
@@ -340,7 +340,7 @@ function WhatsAppContent() {
               </div>
             </div>
             <button
-              onClick={handleConnect}
+              onClick={() => handleConnect()}
               disabled={connecting}
               className="btn-epic-blue inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold disabled:opacity-60"
             >
