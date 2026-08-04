@@ -267,7 +267,14 @@ function WhatsAppContent() {
       setSendText("");
       await loadMessages(workshopId);
     } catch (e: any) {
-      toast({ variant: "destructive", title: "Erro ao enviar", description: e.message });
+      const closed = /connection closed|400|bad request/i.test(e.message || "");
+      toast({
+        variant: "destructive",
+        title: "Erro ao enviar",
+        description: closed
+          ? "A conexão do WhatsApp caiu. Clique em \"Reconectar\" no topo e escaneie o QR novamente."
+          : e.message,
+      });
     } finally {
       setSending(false);
     }
@@ -291,11 +298,33 @@ function WhatsAppContent() {
           <p className="text-sm text-gray-600 mt-1">Converse com seus clientes direto por aqui.</p>
         </div>
         {connected && (
-          <span className="inline-flex items-center gap-1.5 text-sm font-medium text-green-600">
-            <CheckCircle2 className="w-4 h-4" /> Conectado
-          </span>
+          <div className="flex items-center gap-3">
+            <span className="inline-flex items-center gap-1.5 text-sm font-medium text-green-600">
+              <CheckCircle2 className="w-4 h-4" /> Conectado
+            </span>
+            <button
+              onClick={handleConnect}
+              disabled={connecting}
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-[#1e3a8a] disabled:opacity-60"
+              title="Gerar novo QR e reconectar (use se parar de enviar/receber)"
+            >
+              {connecting ? <Loader2 className="w-4 h-4 animate-spin" /> : <QrCode className="w-4 h-4" />}
+              Reconectar
+            </button>
+          </div>
         )}
       </div>
+
+      {/* QR de reconexão (quando já está "conectado" mas o socket caiu) */}
+      {qr && connected && (
+        <div className="bg-white border border-[#0B1120]/8 rounded-2xl p-5 sm:p-6 shadow-sm flex flex-col items-center text-center">
+          <img src={qr} alt="QR Code do WhatsApp" className="w-56 h-56 rounded-xl border border-gray-200" />
+          <p className="text-sm text-gray-600 mt-4 max-w-sm">
+            Escaneie para reconectar: <strong>WhatsApp → Aparelhos conectados → Conectar um aparelho</strong>.
+          </p>
+          <p className="text-xs text-gray-400 mt-2 flex items-center gap-1"><Loader2 className="w-3 h-3 animate-spin" /> Aguardando leitura…</p>
+        </div>
+      )}
 
       {/* Não conectado → card de conexão / QR */}
       {!connected ? (
