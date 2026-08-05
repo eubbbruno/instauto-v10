@@ -385,11 +385,13 @@ export default function PlanosPage() {
             "border-2 transition-all relative overflow-hidden",
             isPro ? "border-blue-500 shadow-lg" : "border-gray-200"
           )}>
-            {/* Badge Recomendado */}
-            <div className="absolute top-0 right-0 bg-gradient-to-r from-blue-600 to-blue-600 text-white px-4 py-1 text-xs font-semibold">
-              RECOMENDADO
-            </div>
-            <CardHeader className="pt-8">
+            {/* Badge Recomendado — só quando ainda não é PRO (evita colidir com "Plano Atual") */}
+            {!isPro && (
+              <div className="absolute top-0 right-0 z-10 bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-1 text-xs font-semibold rounded-bl-xl shadow-sm">
+                RECOMENDADO
+              </div>
+            )}
+            <CardHeader className={cn(!isPro && "pt-10")}>
               <div className="flex items-center justify-between">
                 <CardTitle className="text-2xl flex items-center gap-2">
                   <Crown className="h-6 w-6 text-blue-600" />
