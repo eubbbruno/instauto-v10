@@ -611,7 +611,7 @@ export default function HomePage() {
         <span className="absolute -right-8 top-0 text-[22rem] font-heading font-black text-white/[0.025] leading-none select-none pointer-events-none hidden md:block">14</span>
 
         <div className="max-w-6xl mx-auto px-4 relative z-10">
-          <div className="grid lg:grid-cols-[1.2fr_1fr] gap-12 lg:gap-20 items-center">
+          <div className="grid lg:grid-cols-[1.2fr_1fr] gap-12 lg:gap-20 items-center [&>*]:min-w-0">
 
             {/* Esquerda — pitch */}
             <Reveal>
