@@ -97,6 +97,7 @@ function WhatsAppContent() {
   const [sending, setSending] = useState(false);
   const [aiAutoreply, setAiAutoreply] = useState(false);
   const [togglingAi, setTogglingAi] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const pollRef = useRef<NodeJS.Timeout | null>(null);
   const msgPollRef = useRef<NodeJS.Timeout | null>(null);
@@ -223,6 +224,18 @@ function WhatsAppContent() {
       .order("created_at", { ascending: false })
       .limit(300);
     setMessages((data as Message[]) || []);
+  };
+
+  // Atualização manual com feedback visual (o ícone gira ~0.6s).
+  const manualRefresh = async () => {
+    if (!workshopId || refreshing) return;
+    setRefreshing(true);
+    try {
+      await loadMessages(workshopId);
+      await new Promise((r) => setTimeout(r, 400));
+    } finally {
+      setRefreshing(false);
+    }
   };
 
   const handleConnect = async (reset = false) => {
@@ -403,11 +416,12 @@ function WhatsAppContent() {
                   />
                 </div>
                 <button
-                  onClick={() => workshopId && loadMessages(workshopId)}
-                  className="p-2 rounded-xl border border-gray-200 text-gray-500 hover:bg-gray-50 shrink-0"
+                  onClick={manualRefresh}
+                  disabled={refreshing}
+                  className="p-2 rounded-xl border border-gray-200 text-gray-500 hover:bg-gray-50 shrink-0 disabled:opacity-60"
                   title="Atualizar conversas"
                 >
-                  <RefreshCw className="w-4 h-4" />
+                  <RefreshCw className={`w-4 h-4 ${refreshing ? "animate-spin" : ""}`} />
                 </button>
               </div>
               <div className="flex-1 min-h-0 overflow-y-auto divide-y divide-gray-50">
@@ -460,11 +474,12 @@ function WhatsAppContent() {
                       <p className="text-xs text-gray-400">{active.number}</p>
                     </div>
                     <button
-                      onClick={() => workshopId && loadMessages(workshopId)}
-                      className="ml-auto p-2 rounded-lg text-gray-400 hover:bg-gray-50"
+                      onClick={manualRefresh}
+                      disabled={refreshing}
+                      className="ml-auto p-2 rounded-lg text-gray-400 hover:bg-gray-50 disabled:opacity-60"
                       title="Atualizar"
                     >
-                      <RefreshCw className="w-4 h-4" />
+                      <RefreshCw className={`w-4 h-4 ${refreshing ? "animate-spin" : ""}`} />
                     </button>
                   </div>
 
