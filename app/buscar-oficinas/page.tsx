@@ -19,9 +19,20 @@ const ESTADOS = [
   "RS","RO","RR","SC","SP","SE","TO",
 ];
 
-const ESPECIALIDADES = [
-  "Freios","Motor","Suspensão","Elétrica","Ar Condicionado",
-  "Alinhamento","Balanceamento","Troca de Óleo","Revisão","Funilaria","Pintura","Injeção Eletrônica",
+// Chips visuais de especialidade (com emoji) para filtro rápido
+const SPECIALTY_CHIPS: { label: string; icon: string }[] = [
+  { label: "Freios", icon: "🛑" },
+  { label: "Motor", icon: "⚙️" },
+  { label: "Suspensão", icon: "🔩" },
+  { label: "Elétrica", icon: "⚡" },
+  { label: "Ar Condicionado", icon: "❄️" },
+  { label: "Troca de Óleo", icon: "🛢️" },
+  { label: "Alinhamento", icon: "🎯" },
+  { label: "Balanceamento", icon: "☸️" },
+  { label: "Revisão", icon: "🔧" },
+  { label: "Injeção Eletrônica", icon: "💉" },
+  { label: "Funilaria", icon: "🔨" },
+  { label: "Pintura", icon: "🎨" },
 ];
 
 export default function BuscarOficinasPage() {
@@ -165,15 +176,6 @@ export default function BuscarOficinasPage() {
             </select>
 
             <select
-              value={selectedSpecialty}
-              onChange={(e) => setSelectedSpecialty(e.target.value)}
-              className="px-3 py-2 rounded-xl border border-navy/10 bg-white text-navy/70 text-sm focus:ring-2 focus:ring-brand-yellow/40 focus:border-brand-yellow/40 transition-all cursor-pointer"
-            >
-              <option value="">Todas especialidades</option>
-              {ESPECIALIDADES.map(e => <option key={e} value={e}>{e}</option>)}
-            </select>
-
-            <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as any)}
               className="px-3 py-2 rounded-xl border border-navy/10 bg-white text-navy/70 text-sm focus:ring-2 focus:ring-brand-yellow/40 focus:border-brand-yellow/40 transition-all cursor-pointer"
@@ -193,6 +195,27 @@ export default function BuscarOficinasPage() {
                 </button>
               )}
             </div>
+          </div>
+
+          {/* Chips de especialidade (scroll horizontal no mobile) */}
+          <div className="mt-2.5 flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {SPECIALTY_CHIPS.map((c) => {
+              const active = selectedSpecialty === c.label;
+              return (
+                <button
+                  key={c.label}
+                  onClick={() => setSelectedSpecialty(active ? "" : c.label)}
+                  className={`flex-shrink-0 inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-sm font-semibold border transition-colors ${
+                    active
+                      ? "bg-navy text-white border-navy"
+                      : "bg-white text-navy/70 border-navy/10 hover:border-navy/30"
+                  }`}
+                >
+                  <span className="text-[15px] leading-none">{c.icon}</span>
+                  {c.label}
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
