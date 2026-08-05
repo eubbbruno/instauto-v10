@@ -134,11 +134,13 @@ export default function PlanosPage() {
             </div>
 
             {/* Plano PRO */}
-            <div className="bg-navy rounded-2xl p-8 relative shadow-2xl transform md:scale-105 overflow-hidden">
-              <div className="pointer-events-none absolute -top-24 -right-16 w-[300px] h-[300px] rounded-full bg-brand-blue/20 blur-[80px]" />
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-brand-yellow text-navy px-6 py-2 rounded-full text-sm font-sans font-bold shadow-lg z-10">
+            <div className="relative transform md:scale-105">
+              {/* Faixa fica FORA do card (que tem overflow-hidden), senão corta no topo */}
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20 bg-brand-yellow text-navy px-6 py-2 rounded-full text-sm font-sans font-bold shadow-lg">
                 RECOMENDADO
               </div>
+              <div className="bg-navy rounded-2xl p-8 relative shadow-2xl overflow-hidden">
+              <div className="pointer-events-none absolute -top-24 -right-16 w-[300px] h-[300px] rounded-full bg-brand-blue/20 blur-[80px]" />
 
               <div className="relative text-center mb-8">
                 <h3 className="text-2xl font-heading font-bold text-white mb-2">
@@ -228,6 +230,7 @@ export default function PlanosPage() {
               <p className="relative text-center text-white/40 text-sm font-sans mt-4">
                 Sem cartão de crédito • Cancele quando quiser
               </p>
+              </div>
             </div>
           </div>
 
