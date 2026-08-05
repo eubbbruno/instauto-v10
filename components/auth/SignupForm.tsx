@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Car, Wrench, Mail, Lock, Eye, EyeOff, Loader2, CheckCircle, User, MapPin } from "lucide-react";
 
@@ -65,6 +65,12 @@ export default function SignupForm({ userType }: { userType: UserType }) {
   const [registeredEmail, setRegisteredEmail] = useState("");
 
   const supabase = createClient();
+
+  // Captura o código de indicação (?ref=CODIGO) e guarda para atribuir no 1º acesso.
+  useEffect(() => {
+    const ref = new URLSearchParams(window.location.search).get("ref");
+    if (ref) localStorage.setItem("instauto_ref", ref.trim());
+  }, []);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();

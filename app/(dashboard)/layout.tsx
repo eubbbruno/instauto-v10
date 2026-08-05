@@ -195,6 +195,21 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     loadData();
   }, [user, authLoading, router, supabase]);
 
+  // Atribuição de afiliado: se veio de um link ?ref=, vincula a oficina ao afiliado.
+  useEffect(() => {
+    if (!workshop?.id) return;
+    const ref = typeof window !== "undefined" ? localStorage.getItem("instauto_ref") : null;
+    if (!ref) return;
+    fetch("/api/affiliate/attribute", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code: ref }),
+    })
+      .then((r) => r.json())
+      .then((d) => { if (d.ok) localStorage.removeItem("instauto_ref"); })
+      .catch(() => {});
+  }, [workshop?.id]);
+
   // Guard de permissão por página para MEMBROS (bloqueia acesso por URL direta).
   useEffect(() => {
     if (dataLoading || memberRole === "owner") return;

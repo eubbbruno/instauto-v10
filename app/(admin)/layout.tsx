@@ -97,6 +97,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { href: "/admin/orcamentos", icon: FileText, label: "Orçamentos" },
     { href: "/admin/avaliacoes", icon: Star, label: "Avaliações" },
     { href: "/admin/ia", icon: Bot, label: "Uso de IA" },
+    { href: "/admin/afiliados", icon: Users, label: "Afiliados" },
   ];
 
   return (
