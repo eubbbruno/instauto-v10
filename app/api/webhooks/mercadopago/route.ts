@@ -115,16 +115,16 @@ export async function POST(request: NextRequest) {
     let maxSeats = workshop.max_seats ?? 1;
     const oldPlanType = planType;
 
-    // Descobre qual plano foi contratado pelo valor cobrado (97=PRO, 147=Equipe)
+    // Descobre plano + ciclo pelo valor cobrado (97/970=PRO, 147/1470=Equipe)
     const paidPlan = planByAmount(subscriptionData.autoRecurring?.transaction_amount);
 
     console.log("🔄 Determinando novo plan_type...");
-    console.log("  Status:", newStatus, "| Valor:", subscriptionData.autoRecurring?.transaction_amount, "| Plano detectado:", paidPlan?.id);
+    console.log("  Status:", newStatus, "| Valor:", subscriptionData.autoRecurring?.transaction_amount, "| Plano detectado:", paidPlan?.plan.id, "| Ciclo:", paidPlan?.cycle);
 
     if (newStatus === "active") {
-      planType = paidPlan?.id || "pro";
-      maxSeats = paidPlan?.maxSeats || 1;
-      console.log(`  ✅ Pagamento aprovado → ${planType} (${maxSeats} assentos)`);
+      planType = paidPlan?.plan.id || "pro";
+      maxSeats = paidPlan?.plan.maxSeats || 1;
+      console.log(`  ✅ Pagamento aprovado → ${planType} (${maxSeats} assentos, ${paidPlan?.cycle || "mensal"})`);
     } else if (newStatus === "cancelled" || newStatus === "paused") {
       const trialEndsAt = new Date(workshop.trial_ends_at || 0);
       if (trialEndsAt < new Date()) {

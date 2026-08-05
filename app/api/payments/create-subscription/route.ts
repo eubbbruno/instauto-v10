@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { createSubscription } from "@/lib/mercadopago";
-import { PAID_PLANS, isPaidPlan } from "@/lib/plans";
+import { PAID_PLANS, isPaidPlan, isCycle, priceFor, recurrenceFor } from "@/lib/plans";
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,10 +13,13 @@ export async function POST(request: NextRequest) {
     console.log("Campos do body:", Object.keys(body));
 
     // Aceitar tanto 'email' quanto 'userEmail'
-    const { workshopId, email, userEmail, userName, plan } = body;
+    const { workshopId, email, userEmail, userName, plan, cycle } = body;
     const finalEmail = email || userEmail;
     const planId = isPaidPlan(plan) ? plan : "pro";
+    const billingCycle = isCycle(cycle) ? cycle : "monthly";
     const planConfig = PAID_PLANS[planId];
+    const amount = priceFor(planId, billingCycle);
+    const recurrence = recurrenceFor(billingCycle);
     
     console.log("Valores extraídos:");
     console.log("  workshopId:", workshopId);
@@ -76,11 +79,11 @@ export async function POST(request: NextRequest) {
       workshopId: workshop.id,
       workshopName: workshop.name,
       email: finalEmail,
-      reason: `Plano ${planConfig.name} - ${workshop.name}`,
+      reason: `Plano ${planConfig.name} ${billingCycle === "annual" ? "(anual)" : "(mensal)"} - ${workshop.name}`,
       autoRecurring: {
-        frequency: 1,
-        frequencyType: "months" as const,
-        transactionAmount: planConfig.price,
+        frequency: recurrence.frequency,
+        frequencyType: recurrence.frequencyType,
+        transactionAmount: amount,
         currencyId: "BRL" as const,
       },
       backUrl: `${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/oficina/planos?status=success`,

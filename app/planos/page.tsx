@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import { PAID_PLANS } from "@/lib/plans";
 import {
   ArrowRight,
   CheckCircle2,
@@ -146,12 +147,15 @@ export default function PlanosPage() {
                 <h3 className="text-2xl font-heading font-bold text-white mb-2">
                   PRO
                 </h3>
-                <div className="flex items-baseline justify-center gap-2 mb-4">
+                <div className="flex items-baseline justify-center gap-2 mb-2">
                   <span className="text-5xl font-heading font-bold text-brand-yellow">
-                    R$ 97
+                    R$ {PAID_PLANS.pro.monthly}
                   </span>
                   <span className="text-white/50 font-sans">/mês</span>
                 </div>
+                <p className="text-brand-yellow/90 text-sm font-sans mb-4">
+                  ou R$ {PAID_PLANS.pro.annual}/ano · 2 meses grátis
+                </p>
                 <p className="text-white/55 font-sans">
                   Gestão completa · 1 usuário
                 </p>
@@ -275,9 +279,10 @@ export default function PlanosPage() {
                   <h4 className="text-lg font-heading font-bold text-navy">Equipe</h4>
                 </div>
                 <div className="flex items-baseline gap-2 mb-1">
-                  <span className="text-4xl font-heading font-black text-navy">R$ 147</span>
+                  <span className="text-4xl font-heading font-black text-navy">R$ {PAID_PLANS.equipe.monthly}</span>
                   <span className="text-gray-500 font-sans">/mês</span>
                 </div>
+                <p className="text-sm text-green-600 font-semibold mb-1">ou R$ {PAID_PLANS.equipe.annual}/ano · 2 meses grátis</p>
                 <p className="text-gray-600 mb-6">Dono + 3 usuários · tudo do PRO</p>
                 <Link
                   href="/cadastro/oficina"

@@ -6,7 +6,7 @@ import { resolveWorkshop } from "@/lib/workshop";
 import { useAuth } from "@/contexts/AuthContext";
 import { Workshop } from "@/types/database";
 import { isProActive } from "@/lib/plan";
-import { PAID_PLANS } from "@/lib/plans";
+import { PAID_PLANS, priceFor, annualSavings, type BillingCycle } from "@/lib/plans";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,6 +19,7 @@ export default function PlanosPage() {
   const { toast } = useToast();
   const [loading, setLoading] = useState(true);
   const [upgradeLoading, setUpgradeLoading] = useState(false);
+  const [cycle, setCycle] = useState<BillingCycle>("monthly");
   const [workshop, setWorkshop] = useState<Workshop | null>(null);
   const [stats, setStats] = useState({
     clients: 0,
@@ -117,6 +118,7 @@ export default function PlanosPage() {
         userEmail: userEmail,
         userName: workshop.name,
         plan,
+        cycle,
       };
       
 
@@ -328,9 +330,35 @@ export default function PlanosPage() {
 
       {/* Comparativo de Planos */}
       <div>
-        <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4 md:mb-6">
-          Compare os Planos
-        </h2>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4 md:mb-6">
+          <h2 className="text-xl md:text-2xl font-bold text-gray-900">
+            Compare os Planos
+          </h2>
+          {/* Toggle Mensal / Anual */}
+          <div className="inline-flex items-center bg-gray-100 rounded-xl p-1 self-start">
+            <button
+              onClick={() => setCycle("monthly")}
+              className={cn(
+                "px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors",
+                cycle === "monthly" ? "bg-white text-gray-900 shadow-sm" : "text-gray-500"
+              )}
+            >
+              Mensal
+            </button>
+            <button
+              onClick={() => setCycle("annual")}
+              className={cn(
+                "px-4 py-1.5 rounded-lg text-sm font-semibold transition-colors flex items-center gap-1.5",
+                cycle === "annual" ? "bg-white text-gray-900 shadow-sm" : "text-gray-500"
+              )}
+            >
+              Anual
+              <span className="text-[10px] font-bold text-green-600 bg-green-100 px-1.5 py-0.5 rounded-full">
+                2 meses grátis
+              </span>
+            </button>
+          </div>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:p-6">
           {/* Plano FREE */}
           <Card className={cn(
@@ -404,9 +432,14 @@ export default function PlanosPage() {
                 )}
               </div>
               <div className="mt-4">
-                <span className="text-4xl font-bold">R$ 97</span>
-                <span className="text-gray-600">/mês</span>
+                <span className="text-4xl font-bold">R$ {priceFor("pro", cycle)}</span>
+                <span className="text-gray-600">{cycle === "annual" ? "/ano" : "/mês"}</span>
               </div>
+              {cycle === "annual" && (
+                <p className="text-sm text-green-600 font-semibold mt-1">
+                  Economize R$ {annualSavings("pro")} no ano
+                </p>
+              )}
               <CardDescription className="mt-2">
                 Para oficinas que querem crescer
               </CardDescription>
@@ -481,7 +514,11 @@ export default function PlanosPage() {
                 <Crown className="h-5 w-5 text-[#1e3a8a]" /> Plano Equipe
               </h3>
               <p className="text-sm text-gray-600 mt-1">
-                Dono + 3 usuários · tudo do PRO · <strong>R$ {PAID_PLANS.equipe.price}/mês</strong>
+                Dono + 3 usuários · tudo do PRO ·{" "}
+                <strong>R$ {priceFor("equipe", cycle)}{cycle === "annual" ? "/ano" : "/mês"}</strong>
+                {cycle === "annual" && (
+                  <span className="text-green-600 font-semibold"> (economize R$ {annualSavings("equipe")})</span>
+                )}
               </p>
             </div>
             <Button
