@@ -7,6 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Workshop } from "@/types/database";
 import { isProActive } from "@/lib/plan";
 import { PAID_PLANS, priceFor, annualSavings, type BillingCycle } from "@/lib/plans";
+import { trackBeginCheckout } from "@/lib/analytics";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -137,6 +138,8 @@ export default function PlanosPage() {
       }
 
       if (data.initPoint) {
+        // Conversão: início de checkout (GA begin_checkout + Meta InitiateCheckout)
+        trackBeginCheckout(plan, priceFor(plan, cycle));
         // Redirecionar para o checkout do MercadoPago
         toast({
           title: "Redirecionando...",

@@ -4,6 +4,7 @@ import "./globals.css";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { Toaster } from "@/components/ui/toaster";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
+import MetaPixel from "@/components/MetaPixel";
 import CookieConsent from "@/components/legal/CookieConsent";
 
 const syne = Syne({ 
@@ -89,6 +90,7 @@ export default function RootLayout({
     <html lang="pt-BR">
       <head>
         <GoogleAnalytics />
+        <MetaPixel />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://nzvvkbvmyttlixswwaqw.supabase.co" />

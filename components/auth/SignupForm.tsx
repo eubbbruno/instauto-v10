@@ -9,6 +9,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase";
+import { trackSignup } from "@/lib/analytics";
 import { FACEBOOK_LOGIN_ENABLED } from "@/lib/config";
 import { FadeIn } from "@/components/ui/motion";
 
@@ -110,6 +111,9 @@ export default function SignupForm({ userType }: { userType: UserType }) {
 
       if (error) throw error;
       if (!data.user) throw new Error("Erro ao criar conta. Tente novamente.");
+
+      // Conversão: conta criada (dispara GA sign_up + Meta CompleteRegistration)
+      trackSignup(userType);
 
       // Sem session = precisa confirmar email
       if (!data.session) {
