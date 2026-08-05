@@ -21,6 +21,7 @@ const ESTADOS = [
 
 // Chips visuais de especialidade (com emoji) para filtro rápido
 const SPECIALTY_CHIPS: { label: string; icon: string }[] = [
+  { label: "Guincho", icon: "🚛" },
   { label: "Freios", icon: "🛑" },
   { label: "Motor", icon: "⚙️" },
   { label: "Suspensão", icon: "🔩" },
@@ -51,6 +52,7 @@ export default function BuscarOficinasPage() {
       const p = new URLSearchParams(window.location.search);
       if (p.get("estado")) setSelectedState(p.get("estado")!);
       if (p.get("cidade")) setSearchTerm(p.get("cidade")!);
+      if (p.get("especialidade")) setSelectedSpecialty(p.get("especialidade")!);
     }
   }, []);
 

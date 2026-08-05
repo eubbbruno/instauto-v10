@@ -399,7 +399,7 @@ export default function MotoristaDashboard() {
                 </GlassCard>
               </FadeIn>
 
-              {/* Socorro 24h - NOVO */}
+              {/* Emergência 24h - números nacionais reais */}
               <FadeIn delay={0.5}>
                 <GlassCard variant="default" className="p-5 bg-gradient-to-br from-red-50 to-orange-50 border-red-200">
                   <div className="flex items-center gap-3 mb-3">
@@ -407,21 +407,26 @@ export default function MotoristaDashboard() {
                       <Phone className="w-6 h-6 text-white" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-bold text-base text-gray-900">Socorro 24h</h3>
-                      <p className="text-xs text-gray-600">Emergência na estrada</p>
+                      <h3 className="font-bold text-base text-gray-900">Emergência 24h</h3>
+                      <p className="text-xs text-gray-600">Acidente ou socorro na estrada</p>
                     </div>
                   </div>
-                  <a
-                    href="tel:08007771234"
-                    className="block w-full py-3 bg-red-600 hover:bg-red-700 text-white text-center font-semibold rounded-xl transition-colors"
-                  >
-                    <div className="flex items-center justify-center gap-2">
-                      <Phone className="w-4 h-4" />
-                      Ligar Agora
-                    </div>
-                  </a>
-                  <p className="text-xs text-center text-gray-500 mt-2">
-                    0800 777 1234 - Disponível 24h
+                  <div className="grid grid-cols-3 gap-2">
+                    <a href="tel:193" className="flex flex-col items-center gap-0.5 py-2.5 bg-red-600 hover:bg-red-700 text-white rounded-xl transition-colors">
+                      <span className="text-lg font-bold leading-none">193</span>
+                      <span className="text-[11px]">Bombeiros</span>
+                    </a>
+                    <a href="tel:192" className="flex flex-col items-center gap-0.5 py-2.5 bg-white border border-red-200 text-red-700 hover:bg-red-50 rounded-xl transition-colors">
+                      <span className="text-lg font-bold leading-none">192</span>
+                      <span className="text-[11px]">SAMU</span>
+                    </a>
+                    <a href="tel:190" className="flex flex-col items-center gap-0.5 py-2.5 bg-white border border-red-200 text-red-700 hover:bg-red-50 rounded-xl transition-colors">
+                      <span className="text-lg font-bold leading-none">190</span>
+                      <span className="text-[11px]">Polícia</span>
+                    </a>
+                  </div>
+                  <p className="text-[11px] text-center text-gray-500 mt-2">
+                    Números nacionais gratuitos, válidos em todo o Brasil.
                   </p>
                 </GlassCard>
               </FadeIn>
@@ -438,17 +443,17 @@ export default function MotoristaDashboard() {
                       <p className="text-xs text-gray-600">Reboque e assistência</p>
                     </div>
                   </div>
-                  <a
-                    href="tel:08007775678"
+                  <Link
+                    href="/buscar-oficinas?especialidade=Guincho"
                     className="block w-full py-3 bg-orange-600 hover:bg-orange-700 text-white text-center font-semibold rounded-xl transition-colors"
                   >
                     <div className="flex items-center justify-center gap-2">
                       <Truck className="w-4 h-4" />
                       Encontrar Guincho
                     </div>
-                  </a>
+                  </Link>
                   <p className="text-xs text-center text-gray-500 mt-2">
-                    0800 777 5678 - Atendimento rápido
+                    Oficinas de guincho e reboque perto de você
                   </p>
                 </GlassCard>
               </FadeIn>

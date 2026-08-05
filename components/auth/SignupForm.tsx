@@ -58,6 +58,7 @@ export default function SignupForm({ userType }: { userType: UserType }) {
   const [name, setName] = useState("");
   const [city, setCity] = useState("");
   const [uf, setUf] = useState("");
+  const [address, setAddress] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
@@ -84,8 +85,8 @@ export default function SignupForm({ userType }: { userType: UserType }) {
         return;
       }
 
-      if (userType === "oficina" && (!city.trim() || !uf)) {
-        toast.error("Informe a cidade e o estado da oficina");
+      if (userType === "oficina" && (!city.trim() || !uf || !address.trim())) {
+        toast.error("Informe o endereço, a cidade e o estado da oficina");
         setLoading(false);
         return;
       }
@@ -103,8 +104,8 @@ export default function SignupForm({ userType }: { userType: UserType }) {
           data: {
             name: name,
             user_type: profileType,
-            // Cidade/UF ficam no metadata para o callback criar o workshop já com localização
-            ...(userType === "oficina" ? { city: city.trim(), state: uf } : {}),
+            // Endereço/Cidade/UF ficam no metadata para o callback criar o workshop já com localização
+            ...(userType === "oficina" ? { city: city.trim(), state: uf, address: address.trim() } : {}),
           },
         },
       });
@@ -137,6 +138,7 @@ export default function SignupForm({ userType }: { userType: UserType }) {
         const { error: workshopError } = await supabase.from("workshops").insert({
           profile_id: data.user.id,
           name: name || "Minha Oficina",
+          address: address.trim() || null,
           city: city.trim() || null,
           state: uf || null,
           plan_type: "free",
@@ -368,8 +370,23 @@ export default function SignupForm({ userType }: { userType: UserType }) {
                       </div>
                     </div>
 
-                    {/* Cidade + UF — só para oficina (essencial para aparecer nas buscas por cidade) */}
+                    {/* Endereço + Cidade + UF — só para oficina */}
                     {userType === "oficina" && (
+                      <>
+                      <div>
+                        <label className="text-sm font-medium text-gray-700 mb-2 block">Endereço *</label>
+                        <div className="relative">
+                          <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                          <input
+                            type="text"
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
+                            placeholder="Rua, número, bairro"
+                            required
+                            className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                          />
+                        </div>
+                      </div>
                       <div className="flex gap-3">
                         <div className="flex-1">
                           <label className="text-sm font-medium text-gray-700 mb-2 block">Cidade *</label>
@@ -398,6 +415,7 @@ export default function SignupForm({ userType }: { userType: UserType }) {
                           </select>
                         </div>
                       </div>
+                      </>
                     )}
 
                     <div>
