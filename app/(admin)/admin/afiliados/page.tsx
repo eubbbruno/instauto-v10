@@ -16,6 +16,7 @@ interface Affiliate {
   active: boolean;
   notes: string | null;
   link: string;
+  access_token: string;
   signups: number;
   paying: number;
   payingInWindow: number;
@@ -179,13 +180,22 @@ export default function AdminAfiliadosPage() {
                       {a.pix_key ? ` · Pix: ${a.pix_key}` : ""}
                       {a.email ? ` · ${a.email}` : ""}
                     </p>
-                    <button
-                      onClick={() => copyLink(a.link, a.id)}
-                      className="mt-2 inline-flex items-center gap-1.5 text-xs text-[#1e3a8a] hover:underline"
-                    >
-                      {copied === a.id ? <Check className="w-3.5 h-3.5" /> : <Link2 className="w-3.5 h-3.5" />}
-                      {copied === a.id ? "Link copiado!" : "Copiar link de indicação"}
-                    </button>
+                    <div className="mt-2 flex items-center gap-4 flex-wrap">
+                      <button
+                        onClick={() => copyLink(a.link, a.id)}
+                        className="inline-flex items-center gap-1.5 text-xs text-[#1e3a8a] hover:underline"
+                      >
+                        {copied === a.id ? <Check className="w-3.5 h-3.5" /> : <Link2 className="w-3.5 h-3.5" />}
+                        {copied === a.id ? "Link copiado!" : "Copiar link de indicação"}
+                      </button>
+                      <button
+                        onClick={() => copyLink(`https://www.instauto.com.br/afiliado/${a.access_token}`, `portal-${a.id}`)}
+                        className="inline-flex items-center gap-1.5 text-xs text-gray-500 hover:underline"
+                      >
+                        {copied === `portal-${a.id}` ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+                        {copied === `portal-${a.id}` ? "Copiado!" : "Copiar link do painel dele"}
+                      </button>
+                    </div>
                   </div>
 
                   <div className="flex items-center gap-5 text-center">
