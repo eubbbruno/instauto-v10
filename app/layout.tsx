@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/toaster";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import MetaPixel from "@/components/MetaPixel";
 import CookieConsent from "@/components/legal/CookieConsent";
+import WhatsAppSupport from "@/components/WhatsAppSupport";
 
 const syne = Syne({ 
   subsets: ["latin"],
@@ -125,6 +126,7 @@ export default function RootLayout({
           {children}
           <Toaster />
           <CookieConsent />
+          <WhatsAppSupport />
         </AuthProvider>
       </body>
     </html>
