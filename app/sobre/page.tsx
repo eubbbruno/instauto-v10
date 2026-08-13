@@ -3,7 +3,7 @@ import Link from "next/link";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import {
-  Target, Eye, Heart, Wrench, Car, ArrowRight, Sparkles, ShieldCheck,
+  Wrench, Car, ArrowRight, Sparkles, ShieldCheck,
   MessageCircle, CreditCard, MapPin, Layers,
 } from "lucide-react";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/motion";
@@ -55,13 +55,15 @@ export default function SobrePage() {
                   novos clientes. Dois problemas que se resolvem no mesmo lugar.
                 </p>
                 <p className="text-gray-600 mb-4 leading-relaxed">
-                  Foi assim que, em 2025, começamos a construir o Instauto em Londrina (PR): uma plataforma onde a
-                  oficina gerencia clientes, ordens de serviço, estoque, financeiro e agenda — e ainda aparece
-                  para quem está procurando um mecânico de confiança agora.
+                  Desde <strong>2019</strong>, o Instauto vem evoluindo sem parar: uma plataforma onde a oficina
+                  gerencia clientes, ordens de serviço, estoque, financeiro e agenda — e ainda aparece para quem
+                  está procurando um mecânico de confiança agora. A cada ano, mais recursos, ouvindo quem está na
+                  graxa todo dia.
                 </p>
                 <p className="text-gray-600 leading-relaxed">
-                  Estamos no começo, e é exatamente por isso que cada oficina que entra hoje ajuda a moldar o
-                  produto. Construímos ouvindo quem está na graxa todo dia.
+                  Em <strong>2025</strong>, demos o maior salto até aqui: integramos <strong>inteligência
+                  artificial</strong> e <strong>WhatsApp</strong> direto no dia a dia das oficinas — diagnóstico
+                  assistido por IA e atendimento automático, para a oficina trabalhar mais rápido e vender melhor.
                 </p>
               </div>
             </FadeIn>
@@ -111,8 +113,8 @@ export default function SobrePage() {
               <StaggerItem>
                 <GlassCard>
                   <div className="p-8">
-                    <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6">
-                      <Target className="w-8 h-8 text-blue-600" />
+                    <div className="relative w-full h-40 rounded-xl overflow-hidden mb-6">
+                      <Image src="/images/motorista.png" alt="Motorista atendido pelo Instauto" fill className="object-cover" />
                     </div>
                     <h3 className="text-2xl font-bold text-gray-900 mb-4">Missão</h3>
                     <p className="text-gray-600 leading-relaxed">
@@ -125,8 +127,8 @@ export default function SobrePage() {
               <StaggerItem>
                 <GlassCard>
                   <div className="p-8">
-                    <div className="w-16 h-16 bg-yellow-100 rounded-2xl flex items-center justify-center mb-6">
-                      <Eye className="w-8 h-8 text-yellow-600" />
+                    <div className="relative w-full h-40 rounded-xl overflow-hidden mb-6">
+                      <Image src="/images/oficina.png" alt="Oficina mecânica" fill className="object-cover" />
                     </div>
                     <h3 className="text-2xl font-bold text-gray-900 mb-4">Visão</h3>
                     <p className="text-gray-600 leading-relaxed">
@@ -139,8 +141,8 @@ export default function SobrePage() {
               <StaggerItem>
                 <GlassCard>
                   <div className="p-8">
-                    <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mb-6">
-                      <Heart className="w-8 h-8 text-green-600" />
+                    <div className="relative w-full h-40 rounded-xl overflow-hidden mb-6">
+                      <Image src="/images/mecanico-hero.png" alt="Mecânico do Instauto" fill className="object-cover" />
                     </div>
                     <h3 className="text-2xl font-bold text-gray-900 mb-4">Valores</h3>
                     <ul className="text-gray-600 space-y-2">
@@ -207,9 +209,9 @@ export default function SobrePage() {
       <section className="band-dark py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_120%,rgba(253,224,71,0.1),transparent_60%)] pointer-events-none" />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
-          <h2 className="font-heading text-3xl md:text-4xl font-black text-white mb-6">Faça parte desde o começo</h2>
+          <h2 className="font-heading text-3xl md:text-4xl font-black text-white mb-6">Pronto para começar?</h2>
           <p className="text-xl text-white/55 mb-10 max-w-2xl mx-auto">
-            Entrar agora é ajudar a construir a plataforma — e sair na frente na sua região.
+            Coloque sua oficina no mapa ou encontre a oficina ideal para o seu carro.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link href="/cadastro/motorista" className="btn-epic-blue inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-bold">

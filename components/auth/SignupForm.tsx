@@ -37,7 +37,7 @@ const COPY: Record<UserType, {
   },
   oficina: {
     eyebrow: "Cadastro de oficina",
-    title: <>Sua oficina no mapa<br /><span className="text-brand-yellow">de milhares.</span></>,
+    title: <>Sua oficina no mapa<br /><span className="text-brand-yellow">de novos clientes.</span></>,
     subtitle: "Sistema completo de gestão + visibilidade para novos clientes. Comece com 14 dias de PRO grátis, sem cartão.",
     nameLabel: "Nome da Oficina",
     namePlaceholder: "Auto Center Silva",

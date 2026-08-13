@@ -111,11 +111,6 @@ export default function RootLayout({
                 "@type": "Offer",
                 "price": "97",
                 "priceCurrency": "BRL"
-              },
-              "aggregateRating": {
-                "@type": "AggregateRating",
-                "ratingValue": "4.8",
-                "ratingCount": "500"
               }
             })
           }}

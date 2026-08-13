@@ -15,7 +15,7 @@ const FAQS = [
   },
   {
     q: "Em quais estados e cidades o Instauto está disponível?",
-    a: "O Instauto já está presente em mais de 15 estados brasileiros, com oficinas cadastradas nas principais capitais e cidades do interior — de São Paulo e Rio de Janeiro a Manaus, Fortaleza, Salvador, Curitiba e Porto Alegre. A rede cresce toda semana.",
+    a: "O Instauto funciona em todo o Brasil e está em expansão. Você busca oficinas por cidade e estado; se ainda houver poucas na sua região, seu cadastro ajuda a atrair as oficinas locais para a plataforma. A rede cresce toda semana.",
   },
   {
     q: "Como funciona o sistema de avaliações das oficinas?",

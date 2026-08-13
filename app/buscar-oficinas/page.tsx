@@ -152,7 +152,7 @@ export default function BuscarOficinasPage() {
 
             {/* Stats pills */}
             <div className="flex items-center justify-center gap-4 mt-6 flex-wrap">
-              {["+500 oficinas", "15 estados", "Orçamento grátis"].map(t => (
+              {["Orçamento grátis", "Sem compromisso", "Resposta rápida"].map(t => (
                 <span key={t} className="text-[13px] text-white/45 font-sans flex items-center gap-1.5">
                   <span className="w-1 h-1 rounded-full bg-brand-yellow/60" />{t}
                 </span>

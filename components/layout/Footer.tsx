@@ -123,7 +123,7 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="w-3.5 h-3.5 text-brand-yellow/60 flex-shrink-0" />
-                Brasil · 15 estados atendidos
+                Feito no Brasil
               </div>
             </div>
           </div>

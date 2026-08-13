@@ -224,24 +224,24 @@ export default function HomePage() {
 
       </section>
 
-      {/* Prova social honesta (sem implicar parcerias inexistentes) */}
+      {/* Diferenciais honestos (sem números inventados) */}
       <section className="border-y border-navy/5 bg-white py-8">
         <div className="max-w-5xl mx-auto px-4 grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
           <div>
-            <p className="font-heading text-3xl font-extrabold text-navy">+500</p>
-            <p className="text-sm text-navy/60">Oficinas cadastradas</p>
+            <p className="font-heading text-3xl font-extrabold text-navy">14 dias</p>
+            <p className="text-sm text-navy/60">Grátis de PRO, sem cartão</p>
           </div>
           <div>
-            <p className="font-heading text-3xl font-extrabold text-navy">+2.500</p>
-            <p className="text-sm text-navy/60">Motoristas ativos</p>
+            <p className="font-heading text-3xl font-extrabold text-navy">Grátis</p>
+            <p className="text-sm text-navy/60">Para sempre, para motoristas</p>
           </div>
           <div>
-            <p className="font-heading text-3xl font-extrabold text-navy">15</p>
-            <p className="text-sm text-navy/60">Estados atendidos</p>
+            <p className="font-heading text-3xl font-extrabold text-navy">IA</p>
+            <p className="text-sm text-navy/60">Diagnóstico + WhatsApp</p>
           </div>
           <div>
-            <p className="font-heading text-3xl font-extrabold text-navy">4,9★</p>
-            <p className="text-sm text-navy/60">Avaliação média</p>
+            <p className="font-heading text-3xl font-extrabold text-navy">Brasil</p>
+            <p className="text-sm text-navy/60">Feito para oficinas daqui</p>
           </div>
         </div>
       </section>
@@ -420,10 +420,10 @@ export default function HomePage() {
             {/* Stats tipográficos */}
             <Reveal stagger={0.12} className="grid grid-cols-2 gap-x-4 md:gap-x-8 gap-y-6 md:gap-y-10">
               {[
-                { val: "500+", label: "Oficinas ativas", color: "text-brand-yellow" },
-                { val: "15",   label: "Estados cobertos", color: "text-brand-yellow" },
-                { val: "50k+", label: "OS gerenciadas",  color: "text-white" },
-                { val: "98%",  label: "Satisfação",       color: "text-white" },
+                { val: "14 dias", label: "PRO grátis, sem cartão", color: "text-brand-yellow" },
+                { val: "IA",   label: "Diagnóstico + WhatsApp", color: "text-brand-yellow" },
+                { val: "100%", label: "Online, de qualquer lugar",  color: "text-white" },
+                { val: "Grátis",  label: "Sempre, para motoristas",       color: "text-white" },
               ].map(({ val, label, color }) => (
                 <div key={label} className="border-l-2 border-white/10 pl-5">
                   <div className={`text-5xl font-heading font-black leading-none mb-1 ${color}`}>{val}</div>
@@ -435,7 +435,7 @@ export default function HomePage() {
               <div className="col-span-2 mt-2">
                 <div className="inline-flex items-center gap-2 rounded-full bg-white/5 ring-1 ring-white/10 px-4 py-2 text-sm text-white/60">
                   <span className="w-2 h-2 rounded-full bg-brand-yellow animate-pulse" />
-                  Novas oficinas entrando toda semana
+                  Cadastre sua oficina em poucos minutos
                 </div>
               </div>
             </Reveal>
@@ -621,7 +621,7 @@ export default function HomePage() {
                 Fature <span className="text-brand-yellow">muito mais.</span>
               </h2>
               <p className="text-white/50 text-lg mb-10 max-w-lg leading-relaxed">
-                Sistema completo de gestão + marketplace com milhares de motoristas buscando oficinas agora. 14 dias grátis, sem cartão.
+                Sistema completo de gestão + marketplace com motoristas buscando oficinas na sua região. 14 dias grátis, sem cartão.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 mb-10">
