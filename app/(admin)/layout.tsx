@@ -16,7 +16,8 @@ import {
   LogOut,
   Menu,
   X,
-  Bot
+  Bot,
+  MessageSquare
 } from "lucide-react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -98,6 +99,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { href: "/admin/avaliacoes", icon: Star, label: "Avaliações" },
     { href: "/admin/ia", icon: Bot, label: "Uso de IA" },
     { href: "/admin/afiliados", icon: Users, label: "Afiliados" },
+    { href: "/admin/mensagens", icon: MessageSquare, label: "Mensagens" },
   ];
 
   return (
