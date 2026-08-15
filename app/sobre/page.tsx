@@ -146,9 +146,8 @@ export default function SobrePage() {
                     </div>
                     <h3 className="text-2xl font-bold text-gray-900 mb-4">Valores</h3>
                     <p className="text-gray-600 leading-relaxed">
-                      Transparência e confiança em primeiro lugar, com simplicidade em tudo que fazemos.
-                      Construímos junto com quem usa a plataforma no dia a dia — sem letra miúda, sem
-                      complicação, sempre do lado da oficina e do motorista.
+                      Transparência, confiança e simplicidade em tudo que fazemos — sempre do lado da
+                      oficina e do motorista, sem letra miúda e sem complicação.
                     </p>
                   </div>
                 </GlassCard>
