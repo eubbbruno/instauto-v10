@@ -114,7 +114,7 @@ export default function SobrePage() {
                 <GlassCard>
                   <div className="p-8">
                     <div className="relative w-full h-40 rounded-xl overflow-hidden mb-6">
-                      <Image src="/images/motorista.png" alt="Motorista atendido pelo Instauto" fill className="object-cover" />
+                      <Image src="/images/sobre-missao.png" alt="Missão do Instauto" fill className="object-cover" />
                     </div>
                     <h3 className="text-2xl font-bold text-gray-900 mb-4">Missão</h3>
                     <p className="text-gray-600 leading-relaxed">
@@ -128,7 +128,7 @@ export default function SobrePage() {
                 <GlassCard>
                   <div className="p-8">
                     <div className="relative w-full h-40 rounded-xl overflow-hidden mb-6">
-                      <Image src="/images/oficina.png" alt="Oficina mecânica" fill className="object-cover" />
+                      <Image src="/images/sobre-visao.png" alt="Visão do Instauto" fill className="object-cover" />
                     </div>
                     <h3 className="text-2xl font-bold text-gray-900 mb-4">Visão</h3>
                     <p className="text-gray-600 leading-relaxed">
@@ -142,16 +142,14 @@ export default function SobrePage() {
                 <GlassCard>
                   <div className="p-8">
                     <div className="relative w-full h-40 rounded-xl overflow-hidden mb-6">
-                      <Image src="/images/mecanico-hero.png" alt="Mecânico do Instauto" fill className="object-cover" />
+                      <Image src="/images/sobre-valores.png" alt="Valores do Instauto" fill className="object-cover" />
                     </div>
                     <h3 className="text-2xl font-bold text-gray-900 mb-4">Valores</h3>
-                    <ul className="text-gray-600 space-y-2">
-                      <li>✓ Transparência</li>
-                      <li>✓ Confiança</li>
-                      <li>✓ Simplicidade</li>
-                      <li>✓ Feito com quem usa</li>
-                      <li>✓ Sem letra miúda</li>
-                    </ul>
+                    <p className="text-gray-600 leading-relaxed">
+                      Transparência e confiança em primeiro lugar, com simplicidade em tudo que fazemos.
+                      Construímos junto com quem usa a plataforma no dia a dia — sem letra miúda, sem
+                      complicação, sempre do lado da oficina e do motorista.
+                    </p>
                   </div>
                 </GlassCard>
               </StaggerItem>
