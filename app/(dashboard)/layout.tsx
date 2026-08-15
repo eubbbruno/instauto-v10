@@ -14,7 +14,7 @@ import {
   LayoutDashboard, Users, Car, FileText, Package, DollarSign,
   Calendar, MessageSquare, Settings, CreditCard, Wrench, Menu,
   X, LogOut, Bell, ChevronDown, Loader2, ClipboardList, Receipt,
-  Stethoscope, ChevronRight, Bot, ClipboardCheck
+  Stethoscope, ChevronRight, Bot, ClipboardCheck, LayoutGrid
 } from "lucide-react";
 
 interface Profile {
@@ -37,6 +37,7 @@ const menuItems = [
   { href: "/oficina/clientes", label: "Clientes", icon: Users },
   { href: "/oficina/veiculos", label: "Veículos", icon: Car },
   { href: "/oficina/ordens", label: "Ordens de Serviço", icon: ClipboardList },
+  { href: "/oficina/quadro", label: "Quadro", icon: LayoutGrid },
   { href: "/oficina/orcamentos", label: "Orçamentos", icon: Receipt },
   { href: "/oficina/estoque", label: "Estoque", icon: Package },
   { href: "/oficina/financeiro", label: "Financeiro", icon: DollarSign },
