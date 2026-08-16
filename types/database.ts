@@ -247,6 +247,7 @@ export interface MotoristVehicle {
   color?: string;
   mileage?: number;
   fuel_type?: string;
+  vehicle_type?: string; // "carro" | "moto" | "caminhao"
   notes?: string;
   is_active: boolean;
   created_at: string;

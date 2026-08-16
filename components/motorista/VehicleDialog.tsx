@@ -50,6 +50,7 @@ export function VehicleDialog({ open, onOpenChange, vehicle, onSave }: VehicleDi
     color: "",
     mileage: 0,
     fuel_type: "flex",
+    vehicle_type: "carro",
   });
 
   useEffect(() => {
@@ -63,6 +64,7 @@ export function VehicleDialog({ open, onOpenChange, vehicle, onSave }: VehicleDi
         color: vehicle.color || "",
         mileage: vehicle.mileage || 0,
         fuel_type: vehicle.fuel_type || "flex",
+        vehicle_type: vehicle.vehicle_type || "carro",
       });
     } else {
       setFormData({
@@ -74,6 +76,7 @@ export function VehicleDialog({ open, onOpenChange, vehicle, onSave }: VehicleDi
         color: "",
         mileage: 0,
         fuel_type: "flex",
+        vehicle_type: "carro",
       });
     }
   }, [vehicle, open]);
@@ -139,6 +142,32 @@ export function VehicleDialog({ open, onOpenChange, vehicle, onSave }: VehicleDi
               </p>
             </div>
           )}
+
+          {/* Tipo de veículo (define a imagem) */}
+          <div>
+            <Label>Tipo de veículo</Label>
+            <div className="grid grid-cols-3 gap-2 mt-1.5">
+              {[
+                { value: "carro", label: "Carro", icon: "🚗" },
+                { value: "moto", label: "Moto", icon: "🏍️" },
+                { value: "caminhao", label: "Caminhão", icon: "🚚" },
+              ].map((t) => (
+                <button
+                  key={t.value}
+                  type="button"
+                  onClick={() => setFormData({ ...formData, vehicle_type: t.value })}
+                  className={`flex flex-col items-center gap-1 py-2.5 rounded-xl border text-sm font-semibold transition-colors ${
+                    formData.vehicle_type === t.value
+                      ? "bg-[#1e3a8a] text-white border-[#1e3a8a]"
+                      : "bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100"
+                  }`}
+                >
+                  <span className="text-xl leading-none">{t.icon}</span>
+                  {t.label}
+                </button>
+              ))}
+            </div>
+          </div>
 
           {/* Apelido (opcional) */}
           <div>

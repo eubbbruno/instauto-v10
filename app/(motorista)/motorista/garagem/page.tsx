@@ -22,6 +22,13 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
+// Imagem do veículo conforme o tipo (assets locais, sem custo)
+function typeImage(t?: string) {
+  if (t === "moto") return "/images/moto-3d.png";
+  if (t === "caminhao") return "/images/truck-3d.png";
+  return "/images/car-3d.png";
+}
+
 export default function GaragemPage() {
   const { profile, loading: authLoading } = useAuth();
   const [vehicles, setVehicles] = useState<MotoristVehicle[]>([]);
@@ -334,18 +341,17 @@ export default function GaragemPage() {
             {vehicles.map((vehicle) => (
               <StaggerItem key={vehicle.id}>
                 <GlassCard variant="default" hover className="p-4 sm:p-4 sm:p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex-1">
-                    <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-1">
-                      {vehicle.nickname || `${vehicle.make} ${vehicle.model}`}
-                    </h3>
-                    <p className="text-sm text-gray-500">
-                      {vehicle.year} • {vehicle.plate || "Sem placa"}
-                    </p>
-                  </div>
-                  <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                    <Car className="h-6 w-6 text-blue-600" />
-                  </div>
+                <div className="mb-4 h-28 rounded-xl overflow-hidden bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={typeImage(vehicle.vehicle_type)} alt="" className="h-24 object-contain drop-shadow" />
+                </div>
+                <div className="mb-4">
+                  <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-1">
+                    {vehicle.nickname || `${vehicle.make} ${vehicle.model}`}
+                  </h3>
+                  <p className="text-sm text-gray-500">
+                    {vehicle.year} • {vehicle.plate || "Sem placa"}
+                  </p>
                 </div>
                 
                 <div className="space-y-3 mb-6">
