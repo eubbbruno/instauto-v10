@@ -100,6 +100,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { href: "/admin/ia", icon: Bot, label: "Uso de IA" },
     { href: "/admin/afiliados", icon: Users, label: "Afiliados" },
     { href: "/admin/mensagens", icon: MessageSquare, label: "Mensagens" },
+    { href: "/admin/blog", icon: FileText, label: "Blog" },
   ];
 
   return (

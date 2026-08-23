@@ -5,16 +5,21 @@ import { ArrowLeft, ArrowRight, Clock, Calendar } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { getAllPosts, getPostBySlug } from "@/lib/blog";
+import { Markdown } from "@/components/blog/Markdown";
 
 const BASE_URL = "https://www.instauto.com.br";
 
-export function generateStaticParams() {
-  return getAllPosts().map((p) => ({ slug: p.slug }));
+// Revalida a cada 2 min; slugs novos renderizam sob demanda
+export const revalidate = 120;
+
+export async function generateStaticParams() {
+  const posts = await getAllPosts();
+  return posts.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = await getPostBySlug(slug);
   if (!post) return { title: "Artigo não encontrado" };
 
   return {
@@ -38,10 +43,10 @@ function formatDate(iso: string) {
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const post = getPostBySlug(slug);
+  const post = await getPostBySlug(slug);
   if (!post) notFound();
 
-  const others = getAllPosts().filter((p) => p.slug !== post.slug).slice(0, 2);
+  const others = (await getAllPosts()).filter((p) => p.slug !== post.slug).slice(0, 2);
 
   const articleLd = {
     "@context": "https://schema.org",
@@ -94,20 +99,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             {post.excerpt}
           </p>
 
-          <div className="space-y-8">
-            {post.sections.map((section, i) => (
-              <div key={i}>
-                {section.heading && (
-                  <h2 className="font-heading text-xl sm:text-2xl font-bold text-navy mb-3">{section.heading}</h2>
-                )}
-                <div className="space-y-4">
-                  {section.body.map((p, j) => (
-                    <p key={j} className="text-gray-700 leading-relaxed">{p}</p>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
+          <Markdown content={post.content} />
 
           {/* CTA */}
           <div className="mt-12 band-dark rounded-3xl p-8 text-center relative overflow-hidden">

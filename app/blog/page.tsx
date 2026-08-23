@@ -14,12 +14,15 @@ export const metadata: Metadata = {
   alternates: { canonical: `${BASE_URL}/blog` },
 };
 
+// Revalida a listagem a cada 2 min (novos posts do admin aparecem sozinhos)
+export const revalidate = 120;
+
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" });
 }
 
-export default function BlogIndexPage() {
-  const posts = getAllPosts();
+export default async function BlogIndexPage() {
+  const posts = await getAllPosts();
 
   return (
     <div className="min-h-screen bg-white">
@@ -40,6 +43,9 @@ export default function BlogIndexPage() {
 
       <section className="py-12 sm:py-16">
         <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          {posts.length === 0 && (
+            <p className="text-center text-gray-400 py-12">Em breve, novos artigos por aqui.</p>
+          )}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {posts.map((post) => (
               <Link key={post.slug} href={`/blog/${post.slug}`} className="group">
