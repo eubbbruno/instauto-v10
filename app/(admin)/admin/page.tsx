@@ -40,6 +40,7 @@ export default function AdminDashboard() {
     newUsersLast7Days: 0,
   });
   const [loading, setLoading] = useState(true);
+  const [recent, setRecent] = useState<any[]>([]);
   const supabase = createClient();
 
   useEffect(() => {
@@ -107,6 +108,15 @@ export default function AdminDashboard() {
         .from("profiles")
         .select("*", { count: "exact", head: true })
         .gte("created_at", sevenDaysAgo.toISOString());
+
+      // Oficinas cadastradas nos últimos 7 dias (alerta/contato)
+      const { data: recentWs } = await supabase
+        .from("workshops")
+        .select("id, name, city, state, phone, created_at")
+        .gte("created_at", sevenDaysAgo.toISOString())
+        .order("created_at", { ascending: false })
+        .limit(10);
+      setRecent(recentWs || []);
 
       setStats({
         totalWorkshops: workshopsCount || 0,
@@ -286,6 +296,43 @@ export default function AdminDashboard() {
                 {((stats.proWorkshops / stats.totalWorkshops) * 100).toFixed(1)}%
               </span>
             </div>
+          </div>
+        )}
+      </div>
+
+      {/* Novas oficinas (alerta para contato) */}
+      <div className="mt-8 bg-white border border-[#0B1120]/8 rounded-xl md:rounded-2xl p-5 md:p-6 shadow-lg">
+        <h3 className="text-base md:text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+          <Building2 className="w-5 h-5 text-blue-600" />
+          Novas oficinas
+          <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">últimos 7 dias · {recent.length}</span>
+        </h3>
+        {recent.length === 0 ? (
+          <p className="text-sm text-gray-400">Nenhuma oficina nova nos últimos 7 dias.</p>
+        ) : (
+          <div className="divide-y divide-gray-50">
+            {recent.map((w) => (
+              <div key={w.id} className="py-2.5 flex items-center justify-between gap-3 flex-wrap">
+                <div className="min-w-0">
+                  <p className="font-semibold text-gray-900 text-sm truncate">{w.name || "Oficina"}</p>
+                  <p className="text-xs text-gray-500">
+                    {[w.city, w.state].filter(Boolean).join(" · ") || "—"} · {new Date(w.created_at).toLocaleDateString("pt-BR")}
+                  </p>
+                </div>
+                {w.phone ? (
+                  <a
+                    href={`https://wa.me/55${String(w.phone).replace(/\D/g, "")}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-green-600 font-medium hover:underline shrink-0"
+                  >
+                    {w.phone}
+                  </a>
+                ) : (
+                  <span className="text-xs text-gray-400 shrink-0">sem telefone</span>
+                )}
+              </div>
+            ))}
           </div>
         )}
       </div>

@@ -179,7 +179,8 @@ export async function GET(request: Request) {
           const workshopData = {
             profile_id: session.user.id,
             name: userName,
-            // Endereço/Cidade/UF vêm do metadata do signUp (SignupForm de oficina)
+            // Telefone/Endereço/Cidade/UF vêm do metadata do signUp (SignupForm de oficina)
+            phone: session.user.user_metadata?.phone || null,
             address: session.user.user_metadata?.address || null,
             city: session.user.user_metadata?.city || null,
             state: session.user.user_metadata?.state || null,

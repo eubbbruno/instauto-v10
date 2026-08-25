@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Car, Wrench, Mail, Lock, Eye, EyeOff, Loader2, CheckCircle, User, MapPin } from "lucide-react";
+import { Car, Wrench, Mail, Lock, Eye, EyeOff, Loader2, CheckCircle, User, MapPin, Phone } from "lucide-react";
 
 const UF_LIST = ["AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"];
 import Link from "next/link";
@@ -59,6 +59,7 @@ export default function SignupForm({ userType }: { userType: UserType }) {
   const [city, setCity] = useState("");
   const [uf, setUf] = useState("");
   const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
@@ -85,8 +86,8 @@ export default function SignupForm({ userType }: { userType: UserType }) {
         return;
       }
 
-      if (userType === "oficina" && (!city.trim() || !uf || !address.trim())) {
-        toast.error("Informe o endereço, a cidade e o estado da oficina");
+      if (userType === "oficina" && (!city.trim() || !uf || !address.trim() || !phone.trim())) {
+        toast.error("Informe o telefone, o endereço, a cidade e o estado da oficina");
         setLoading(false);
         return;
       }
@@ -105,7 +106,7 @@ export default function SignupForm({ userType }: { userType: UserType }) {
             name: name,
             user_type: profileType,
             // Endereço/Cidade/UF ficam no metadata para o callback criar o workshop já com localização
-            ...(userType === "oficina" ? { city: city.trim(), state: uf, address: address.trim() } : {}),
+            ...(userType === "oficina" ? { city: city.trim(), state: uf, address: address.trim(), phone: phone.trim() } : {}),
           },
         },
       });
@@ -139,6 +140,7 @@ export default function SignupForm({ userType }: { userType: UserType }) {
           profile_id: data.user.id,
           name: name || "Minha Oficina",
           address: address.trim() || null,
+          phone: phone.trim() || null,
           city: city.trim() || null,
           state: uf || null,
           plan_type: "free",
@@ -382,6 +384,20 @@ export default function SignupForm({ userType }: { userType: UserType }) {
                             value={address}
                             onChange={(e) => setAddress(e.target.value)}
                             placeholder="Rua, número, bairro"
+                            required
+                            className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-gray-700 mb-2 block">Telefone / WhatsApp *</label>
+                        <div className="relative">
+                          <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                          <input
+                            type="tel"
+                            value={phone}
+                            onChange={(e) => setPhone(e.target.value)}
+                            placeholder="(43) 99999-9999"
                             required
                             className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                           />
