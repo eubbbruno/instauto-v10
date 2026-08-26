@@ -81,6 +81,18 @@ export default function MotoristaLayout({ children }: { children: React.ReactNod
         console.log("🚗 [Layout Motorista] Profile result:", { profileData, profileError });
 
         if (!profileData) {
+          // SEGURANÇA: não marcar como motorista se o cadastro foi de OFICINA.
+          // (metadata do signUp ou cookie do fluxo de oficina)
+          const metaType = (user.user_metadata as any)?.user_type;
+          const cookieType = typeof document !== "undefined"
+            ? document.cookie.match(/instauto_user_type=([^;]+)/)?.[1]
+            : null;
+          if (metaType === "workshop" || cookieType === "oficina") {
+            console.log("↪️ [Layout Motorista] Cadastro é de oficina — redirecionando para /oficina");
+            router.replace("/oficina");
+            return;
+          }
+
           console.log("❌ Profile não encontrado, criando...");
           // Criar profile se não existir
           const { data: newProfile } = await supabase

@@ -84,6 +84,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           .single();
 
         if (!profileData) {
+          // SEGURANÇA: não marcar como oficina se o cadastro foi de MOTORISTA.
+          const metaType = (user.user_metadata as any)?.user_type;
+          const cookieType = typeof document !== "undefined"
+            ? document.cookie.match(/instauto_user_type=([^;]+)/)?.[1]
+            : null;
+          if (metaType === "motorist" || cookieType === "motorista") {
+            console.log("↪️ [Layout Oficina] Cadastro é de motorista — redirecionando para /motorista");
+            router.replace("/motorista");
+            return;
+          }
+
           console.log("❌ Profile não encontrado, criando...");
           // Criar profile se não existir
           const { data: newProfile } = await supabase
@@ -91,7 +102,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             .insert({
               id: user.id,
               email: user.email,
-              name: user.user_metadata?.full_name || user.email?.split("@")[0],
+              name: (user.user_metadata as any)?.name || user.user_metadata?.full_name || user.email?.split("@")[0],
               type: "workshop"
             })
             .select()
@@ -123,12 +134,20 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             return;
           }
           // Dono novo (type workshop, sem oficina): cria a oficina e o vínculo de dono
+          const md = user.user_metadata as any;
           const { data: newWorkshop } = await supabase
             .from("workshops")
             .insert({
               profile_id: user.id,
-              name: user.user_metadata?.full_name || "Minha Oficina",
+              name: md?.name || md?.full_name || "Minha Oficina",
+              phone: md?.phone || null,
+              address: md?.address || null,
+              city: md?.city || null,
+              state: md?.state || null,
               plan_type: "free",
+              subscription_status: "trial",
+              // Trial reverso: 14 dias de PRO completo (mesma regra do callback)
+              trial_ends_at: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
               is_public: true,
               accepts_quotes: true
             })
