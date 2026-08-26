@@ -85,15 +85,14 @@ export default function ParaOficinasPage() {
             </FadeIn>
 
             <FadeIn delay={0.15}>
-              <div className="hidden lg:flex justify-center items-center">
+              <div className="flex justify-center items-center mt-4 lg:mt-0">
                 <div className="relative">
                   <Image
                     src="/images/img-03.png"
                     alt="Mecânico usando o Instauto"
                     width={500}
                     height={500}
-                    className="drop-shadow-2xl"
-                    style={{ maxHeight: "450px", width: "auto", height: "auto" }}
+                    className="drop-shadow-2xl max-h-[260px] sm:max-h-[340px] lg:max-h-[450px] w-auto h-auto"
                     priority
                   />
                   <div className="absolute -top-3 -left-3 px-4 py-3 bg-white rounded-2xl shadow-xl">
@@ -140,7 +139,7 @@ export default function ParaOficinasPage() {
       </section>
 
       {/* Problema vs Solução */}
-      <section className="py-16 sm:py-20 bg-white">
+      <section className="py-12 sm:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12 sm:mb-16">
             <p className="text-eyebrow text-brand-gold mb-3">O custo da desorganização</p>
@@ -193,7 +192,7 @@ export default function ParaOficinasPage() {
       </section>
 
       {/* Funcionalidades */}
-      <section id="funcionalidades" className="py-16 sm:py-20 bg-[#F8F9FB]">
+      <section id="funcionalidades" className="py-12 sm:py-20 bg-[#F8F9FB]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <FadeIn>
             <div className="text-center mb-12 sm:mb-16">
@@ -221,7 +220,7 @@ export default function ParaOficinasPage() {
       </section>
 
       {/* Preços */}
-      <section className="py-16 sm:py-20 bg-white">
+      <section className="py-12 sm:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <FadeIn>
             <div className="text-center mb-12 sm:mb-16">
@@ -304,7 +303,7 @@ export default function ParaOficinasPage() {
       </section>
 
       {/* FAQ */}
-      <section className="py-16 sm:py-20 bg-[#F8F9FB]">
+      <section className="py-12 sm:py-20 bg-[#F8F9FB]">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-12">
             <p className="text-eyebrow text-brand-gold mb-3">Dúvidas</p>
@@ -325,7 +324,7 @@ export default function ParaOficinasPage() {
       </section>
 
       {/* CTA Final */}
-      <section className="band-dark py-16 sm:py-20 relative overflow-hidden">
+      <section className="band-dark py-12 sm:py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_120%,rgba(253,224,71,0.1),transparent_60%)] pointer-events-none" />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
           <h2 className="font-heading text-3xl sm:text-4xl font-black text-white mb-4">
