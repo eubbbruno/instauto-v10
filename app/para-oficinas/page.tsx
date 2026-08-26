@@ -86,12 +86,12 @@ export default function ParaOficinasPage() {
             <FadeIn delay={0.15}>
               <div className="flex justify-center items-center mt-6 lg:mt-0">
                 <div className="relative">
-                  <div className="rounded-3xl overflow-hidden ring-1 ring-white/15 shadow-2xl w-[230px] h-[290px] sm:w-[300px] sm:h-[380px] lg:w-[380px] lg:h-[470px]">
+                  <div className="rounded-3xl overflow-hidden ring-1 ring-white/15 shadow-2xl w-[280px] h-[250px] sm:w-[360px] sm:h-[320px] lg:w-[440px] lg:h-[390px]">
                     <Image
-                      src="/images/dono-oficina-1.png"
+                      src="/images/dono-oficina-4.png"
                       alt="Dono de oficina usando o Instauto"
-                      width={600}
-                      height={800}
+                      width={610}
+                      height={563}
                       className="w-full h-full object-cover"
                       priority
                     />
@@ -140,12 +140,23 @@ export default function ParaOficinasPage() {
         </div>
       </section>
 
+      {/* Sinais de confiança (autoridade honesta) */}
+      <section className="bg-white border-b border-navy/6 py-4 sm:py-5">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[13px] sm:text-sm text-navy/60 font-medium">
+          {["14 dias grátis, sem cartão", "Sem fidelidade", "Dados seguros (LGPD)", "Suporte no WhatsApp", "Feito no Brasil"].map((t) => (
+            <span key={t} className="inline-flex items-center gap-1.5">
+              <CheckCircle className="w-4 h-4 text-green-500" /> {t}
+            </span>
+          ))}
+        </div>
+      </section>
+
       {/* Problema vs Solução */}
       <section className="py-12 sm:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-8 sm:mb-14">
             <p className="text-eyebrow text-brand-gold mb-3">O custo da desorganização</p>
-            <h2 className="h-section text-navy">Você está perdendo dinheiro sem perceber</h2>
+            <h2 className="h-section text-navy">Você está perdendo dinheiro</h2>
           </div>
 
           <div className="grid md:grid-cols-2 gap-5 sm:gap-8 max-w-5xl mx-auto">
@@ -199,7 +210,7 @@ export default function ParaOficinasPage() {
           <FadeIn>
             <div className="text-center mb-8 sm:mb-14">
               <p className="text-eyebrow text-brand-gold mb-3">Tudo em um só lugar</p>
-              <h2 className="h-section text-navy">Tudo que sua oficina precisa, num só lugar</h2>
+              <h2 className="h-section text-navy">Tudo num só lugar</h2>
             </div>
           </FadeIn>
 
@@ -226,7 +237,7 @@ export default function ParaOficinasPage() {
           <FadeIn>
             <div className="text-center mb-8 sm:mb-14">
               <p className="text-eyebrow text-brand-gold mb-3">Planos</p>
-              <h2 className="h-section text-navy">Comece grátis ou teste o PRO por 14 dias</h2>
+              <h2 className="h-section text-navy">Planos simples, sem fidelidade</h2>
             </div>
           </FadeIn>
 
