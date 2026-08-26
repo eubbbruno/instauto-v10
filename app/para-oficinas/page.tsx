@@ -7,6 +7,7 @@ import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/motion";
 import {
   ArrowRight, Check, X, CheckCircle, Wrench, TrendingUp, Users, Car,
   FileText, Package, DollarSign, Calendar, Brain, MessageCircle, Shield, ChevronDown, Star,
+  BarChart3, LayoutGrid, ClipboardCheck, Bot,
 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -17,14 +18,18 @@ export const metadata: Metadata = {
 };
 
 const FEATURES = [
-  { icon: Users, title: "Clientes", desc: "Cadastro completo com histórico de todos os serviços." },
-  { icon: Car, title: "Veículos", desc: "Controle de frota com modelo, peças e histórico." },
-  { icon: FileText, title: "Ordens de Serviço", desc: "Gestão das OS com status, valores e PDF profissional." },
-  { icon: Package, title: "Estoque", desc: "Controle de peças com alerta de reposição." },
-  { icon: DollarSign, title: "Financeiro", desc: "Receitas, despesas e fluxo de caixa em tempo real." },
-  { icon: Calendar, title: "Agenda", desc: "Agendamento de serviços e compromissos." },
-  { icon: Brain, title: "Diagnóstico IA", desc: "Inteligência artificial para identificar problemas." },
-  { icon: MessageCircle, title: "WhatsApp", desc: "Fale com seus clientes direto da plataforma." },
+  { icon: Users, title: "Clientes" },
+  { icon: Car, title: "Veículos" },
+  { icon: FileText, title: "Ordens de Serviço" },
+  { icon: LayoutGrid, title: "Quadro de OS" },
+  { icon: Package, title: "Estoque" },
+  { icon: DollarSign, title: "Financeiro" },
+  { icon: Calendar, title: "Agenda" },
+  { icon: ClipboardCheck, title: "Checklist" },
+  { icon: BarChart3, title: "Relatórios" },
+  { icon: Brain, title: "Diagnóstico IA" },
+  { icon: Bot, title: "Assistente IA" },
+  { icon: MessageCircle, title: "WhatsApp" },
 ];
 
 const FAQS = [
@@ -194,20 +199,19 @@ export default function ParaOficinasPage() {
           <FadeIn>
             <div className="text-center mb-8 sm:mb-14">
               <p className="text-eyebrow text-brand-gold mb-3">Tudo em um só lugar</p>
-              <h2 className="h-section text-navy">8 módulos para gerenciar sua oficina do início ao fim</h2>
+              <h2 className="h-section text-navy">Tudo que sua oficina precisa, num só lugar</h2>
             </div>
           </FadeIn>
 
           <StaggerContainer>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
+            <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3">
               {FEATURES.map((item) => (
                 <StaggerItem key={item.title}>
-                  <div className="card-lift h-full bg-white rounded-2xl border border-navy/8 p-6">
-                    <div className="w-12 h-12 bg-navy/5 rounded-xl flex items-center justify-center mb-4">
-                      <item.icon className="w-6 h-6 text-navy" />
+                  <div className="card-lift h-full bg-white rounded-xl border border-navy/8 p-3 sm:p-4 flex flex-col items-center text-center gap-2">
+                    <div className="w-10 h-10 bg-navy/5 rounded-lg flex items-center justify-center">
+                      <item.icon className="w-5 h-5 text-navy" />
                     </div>
-                    <h3 className="font-heading font-bold text-navy mb-1.5">{item.title}</h3>
-                    <p className="text-sm text-gray-600">{item.desc}</p>
+                    <h3 className="font-heading font-bold text-navy text-[13px] leading-tight">{item.title}</h3>
                   </div>
                 </StaggerItem>
               ))}
