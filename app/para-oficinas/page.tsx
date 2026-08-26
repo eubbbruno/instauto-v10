@@ -79,16 +79,18 @@ export default function ParaOficinasPage() {
             </FadeIn>
 
             <FadeIn delay={0.15}>
-              <div className="flex justify-center items-center mt-4 lg:mt-0">
+              <div className="flex justify-center items-center mt-6 lg:mt-0">
                 <div className="relative">
-                  <Image
-                    src="/images/img-03.png"
-                    alt="Mecânico usando o Instauto"
-                    width={500}
-                    height={500}
-                    className="drop-shadow-2xl max-h-[190px] sm:max-h-[300px] lg:max-h-[440px] w-auto h-auto"
-                    priority
-                  />
+                  <div className="rounded-3xl overflow-hidden ring-1 ring-white/15 shadow-2xl w-[230px] h-[290px] sm:w-[300px] sm:h-[380px] lg:w-[380px] lg:h-[470px]">
+                    <Image
+                      src="/images/dono-oficina-1.png"
+                      alt="Dono de oficina usando o Instauto"
+                      width={600}
+                      height={800}
+                      className="w-full h-full object-cover"
+                      priority
+                    />
+                  </div>
                   <div className="hidden sm:block absolute -top-3 -left-3 px-4 py-3 bg-white rounded-2xl shadow-xl">
                     <div className="flex items-center gap-3">
                       <div className="w-11 h-11 bg-brand-yellow/15 rounded-xl flex items-center justify-center">
@@ -110,6 +112,26 @@ export default function ParaOficinasPage() {
               </div>
             </FadeIn>
           </div>
+        </div>
+      </section>
+
+      {/* Preview do sistema */}
+      <section className="bg-navy border-t border-white/5 py-10 sm:py-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+          <FadeIn>
+            <div className="rounded-2xl overflow-hidden ring-1 ring-white/10 shadow-2xl">
+              <Image
+                src="/images/dashboard-web.png"
+                alt="Painel do Instauto: clientes, ordens de serviço, financeiro e IA"
+                width={1920}
+                height={1095}
+                className="w-full h-auto"
+              />
+            </div>
+            <p className="text-center text-white/50 text-sm mt-4">
+              Tudo num só painel: clientes, ordens de serviço, estoque, financeiro e IA.
+            </p>
+          </FadeIn>
         </div>
       </section>
 
