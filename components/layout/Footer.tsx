@@ -58,9 +58,9 @@ export default function Footer() {
 
       {/* Mini CTA banner */}
       <div className="relative border-b border-white/6">
-        <div className="max-w-7xl mx-auto px-6 py-14 text-center">
+        <div className="max-w-7xl mx-auto px-6 py-9 sm:py-14 text-center">
           <p className="text-eyebrow text-brand-gold mb-3">Comece agora</p>
-          <h3 className="text-3xl md:text-4xl font-heading font-black text-white mb-8 leading-tight">
+          <h3 className="text-2xl sm:text-3xl md:text-4xl font-heading font-black text-white mb-6 sm:mb-8 leading-tight">
             Faça parte da maior rede<br className="hidden sm:block" /> de oficinas e motoristas do Brasil
           </h3>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -81,8 +81,8 @@ export default function Footer() {
       </div>
 
       {/* Main grid */}
-      <div className="relative max-w-7xl mx-auto px-6 py-14">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr_1fr]">
+      <div className="relative max-w-7xl mx-auto px-6 py-10 sm:py-14">
+        <div className="grid gap-8 lg:grid-cols-[2fr_1fr_1fr_1fr_1fr]">
 
           {/* Brand */}
           <div>
@@ -128,13 +128,14 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Link columns */}
+          {/* Link columns — 2 colunas no mobile, entram no grid do pai no desktop */}
+          <div className="grid grid-cols-2 gap-x-6 gap-y-8 lg:contents">
           {FOOTER_COLS.map((col) => (
             <div key={col.title}>
-              <h4 className="text-[11px] font-sans font-bold tracking-widest uppercase text-brand-yellow/80 mb-5">
+              <h4 className="text-[11px] font-sans font-bold tracking-widest uppercase text-brand-yellow/80 mb-4 sm:mb-5">
                 {col.title}
               </h4>
-              <ul className="space-y-3">
+              <ul className="space-y-2.5 sm:space-y-3">
                 {col.links.map((link) => (
                   <li key={link.label}>
                     <Link
@@ -148,6 +149,7 @@ export default function Footer() {
               </ul>
             </div>
           ))}
+          </div>
         </div>
       </div>
 

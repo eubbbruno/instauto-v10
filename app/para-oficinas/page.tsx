@@ -31,7 +31,6 @@ const FAQS = [
   { q: "Como funciona o teste grátis de 14 dias?", a: "Você cria sua conta e tem acesso a TODAS as funcionalidades do plano PRO por 14 dias. Não pedimos cartão de crédito. Se gostar, escolhe um plano; se não, sua conta vira FREE automaticamente." },
   { q: "Posso cancelar a qualquer momento?", a: "Sim. Não existe fidelidade nem multa. Você cancela o PRO quando quiser, direto pelo painel, e a conta continua ativa como FREE." },
   { q: "Meus dados ficam seguros?", a: "Sim. Usamos criptografia e servidores seguros, com backup automático diário. Seus dados são seus e nunca são compartilhados com terceiros." },
-  { q: "Preciso instalar algum programa?", a: "Não. O Instauto funciona 100% no navegador (Chrome, Firefox, Safari), de qualquer computador, tablet ou celular." },
   { q: "Tem limite de clientes ou ordens de serviço?", a: "No PRO, não! Clientes, veículos e ordens de serviço ilimitados. No FREE você tem acesso ao marketplace de orçamentos." },
   { q: "Como funciona o pagamento?", a: "Aceitamos PIX, cartão e boleto. A assinatura é mensal (R$ 97/mês) e pode ser cancelada quando quiser. Sem taxa de adesão." },
 ];
@@ -90,7 +89,7 @@ export default function ParaOficinasPage() {
                     className="drop-shadow-2xl max-h-[190px] sm:max-h-[300px] lg:max-h-[440px] w-auto h-auto"
                     priority
                   />
-                  <div className="absolute -top-3 -left-3 px-4 py-3 bg-white rounded-2xl shadow-xl">
+                  <div className="hidden sm:block absolute -top-3 -left-3 px-4 py-3 bg-white rounded-2xl shadow-xl">
                     <div className="flex items-center gap-3">
                       <div className="w-11 h-11 bg-brand-yellow/15 rounded-xl flex items-center justify-center">
                         <TrendingUp className="w-6 h-6 text-navy" />
@@ -101,7 +100,7 @@ export default function ParaOficinasPage() {
                       </div>
                     </div>
                   </div>
-                  <div className="absolute -bottom-3 -right-3 px-4 py-3 bg-white rounded-2xl shadow-xl">
+                  <div className="hidden sm:block absolute -bottom-3 -right-3 px-4 py-3 bg-white rounded-2xl shadow-xl">
                     <div className="flex items-center gap-2">
                       <Star className="w-5 h-5 text-brand-yellow fill-brand-yellow" />
                       <span className="text-sm font-heading font-bold text-navy">14 dias grátis</span>
@@ -114,29 +113,10 @@ export default function ParaOficinasPage() {
         </div>
       </section>
 
-      {/* Faixa de métricas */}
-      <section className="bg-navy border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 text-center">
-            {[
-              { n: "Tudo", l: "Gestão num só lugar" },
-              { n: "IA", l: "Diagnóstico + WhatsApp" },
-              { n: "R$97", l: "Por mês, sem fidelidade" },
-              { n: "14 dias", l: "De PRO grátis" },
-            ].map((m) => (
-              <div key={m.l}>
-                <p className="text-3xl sm:text-4xl font-heading font-black text-brand-yellow mb-1">{m.n}</p>
-                <p className="text-sm text-white/50">{m.l}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Problema vs Solução */}
       <section className="py-12 sm:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-12 sm:mb-16">
+          <div className="text-center mb-8 sm:mb-14">
             <p className="text-eyebrow text-brand-gold mb-3">O custo da desorganização</p>
             <h2 className="h-section text-navy">Você está perdendo dinheiro sem perceber</h2>
           </div>
@@ -190,7 +170,7 @@ export default function ParaOficinasPage() {
       <section id="funcionalidades" className="py-12 sm:py-20 bg-[#F8F9FB]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <FadeIn>
-            <div className="text-center mb-12 sm:mb-16">
+            <div className="text-center mb-8 sm:mb-14">
               <p className="text-eyebrow text-brand-gold mb-3">Tudo em um só lugar</p>
               <h2 className="h-section text-navy">8 módulos para gerenciar sua oficina do início ao fim</h2>
             </div>
@@ -218,7 +198,7 @@ export default function ParaOficinasPage() {
       <section className="py-12 sm:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <FadeIn>
-            <div className="text-center mb-12 sm:mb-16">
+            <div className="text-center mb-8 sm:mb-14">
               <p className="text-eyebrow text-brand-gold mb-3">Planos</p>
               <h2 className="h-section text-navy">Comece grátis ou teste o PRO por 14 dias</h2>
             </div>
