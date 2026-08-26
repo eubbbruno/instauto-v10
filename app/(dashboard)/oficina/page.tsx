@@ -39,7 +39,7 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Badge } from "@/components/ui/badge";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from "recharts";
-import { OnboardingModal } from "@/components/ui/OnboardingModal";
+import { WorkshopOnboarding } from "@/components/oficina/WorkshopOnboarding";
 
 interface RecentActivity {
   id: string;
@@ -479,7 +479,7 @@ export default function OficinaDashboard() {
   return (
     <>
       {/* Onboarding Modal */}
-      <OnboardingModal steps={oficinaSteps} storageKey="onboarding_oficina_done" />
+      <WorkshopOnboarding />
 
       <div className="min-h-screen">
         <div className="p-4 sm:p-6 lg:p-8">
