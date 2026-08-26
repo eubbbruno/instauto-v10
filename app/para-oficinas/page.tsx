@@ -92,7 +92,7 @@ export default function ParaOficinasPage() {
                     alt="Mecânico usando o Instauto"
                     width={500}
                     height={500}
-                    className="drop-shadow-2xl max-h-[260px] sm:max-h-[340px] lg:max-h-[450px] w-auto h-auto"
+                    className="drop-shadow-2xl max-h-[190px] sm:max-h-[300px] lg:max-h-[440px] w-auto h-auto"
                     priority
                   />
                   <div className="absolute -top-3 -left-3 px-4 py-3 bg-white rounded-2xl shadow-xl">
