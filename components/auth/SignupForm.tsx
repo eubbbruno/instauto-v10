@@ -300,11 +300,23 @@ export default function SignupForm({ userType }: { userType: UserType }) {
                   </div>
 
                   <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 text-center mb-2">
-                    Criar conta
+                    {userType === "oficina" ? "Comece grátis por 14 dias" : "Criar conta"}
                   </h1>
-                  <p className="text-sm sm:text-base text-gray-500 text-center mb-6">
-                    Comece a usar o Instauto agora
+                  <p className="text-sm sm:text-base text-gray-500 text-center mb-4">
+                    {userType === "oficina"
+                      ? "Sistema completo para sua oficina — sem cartão de crédito."
+                      : "Comece a usar o Instauto agora"}
                   </p>
+
+                  {userType === "oficina" && (
+                    <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 mb-6 text-xs sm:text-sm text-gray-600">
+                      {["14 dias de PRO grátis", "Sem cartão", "Cancele quando quiser"].map((t) => (
+                        <span key={t} className="inline-flex items-center gap-1.5">
+                          <CheckCircle className="w-3.5 h-3.5 text-green-500" /> {t}
+                        </span>
+                      ))}
+                    </div>
+                  )}
 
                   {/* Botão Google */}
                   <button
