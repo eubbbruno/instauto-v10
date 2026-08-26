@@ -43,8 +43,8 @@ export default function ParaOficinasPage() {
 
       {/* Hero */}
       <section className="band-dark pt-28 pb-16 sm:pb-20 relative overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-brand-blue/20 blur-[120px] pointer-events-none" />
-        <div className="absolute -bottom-20 -left-20 w-[400px] h-[400px] rounded-full bg-brand-yellow/8 blur-[80px] pointer-events-none" />
+        <div className="hidden sm:block absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-brand-blue/20 blur-[120px] pointer-events-none" />
+        <div className="hidden sm:block absolute -bottom-20 -left-20 w-[400px] h-[400px] rounded-full bg-brand-yellow/8 blur-[80px] pointer-events-none" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -325,7 +325,7 @@ export default function ParaOficinasPage() {
 
       {/* CTA Final */}
       <section className="band-dark py-12 sm:py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_120%,rgba(253,224,71,0.1),transparent_60%)] pointer-events-none" />
+        <div className="hidden sm:block absolute inset-0 bg-[radial-gradient(ellipse_at_50%_120%,rgba(253,224,71,0.1),transparent_60%)] pointer-events-none" />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
           <h2 className="font-heading text-3xl sm:text-4xl font-black text-white mb-4">
             Pronto para organizar sua oficina?

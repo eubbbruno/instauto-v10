@@ -249,9 +249,9 @@ export default function HomePage() {
       {/* Tipos de Veículos */}
       <section className="py-14 md:py-20 relative overflow-hidden" style={{background:"linear-gradient(135deg,#fffbeb 0%,#fef9c3 40%,#fefce8 100%)"}}>
         {/* Blobs glassmorphism amarelos */}
-        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] rounded-full bg-yellow-300/30 blur-[80px] pointer-events-none" />
-        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] rounded-full bg-amber-200/40 blur-[60px] pointer-events-none" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_120%,_rgba(253,224,71,0.15)_0%,_transparent_70%)] pointer-events-none" />
+        <div className="hidden sm:block absolute top-0 left-1/4 w-[500px] h-[500px] rounded-full bg-yellow-300/30 blur-[80px] pointer-events-none" />
+        <div className="hidden sm:block absolute bottom-0 right-1/4 w-[400px] h-[400px] rounded-full bg-amber-200/40 blur-[60px] pointer-events-none" />
+        <div className="hidden sm:block absolute inset-0 bg-[radial-gradient(ellipse_at_50%_120%,_rgba(253,224,71,0.15)_0%,_transparent_70%)] pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 relative">
           <Reveal className="text-center mb-4 max-w-2xl mx-auto">
             <p className="text-eyebrow text-brand-gold mb-3">Para cada motor</p>
@@ -399,8 +399,8 @@ export default function HomePage() {
       {/* Mapa do Brasil */}
       <section className="band-dark py-14 md:py-20 relative overflow-hidden">
         {/* Aurora glow */}
-        <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-brand-blue/20 blur-[120px]" />
-        <div className="absolute -bottom-40 -left-20 w-[400px] h-[400px] rounded-full bg-brand-yellow/10 blur-[100px]" />
+        <div className="hidden sm:block absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-brand-blue/20 blur-[120px]" />
+        <div className="hidden sm:block absolute -bottom-40 -left-20 w-[400px] h-[400px] rounded-full bg-brand-yellow/10 blur-[100px]" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Header centralizado */}
@@ -605,8 +605,8 @@ export default function HomePage() {
       {/* CTA para Oficinas */}
       <section className="py-16 md:py-24 bg-navy relative overflow-hidden">
         {/* Aurora dourada subindo do fundo */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_110%,rgba(253,224,71,0.18),transparent_65%)] pointer-events-none" />
-        <div className="absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full bg-brand-blue/20 blur-[100px] pointer-events-none" />
+        <div className="hidden sm:block absolute inset-0 bg-[radial-gradient(ellipse_at_50%_110%,rgba(253,224,71,0.18),transparent_65%)] pointer-events-none" />
+        <div className="hidden sm:block absolute -top-40 -left-40 w-[500px] h-[500px] rounded-full bg-brand-blue/20 blur-[100px] pointer-events-none" />
         {/* "14" decorativo gigante */}
         <span className="absolute -right-8 top-0 text-[22rem] font-heading font-black text-white/[0.025] leading-none select-none pointer-events-none hidden md:block">14</span>
 
