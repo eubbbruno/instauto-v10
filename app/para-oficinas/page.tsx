@@ -52,29 +52,24 @@ export default function ParaOficinasPage() {
               <div className="text-white">
                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/6 ring-1 ring-white/12 rounded-full text-sm font-semibold mb-6">
                   <Wrench className="w-4 h-4 text-brand-yellow" />
-                  Sistema #1 para oficinas no Brasil
+                  Sistema de gestão para oficinas
                 </div>
 
-                <h1 className="font-heading text-[2.4rem] sm:text-5xl lg:text-6xl font-black leading-[1.05] tracking-tight mb-6">
-                  Gestão completa <span className="text-brand-yellow">para sua oficina</span>
+                <h1 className="font-heading text-[2.1rem] sm:text-5xl lg:text-6xl font-black leading-[1.08] tracking-tight mb-5">
+                  Organize sua oficina e <span className="text-brand-yellow">pare de perder dinheiro</span>
                 </h1>
 
-                <p className="text-white/55 text-lg mb-8 max-w-xl leading-relaxed">
-                  Organize clientes, ordens de serviço, estoque e financeiro num só lugar — e ainda apareça para motoristas buscando oficina na sua região.
+                <p className="text-white/60 text-base sm:text-lg mb-7 max-w-xl leading-relaxed">
+                  Clientes, ordens de serviço, estoque e financeiro num só lugar — simples de usar, no computador ou no celular. E ainda apareça para motoristas buscando oficina na sua região.
                 </p>
 
-                <div className="flex flex-col sm:flex-row gap-3 mb-8">
-                  <Link href="/cadastro/oficina" className="btn-epic inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-base font-bold">
-                    Começar teste grátis
-                    <ArrowRight className="w-5 h-5" />
-                  </Link>
-                  <a href="#funcionalidades" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 hover:bg-white/15 text-white font-semibold rounded-xl transition-all">
-                    Ver funcionalidades
-                  </a>
-                </div>
+                <Link href="/cadastro/oficina" className="btn-epic inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-lg font-bold w-full sm:w-auto">
+                  Começar grátis agora
+                  <ArrowRight className="w-5 h-5" />
+                </Link>
 
-                <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-white/70">
-                  {["14 dias de PRO grátis", "Sem cartão de crédito", "Cancele quando quiser"].map((t) => (
+                <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-white/70 mt-5">
+                  {["14 dias de PRO grátis", "Sem cartão", "Cancele quando quiser"].map((t) => (
                     <div key={t} className="flex items-center gap-2">
                       <CheckCircle className="w-4 h-4 text-green-400" />
                       <span>{t}</span>
