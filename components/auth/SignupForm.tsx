@@ -86,8 +86,8 @@ export default function SignupForm({ userType }: { userType: UserType }) {
         return;
       }
 
-      if (userType === "oficina" && (!city.trim() || !uf || !address.trim() || !phone.trim())) {
-        toast.error("Informe o telefone, o endereço, a cidade e o estado da oficina");
+      if (userType === "oficina" && !phone.trim()) {
+        toast.error("Informe o telefone da oficina");
         setLoading(false);
         return;
       }
@@ -372,23 +372,8 @@ export default function SignupForm({ userType }: { userType: UserType }) {
                       </div>
                     </div>
 
-                    {/* Endereço + Cidade + UF — só para oficina */}
+                    {/* Telefone — só para oficina (contato). Endereço/cidade a oficina completa depois. */}
                     {userType === "oficina" && (
-                      <>
-                      <div>
-                        <label className="text-sm font-medium text-gray-700 mb-2 block">Endereço *</label>
-                        <div className="relative">
-                          <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                          <input
-                            type="text"
-                            value={address}
-                            onChange={(e) => setAddress(e.target.value)}
-                            placeholder="Rua, número, bairro"
-                            required
-                            className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                          />
-                        </div>
-                      </div>
                       <div>
                         <label className="text-sm font-medium text-gray-700 mb-2 block">Telefone / WhatsApp *</label>
                         <div className="relative">
@@ -402,36 +387,8 @@ export default function SignupForm({ userType }: { userType: UserType }) {
                             className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                           />
                         </div>
+                        <p className="text-xs text-gray-400 mt-1.5">Endereço e cidade você completa depois, leva 1 minuto.</p>
                       </div>
-                      <div className="flex gap-3">
-                        <div className="flex-1">
-                          <label className="text-sm font-medium text-gray-700 mb-2 block">Cidade *</label>
-                          <div className="relative">
-                            <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                            <input
-                              type="text"
-                              value={city}
-                              onChange={(e) => setCity(e.target.value)}
-                              placeholder="Londrina"
-                              required
-                              className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                            />
-                          </div>
-                        </div>
-                        <div className="w-24">
-                          <label className="text-sm font-medium text-gray-700 mb-2 block">UF *</label>
-                          <select
-                            value={uf}
-                            onChange={(e) => setUf(e.target.value)}
-                            required
-                            className="w-full px-3 py-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                          >
-                            <option value="">--</option>
-                            {UF_LIST.map((u) => <option key={u} value={u}>{u}</option>)}
-                          </select>
-                        </div>
-                      </div>
-                      </>
                     )}
 
                     <div>
