@@ -38,9 +38,21 @@ export default function EntrarPage() {
           .maybeSingle();
 
         if (membership) return go("/oficina");
-        return go(profile?.type === "workshop" ? "/oficina" : "/motorista");
+
+        // Se o perfil ainda não existe (ex.: confirmação de e-mail que não passou
+        // pelo callback), decide pelo user_type do cadastro (metadata/cookie),
+        // para NUNCA marcar uma oficina como motorista.
+        const meta = (user.user_metadata as any) || {};
+        const cookieType = typeof document !== "undefined"
+          ? document.cookie.match(/instauto_user_type=([^;]+)/)?.[1]
+          : null;
+        const isWorkshop = profile
+          ? profile.type === "workshop"
+          : (meta.user_type === "workshop" || cookieType === "oficina");
+
+        return go(isWorkshop ? "/oficina" : "/motorista");
       } catch {
-        return go("/motorista");
+        return go("/login");
       }
     })();
   }, []);
