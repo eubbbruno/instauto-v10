@@ -143,7 +143,7 @@ export default function ParaOficinasPage() {
       {/* Sinais de confiança (autoridade honesta) */}
       <section className="bg-white border-b border-navy/6 py-4 sm:py-5">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[13px] sm:text-sm text-navy/60 font-medium">
-          {["14 dias grátis, sem cartão", "Sem fidelidade", "Dados seguros (LGPD)", "Suporte no WhatsApp", "Feito no Brasil"].map((t) => (
+          {["14 dias grátis, sem cartão", "Sem fidelidade", "Suporte no WhatsApp", "Feito no Brasil"].map((t) => (
             <span key={t} className="inline-flex items-center gap-1.5">
               <CheckCircle className="w-4 h-4 text-green-500" /> {t}
             </span>
