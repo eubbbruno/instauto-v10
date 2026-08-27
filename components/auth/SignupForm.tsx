@@ -248,14 +248,21 @@ export default function SignupForm({ userType }: { userType: UserType }) {
 
         <FadeIn className="relative w-full max-w-md">
           <div className="w-full max-w-md">
-            {/* Logo Mobile */}
-            <div className="lg:hidden text-center mb-8">
-              <Link href="/">
-                <div className="inline-flex items-center gap-2 bg-navy px-4 py-2 rounded-xl">
-                  <Image src="/images/instauto-amarelo-branco.svg" alt="Instauto" width={120} height={32} className="h-7 w-auto" />
-                </div>
-              </Link>
-            </div>
+            {/* Banner + logo (mobile) */}
+            <Link href="/" className="lg:hidden relative block h-36 rounded-2xl overflow-hidden mb-6 shadow-lg ring-1 ring-navy/10">
+              <Image
+                src="/images/dono-oficina-3.png"
+                alt="Oficina mecânica com o Instauto"
+                fill
+                sizes="(max-width: 1024px) 100vw, 0px"
+                className="object-cover"
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0B1120] via-[#0B1120]/70 to-[#0B1120]/25" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Image src="/images/instauto-amarelo-branco.svg" alt="Instauto" width={170} height={46} className="h-10 w-auto drop-shadow-lg" />
+              </div>
+            </Link>
 
             <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-xl shadow-navy/5 ring-1 ring-navy/5 border border-white/60 p-6 sm:p-8">
               {showEmailConfirmation ? (
