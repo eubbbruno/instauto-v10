@@ -240,8 +240,13 @@ export default function SignupForm({ userType }: { userType: UserType }) {
       </div>
 
       {/* Lado Direito - Formulário */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 bg-[#F8F9FB]">
-        <FadeIn className="w-full max-w-md">
+      <div className="relative overflow-hidden w-full lg:w-1/2 flex items-center justify-center p-5 sm:p-12 bg-gradient-to-b from-[#F4F7FC] via-white to-[#EEF3FB]">
+        {/* Formas em gradiente no fundo */}
+        <div className="pointer-events-none absolute -top-24 -right-20 w-[300px] h-[300px] rounded-full bg-brand-blue/12 blur-[70px]" />
+        <div className="pointer-events-none absolute -bottom-24 -left-20 w-[280px] h-[280px] rounded-full bg-brand-yellow/12 blur-[70px]" />
+        <div className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 w-[220px] h-[220px] rounded-full bg-brand-blue/5 blur-[60px]" />
+
+        <FadeIn className="relative w-full max-w-md">
           <div className="w-full max-w-md">
             {/* Logo Mobile */}
             <div className="lg:hidden text-center mb-8">
@@ -252,7 +257,7 @@ export default function SignupForm({ userType }: { userType: UserType }) {
               </Link>
             </div>
 
-            <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-6 sm:p-8">
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-xl shadow-navy/5 ring-1 ring-navy/5 border border-white/60 p-6 sm:p-8">
               {showEmailConfirmation ? (
                 <div className="text-center py-4">
                   <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
