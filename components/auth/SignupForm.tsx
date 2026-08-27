@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Car, Wrench, Mail, Lock, Eye, EyeOff, Loader2, CheckCircle, User, MapPin, Phone } from "lucide-react";
+import { Car, Wrench, Mail, Lock, Eye, EyeOff, Loader2, CheckCircle, User, MapPin, Phone, Sparkles, MessageCircle, Users } from "lucide-react";
 
 const UF_LIST = ["AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MT","MS","MG","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO"];
 import Link from "next/link";
@@ -468,6 +468,31 @@ export default function SignupForm({ userType }: { userType: UserType }) {
                 </>
               )}
             </div>
+
+            {/* Destaques (só mobile/tablet — no desktop já tem o painel lateral) */}
+            {userType === "oficina" && !showEmailConfirmation && (
+              <div className="lg:hidden mt-8">
+                <p className="text-center text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">
+                  Tudo isso no seu teste grátis
+                </p>
+                <div className="grid grid-cols-2 gap-3">
+                  {[
+                    { icon: Wrench, t: "Gestão completa", d: "Clientes, OS, estoque, financeiro e agenda" },
+                    { icon: Sparkles, t: "Diagnóstico com IA", d: "Descreva o sintoma e a IA sugere as causas" },
+                    { icon: MessageCircle, t: "WhatsApp integrado", d: "Atenda clientes, com IA opcional" },
+                    { icon: Users, t: "Novos clientes", d: "Apareça para motoristas da sua região" },
+                  ].map((f) => (
+                    <div key={f.t} className="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
+                      <div className="w-9 h-9 rounded-lg bg-brand-yellow/15 flex items-center justify-center mb-2">
+                        <f.icon className="w-5 h-5 text-navy" />
+                      </div>
+                      <p className="font-bold text-gray-900 text-sm leading-tight">{f.t}</p>
+                      <p className="text-xs text-gray-500 mt-1 leading-snug">{f.d}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <div className="text-center mt-8">
               <Link
