@@ -9,9 +9,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase";
-import { trackSignup } from "@/lib/analytics";
+import { trackSignup, trackStartSignup } from "@/lib/analytics";
 import { FACEBOOK_LOGIN_ENABLED } from "@/lib/config";
-import { FadeIn } from "@/components/ui/motion";
 
 type UserType = "motorista" | "oficina";
 
@@ -66,8 +65,16 @@ export default function SignupForm({ userType }: { userType: UserType }) {
   const [facebookLoading, setFacebookLoading] = useState(false);
   const [showEmailConfirmation, setShowEmailConfirmation] = useState(false);
   const [registeredEmail, setRegisteredEmail] = useState("");
+  const [started, setStarted] = useState(false);
 
   const supabase = createClient();
+
+  // StartSignup: dispara uma única vez na 1ª interação com o cadastro (meio do funil).
+  const markStarted = () => {
+    if (started) return;
+    setStarted(true);
+    trackStartSignup(userType);
+  };
 
   // Captura o código de indicação (?ref=CODIGO) e guarda para atribuir no 1º acesso.
   useEffect(() => {
@@ -173,6 +180,7 @@ export default function SignupForm({ userType }: { userType: UserType }) {
 
   const handleOAuthSignup = async (provider: "google" | "facebook") => {
     const setBusy = provider === "google" ? setGoogleLoading : setFacebookLoading;
+    markStarted();
     setBusy(true);
     try {
       // Grava o tipo escolhido para o callback criar o profile correto
@@ -246,7 +254,7 @@ export default function SignupForm({ userType }: { userType: UserType }) {
         <div className="pointer-events-none absolute -bottom-24 -left-20 w-[280px] h-[280px] rounded-full bg-brand-yellow/12 blur-[70px]" />
         <div className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 w-[220px] h-[220px] rounded-full bg-brand-blue/5 blur-[60px]" />
 
-        <FadeIn className="relative w-full max-w-md">
+        <div className="relative w-full max-w-md">
           <div className="w-full max-w-md">
             {/* Banner + logo (mobile) */}
             <Link href="/" className="lg:hidden relative block h-36 rounded-2xl overflow-hidden mb-6 shadow-lg ring-1 ring-navy/10">
@@ -377,7 +385,7 @@ export default function SignupForm({ userType }: { userType: UserType }) {
                     <div className="flex-1 h-px bg-gray-200" />
                   </div>
 
-                  <form onSubmit={handleSignup} className="space-y-4">
+                  <form onSubmit={handleSignup} onFocusCapture={markStarted} className="space-y-4">
                     <div>
                       <label className="text-sm font-medium text-gray-700 mb-2 block">
                         {copy.nameLabel} *
@@ -516,7 +524,7 @@ export default function SignupForm({ userType }: { userType: UserType }) {
               </Link>
             </div>
           </div>
-        </FadeIn>
+        </div>
       </div>
     </div>
   );

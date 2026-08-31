@@ -17,6 +17,30 @@ export function trackSignup(userType: "oficina" | "motorista") {
   } catch {}
 }
 
+/** Clique num CTA principal (ex.: "Começar grátis" no /para-oficinas). Topo do funil. */
+export function trackCtaClick(location: string) {
+  if (typeof window === "undefined") return;
+  const w = window as AnyWindow;
+  try {
+    w.gtag?.("event", "select_content", { content_type: "cta", item_id: location });
+  } catch {}
+  try {
+    w.fbq?.("trackCustom", "ClickCTA", { location });
+  } catch {}
+}
+
+/** Usuário começou a preencher o cadastro (1ª interação com o form). Meio do funil. */
+export function trackStartSignup(userType: "oficina" | "motorista") {
+  if (typeof window === "undefined") return;
+  const w = window as AnyWindow;
+  try {
+    w.gtag?.("event", "sign_up_start", { user_type: userType });
+  } catch {}
+  try {
+    w.fbq?.("trackCustom", "StartSignup", { content_name: userType });
+  } catch {}
+}
+
 /** Dispara quando o usuário inicia um checkout de plano (para otimização de ADS). */
 export function trackBeginCheckout(plan: string, value: number) {
   if (typeof window === "undefined") return;

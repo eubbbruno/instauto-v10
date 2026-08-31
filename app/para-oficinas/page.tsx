@@ -4,6 +4,7 @@ import Image from "next/image";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/ui/motion";
+import TrackedCtaLink from "@/components/ui/TrackedCtaLink";
 import {
   ArrowRight, Check, X, CheckCircle, Wrench, TrendingUp, Users, Car,
   FileText, Package, DollarSign, Calendar, Brain, MessageCircle, Shield, ChevronDown, Star,
@@ -52,7 +53,7 @@ export default function ParaOficinasPage() {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <FadeIn>
+            <div>
               <div className="text-white">
                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/6 ring-1 ring-white/12 rounded-full text-sm font-semibold mb-6">
                   <Wrench className="w-4 h-4 text-brand-yellow" />
@@ -67,10 +68,10 @@ export default function ParaOficinasPage() {
                   Clientes, ordens de serviço, estoque e financeiro num só lugar — simples de usar, no computador ou no celular. E ainda apareça para motoristas buscando oficina na sua região.
                 </p>
 
-                <Link href="/cadastro/oficina" className="btn-epic inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-lg font-bold w-full sm:w-auto">
+                <TrackedCtaLink href="/cadastro/oficina" location="para-oficinas-hero" className="btn-epic inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl text-lg font-bold w-full sm:w-auto">
                   Começar grátis agora
                   <ArrowRight className="w-5 h-5" />
-                </Link>
+                </TrackedCtaLink>
 
                 <div className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-white/70 mt-5">
                   {["14 dias de PRO grátis", "Sem cartão", "Cancele quando quiser"].map((t) => (
@@ -81,9 +82,9 @@ export default function ParaOficinasPage() {
                   ))}
                 </div>
               </div>
-            </FadeIn>
+            </div>
 
-            <FadeIn delay={0.15}>
+            <div>
               <div className="flex justify-center items-center mt-6 lg:mt-0">
                 <div className="relative">
                   <div className="rounded-3xl overflow-hidden ring-1 ring-white/15 shadow-2xl w-[280px] h-[250px] sm:w-[360px] sm:h-[320px] lg:w-[440px] lg:h-[390px]">
@@ -92,6 +93,7 @@ export default function ParaOficinasPage() {
                       alt="Dono de oficina usando o Instauto"
                       width={610}
                       height={563}
+                      sizes="(max-width: 640px) 280px, (max-width: 1024px) 360px, 440px"
                       className="w-full h-full object-cover"
                       priority
                     />
@@ -115,7 +117,7 @@ export default function ParaOficinasPage() {
                   </div>
                 </div>
               </div>
-            </FadeIn>
+            </div>
           </div>
         </div>
       </section>
