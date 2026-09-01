@@ -1,9 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { getWorkshopAccess } from "@/lib/api-auth";
+import { WHATSAPP_MODE } from "@/lib/config";
 import { sendText } from "@/lib/evolution";
 
 export async function POST(request: NextRequest) {
+  if (WHATSAPP_MODE !== "evolution") {
+    return NextResponse.json(
+      { error: "Integração WhatsApp em migração para a API oficial. Em breve.", disabled: true },
+      { status: 503 }
+    );
+  }
   try {
     const { workshopId, number, text } = await request.json();
     if (!workshopId || !number || !text) {

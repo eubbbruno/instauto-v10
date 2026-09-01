@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getWorkshopAccess } from "@/lib/api-auth";
+import { WHATSAPP_MODE } from "@/lib/config";
 import {
   createInstance, connectInstance, setWebhook, logoutInstance, deleteInstance,
 } from "@/lib/evolution";
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://www.instauto.com.br";
+const DISABLED_MSG = "Integração WhatsApp em migração para a API oficial. Em breve.";
 
 /** Extrai o QR em base64 (imagem) das várias formas que o Evolution retorna. */
 function extractQr(res: any): string | null {
@@ -12,6 +14,9 @@ function extractQr(res: any): string | null {
 }
 
 export async function POST(request: NextRequest) {
+  if (WHATSAPP_MODE !== "evolution") {
+    return NextResponse.json({ error: DISABLED_MSG, disabled: true }, { status: 503 });
+  }
   try {
     const { workshopId, reset } = await request.json();
     if (!workshopId) {

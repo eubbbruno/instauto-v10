@@ -6,11 +6,14 @@ import { resolveWorkshop } from "@/lib/workshop";
 import { useAuth } from "@/contexts/AuthContext";
 import PlanGuard from "@/components/auth/PlanGuard";
 import { useToast } from "@/components/ui/use-toast";
+import { WHATSAPP_MODE } from "@/lib/config";
 import Link from "next/link";
 import {
   Loader2, MessageSquare, Send, Smartphone, CheckCircle2, RefreshCw, QrCode,
-  Bot, ArrowLeft, Search, Settings2,
+  Bot, ArrowLeft, Search, Settings2, ShieldCheck, Sparkles, BellRing,
 } from "lucide-react";
+
+const WPP_DISABLED = WHATSAPP_MODE === "off";
 
 export default function WhatsAppPage() {
   return (
@@ -163,7 +166,10 @@ function WhatsAppContent() {
     const ws = await resolveWorkshop(supabase, profile?.id);
     if (ws) {
       setWorkshopId(ws.id);
-      await Promise.all([checkStatus(ws.id), loadMessages(ws.id), loadSettings(ws.id)]);
+      // Em modo "off" não checa status (Evolution desligado); só carrega histórico/config.
+      const tasks: Promise<unknown>[] = [loadMessages(ws.id), loadSettings(ws.id)];
+      if (!WPP_DISABLED) tasks.push(checkStatus(ws.id));
+      await Promise.all(tasks);
     }
     setLoading(false);
   };
@@ -297,6 +303,66 @@ function WhatsAppContent() {
     return (
       <div className="p-4 sm:p-6 lg:p-8 flex items-center justify-center min-h-[60vh]">
         <Loader2 className="h-8 w-8 animate-spin text-[#1e3a8a]" />
+      </div>
+    );
+  }
+
+  // WhatsApp em migração para a API oficial (Cloud API). Evolution/QR foi desativado.
+  if (WPP_DISABLED) {
+    return (
+      <div className="p-4 sm:p-6 lg:p-8 space-y-6">
+        <div>
+          <p className="text-xs sm:text-sm text-gray-400 mb-1">Dashboard / WhatsApp</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">WhatsApp</h1>
+        </div>
+
+        <div className="bg-white border border-[#0B1120]/8 rounded-2xl p-6 sm:p-8 shadow-sm max-w-2xl">
+          <div className="flex items-center gap-3 mb-5">
+            <div className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center">
+              <MessageSquare className="w-6 h-6 text-green-600" />
+            </div>
+            <div>
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-brand-yellow/15 text-navy ring-1 ring-brand-yellow/30">
+                <Sparkles className="w-3.5 h-3.5" /> Em breve
+              </span>
+              <h2 className="text-lg font-bold text-gray-900 mt-1.5">Estamos migrando para o WhatsApp oficial</h2>
+            </div>
+          </div>
+
+          <p className="text-sm text-gray-600 leading-relaxed mb-5">
+            Estamos trocando a conexão do WhatsApp pela <strong>API oficial da Meta (WhatsApp Cloud API)</strong>.
+            É mais estável e segura — <strong>sem risco de bloqueio do número</strong> — e vai deixar a
+            resposta automática com IA e a conexão com seus clientes muito mais confiáveis.
+          </p>
+
+          <div className="space-y-3">
+            {[
+              { icon: ShieldCheck, t: "Conexão oficial, sem risco de ban", d: "Aprovada pela Meta, diferente do modelo anterior." },
+              { icon: Bot, t: "Atendimento com IA da sua oficina", d: "A IA responde no seu tom e com os dados que você cadastrar." },
+              { icon: BellRing, t: "Você será avisado quando abrir", d: "Assim que estiver pronto, aparece aqui o botão de conectar." },
+            ].map((f) => (
+              <div key={f.t} className="flex items-start gap-3">
+                <div className="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center shrink-0">
+                  <f.icon className="w-5 h-5 text-[#1e3a8a]" />
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-900 text-sm">{f.t}</p>
+                  <p className="text-xs text-gray-500">{f.d}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-6 pt-5 border-t border-gray-100">
+            <p className="text-sm text-gray-600">
+              Enquanto isso, já deixe sua oficina pronta:{" "}
+              <Link href="/oficina/ia" className="text-[#1e3a8a] font-semibold hover:underline">
+                configure a base de conhecimento da IA
+              </Link>{" "}
+              para o atendimento sair no capricho no lançamento.
+            </p>
+          </div>
+        </div>
       </div>
     );
   }

@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getWorkshopAccess } from "@/lib/api-auth";
+import { WHATSAPP_MODE } from "@/lib/config";
 import { connectionState, setWebhook } from "@/lib/evolution";
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://www.instauto.com.br";
 
 export async function GET(request: NextRequest) {
+  if (WHATSAPP_MODE !== "evolution") {
+    return NextResponse.json({ connected: false, disabled: true, state: "migrating" });
+  }
   try {
     const workshopId = request.nextUrl.searchParams.get("workshopId");
     if (!workshopId) {
