@@ -26,6 +26,17 @@ para colocar algo no ar rápido enquanto a papelada do Tech Provider/app review 
 é a que menos atrita com dono de oficina (ele continua usando o WhatsApp no celular) — avaliar na fase de
 conexão, pois hoje é o modelo que a Meta mais empurra para pequenos negócios.
 
+### DECISÃO FINAL (2026-09): Arquitetura C — Coexistence
+
+- Motivo: as oficinas **não podem perder o WhatsApp no celular** (senão churn/atrito).
+- **IA autoreply FUNCIONA** na Coexistence (envio/recebimento via Cloud API enquanto o dono usa o app).
+  Cuidado de produto: dono + IA podem responder junto → usar o toggle `whatsapp_ai_autoreply` (já existe)
+  e, depois, regra "IA só responde se ninguém respondeu em X min".
+- App Meta: **"Oficinas Mecânicas"** (já verificado, mesmo Business Portfolio do outro SaaS "MotorGestor").
+- Número oficial Instauto (suporte/testes): **(43) 99185-2779**.
+- Conexão: Embedded Signup **com QR** escaneado do app WhatsApp **Business** da oficina (linka o número existente).
+- Elegibilidade: número precisa estar no app **WhatsApp Business** e não estar em outra API/BSP.
+
 ## 3. Tech Provider: o que reaproveita do seu outro SaaS
 
 Você já tem Tech Provider aprovado em outro app da Meta. O que carrega e o que **não** carrega:
