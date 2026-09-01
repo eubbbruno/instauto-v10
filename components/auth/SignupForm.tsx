@@ -121,8 +121,8 @@ export default function SignupForm({ userType }: { userType: UserType }) {
       if (error) throw error;
       if (!data.user) throw new Error("Erro ao criar conta. Tente novamente.");
 
-      // Conversão: conta criada (dispara GA sign_up + Meta CompleteRegistration)
-      trackSignup(userType);
+      // Conversão: conta criada (dispara GA sign_up + Meta CompleteRegistration + CAPI)
+      trackSignup(userType, email, userType === "oficina" ? phone : undefined);
 
       // Sem session = precisa confirmar email
       if (!data.session) {
