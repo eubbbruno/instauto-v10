@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { sendText, defaultPhoneNumberId, isCloudConfigured } from "@/lib/whatsapp-cloud";
+import { sendText, sendTemplate, defaultPhoneNumberId, isCloudConfigured } from "@/lib/whatsapp-cloud";
 
 export const runtime = "nodejs";
 
@@ -29,13 +29,16 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ ok: false, error: "passe ?to=55DDDNUMERO" }, { status: 400 });
   }
 
+  // type=template (padrão) usa o hello_world, que ENTREGA fora da janela de 24h.
+  // type=text só entrega dentro de uma janela de 24h aberta pelo cliente.
+  const type = p.get("type") || "template";
+
   try {
-    const result = await sendText(
-      pnid,
-      to,
-      "✅ Teste do Instauto: integração oficial do WhatsApp funcionando! (mensagem automática de diagnóstico)"
-    );
-    return NextResponse.json({ ok: true, sent_to: to, result });
+    const result =
+      type === "text"
+        ? await sendText(pnid, to, "✅ Teste do Instauto: integração oficial do WhatsApp funcionando!")
+        : await sendTemplate(pnid, to, "hello_world", "en_US");
+    return NextResponse.json({ ok: true, type, sent_to: to, result });
   } catch (e) {
     return NextResponse.json({ ok: false, error: (e as Error).message }, { status: 200 });
   }
