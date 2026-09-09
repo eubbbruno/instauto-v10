@@ -174,10 +174,11 @@ function WhatsAppContent() {
     const ws = await resolveWorkshop(supabase, profile?.id);
     if (ws) {
       setWorkshopId(ws.id);
-      // Em modo "off" não checa status (Evolution desligado); só carrega histórico/config.
-      const tasks: Promise<unknown>[] = [loadMessages(ws.id), loadSettings(ws.id)];
-      if (!WPP_DISABLED) tasks.push(checkStatus(ws.id));
-      await Promise.all(tasks);
+      // Cloud API: conectado = a oficina tem número vinculado (wa_phone_number_id).
+      const waPnid = (ws as any).wa_phone_number_id;
+      const waStatus = (ws as any).wa_status;
+      setConnected(!!waPnid && waStatus === "connected");
+      await Promise.all([loadMessages(ws.id), loadSettings(ws.id)]);
     }
     setLoading(false);
   };
@@ -315,30 +316,8 @@ function WhatsAppContent() {
     );
   }
 
-  // Acesso de teste do Embedded Signup (?connect=1) enquanto o modo ainda é "off".
-  if (connectMode) {
-    return (
-      <div className="p-4 sm:p-6 lg:p-8 space-y-6">
-        <div>
-          <p className="text-xs sm:text-sm text-gray-400 mb-1">Dashboard / WhatsApp</p>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">WhatsApp</h1>
-        </div>
-        {connected ? (
-          <div className="bg-green-50 border border-green-200 rounded-2xl p-6 max-w-2xl">
-            <p className="font-bold text-green-800">✅ WhatsApp conectado!</p>
-            <p className="text-sm text-green-700 mt-1">Seu número está ligado ao Instauto.</p>
-          </div>
-        ) : workshopId ? (
-          <WhatsAppConnect workshopId={workshopId} onConnected={() => window.location.reload()} />
-        ) : (
-          <Loader2 className="h-6 w-6 animate-spin text-[#1e3a8a]" />
-        )}
-      </div>
-    );
-  }
-
-  // WhatsApp em migração para a API oficial (Cloud API). Evolution/QR foi desativado.
-  if (WPP_DISABLED) {
+  // WhatsApp em migração (modo "off"). No teste (?connect=1) libera o fluxo Cloud.
+  if (WPP_DISABLED && !connectMode) {
     return (
       <div className="p-4 sm:p-6 lg:p-8 space-y-6">
         <div>
@@ -407,67 +386,19 @@ function WhatsAppContent() {
           <p className="text-sm text-gray-600 mt-1">Converse com seus clientes direto por aqui.</p>
         </div>
         {connected && (
-          <div className="flex items-center gap-3">
-            <span className="inline-flex items-center gap-1.5 text-sm font-medium text-green-600">
-              <CheckCircle2 className="w-4 h-4" /> Conectado
-            </span>
-            <button
-              onClick={() => handleConnect(true)}
-              disabled={connecting}
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-gray-500 hover:text-[#1e3a8a] disabled:opacity-60"
-              title="Gerar novo QR e reconectar (use se parar de enviar/receber)"
-            >
-              {connecting ? <Loader2 className="w-4 h-4 animate-spin" /> : <QrCode className="w-4 h-4" />}
-              Reconectar
-            </button>
-          </div>
+          <span className="inline-flex items-center gap-1.5 text-sm font-medium text-green-600">
+            <CheckCircle2 className="w-4 h-4" /> Conectado
+          </span>
         )}
       </div>
 
-      {/* QR de reconexão (quando já está "conectado" mas o socket caiu) */}
-      {qr && connected && (
-        <div className="bg-white border border-[#0B1120]/8 rounded-2xl p-5 sm:p-6 shadow-sm flex flex-col items-center text-center">
-          <img src={qr} alt="QR Code do WhatsApp" className="w-56 h-56 rounded-xl border border-gray-200" />
-          <p className="text-sm text-gray-600 mt-4 max-w-sm">
-            Escaneie para reconectar: <strong>WhatsApp → Aparelhos conectados → Conectar um aparelho</strong>.
-          </p>
-          <p className="text-xs text-gray-400 mt-2 flex items-center gap-1"><Loader2 className="w-3 h-3 animate-spin" /> Aguardando leitura…</p>
-        </div>
-      )}
-
-      {/* Não conectado → card de conexão / QR */}
+      {/* Não conectado → Embedded Signup (Coexistence) */}
       {!connected ? (
-        <div className="bg-white border border-[#0B1120]/8 rounded-2xl p-5 sm:p-6 shadow-sm">
-          <div className="flex items-center justify-between gap-4 flex-wrap">
-            <div className="flex items-center gap-3">
-              <div className="w-11 h-11 rounded-xl flex items-center justify-center bg-gray-100">
-                <Smartphone className="w-5 h-5 text-gray-400" />
-              </div>
-              <div>
-                <p className="font-bold text-gray-900">Não conectado</p>
-                <p className="text-sm text-gray-500">Conecte escaneando o QR Code com o WhatsApp da oficina.</p>
-              </div>
-            </div>
-            <button
-              onClick={() => handleConnect()}
-              disabled={connecting}
-              className="btn-epic-blue inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold disabled:opacity-60"
-            >
-              {connecting ? <Loader2 className="w-4 h-4 animate-spin" /> : <QrCode className="w-4 h-4" />}
-              Conectar WhatsApp
-            </button>
-          </div>
-
-          {qr && (
-            <div className="mt-6 pt-6 border-t border-gray-100 flex flex-col items-center text-center">
-              <img src={qr} alt="QR Code do WhatsApp" className="w-56 h-56 rounded-xl border border-gray-200" />
-              <p className="text-sm text-gray-600 mt-4 max-w-sm">
-                No celular da oficina, abra o <strong>WhatsApp → Aparelhos conectados → Conectar um aparelho</strong> e escaneie este código.
-              </p>
-              <p className="text-xs text-gray-400 mt-2 flex items-center gap-1"><Loader2 className="w-3 h-3 animate-spin" /> Aguardando leitura…</p>
-            </div>
-          )}
-        </div>
+        workshopId ? (
+          <WhatsAppConnect workshopId={workshopId} onConnected={() => window.location.reload()} />
+        ) : (
+          <Loader2 className="h-6 w-6 animate-spin text-[#1e3a8a]" />
+        )
       ) : (
         <>
           {/* Toggle de auto-resposta com IA */}
