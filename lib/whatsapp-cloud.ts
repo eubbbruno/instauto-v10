@@ -78,6 +78,16 @@ export async function sendTemplate(
   });
 }
 
+/** Inscreve ESTE app nos webhooks da WABA (necessário p/ receber mensagens dela). */
+export async function subscribeApp(wabaId: string) {
+  return graph(`/${wabaId}/subscribed_apps`, { method: "POST" });
+}
+
+/** Lista os apps inscritos na WABA (diagnóstico). */
+export async function listSubscribedApps(wabaId: string) {
+  return graph(`/${wabaId}/subscribed_apps`, { method: "GET" });
+}
+
 /** Marca uma mensagem recebida como lida (opcional, melhora UX). */
 export async function markRead(phoneNumberId: string, messageId: string) {
   return graph(`/${phoneNumberId}/messages`, {
