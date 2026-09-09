@@ -78,6 +78,36 @@ export async function sendTemplate(
   });
 }
 
+/**
+ * Troca o `code` do Embedded Signup por um token de acesso do negócio da oficina.
+ * Usa APP_ID + APP_SECRET (server-only).
+ */
+export async function exchangeCodeForToken(code: string): Promise<string> {
+  const appId = process.env.WHATSAPP_APP_ID || process.env.NEXT_PUBLIC_WHATSAPP_APP_ID || "2277090379754151";
+  const secret = process.env.WHATSAPP_APP_SECRET;
+  if (!secret) throw new Error("WHATSAPP_APP_SECRET não configurado.");
+  const url = `${GRAPH}/oauth/access_token?client_id=${appId}&client_secret=${secret}&code=${encodeURIComponent(code)}`;
+  const res = await fetch(url, { cache: "no-store" });
+  const data = await res.json().catch(() => null);
+  if (!res.ok || !data?.access_token) {
+    throw new Error(`Troca de code falhou: ${JSON.stringify(data)}`);
+  }
+  return data.access_token as string;
+}
+
+/** Registra o número na API de Nuvem (necessário p/ números novos; no-op em coexistence). */
+export async function registerPhoneNumber(phoneNumberId: string, pin = "000000") {
+  return graph(`/${phoneNumberId}/register`, {
+    method: "POST",
+    body: JSON.stringify({ messaging_product: "whatsapp", pin }),
+  });
+}
+
+/** Lê dados do número (display + nome verificado) p/ salvar na oficina. */
+export async function getPhoneNumber(phoneNumberId: string) {
+  return graph(`/${phoneNumberId}?fields=display_phone_number,verified_name,quality_rating`, { method: "GET" });
+}
+
 /** Inscreve ESTE app nos webhooks da WABA (necessário p/ receber mensagens dela). */
 export async function subscribeApp(wabaId: string) {
   return graph(`/${wabaId}/subscribed_apps`, { method: "POST" });

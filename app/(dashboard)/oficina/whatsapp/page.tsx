@@ -7,6 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import PlanGuard from "@/components/auth/PlanGuard";
 import { useToast } from "@/components/ui/use-toast";
 import { WHATSAPP_MODE } from "@/lib/config";
+import { WhatsAppConnect } from "@/components/oficina/WhatsAppConnect";
 import Link from "next/link";
 import {
   Loader2, MessageSquare, Send, Smartphone, CheckCircle2, RefreshCw, QrCode,
@@ -101,6 +102,13 @@ function WhatsAppContent() {
   const [aiAutoreply, setAiAutoreply] = useState(false);
   const [togglingAi, setTogglingAi] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  // Acesso de teste ao Embedded Signup enquanto o WHATSAPP_MODE ainda é "off".
+  const [connectMode, setConnectMode] = useState(false);
+  useEffect(() => {
+    try {
+      setConnectMode(new URLSearchParams(window.location.search).get("connect") === "1");
+    } catch {}
+  }, []);
 
   const pollRef = useRef<NodeJS.Timeout | null>(null);
   const msgPollRef = useRef<NodeJS.Timeout | null>(null);
@@ -303,6 +311,28 @@ function WhatsAppContent() {
     return (
       <div className="p-4 sm:p-6 lg:p-8 flex items-center justify-center min-h-[60vh]">
         <Loader2 className="h-8 w-8 animate-spin text-[#1e3a8a]" />
+      </div>
+    );
+  }
+
+  // Acesso de teste do Embedded Signup (?connect=1) enquanto o modo ainda é "off".
+  if (connectMode) {
+    return (
+      <div className="p-4 sm:p-6 lg:p-8 space-y-6">
+        <div>
+          <p className="text-xs sm:text-sm text-gray-400 mb-1">Dashboard / WhatsApp</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">WhatsApp</h1>
+        </div>
+        {connected ? (
+          <div className="bg-green-50 border border-green-200 rounded-2xl p-6 max-w-2xl">
+            <p className="font-bold text-green-800">✅ WhatsApp conectado!</p>
+            <p className="text-sm text-green-700 mt-1">Seu número está ligado ao Instauto.</p>
+          </div>
+        ) : workshopId ? (
+          <WhatsAppConnect workshopId={workshopId} onConnected={() => window.location.reload()} />
+        ) : (
+          <Loader2 className="h-6 w-6 animate-spin text-[#1e3a8a]" />
+        )}
       </div>
     );
   }

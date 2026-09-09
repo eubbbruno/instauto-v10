@@ -15,3 +15,13 @@ export const FACEBOOK_LOGIN_ENABLED = false;
  *                  docs/whatsapp-cloud-api-plan.md).
  */
 export const WHATSAPP_MODE: "off" | "evolution" | "cloud" = "off";
+
+/**
+ * WhatsApp Cloud API — Embedded Signup (Coexistence).
+ * IDs PÚBLICOS do app "Gestor de Oficinas" (não são segredo; ficam no bundle client).
+ * featureType "whatsapp_business_app_onboarding" = fluxo Coexistence (a oficina NÃO
+ * perde o WhatsApp no celular dela).
+ */
+export const WHATSAPP_APP_ID = "2277090379754151";
+export const WHATSAPP_CONFIG_ID = "2055735465055321";
+export const WHATSAPP_ES_FEATURE_TYPE = "whatsapp_business_app_onboarding";
