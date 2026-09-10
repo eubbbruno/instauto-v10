@@ -118,6 +118,29 @@ export async function listSubscribedApps(wabaId: string) {
   return graph(`/${wabaId}/subscribed_apps`, { method: "GET" });
 }
 
+/** Cria um modelo de mensagem (template) na WABA — exercita whatsapp_business_management. */
+export async function createMessageTemplate(wabaId: string, name: string) {
+  return graph(`/${wabaId}/message_templates`, {
+    method: "POST",
+    body: JSON.stringify({
+      name,
+      language: "pt_BR",
+      category: "UTILITY",
+      components: [
+        {
+          type: "BODY",
+          text: "Olá! Aqui é a sua oficina no Instauto. Recebemos sua solicitação e já vamos te atender. 🔧",
+        },
+      ],
+    }),
+  });
+}
+
+/** Lista os modelos de mensagem da WABA. */
+export async function listMessageTemplates(wabaId: string) {
+  return graph(`/${wabaId}/message_templates?fields=name,status,category,language&limit=50`, { method: "GET" });
+}
+
 /** Marca uma mensagem recebida como lida (opcional, melhora UX). */
 export async function markRead(phoneNumberId: string, messageId: string) {
   return graph(`/${phoneNumberId}/messages`, {
