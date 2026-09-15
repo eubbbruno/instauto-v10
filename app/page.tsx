@@ -99,7 +99,7 @@ export default function HomePage() {
                 {/* Badge */}
                 <div className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-4 py-2 text-sm font-semibold text-brand-blue mb-6">
                   <span className="w-2 h-2 bg-brand-gold rounded-full" />
-                  Mais de 500 oficinas cadastradas
+                  Orçamentos grátis, sem compromisso
                 </div>
 
                 {/* Título pôster com marca-texto */}
@@ -534,15 +534,17 @@ export default function HomePage() {
             {/* Card — avaliações */}
             <Reveal delay={0.1}>
               <div className="min-h-[240px] rounded-3xl bg-brand-yellow p-8 flex flex-col justify-between card-lift">
-                <span className="text-xs font-sans font-semibold text-yellow-900/50">Avaliações reais</span>
+                <span className="text-xs font-sans font-semibold text-yellow-900/50">Confiança</span>
                 <div>
-                  <div className="text-8xl font-heading font-black text-yellow-900 leading-none">4,9</div>
-                  <div className="flex gap-0.5 my-2">
+                  <div className="flex gap-1 mb-3">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-5 h-5 text-yellow-700" fill="currentColor" />
+                      <Star key={i} className="w-6 h-6 text-yellow-700" fill="currentColor" />
                     ))}
                   </div>
-                  <p className="text-yellow-900/55 text-sm font-sans">de 2.500+ avaliações de motoristas reais</p>
+                  <div className="text-3xl sm:text-4xl font-heading font-black text-yellow-900 leading-tight">
+                    Avaliações reais de motoristas
+                  </div>
+                  <p className="text-yellow-900/55 text-sm font-sans mt-2">Veja notas e comentários antes de escolher a oficina.</p>
                 </div>
               </div>
             </Reveal>

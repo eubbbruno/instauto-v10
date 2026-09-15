@@ -192,7 +192,7 @@ export default function ParaOficinasPage() {
                 <h3 className="text-xl font-heading font-bold text-navy">Com Instauto</h3>
               </div>
               <ul className="space-y-4">
-                {["Tudo organizado em um só lugar", "Acompanhe todas as OS em tempo real", "Relatórios automáticos de faturamento", "Alertas quando o estoque está baixo", "Economize 10+ horas por semana"].map((item) => (
+                {["Tudo organizado em um só lugar", "Acompanhe todas as OS em tempo real", "Relatórios automáticos de faturamento", "Alertas quando o estoque está baixo", "Menos tempo com papelada e planilhas"].map((item) => (
                   <li key={item} className="flex items-start gap-3">
                     <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
                       <Check className="w-3.5 h-3.5 text-green-600" />
