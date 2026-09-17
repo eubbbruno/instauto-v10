@@ -1,8 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import crypto from "crypto";
+import OpenAI from "openai";
+import { checkAndIncrementAiUsage } from "@/lib/ai-quota";
+import { sendText } from "@/lib/whatsapp-cloud";
 
 export const runtime = "nodejs";
+
+const openai = process.env.OPENAI_API_KEY ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY }) : null;
+// Teto rígido por contato/dia (anti-loop) mesmo com cota mensal disponível.
+const MAX_AI_REPLIES_PER_CONTACT_DAY = 10;
 
 /**
  * Webhook do WhatsApp Cloud API (oficial).
@@ -23,6 +30,99 @@ function admin() {
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
     { auth: { autoRefreshToken: false, persistSession: false } }
   );
+}
+
+/** Monta o prompt de sistema com o conhecimento/comportamento da oficina. */
+function buildSystemPrompt(w: any): string {
+  const name = w?.name || "nossa oficina";
+  const local = [w?.address, w?.city, w?.state].filter(Boolean).join(", ");
+  const specialties = Array.isArray(w?.specialties) ? w.specialties.join(", ") : w?.specialties || "";
+  const persona = (w?.ai_persona && String(w.ai_persona).trim()) || "cordial, prestativo e objetivo";
+  const facts: string[] = [];
+  if (local) facts.push(`Endereço: ${local}.`);
+  if (w?.phone) facts.push(`Telefone: ${w.phone}.`);
+  if (specialties) facts.push(`Especialidades: ${specialties}.`);
+  if (w?.ai_business_hours) facts.push(`Horário de atendimento: ${w.ai_business_hours}.`);
+  if (w?.description) facts.push(`Sobre a oficina: ${w.description}.`);
+  const knowledge = w?.ai_instructions ? `\n\nInformações e instruções da oficina:\n${w.ai_instructions}` : "";
+  return `Você é o atendente virtual da oficina mecânica "${name}" no WhatsApp. Seu tom deve ser ${persona}. Responda sempre em português brasileiro, de forma breve (no máximo 3 frases curtas).
+
+Dados da oficina:
+${facts.length ? facts.join("\n") : "- (poucos dados cadastrados)"}${knowledge}
+
+Regras importantes:
+- Ajude com dúvidas sobre serviços, horários, localização e agendamento.
+- NUNCA invente preços, prazos ou informações não fornecidas. Se não souber, diga que um atendente humano responde em breve.
+- Para fechar orçamento, confirmar valores ou agendar de fato, diga que um atendente vai dar sequência.
+- Não repita saudações a cada mensagem se a conversa já começou.`;
+}
+
+/**
+ * Auto-resposta de IA (opt-in por oficina) no Cloud API. Guardrails: só se
+ * whatsapp_ai_autoreply=true, respeita a cota mensal, teto por contato/dia e
+ * só responde dentro da janela de 24h (o cliente acabou de escrever, então ok).
+ */
+async function maybeAutoReply(
+  db: any,
+  workshopId: string,
+  phoneNumberId: string,
+  from: string,
+  incomingText: string
+) {
+  if (!openai) return;
+
+  const { data: workshop } = await db
+    .from("workshops")
+    .select("name, whatsapp_ai_autoreply, ai_persona, ai_instructions, ai_business_hours, address, city, state, phone, specialties, description")
+    .eq("id", workshopId)
+    .single();
+  if (!workshop?.whatsapp_ai_autoreply) return;
+
+  const remoteJid = `${from}@s.whatsapp.net`;
+  const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  const { count: repliesToday } = await db
+    .from("whatsapp_messages")
+    .select("*", { count: "exact", head: true })
+    .eq("workshop_id", workshopId)
+    .eq("remote_jid", remoteJid)
+    .eq("from_me", true)
+    .gte("created_at", dayAgo);
+  if ((repliesToday || 0) >= MAX_AI_REPLIES_PER_CONTACT_DAY) return;
+
+  const quota = await checkAndIncrementAiUsage(workshopId, "chat");
+  if (!quota.allowed) return;
+
+  const { data: history } = await db
+    .from("whatsapp_messages")
+    .select("from_me, text")
+    .eq("workshop_id", workshopId)
+    .eq("remote_jid", remoteJid)
+    .order("created_at", { ascending: false })
+    .limit(8);
+  const ordered = (history || []).reverse();
+  const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [
+    { role: "system", content: buildSystemPrompt(workshop) },
+    ...ordered.map((m: any) => ({ role: (m.from_me ? "assistant" : "user") as "assistant" | "user", content: m.text || "" })),
+  ];
+  if (!ordered.length || ordered[ordered.length - 1].text !== incomingText) {
+    messages.push({ role: "user", content: incomingText });
+  }
+
+  try {
+    const completion = await openai.chat.completions.create({ model: "gpt-4o-mini", messages, max_tokens: 220, temperature: 0.6 });
+    const reply = completion.choices[0]?.message?.content?.trim();
+    if (!reply) return;
+    const result = await sendText(phoneNumberId, from, reply);
+    await db.from("whatsapp_messages").insert({
+      workshop_id: workshopId,
+      remote_jid: remoteJid,
+      from_me: true,
+      text: reply,
+      message_id: result?.messages?.[0]?.id || null,
+    });
+  } catch (e: any) {
+    console.error("[wpp-cloud autoreply] falha:", e?.message);
+  }
 }
 
 /** Verificação do webhook: a Meta chama GET com hub.challenge. */
@@ -112,7 +212,9 @@ export async function POST(request: NextRequest) {
             text,
             message_id: m.id || null,
           });
-          // TODO Fase 5: auto-resposta com IA (respeitando a janela de 24h).
+
+          // Auto-resposta de IA (opt-in + guardrails). Não bloqueia o webhook.
+          if (phoneNumberId) await maybeAutoReply(db, workshopId, phoneNumberId, from, text);
         }
       }
     }

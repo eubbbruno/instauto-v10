@@ -14,7 +14,7 @@ export const FACEBOOK_LOGIN_ENABLED = false;
  *  - "cloud"     → WhatsApp Cloud API oficial (em construção — ver
  *                  docs/whatsapp-cloud-api-plan.md).
  */
-export const WHATSAPP_MODE: "off" | "evolution" | "cloud" = "off";
+export const WHATSAPP_MODE: "off" | "evolution" | "cloud" = "cloud";
 
 /**
  * WhatsApp Cloud API — Embedded Signup (Coexistence).
