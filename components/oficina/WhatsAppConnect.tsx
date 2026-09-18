@@ -125,13 +125,14 @@ export function WhatsAppConnect({
           </div>
         </div>
 
-        {/* Antes de começar */}
+        {/* Antes de começar — exigências */}
         <div className="rounded-xl bg-amber-50 border border-amber-100 p-4 mb-5">
-          <p className="text-sm font-bold text-amber-900 mb-1.5">✅ Antes de começar, você precisa de:</p>
-          <ul className="text-sm text-amber-900/90 space-y-1 list-disc pl-5">
-            <li>O aplicativo <strong>WhatsApp Business</strong> instalado no celular da oficina (o app verde de empresa, não o WhatsApp comum).</li>
-            <li>O celular com esse WhatsApp <strong>em mãos</strong> — você vai escanear um QR code.</li>
-            <li>Uma conta do <strong>Facebook</strong> (qualquer uma sua) para autorizar — é rápido.</li>
+          <p className="text-sm font-bold text-amber-900 mb-2">✅ O que você precisa ter em mãos:</p>
+          <ul className="text-sm text-amber-900/90 space-y-1.5 list-disc pl-5">
+            <li>O aplicativo <strong>WhatsApp Business</strong> instalado no celular da oficina (o app verde de empresa — <strong>não</strong> o WhatsApp comum).</li>
+            <li>O <strong>celular em mãos</strong> com esse WhatsApp Business — você vai escanear um QR code durante a conexão.</li>
+            <li>Uma conta do <strong>Facebook</strong> (pode ser a sua pessoal) para autorizar. A conta de negócios da Meta é criada na hora, de graça.</li>
+            <li>Que o número <strong>não esteja conectado a outra plataforma</strong> de WhatsApp (API/robô). Se estiver, desconecte antes.</li>
           </ul>
         </div>
 
@@ -185,12 +186,18 @@ export function WhatsAppConnect({
           <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
             <CreditCard className="w-5 h-5 text-[#1e3a8a]" />
           </div>
-          <div className="text-sm text-gray-600 leading-relaxed">
+          <div className="text-sm text-gray-600 leading-relaxed w-full">
             <p className="font-bold text-gray-900 mb-1">Sobre a cobrança das mensagens</p>
+            <p className="mb-3">
+              As mensagens são cobradas pela <strong>própria Meta</strong>, direto na conta da sua oficina — <strong>não entram na sua mensalidade do Instauto</strong>. Valores aproximados (tabela da Meta no Brasil):
+            </p>
+            <ul className="space-y-1.5 mb-3">
+              <li className="flex gap-2"><span>💬</span><span><strong>Responder clientes que te escrevem</strong> (atendimento, até 24h): <strong className="text-green-700">grátis</strong>.</span></li>
+              <li className="flex gap-2"><span>🔔</span><span><strong>Notificação por modelo</strong> (ex.: "orçamento pronto", "lembrete"): <strong>~R$ 0,02 a R$ 0,08</strong> por mensagem.</span></li>
+              <li className="flex gap-2"><span>📣</span><span><strong>Mensagem de divulgação/marketing:</strong> <strong>~R$ 0,30 a R$ 0,38</strong> por mensagem.</span></li>
+            </ul>
             <p>
-              As mensagens do WhatsApp são cobradas pela <strong>própria Meta</strong>, direto na sua oficina, conforme a tabela deles —
-              <strong> não vem na sua mensalidade do Instauto</strong>. Conversas iniciadas pelo cliente costumam ter uma faixa gratuita todo mês.
-              Durante a conexão, a Meta pode pedir para você cadastrar uma forma de pagamento na sua conta do WhatsApp Business.
+              Na prática, <strong>atender quem te chama é de graça.</strong> Durante a conexão, a Meta pode pedir um cartão para cobrir as mensagens pagas (notificações e divulgação).
             </p>
           </div>
         </div>
