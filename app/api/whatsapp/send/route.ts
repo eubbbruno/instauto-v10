@@ -40,16 +40,16 @@ export async function POST(request: NextRequest) {
     // Descobre como a oficina está conectada.
     const { data: ws } = await admin
       .from("workshops")
-      .select("wa_phone_number_id")
+      .select("wa_phone_number_id, wa_token")
       .eq("id", workshopId)
       .single();
 
     let messageId: string | null = null;
 
     if (ws?.wa_phone_number_id) {
-      // Cloud API oficial.
+      // Cloud API oficial (token da própria oficina).
       try {
-        const result = await cloudSendText(ws.wa_phone_number_id, cleanNumber, text);
+        const result = await cloudSendText(ws.wa_phone_number_id, cleanNumber, text, ws.wa_token || undefined);
         messageId = result?.messages?.[0]?.id || null;
       } catch (e: any) {
         const msg = String(e?.message || "");

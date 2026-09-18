@@ -73,7 +73,7 @@ async function maybeAutoReply(
 
   const { data: workshop } = await db
     .from("workshops")
-    .select("name, whatsapp_ai_autoreply, ai_persona, ai_instructions, ai_business_hours, address, city, state, phone, specialties, description")
+    .select("name, whatsapp_ai_autoreply, ai_persona, ai_instructions, ai_business_hours, address, city, state, phone, specialties, description, wa_token")
     .eq("id", workshopId)
     .single();
   if (!workshop?.whatsapp_ai_autoreply) return;
@@ -112,7 +112,7 @@ async function maybeAutoReply(
     const completion = await openai.chat.completions.create({ model: "gpt-4o-mini", messages, max_tokens: 220, temperature: 0.6 });
     const reply = completion.choices[0]?.message?.content?.trim();
     if (!reply) return;
-    const result = await sendText(phoneNumberId, from, reply);
+    const result = await sendText(phoneNumberId, from, reply, workshop.wa_token || undefined);
     await db.from("whatsapp_messages").insert({
       workshop_id: workshopId,
       remote_jid: remoteJid,

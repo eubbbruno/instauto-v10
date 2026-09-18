@@ -23,12 +23,18 @@ export function defaultPhoneNumberId(): string | undefined {
   return process.env.WHATSAPP_PHONE_NUMBER_ID;
 }
 
-async function graph(path: string, init: RequestInit = {}) {
-  if (!TOKEN) throw new Error("WHATSAPP_TOKEN não configurado.");
+/**
+ * `token` opcional: no modelo Tech Provider, cada oficina tem o próprio token
+ * (do negócio dela, obtido na troca do code) — usamos ele nas chamadas da WABA
+ * e nos envios daquela oficina. Sem token, cai no WHATSAPP_TOKEN global.
+ */
+async function graph(path: string, init: RequestInit = {}, token?: string) {
+  const t = token || TOKEN;
+  if (!t) throw new Error("WHATSAPP_TOKEN não configurado.");
   const res = await fetch(`${GRAPH}${path}`, {
     ...init,
     headers: {
-      Authorization: `Bearer ${TOKEN}`,
+      Authorization: `Bearer ${t}`,
       "Content-Type": "application/json",
       ...(init.headers || {}),
     },
@@ -42,7 +48,7 @@ async function graph(path: string, init: RequestInit = {}) {
 }
 
 /** Envia mensagem de texto livre (só vale dentro da janela de 24h). `to` = E.164 só dígitos. */
-export async function sendText(phoneNumberId: string, to: string, text: string) {
+export async function sendText(phoneNumberId: string, to: string, text: string, token?: string) {
   return graph(`/${phoneNumberId}/messages`, {
     method: "POST",
     body: JSON.stringify({
@@ -52,7 +58,7 @@ export async function sendText(phoneNumberId: string, to: string, text: string) 
       type: "text",
       text: { preview_url: false, body: text },
     }),
-  });
+  }, token);
 }
 
 /** Envia um template aprovado (HSM) — necessário fora da janela de 24h. */
@@ -61,7 +67,8 @@ export async function sendTemplate(
   to: string,
   templateName: string,
   languageCode = "pt_BR",
-  components?: unknown[]
+  components?: unknown[],
+  token?: string
 ) {
   return graph(`/${phoneNumberId}/messages`, {
     method: "POST",
@@ -75,7 +82,7 @@ export async function sendTemplate(
         ...(components ? { components } : {}),
       },
     }),
-  });
+  }, token);
 }
 
 /**
@@ -96,26 +103,26 @@ export async function exchangeCodeForToken(code: string): Promise<string> {
 }
 
 /** Registra o número na API de Nuvem (necessário p/ números novos; no-op em coexistence). */
-export async function registerPhoneNumber(phoneNumberId: string, pin = "000000") {
+export async function registerPhoneNumber(phoneNumberId: string, pin = "000000", token?: string) {
   return graph(`/${phoneNumberId}/register`, {
     method: "POST",
     body: JSON.stringify({ messaging_product: "whatsapp", pin }),
-  });
+  }, token);
 }
 
 /** Lê dados do número (display + nome verificado) p/ salvar na oficina. */
-export async function getPhoneNumber(phoneNumberId: string) {
-  return graph(`/${phoneNumberId}?fields=display_phone_number,verified_name,quality_rating`, { method: "GET" });
+export async function getPhoneNumber(phoneNumberId: string, token?: string) {
+  return graph(`/${phoneNumberId}?fields=display_phone_number,verified_name,quality_rating`, { method: "GET" }, token);
 }
 
 /** Inscreve ESTE app nos webhooks da WABA (necessário p/ receber mensagens dela). */
-export async function subscribeApp(wabaId: string) {
-  return graph(`/${wabaId}/subscribed_apps`, { method: "POST" });
+export async function subscribeApp(wabaId: string, token?: string) {
+  return graph(`/${wabaId}/subscribed_apps`, { method: "POST" }, token);
 }
 
 /** Lista os apps inscritos na WABA (diagnóstico). */
-export async function listSubscribedApps(wabaId: string) {
-  return graph(`/${wabaId}/subscribed_apps`, { method: "GET" });
+export async function listSubscribedApps(wabaId: string, token?: string) {
+  return graph(`/${wabaId}/subscribed_apps`, { method: "GET" }, token);
 }
 
 /** Cria um modelo de mensagem (template) na WABA — exercita whatsapp_business_management. */

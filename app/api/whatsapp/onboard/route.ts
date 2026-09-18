@@ -41,19 +41,26 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Sem permissão" }, { status: 403 });
     }
 
-    // 1) Troca o code (valida o consentimento). Não bloqueia se a Meta variar o retorno.
+    // 1) Troca o code pelo token do NEGÓCIO da oficina (é ele que tem acesso à WABA dela).
+    let bizToken: string | undefined;
     try {
-      await exchangeCodeForToken(code);
+      bizToken = await exchangeCodeForToken(code);
     } catch (e) {
-      console.warn("[onboard] troca de code falhou (seguindo com system user token):", (e as Error).message);
+      console.warn("[onboard] troca de code falhou:", (e as Error).message);
     }
 
-    // 2) Inscreve nosso app na WABA da oficina (essencial p/ receber as mensagens dela).
-    await subscribeApp(wabaId);
+    // 2) Inscreve nosso app na WABA da oficina (essencial p/ receber). Usa o token da oficina.
+    let subscribed = false;
+    try {
+      await subscribeApp(wabaId, bizToken);
+      subscribed = true;
+    } catch (e) {
+      console.error("[onboard] subscribeApp falhou:", (e as Error).message);
+    }
 
     // 3) Registra o número (números novos) — best-effort; coexistence normalmente dispensa.
     try {
-      await registerPhoneNumber(phoneNumberId);
+      await registerPhoneNumber(phoneNumberId, "000000", bizToken);
     } catch (e) {
       console.warn("[onboard] register phone (ok ignorar em coexistence):", (e as Error).message);
     }
@@ -62,12 +69,12 @@ export async function POST(request: NextRequest) {
     let displayNumber: string | null = null;
     let verifiedName: string | null = null;
     try {
-      const info = await getPhoneNumber(phoneNumberId);
+      const info = await getPhoneNumber(phoneNumberId, bizToken);
       displayNumber = info?.display_phone_number || null;
       verifiedName = info?.verified_name || null;
     } catch {}
 
-    // 4) Salva na oficina.
+    // 4) Salva na oficina (guardando o token dela para envios/recebimentos).
     const { error } = await admin()
       .from("workshops")
       .update({
@@ -75,14 +82,16 @@ export async function POST(request: NextRequest) {
         wa_phone_number_id: phoneNumberId,
         wa_display_number: displayNumber,
         wa_verified_name: verifiedName,
-        wa_status: "connected",
+        wa_status: subscribed ? "connected" : "pending",
+        wa_token: bizToken || null,
       })
       .eq("id", workshopId);
     if (error) throw new Error("Erro ao salvar: " + error.message);
 
     return NextResponse.json({
       ok: true,
-      connected: true,
+      connected: subscribed,
+      subscribed,
       display_number: displayNumber,
       verified_name: verifiedName,
     });
