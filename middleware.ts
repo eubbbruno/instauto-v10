@@ -34,6 +34,7 @@ export async function middleware(req: NextRequest) {
     "/auth/callback",
     "/para-oficinas",
     "/para-motoristas",
+    "/parceiro",
     "/exclusao",
     "/sobre",
     "/contato",
