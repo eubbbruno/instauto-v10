@@ -35,6 +35,7 @@ export async function middleware(req: NextRequest) {
     "/para-oficinas",
     "/para-motoristas",
     "/parceiro",
+    "/parceiros",
     "/exclusao",
     "/sobre",
     "/contato",
