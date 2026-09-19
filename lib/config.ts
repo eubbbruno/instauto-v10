@@ -3,7 +3,7 @@
  * O código do OAuth está pronto — basta voltar para `true` quando o app estiver
  * verificado e o login funcionando. Ver botões em app/login e components/auth/SignupForm.
  */
-export const FACEBOOK_LOGIN_ENABLED = false;
+export const FACEBOOK_LOGIN_ENABLED = true;
 
 /**
  * Provedor do WhatsApp da oficina.

@@ -54,6 +54,21 @@ export function trackSignup(userType: "oficina" | "motorista", email?: string, p
   sendCapi("CompleteRegistration", eventId, { email, phone, custom });
 }
 
+/** Lead capturado (form de captação de oficina). Conversão principal dos ADS de captação. */
+export function trackLead(city?: string) {
+  if (typeof window === "undefined") return;
+  const w = window as AnyWindow;
+  const eventId = newEventId();
+  const custom = { content_name: "oficina", ...(city ? { city } : {}) };
+  try {
+    w.gtag?.("event", "generate_lead", custom);
+  } catch {}
+  try {
+    w.fbq?.("track", "Lead", custom, { eventID: eventId });
+  } catch {}
+  sendCapi("Lead", eventId, { custom });
+}
+
 /** Clique num CTA principal (ex.: "Começar grátis" no /para-oficinas). Topo do funil. */
 export function trackCtaClick(location: string) {
   if (typeof window === "undefined") return;
