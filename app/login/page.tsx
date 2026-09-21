@@ -13,6 +13,8 @@ import { FadeIn } from "@/components/ui/motion";
 function LoginContent() {
   const searchParams = useSearchParams();
   const redirectUrl = searchParams.get("redirect");
+  // Mostra o botão do Facebook se o flag estiver ligado OU via ?fbtest=1 (p/ a análise da Meta).
+  const showFacebook = FACEBOOK_LOGIN_ENABLED || searchParams.get("fbtest") === "1";
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -241,7 +243,7 @@ function LoginContent() {
               </button>
 
               {/* Botão Facebook — oculto até a Meta liberar o app (Business Verification) */}
-              {FACEBOOK_LOGIN_ENABLED && (
+              {showFacebook && (
               <button
                 onClick={() => handleOAuthLogin("facebook")}
                 disabled={googleLoading || facebookLoading}
