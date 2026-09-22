@@ -86,7 +86,7 @@ export default function ParceiroPage() {
                 <label className="text-sm font-medium text-gray-700 mb-1.5 block">Nome da oficina ou seu nome</label>
                 <div className="relative">
                   <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                  <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Ex.: Auto Center Silva" required
+                  <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Ex.: Oficina do João" required
                     className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
                 </div>
               </div>
@@ -102,7 +102,7 @@ export default function ParceiroPage() {
                 <label className="text-sm font-medium text-gray-700 mb-1.5 block">Cidade</label>
                 <div className="relative">
                   <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                  <input value={city} onChange={(e) => setCity(e.target.value)} placeholder="Ex.: Londrina - PR"
+                  <input value={city} onChange={(e) => setCity(e.target.value)} placeholder="Ex.: São Paulo - SP"
                     className="w-full pl-11 pr-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
                 </div>
               </div>
