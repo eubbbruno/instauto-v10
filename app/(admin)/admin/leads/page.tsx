@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Loader2, Users, RefreshCw, MessageCircle, MapPin } from "lucide-react";
+import Link from "next/link";
+import { Loader2, Users, RefreshCw, MessageCircle, MapPin, UserPlus } from "lucide-react";
 
 interface Lead {
   id: string;
@@ -75,12 +76,17 @@ export default function AdminLeadsPage() {
                     )}
                   </div>
                 </div>
-                <div className="flex items-center gap-3 shrink-0">
-                  <span className="text-xs text-gray-400">{new Date(l.created_at).toLocaleString("pt-BR")}</span>
+                <div className="flex items-center gap-2 shrink-0 flex-wrap justify-end">
+                  <span className="text-xs text-gray-400 w-full text-right sm:w-auto">{new Date(l.created_at).toLocaleString("pt-BR")}</span>
                   <a href={waLink(l.phone, l.name)} target="_blank" rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 bg-[#25D366] hover:bg-[#20bd5a] text-white text-sm font-semibold px-3 py-2 rounded-lg transition-colors">
                     <MessageCircle className="w-4 h-4" /> WhatsApp
                   </a>
+                  <Link
+                    href={`/admin/criar-conta?name=${encodeURIComponent(l.name)}&phone=${encodeURIComponent(l.phone)}&city=${encodeURIComponent(l.city || "")}`}
+                    className="inline-flex items-center gap-1.5 bg-[#1e3a8a] hover:bg-[#16306e] text-white text-sm font-semibold px-3 py-2 rounded-lg transition-colors">
+                    <UserPlus className="w-4 h-4" /> Criar conta
+                  </Link>
                 </div>
               </div>
             ))}
