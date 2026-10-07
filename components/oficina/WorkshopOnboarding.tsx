@@ -32,8 +32,8 @@ export function WorkshopOnboarding() {
     (async () => {
       const ws = await resolveWorkshop(supabase, profile.id);
       if (!ws) return;
-      // Só mostra se faltar o essencial (endereço ou cidade)
-      if (!ws.city || !ws.address) {
+      // Só mostra se faltar o essencial p/ o marketplace: cidade + UF.
+      if (!ws.city || !ws.state) {
         setWorkshopId(ws.id);
         setForm((f) => ({
           ...f,
@@ -54,7 +54,8 @@ export function WorkshopOnboarding() {
   const toggleSpec = (s: string) =>
     setForm((f) => ({ ...f, specialties: f.specialties.includes(s) ? f.specialties.filter((x) => x !== s) : [...f.specialties, s] }));
 
-  const step1Valid = form.address.trim() && form.city.trim() && form.state;
+  // Só cidade + UF são obrigatórios (menos fricção); endereço é opcional.
+  const step1Valid = form.city.trim() && form.state;
 
   const save = async (finish: boolean) => {
     if (!workshopId) return;
@@ -102,14 +103,9 @@ export function WorkshopOnboarding() {
         <div className="p-6 overflow-y-auto">
           {step === 0 ? (
             <div className="space-y-4">
-              <div>
-                <label className="text-sm font-medium text-gray-700 mb-1.5 flex items-center gap-1.5"><MapPin className="w-4 h-4 text-[#1e3a8a]" /> Endereço *</label>
-                <input value={form.address} onChange={(e) => set("address", e.target.value)} placeholder="Rua, número, bairro"
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-transparent" />
-              </div>
               <div className="flex gap-3">
                 <div className="flex-1">
-                  <label className="text-sm font-medium text-gray-700 mb-1.5 block">Cidade *</label>
+                  <label className="text-sm font-medium text-gray-700 mb-1.5 flex items-center gap-1.5"><MapPin className="w-4 h-4 text-[#1e3a8a]" /> Cidade *</label>
                   <input value={form.city} onChange={(e) => set("city", e.target.value)} placeholder="Londrina"
                     className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-transparent" />
                 </div>
@@ -121,6 +117,11 @@ export function WorkshopOnboarding() {
                     {UF_LIST.map((u) => <option key={u} value={u}>{u}</option>)}
                   </select>
                 </div>
+              </div>
+              <div>
+                <label className="text-sm font-medium text-gray-700 mb-1.5 block">Endereço <span className="text-gray-400 font-normal">(opcional)</span></label>
+                <input value={form.address} onChange={(e) => set("address", e.target.value)} placeholder="Rua, número, bairro"
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-[#1e3a8a]/30 focus:border-transparent" />
               </div>
               <div>
                 <label className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-1.5"><Wrench className="w-4 h-4 text-[#1e3a8a]" /> Especialidades</label>
